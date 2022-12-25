@@ -1,32 +1,32 @@
 <template>
-  <div class="revenue-list flex mt-6">
-    <table class="table-auto w-full border-collapse border border-slate-400">
+  <div class="revenue-list flex mt-16">
+    <table class="table-auto w-full  overflow-hidden">
       <thead class="revenue-list-head flex w-full">
-        <tr class="flex w-full h-12">
-          <th class="border flex items-center border-slate-400 p-1 h-full w-1/5 justify-end">Valor</th>
-          <th class="border flex items-center border-slate-400 p-1 h-full w-1/5">Descrição</th>
-          <th class="border flex items-center border-slate-400 p-1 h-full w-1/5">Data</th>
-          <th class="border flex items-center border-slate-400 p-1 h-full w-1/5">Banco</th>
-          <th class="border flex items-center border-slate-400 p-1 h-full w-1/5 justify-center">Ações</th>
+        <tr class="flex w-full h-12 bg-secondary-color-dark">
+          <th class="flex items-center p-2 h-full w-1/5 justify-end">Valor</th>
+          <th class="flex items-center p-2 h-full w-1/5">Descrição</th>
+          <th class="flex items-center p-2 h-full w-1/5">Data</th>
+          <th class="flex items-center p-2 h-full w-1/5">Banco</th>
+          <th class="flex items-center p-2 h-full w-1/5 justify-center">Ações</th>
         </tr>
       </thead>
       <tbody class="revenue-list-body flex flex-col w-full">
-        <tr class="flex w-full items-center h-12"
+        <tr class="flex w-full items-center h-12 even:bg-secondary-color-dark"
           v-for="item in billItems" :key="item.id">
-          <td class="border flex items-center border-slate-400 p-1 h-full w-1/5 justify-end">
+          <td class="flex items-center p-2 h-full w-1/5 justify-end">
             {{ formatCurrency(item.value) }}
           </td>
-          <td class="border flex items-center border-slate-400 p-1 h-full w-1/5">
+          <td class="flex items-center p-2 h-full w-1/5">
             {{ item.description }}
           </td>
-          <td class="border flex items-center border-slate-400 p-1 h-full w-1/5">
+          <td class="flex items-center p-2 h-full w-1/5">
             {{ formatDate(item.date) }}
           </td>
-          <td class="border flex items-center border-slate-400 p-1 h-full w-1/5">
+          <td class="flex items-center p-2 h-full w-1/5">
             {{ item.bank }}
           </td>
-          <td class="border flex items-center border-slate-400 p-1 h-full w-1/5 justify-center">
-            <div class="flex">
+          <td class="flex items-center p-2 h-full w-1/5">
+            <div class="flex w-full justify-evenly">
               <EditIcon class="h-6 w-6 cursor-pointer"
                 @click="editRevenue"
               />

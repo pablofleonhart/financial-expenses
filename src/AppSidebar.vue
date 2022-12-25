@@ -1,11 +1,16 @@
 <template>
-    <nav class="sidebar-list m-w-40 h-screen flex flex-col bg-slate-200">
-        <router-link v-for="item in sidebarItems"
-            class="flex flex-row cursor-pointer w-full mt-4 items-center hover:bg-blue-300 h-9"
+    <nav class="sidebar-list w-42 h-screen flex flex-col bg-primary-color">
+        <router-link
+            v-for="item in sidebarItems"
+            class="sidebar-item flex flex-row cursor-pointer h-9 w-full mt-4 items-center
+            hover:bg-primary-color-dark hover:text-white"
             :key="item.id"
             :to="item.route"
         >
-            <component :is="item.icon" class="w-8 h-8 mx-2"/>
+            <component
+                :is="item.icon"
+                class="sidebar-item-icon w-8 h-8 mx-2"
+            />
             {{ item.name }}
         </router-link>
     </nav>
@@ -40,14 +45,29 @@ let sidebarItems: Array<ISidebarItem> = [
         id: 3,
         name: 'Investimentos',
         icon: CoinsIcon,
-        route: ''
+        route: 'investments'
     },
 ]
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .sidebar-item {
-    display: flex;
-    justify-content: center;
+    &.router-link-active {
+        background-color: #026670;
+        color: #FFF;
+        :deep(.sidebar-item-icon) {
+            * {
+                stroke: #FFF;
+            }
+        }
+    }
+
+    &:hover {
+        :deep(.sidebar-item-icon) {
+            * {
+                stroke: #FFF;
+            }
+        }
+    }
 }
 </style>

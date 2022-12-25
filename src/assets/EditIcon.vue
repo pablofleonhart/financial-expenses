@@ -14,7 +14,7 @@
 .edit-icon {
   &:hover {
     line, path {
-      stroke: #15839e;
+      stroke: #064fcc;
     }
   }
 }

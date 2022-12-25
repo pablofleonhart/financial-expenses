@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Revenue from "../components/revenue-component/Revenue.vue";
-import Expenses from "../components/Expenses.vue";
+import Revenue from "../components/revenues/Revenue.vue";
+import Expenses from "../components/expenses/Expenses.vue";
+import Investments from '../components/investments/Investments.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +15,11 @@ const router = createRouter({
       path: "/revenue",
       name: "revenue",
       component: Revenue,
+    },
+    {
+      path: "/investments",
+      name: "investments",
+      component: Investments,
     },
   ],
 });
