@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-2">
+    <div class="grid grid-cols-[max-content_1fr] font-sans">
         <app-sidebar />
         <router-view />
     </div>

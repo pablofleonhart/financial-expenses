@@ -1,5 +1,5 @@
 <template>
-    <nav class="sidebar-list w-40 h-screen flex flex-col bg-slate-200">
+    <nav class="sidebar-list m-w-40 h-screen flex flex-col bg-slate-200">
         <router-link v-for="item in sidebarItems"
             class="flex flex-row cursor-pointer w-full mt-4 items-center hover:bg-blue-300 h-9"
             :key="item.id"
@@ -28,7 +28,7 @@ let sidebarItems: Array<ISidebarItem> = [
         id: 1,
         name: 'Faturas',
         icon: CreditCardIcon,
-        route: 'bills'
+        route: 'revenue'
     },
     {
         id: 2,

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Bills from "../components/Bills.vue";
+import Revenue from "../components/revenue-component/Revenue.vue";
 import Expenses from "../components/Expenses.vue";
 
 const router = createRouter({
@@ -11,9 +11,9 @@ const router = createRouter({
       component: Expenses,
     },
     {
-      path: "/bills",
-      name: "bills",
-      component: Bills,
+      path: "/revenue",
+      name: "revenue",
+      component: Revenue,
     },
   ],
 });
