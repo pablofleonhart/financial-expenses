@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vue/compiler-sfc": "^3.2.45",
+    "@vuepic/vue-datepicker": "^3.6.3",
     "vue": "^3.2.41",
     "vue-router": "^4.1.6"
   },

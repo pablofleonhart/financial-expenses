@@ -1,5 +1,5 @@
 <template>
-  <div class="revenue-list flex mt-16">
+  <div class="revenue-list">
     <table class="table-auto w-full  overflow-hidden">
       <thead class="revenue-list-head flex w-full">
         <tr class="flex w-full h-12 bg-secondary-color-dark">
