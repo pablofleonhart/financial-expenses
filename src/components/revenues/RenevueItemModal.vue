@@ -17,10 +17,15 @@
         </div>
         <input
           class="outline-0 rounded p-2 border border-secondary-color-dark h-10"
-          type="numeric"
+          type="number"
+          min="0"
           required
+          v-model="currencyValue"
           placeholder="Valor a receber/pagar"
         />
+        <!-- <span class="text-red" v-if="currencyError">
+          {{ currencyError }}
+         </span> -->
         <input
           class="outline-0 rounded p-2 border border-secondary-color-dark h-10 mx-4"
           type="text"
@@ -28,6 +33,7 @@
         />
         <Datepicker
           locale="pt" select-text="Selecionar" text-input
+          format="dd/MM/yyyy HH:mm"
           :model-value="renevueDate"
           placeholder="Data da renda ou despesa"
           @update:model-value="setDate"
@@ -57,12 +63,17 @@
 
 <script lang="ts" setup>
 import Datepicker from '@vuepic/vue-datepicker';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const emit = defineEmits(['close'])
 
 const renevueDate = ref(new Date())
 const revenueType = ref('Renda')
+const currencyValue = ref(0)
+
+const currencyError = computed(() => {
+  return currencyValue.value <= 0 ? "The Input field is required" : '';
+})
 
 defineProps({
   opened: { type: Boolean, default: false },

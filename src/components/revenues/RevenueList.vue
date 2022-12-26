@@ -12,9 +12,9 @@
       </thead>
       <tbody class="revenue-list-body flex flex-col w-full">
         <tr class="flex w-full items-center h-12 even:bg-secondary-color-dark"
-          v-for="item in billItems" :key="item.id">
+          v-for="item in renevueList" :key="item.date">
           <td class="flex items-center p-2 h-full w-1/5 justify-end">
-            {{ formatCurrency(item.value) }}
+            {{ formatCurrency(item.amount) }}
           </td>
           <td class="flex items-center p-2 h-full w-1/5">
             {{ item.description }}
@@ -43,72 +43,17 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { formatCurrency } from '../../utils/index'
+import { formatCurrency, formatDate } from '../../utils/index'
 import DeleteIcon from "../../assets/DeleteIcon.vue"
 import EditIcon from "../../assets/EditIcon.vue"
+import { IRevenueItem } from "../../interfaces";
 
-interface IBillItem {
-  id: number
-  value: number
-  description: string
-  date: Date
-  bank: string
-}
+const props = defineProps({
+  renevueItems: { type: Array<IRevenueItem>, default: false },
+})
 
-const demoList: Array<IBillItem> = [
-  {
-    id: 1,
-    value: 2016.70,
-    description: 'FGTS',
-    date: new Date(),
-    bank: 'Nubank'
-  },
-  {
-    id: 2,
-    value: 2016.70,
-    description: 'FGTS',
-    date: new Date(),
-    bank: 'Nubank'
-  },
-  {
-    id: 3,
-    value: 2016.70,
-    description: 'FGTS',
-    date: new Date(),
-    bank: 'Nubank'
-  },
-  {
-    id: 4,
-    value: 2016.70,
-    description: 'FGTS',
-    date: new Date(),
-    bank: 'Nubank'
-  },
-  {
-    id: 5,
-    value: 2016.70,
-    description: 'FGTS',
-    date: new Date(),
-    bank: 'Nubank'
-  },
-  {
-    id: 6,
-    value: 2016.70,
-    description: 'FGTS',
-    date: new Date(),
-    bank: 'Nubank'
-  }
-]
-
-const formatDate = (date: Date): string => {
-  if(!date){
-    return 'No date'
-  }
-  return date.toLocaleDateString()
-}
-
-const billItems = computed<Array<IBillItem>>(() => {
-  return demoList
+const renevueList = computed<Array<IRevenueItem>>(() => {
+  return props.renevueItems
 })
 
 const editRevenue = () => {

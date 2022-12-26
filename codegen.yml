@@ -1,0 +1,15 @@
+schema: https://api-eu-central-1-shared-euc1-02.hygraph.com/v2/claptrkrm5lel01ujaw9l2ywv/master
+
+documents: "./src/graphql/**/*.graphql"
+
+generates:
+  ./src/graphql/generated.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-vue-apollo
+    config:
+      vueApolloVersion: 4
+      withHooks: true
+      withHOC: false
+      withComponent: false

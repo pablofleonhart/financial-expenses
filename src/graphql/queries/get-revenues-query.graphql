@@ -1,0 +1,10 @@
+query GetRevenues {
+  revenues {
+    amount
+    date
+    description
+    bank
+    type
+    deleted
+  }
+}
