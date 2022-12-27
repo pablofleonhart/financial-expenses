@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts" setup>
-import Datepicker from '@vuepic/vue-datepicker';
+import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/props/formatting/
 import { PropType, reactive, watch } from 'vue';
 import { IRevenueItem } from '../../interfaces';
 import { addRevenue, editRevenue } from '../../services';

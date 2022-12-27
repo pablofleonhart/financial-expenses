@@ -1,5 +1,5 @@
 <template>
-    <nav class="sidebar-list w-42 h-screen flex flex-col bg-primary-color">
+    <nav class="sidebar-list h-screen flex flex-col bg-primary-color">
         <router-link
             v-for="item in sidebarItems"
             class="sidebar-item flex flex-row cursor-pointer h-9 w-full mt-4 items-center
