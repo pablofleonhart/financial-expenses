@@ -2,45 +2,49 @@
     <div class="m-3" >
         <RevenueHeader/>
         <div class="flex mt-24 justify-end cursor-pointer"
-            @click="showRenevueItemModal = !showRenevueItemModal"
+            @click="onAddRevenue"
         >
             <span class="mr-2">
                 Adicionar
             </span>
             <AddIcon class="h-6 w-6"/>
         </div>
-        <RevenueList class="flex mt-8" :renevue-items="renevueItems"/>
+        <RevenueList
+            class="flex mt-8"
+            @edit-revenue="onEditRevenue"
+        />
     </div>
-    <RenevueItemModal
-        :opened="showRenevueItemModal"
-        @close="showRenevueItemModal = false"
+    <RevenueItemModal
+        :opened="showRevenueItemModal"
+        :revenue="objRevenue"
+        @close="showRevenueItemModal = false"
     />
 </template>
 
 <script lang="ts" setup>
 import AddIcon from '../../assets/AddIcon.vue';
 import RevenueHeader from './RevenueHeader.vue';
-import RenevueItemModal from './RenevueItemModal.vue';
+import RevenueItemModal from './RevenueItemModal.vue';
 import RevenueList from './RevenueList.vue';
-import { onMounted, reactive, ref, watch } from 'vue';
-import { useGetRevenuesQuery } from "../../graphql/generated";
+import { onMounted, ref } from 'vue';
 import { IRevenueItem } from '../../interfaces';
+import { loadRevenues } from '../../services/'
+import { Revenue } from './Revenue';
 
-let showRenevueItemModal = ref(false)
-let renevueItems: Array<IRevenueItem> = reactive(new Array())
+let showRevenueItemModal = ref(false)
+let objRevenue = ref(new Revenue())
 
 onMounted(() => {
-    const localItems = localStorage.getItem('renevueItems')
-    if(localItems){
-        Object.assign(renevueItems, JSON.parse(localItems))
-    } else {
-        // TODO catch errors
-        const { result } = useGetRevenuesQuery()
-
-        watch(result, value =>{
-            Object.assign(renevueItems, value?.revenues)
-            localStorage.setItem('renevueItems', JSON.stringify(renevueItems))
-        })
-    }
+    loadRevenues()
 })
+
+const onAddRevenue = () => {
+    objRevenue.value = new Revenue()
+    showRevenueItemModal.value = true
+}
+
+const onEditRevenue = (revenue: IRevenueItem) => {
+    objRevenue.value = new Revenue(revenue)
+    showRevenueItemModal.value = true
+}
 </script>

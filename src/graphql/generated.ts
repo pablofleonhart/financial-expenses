@@ -3625,8 +3625,8 @@ export type Revenue = Node & {
   /** User that created this document */
   createdBy?: Maybe<User>;
   date: Scalars['Date'];
-  deleted: Scalars['Boolean'];
-  description?: Maybe<Scalars['String']>;
+  deleted?: Maybe<Scalars['Boolean']>;
+  description: Scalars['String'];
   /** Get the document in other stages */
   documentInStages: Array<Revenue>;
   /** List of Revenue versions */
@@ -3719,8 +3719,8 @@ export type RevenueCreateInput = {
   bank: Scalars['String'];
   createdAt?: InputMaybe<Scalars['DateTime']>;
   date: Scalars['Date'];
-  deleted: Scalars['Boolean'];
-  description?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  description: Scalars['String'];
   type: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
@@ -5739,21 +5739,166 @@ export enum _SystemDateTimeFieldVariation {
   Localization = 'localization'
 }
 
+export type AddRevenueMutationVariables = Exact<{
+  amount: Scalars['Float'];
+  bank: Scalars['String'];
+  date: Scalars['Date'];
+  description: Scalars['String'];
+  type: Scalars['String'];
+}>;
+
+
+export type AddRevenueMutation = { __typename?: 'Mutation', createRevenue?: { __typename?: 'Revenue', id: string } | null };
+
+export type PublishRevenueMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type PublishRevenueMutation = { __typename?: 'Mutation', publishRevenue?: { __typename?: 'Revenue', amount: number, bank: string, date: any, description: string, deleted?: boolean | null, type: string } | null };
+
+export type UpdateRevenueMutationVariables = Exact<{
+  id: Scalars['ID'];
+  amount: Scalars['Float'];
+  bank: Scalars['String'];
+  date: Scalars['Date'];
+  deleted: Scalars['Boolean'];
+  description: Scalars['String'];
+  type: Scalars['String'];
+}>;
+
+
+export type UpdateRevenueMutation = { __typename?: 'Mutation', updateRevenue?: { __typename?: 'Revenue', id: string, amount: number, bank: string, date: any, deleted?: boolean | null, description: string, type: string } | null };
+
 export type GetRevenuesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetRevenuesQuery = { __typename?: 'Query', revenues: Array<{ __typename?: 'Revenue', amount: number, date: any, description?: string | null, bank: string, type: string, deleted: boolean }> };
+export type GetRevenuesQuery = { __typename?: 'Query', revenues: Array<{ __typename?: 'Revenue', id: string, amount: number, bank: string, date: any, deleted?: boolean | null, description: string, type: string }> };
 
 
-export const GetRevenuesDocument = gql`
-    query GetRevenues {
-  revenues {
+export const AddRevenueDocument = gql`
+    mutation addRevenue($amount: Float!, $bank: String!, $date: Date!, $description: String!, $type: String!) {
+  createRevenue(
+    data: {amount: $amount, bank: $bank, date: $date, deleted: false, description: $description, type: $type}
+  ) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useAddRevenueMutation__
+ *
+ * To run a mutation, you first call `useAddRevenueMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useAddRevenueMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useAddRevenueMutation({
+ *   variables: {
+ *     amount: // value for 'amount'
+ *     bank: // value for 'bank'
+ *     date: // value for 'date'
+ *     description: // value for 'description'
+ *     type: // value for 'type'
+ *   },
+ * });
+ */
+export function useAddRevenueMutation(options: VueApolloComposable.UseMutationOptions<AddRevenueMutation, AddRevenueMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<AddRevenueMutation, AddRevenueMutationVariables>>) {
+  return VueApolloComposable.useMutation<AddRevenueMutation, AddRevenueMutationVariables>(AddRevenueDocument, options);
+}
+export type AddRevenueMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AddRevenueMutation, AddRevenueMutationVariables>;
+export const PublishRevenueDocument = gql`
+    mutation publishRevenue($id: ID!) {
+  publishRevenue(where: {id: $id}, to: PUBLISHED) {
     amount
+    bank
     date
     description
-    bank
-    type
     deleted
+    type
+  }
+}
+    `;
+
+/**
+ * __usePublishRevenueMutation__
+ *
+ * To run a mutation, you first call `usePublishRevenueMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `usePublishRevenueMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = usePublishRevenueMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePublishRevenueMutation(options: VueApolloComposable.UseMutationOptions<PublishRevenueMutation, PublishRevenueMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<PublishRevenueMutation, PublishRevenueMutationVariables>>) {
+  return VueApolloComposable.useMutation<PublishRevenueMutation, PublishRevenueMutationVariables>(PublishRevenueDocument, options);
+}
+export type PublishRevenueMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<PublishRevenueMutation, PublishRevenueMutationVariables>;
+export const UpdateRevenueDocument = gql`
+    mutation updateRevenue($id: ID!, $amount: Float!, $bank: String!, $date: Date!, $deleted: Boolean!, $description: String!, $type: String!) {
+  updateRevenue(
+    data: {amount: $amount, bank: $bank, date: $date, deleted: $deleted, description: $description, type: $type}
+    where: {id: $id}
+  ) {
+    id
+    amount
+    bank
+    date
+    deleted
+    description
+    type
+  }
+}
+    `;
+
+/**
+ * __useUpdateRevenueMutation__
+ *
+ * To run a mutation, you first call `useUpdateRevenueMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateRevenueMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateRevenueMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *     amount: // value for 'amount'
+ *     bank: // value for 'bank'
+ *     date: // value for 'date'
+ *     deleted: // value for 'deleted'
+ *     description: // value for 'description'
+ *     type: // value for 'type'
+ *   },
+ * });
+ */
+export function useUpdateRevenueMutation(options: VueApolloComposable.UseMutationOptions<UpdateRevenueMutation, UpdateRevenueMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<UpdateRevenueMutation, UpdateRevenueMutationVariables>>) {
+  return VueApolloComposable.useMutation<UpdateRevenueMutation, UpdateRevenueMutationVariables>(UpdateRevenueDocument, options);
+}
+export type UpdateRevenueMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<UpdateRevenueMutation, UpdateRevenueMutationVariables>;
+export const GetRevenuesDocument = gql`
+    query GetRevenues {
+  revenues(first: 100) {
+    id
+    amount
+    bank
+    date
+    deleted
+    description
+    type
   }
 }
     `;

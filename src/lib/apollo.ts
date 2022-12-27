@@ -12,5 +12,8 @@ const cache = new InMemoryCache()
 // Create the apollo client
 export const apolloClient = new ApolloClient({
   link: httpLink,
+  headers: {
+    'Authorization': `Bearer ${import.meta.env.VITE_GRAPHQL_API_TOKEN}`
+  },
   cache,
 })

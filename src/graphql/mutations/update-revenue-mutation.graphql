@@ -1,0 +1,22 @@
+mutation updateRevenue(
+  $id: ID!,
+  $amount: Float!,
+  $bank: String!,
+  $date: Date!,
+  $deleted: Boolean!,
+  $description: String!,
+  $type: String!)
+{
+  updateRevenue(
+    data: { amount: $amount, bank: $bank, date: $date, deleted: $deleted, description: $description, type: $type }
+    where: { id: $id }
+  ){
+    id
+    amount
+    bank
+    date
+    deleted
+    description
+    type
+  }
+}

@@ -1,0 +1,10 @@
+mutation publishRevenue($id: ID!) {
+  publishRevenue(where: { id: $id}, to: PUBLISHED) {
+    amount
+    bank
+    date
+    description
+    deleted
+    type
+  }
+}

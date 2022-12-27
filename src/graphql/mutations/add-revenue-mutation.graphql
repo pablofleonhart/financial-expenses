@@ -1,0 +1,20 @@
+mutation addRevenue(
+  $amount: Float!,
+  $bank: String!,
+  $date: Date!,
+  $description: String!,
+  $type: String!)
+{
+  createRevenue(
+    data: {
+      amount: $amount,
+      bank: $bank
+      date: $date,
+      deleted: false,
+      description: $description,
+      type: $type,
+    }
+  ) {
+    id
+  }
+}

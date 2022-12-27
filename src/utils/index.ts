@@ -14,7 +14,7 @@ export const formatCurrency = (value: number, currency: string = 'BRL'): string 
   return converters[currency].format(value)
 }
 
-export const formatDate = (date: string): string => {
+export const formatDate = (date: Date | string): string => {
   if(!date){
     return 'No date'
   }

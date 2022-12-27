@@ -12,7 +12,7 @@
       </thead>
       <tbody class="revenue-list-body flex flex-col w-full">
         <tr class="flex w-full items-center h-12 even:bg-secondary-color-dark"
-          v-for="item in renevueList" :key="item.date">
+          v-for="(item, index) in revenueList" :key="item.id">
           <td class="flex items-center p-2 h-full w-1/5 justify-end">
             {{ formatCurrency(item.amount) }}
           </td>
@@ -28,10 +28,10 @@
           <td class="flex items-center p-2 h-full w-1/5">
             <div class="flex w-full justify-evenly">
               <EditIcon class="h-6 w-6 cursor-pointer"
-                @click="editRevenue"
+                @click="onEditRevenue(index)"
               />
               <DeleteIcon class="h-6 w-6 cursor-pointer"
-                @click="deleteRevenue"
+                @click="onDeleteRevenue(index)"
               />
             </div>
           </td>
@@ -47,21 +47,17 @@ import { formatCurrency, formatDate } from '../../utils/index'
 import DeleteIcon from "../../assets/DeleteIcon.vue"
 import EditIcon from "../../assets/EditIcon.vue"
 import { IRevenueItem } from "../../interfaces";
+import { deleteRevenue, revenueItems } from "../../services";
 
-const props = defineProps({
-  renevueItems: { type: Array<IRevenueItem>, default: false },
-})
+const emit = defineEmits(['editRevenue'])
 
-const renevueList = computed<Array<IRevenueItem>>(() => {
-  return props.renevueItems
-})
+let revenueList = computed<Array<IRevenueItem>>(() => revenueItems )
 
-const editRevenue = () => {
-  console.log('edit revenue')
+const onEditRevenue = (index: number) => {
+  emit('editRevenue', revenueList.value[index])
 }
 
-const deleteRevenue = () => {
-  console.log('delete revenue')
+const onDeleteRevenue = (index: number) => {
+  deleteRevenue(revenueList.value[index])
 }
-
 </script>

@@ -5,40 +5,39 @@
     items-center h-full w-full bg-black bg-opacity-30"
   >
     <div class="revenue-item-container flex flex-col bg-secondary-color h-92 w-3/4 p-4 rounded-lg"
-      :class="revenueType === 'Renda' ? 'income-type' : 'outcome-type'"
+      :class="revenue.type === 'income' ? 'income-type' : 'outcome-type'"
     >
       <div class="revenue-fields grid grid-rows-[60px_60px] grid-cols-3">
         <div class="col-span-3 flex justify-center items-center text-lg">
-          <input class="mr-2" type="radio" id="one" value="Renda" v-model="revenueType" />
+          <input class="mr-2" type="radio" id="one" value="income" v-model="revenue.type" />
           <label for="one">Renda</label>
 
-          <input class="ml-8 mr-2" type="radio" id="two" value="Despesa" v-model="revenueType" />
+          <input class="ml-8 mr-2" type="radio" id="two" value="outcome" v-model="revenue.type" />
           <label for="two">Despesa</label>
         </div>
         <input
+          v-model="revenue.amount"
           class="outline-0 rounded p-2 border border-secondary-color-dark h-10"
           type="number"
           min="0"
           required
-          v-model="currencyValue"
           placeholder="Valor a receber/pagar"
         />
-        <!-- <span class="text-red" v-if="currencyError">
-          {{ currencyError }}
-         </span> -->
         <input
+          v-model="revenue.bank"
           class="outline-0 rounded p-2 border border-secondary-color-dark h-10 mx-4"
           type="text"
           placeholder="Informe o banco vinculado"
         />
         <Datepicker
+          :model-value="revenue.date"
           locale="pt" select-text="Selecionar" text-input
           format="dd/MM/yyyy HH:mm"
-          :model-value="renevueDate"
           placeholder="Data da renda ou despesa"
           @update:model-value="setDate"
         />
         <textarea
+          v-model="revenue.description"
           class="flex col-span-3 resize-none outline-0 rounded p-2 border border-secondary-color-dark h-32"
           placeholder="Descreva a renda ou despesa"
         />
@@ -47,13 +46,13 @@
         <button
           class="revenue-item-confirm max-w-fit h-8 px-2 bg-primary-color-dark text-white border-2 
           border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
-          @click="onAddItem">
-          Adicionar
+          @click="onActionItem">
+          {{ revenue.id === '' ? 'Adicionar' : 'Editar' }}
         </button>
         <button
           class="revenue-item-cancel ml-4 max-w-fit h-8 px-2 bg-primary-color
           border-2 border-primary-color-dark hover:bg-secondary-color rounded"
-          @click="onCloseLogoutModal">
+          @click="emit('close')">
           Cancelar
         </button>
       </div>
@@ -63,32 +62,36 @@
 
 <script lang="ts" setup>
 import Datepicker from '@vuepic/vue-datepicker';
-import { computed, ref } from 'vue';
+import { PropType, reactive, watch } from 'vue';
+import { IRevenueItem } from '../../interfaces';
+import { addRevenue, editRevenue } from '../../services';
+import { Revenue } from './Revenue';
 
-const emit = defineEmits(['close'])
+let revenue = reactive(new Revenue())
 
-const renevueDate = ref(new Date())
-const revenueType = ref('Renda')
-const currencyValue = ref(0)
+const emit = defineEmits(['addRevenue', 'close'])
 
-const currencyError = computed(() => {
-  return currencyValue.value <= 0 ? "The Input field is required" : '';
+const props = defineProps({
+  opened: { type: Boolean, default: false },
+  revenue: { type: Object as PropType<IRevenueItem>, required: true },
 })
 
-defineProps({
-  opened: { type: Boolean, default: false },
+watch(() => props.opened, () => {
+  if(props.opened) {
+    revenue = props.revenue
+  }
 })
 
 const setDate = (value: Date) => {
-  renevueDate.value = value;
+  revenue.date = value;
 }
 
-const onAddItem = () => {
-  console.log('item adicionado')
-}
-
-const onCloseLogoutModal = () => {
-  console.log('acao cancelada')
+const onActionItem = async() => {
+  if(revenue.id === '') {
+    await addRevenue(revenue)
+  } else {
+    await editRevenue(revenue)
+  }
   emit('close')
 }
 </script>

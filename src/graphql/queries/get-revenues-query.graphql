@@ -1,10 +1,11 @@
 query GetRevenues {
-  revenues {
+  revenues(first: 100) {
+    id
     amount
-    date
-    description
     bank
-    type
+    date
     deleted
+    description
+    type
   }
 }
