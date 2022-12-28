@@ -1,0 +1,37 @@
+mutation updateExpense(
+  $id: ID!,
+  $amount: Float!,
+  $card: Boolean!,
+  $date: Date!,
+  $deleted: Boolean!,
+  $note: String!,
+  $categoryID: ID!)
+{
+  updateExpense(
+    data: {
+      amount: $amount,
+      card: $card,
+      date: $date,
+      deleted: $deleted,
+      note: $note, 
+      category: {
+        connect: {
+          id: $categoryID
+        }
+      }
+    }
+    where: { id: $id }
+  ){
+    id
+    amount
+    card
+    date
+    deleted
+    note
+    category {
+      id
+      name
+      type
+    }
+  }
+}

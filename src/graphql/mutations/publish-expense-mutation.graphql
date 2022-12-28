@@ -1,6 +1,5 @@
-query GetExpenses {
-  expenses(first: 100) {
-    id
+mutation publishExpense($id: ID!) {
+  publishExpense(where: { id: $id}, to: PUBLISHED) {
     amount
     card
     category {

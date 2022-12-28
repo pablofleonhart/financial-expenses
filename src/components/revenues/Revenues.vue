@@ -24,7 +24,8 @@
         :revenue="objRevenue"
         @close="showRevenueItemModal = false"
     />
-    <RevenueDeleteConfirmation
+    <DeleteConfirmation
+        message="Deseja realmente excluir essa renda/despesa?"
         :show-delete-confirmation="showDeleteConfirmationModal"
         @accept="onAcceptDelete"
         @cancel="showDeleteConfirmationModal = false"
@@ -33,7 +34,7 @@
 
 <script lang="ts" setup>
 import AddIcon from '../../assets/AddIcon.vue';
-import RevenueDeleteConfirmation from "./RevenueDeleteConfirmation.vue";
+import DeleteConfirmation from "../common/DeleteConfirmationModal.vue";
 import RevenueHeader from './RevenueHeader.vue';
 import RevenueItemModal from './RevenueItemModal.vue';
 import RevenueList from './RevenueList.vue';

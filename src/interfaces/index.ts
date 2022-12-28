@@ -11,9 +11,8 @@ export interface IExpenseItem {
   category: ICategoryItem
   date: Date
   deleted: boolean
-  description: string
+  note: string
 }
-
 
 export interface IRevenueItem {
   id: string,

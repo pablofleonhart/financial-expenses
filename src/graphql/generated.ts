@@ -1820,13 +1820,13 @@ export type Expense = Node & {
   createdBy?: Maybe<User>;
   date?: Maybe<Scalars['Date']>;
   deleted?: Maybe<Scalars['Boolean']>;
-  description?: Maybe<Scalars['String']>;
   /** Get the document in other stages */
   documentInStages: Array<Expense>;
   /** List of Expense versions */
   history: Array<Version>;
   /** The unique identifier */
   id: Scalars['ID'];
+  note?: Maybe<Scalars['String']>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -1914,7 +1914,7 @@ export type ExpenseCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
-  description?: InputMaybe<Scalars['String']>;
+  note?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -2004,25 +2004,6 @@ export type ExpenseManyWhereInput = {
   deleted?: InputMaybe<Scalars['Boolean']>;
   /** All values that are not equal to given value. */
   deleted_not?: InputMaybe<Scalars['Boolean']>;
-  description?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  description_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  description_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  description_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  description_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  description_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  description_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  description_starts_with?: InputMaybe<Scalars['String']>;
   documentInStages_every?: InputMaybe<ExpenseWhereStageInput>;
   documentInStages_none?: InputMaybe<ExpenseWhereStageInput>;
   documentInStages_some?: InputMaybe<ExpenseWhereStageInput>;
@@ -2045,6 +2026,25 @@ export type ExpenseManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  note?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  note_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  note_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  note_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  note_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  note_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  note_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  note_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  note_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  note_starts_with?: InputMaybe<Scalars['String']>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -2093,10 +2093,10 @@ export enum ExpenseOrderByInput {
   DateDesc = 'date_DESC',
   DeletedAsc = 'deleted_ASC',
   DeletedDesc = 'deleted_DESC',
-  DescriptionAsc = 'description_ASC',
-  DescriptionDesc = 'description_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  NoteAsc = 'note_ASC',
+  NoteDesc = 'note_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
@@ -2109,7 +2109,7 @@ export type ExpenseUpdateInput = {
   category?: InputMaybe<CategoryUpdateOneInlineInput>;
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
-  description?: InputMaybe<Scalars['String']>;
+  note?: InputMaybe<Scalars['String']>;
 };
 
 export type ExpenseUpdateManyInlineInput = {
@@ -2134,7 +2134,7 @@ export type ExpenseUpdateManyInput = {
   card?: InputMaybe<Scalars['Boolean']>;
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
-  description?: InputMaybe<Scalars['String']>;
+  note?: InputMaybe<Scalars['String']>;
 };
 
 export type ExpenseUpdateManyWithNestedWhereInput = {
@@ -2249,25 +2249,6 @@ export type ExpenseWhereInput = {
   deleted?: InputMaybe<Scalars['Boolean']>;
   /** All values that are not equal to given value. */
   deleted_not?: InputMaybe<Scalars['Boolean']>;
-  description?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  description_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  description_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  description_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  description_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  description_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  description_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  description_starts_with?: InputMaybe<Scalars['String']>;
   documentInStages_every?: InputMaybe<ExpenseWhereStageInput>;
   documentInStages_none?: InputMaybe<ExpenseWhereStageInput>;
   documentInStages_some?: InputMaybe<ExpenseWhereStageInput>;
@@ -2290,6 +2271,25 @@ export type ExpenseWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  note?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  note_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  note_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  note_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  note_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  note_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  note_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  note_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  note_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  note_starts_with?: InputMaybe<Scalars['String']>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -5795,6 +5795,18 @@ export enum _SystemDateTimeFieldVariation {
   Localization = 'localization'
 }
 
+export type AddExpenseMutationVariables = Exact<{
+  amount: Scalars['Float'];
+  card: Scalars['Boolean'];
+  date: Scalars['Date'];
+  deleted: Scalars['Boolean'];
+  note: Scalars['String'];
+  categoryID: Scalars['ID'];
+}>;
+
+
+export type AddExpenseMutation = { __typename?: 'Mutation', createExpense?: { __typename?: 'Expense', id: string } | null };
+
 export type AddRevenueMutationVariables = Exact<{
   amount: Scalars['Float'];
   bank: Scalars['String'];
@@ -5806,12 +5818,32 @@ export type AddRevenueMutationVariables = Exact<{
 
 export type AddRevenueMutation = { __typename?: 'Mutation', createRevenue?: { __typename?: 'Revenue', id: string } | null };
 
+export type PublishExpenseMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type PublishExpenseMutation = { __typename?: 'Mutation', publishExpense?: { __typename?: 'Expense', amount: number, card?: boolean | null, date?: any | null, deleted?: boolean | null, note?: string | null, category?: { __typename?: 'Category', id: string, name: string, type?: string | null } | null } | null };
+
 export type PublishRevenueMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
 export type PublishRevenueMutation = { __typename?: 'Mutation', publishRevenue?: { __typename?: 'Revenue', amount: number, bank: string, date: any, description: string, deleted?: boolean | null, type: string } | null };
+
+export type UpdateExpenseMutationVariables = Exact<{
+  id: Scalars['ID'];
+  amount: Scalars['Float'];
+  card: Scalars['Boolean'];
+  date: Scalars['Date'];
+  deleted: Scalars['Boolean'];
+  note: Scalars['String'];
+  categoryID: Scalars['ID'];
+}>;
+
+
+export type UpdateExpenseMutation = { __typename?: 'Mutation', updateExpense?: { __typename?: 'Expense', id: string, amount: number, card?: boolean | null, date?: any | null, deleted?: boolean | null, note?: string | null, category?: { __typename?: 'Category', id: string, name: string, type?: string | null } | null } | null };
 
 export type UpdateRevenueMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -5826,10 +5858,15 @@ export type UpdateRevenueMutationVariables = Exact<{
 
 export type UpdateRevenueMutation = { __typename?: 'Mutation', updateRevenue?: { __typename?: 'Revenue', id: string, amount: number, bank: string, date: any, deleted?: boolean | null, description: string, type: string } | null };
 
+export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: string, name: string, type?: string | null }> };
+
 export type GetExpensesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetExpensesQuery = { __typename?: 'Query', expenses: Array<{ __typename?: 'Expense', id: string, amount: number, card?: boolean | null, date?: any | null, deleted?: boolean | null, description?: string | null, category?: { __typename?: 'Category', id: string, name: string, type?: string | null } | null }> };
+export type GetExpensesQuery = { __typename?: 'Query', expenses: Array<{ __typename?: 'Expense', id: string, amount: number, card?: boolean | null, date?: any | null, deleted?: boolean | null, note?: string | null, category?: { __typename?: 'Category', id: string, name: string, type?: string | null } | null }> };
 
 export type GetRevenuesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5837,6 +5874,42 @@ export type GetRevenuesQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetRevenuesQuery = { __typename?: 'Query', revenues: Array<{ __typename?: 'Revenue', id: string, amount: number, bank: string, date: any, deleted?: boolean | null, description: string, type: string }> };
 
 
+export const AddExpenseDocument = gql`
+    mutation addExpense($amount: Float!, $card: Boolean!, $date: Date!, $deleted: Boolean!, $note: String!, $categoryID: ID!) {
+  createExpense(
+    data: {amount: $amount, card: $card, date: $date, deleted: $deleted, note: $note, category: {connect: {id: $categoryID}}}
+  ) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useAddExpenseMutation__
+ *
+ * To run a mutation, you first call `useAddExpenseMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useAddExpenseMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useAddExpenseMutation({
+ *   variables: {
+ *     amount: // value for 'amount'
+ *     card: // value for 'card'
+ *     date: // value for 'date'
+ *     deleted: // value for 'deleted'
+ *     note: // value for 'note'
+ *     categoryID: // value for 'categoryID'
+ *   },
+ * });
+ */
+export function useAddExpenseMutation(options: VueApolloComposable.UseMutationOptions<AddExpenseMutation, AddExpenseMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<AddExpenseMutation, AddExpenseMutationVariables>>) {
+  return VueApolloComposable.useMutation<AddExpenseMutation, AddExpenseMutationVariables>(AddExpenseDocument, options);
+}
+export type AddExpenseMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AddExpenseMutation, AddExpenseMutationVariables>;
 export const AddRevenueDocument = gql`
     mutation addRevenue($amount: Float!, $bank: String!, $date: Date!, $description: String!, $type: String!) {
   createRevenue(
@@ -5872,6 +5945,44 @@ export function useAddRevenueMutation(options: VueApolloComposable.UseMutationOp
   return VueApolloComposable.useMutation<AddRevenueMutation, AddRevenueMutationVariables>(AddRevenueDocument, options);
 }
 export type AddRevenueMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AddRevenueMutation, AddRevenueMutationVariables>;
+export const PublishExpenseDocument = gql`
+    mutation publishExpense($id: ID!) {
+  publishExpense(where: {id: $id}, to: PUBLISHED) {
+    amount
+    card
+    category {
+      id
+      name
+      type
+    }
+    date
+    deleted
+    note
+  }
+}
+    `;
+
+/**
+ * __usePublishExpenseMutation__
+ *
+ * To run a mutation, you first call `usePublishExpenseMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `usePublishExpenseMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = usePublishExpenseMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePublishExpenseMutation(options: VueApolloComposable.UseMutationOptions<PublishExpenseMutation, PublishExpenseMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<PublishExpenseMutation, PublishExpenseMutationVariables>>) {
+  return VueApolloComposable.useMutation<PublishExpenseMutation, PublishExpenseMutationVariables>(PublishExpenseDocument, options);
+}
+export type PublishExpenseMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<PublishExpenseMutation, PublishExpenseMutationVariables>;
 export const PublishRevenueDocument = gql`
     mutation publishRevenue($id: ID!) {
   publishRevenue(where: {id: $id}, to: PUBLISHED) {
@@ -5906,6 +6017,54 @@ export function usePublishRevenueMutation(options: VueApolloComposable.UseMutati
   return VueApolloComposable.useMutation<PublishRevenueMutation, PublishRevenueMutationVariables>(PublishRevenueDocument, options);
 }
 export type PublishRevenueMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<PublishRevenueMutation, PublishRevenueMutationVariables>;
+export const UpdateExpenseDocument = gql`
+    mutation updateExpense($id: ID!, $amount: Float!, $card: Boolean!, $date: Date!, $deleted: Boolean!, $note: String!, $categoryID: ID!) {
+  updateExpense(
+    data: {amount: $amount, card: $card, date: $date, deleted: $deleted, note: $note, category: {connect: {id: $categoryID}}}
+    where: {id: $id}
+  ) {
+    id
+    amount
+    card
+    date
+    deleted
+    note
+    category {
+      id
+      name
+      type
+    }
+  }
+}
+    `;
+
+/**
+ * __useUpdateExpenseMutation__
+ *
+ * To run a mutation, you first call `useUpdateExpenseMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateExpenseMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateExpenseMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *     amount: // value for 'amount'
+ *     card: // value for 'card'
+ *     date: // value for 'date'
+ *     deleted: // value for 'deleted'
+ *     note: // value for 'note'
+ *     categoryID: // value for 'categoryID'
+ *   },
+ * });
+ */
+export function useUpdateExpenseMutation(options: VueApolloComposable.UseMutationOptions<UpdateExpenseMutation, UpdateExpenseMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<UpdateExpenseMutation, UpdateExpenseMutationVariables>>) {
+  return VueApolloComposable.useMutation<UpdateExpenseMutation, UpdateExpenseMutationVariables>(UpdateExpenseDocument, options);
+}
+export type UpdateExpenseMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<UpdateExpenseMutation, UpdateExpenseMutationVariables>;
 export const UpdateRevenueDocument = gql`
     mutation updateRevenue($id: ID!, $amount: Float!, $bank: String!, $date: Date!, $deleted: Boolean!, $description: String!, $type: String!) {
   updateRevenue(
@@ -5950,6 +6109,35 @@ export function useUpdateRevenueMutation(options: VueApolloComposable.UseMutatio
   return VueApolloComposable.useMutation<UpdateRevenueMutation, UpdateRevenueMutationVariables>(UpdateRevenueDocument, options);
 }
 export type UpdateRevenueMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<UpdateRevenueMutation, UpdateRevenueMutationVariables>;
+export const GetCategoriesDocument = gql`
+    query GetCategories {
+  categories {
+    id
+    name
+    type
+  }
+}
+    `;
+
+/**
+ * __useGetCategoriesQuery__
+ *
+ * To run a query within a Vue component, call `useGetCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoriesQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetCategoriesQuery();
+ */
+export function useGetCategoriesQuery(options: VueApolloComposable.UseQueryOptions<GetCategoriesQuery, GetCategoriesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetCategoriesQuery, GetCategoriesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetCategoriesQuery, GetCategoriesQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, {}, options);
+}
+export function useGetCategoriesLazyQuery(options: VueApolloComposable.UseQueryOptions<GetCategoriesQuery, GetCategoriesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetCategoriesQuery, GetCategoriesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetCategoriesQuery, GetCategoriesQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, {}, options);
+}
+export type GetCategoriesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetCategoriesQuery, GetCategoriesQueryVariables>;
 export const GetExpensesDocument = gql`
     query GetExpenses {
   expenses(first: 100) {
@@ -5963,7 +6151,7 @@ export const GetExpensesDocument = gql`
     }
     date
     deleted
-    description
+    note
   }
 }
     `;

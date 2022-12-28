@@ -114,7 +114,7 @@ export const editRevenue = async(revenue: Revenue) => {
     // update revenue on local storage
     const oldRevenue = getRevenueByID(revenue.id);
     if(oldRevenue) {
-      revenueItems[revenueItems.indexOf(oldRevenue)] = revenue
+      revenueItems[revenueItems.indexOf(oldRevenue)] = revenue.props as Revenue
       updateLocalStorage()
     }
     publishRevenue(revenue.id)

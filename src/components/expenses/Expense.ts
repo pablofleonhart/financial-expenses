@@ -1,4 +1,4 @@
-import { ICategoryItem, IExpenseItem } from "../../interfaces";
+import { IExpenseItem } from "../../interfaces";
 import { Category } from "../categories/Category";
 
 export class Expense {
@@ -11,7 +11,7 @@ export class Expense {
     category: new Category(),
     date: new Date(),
     deleted: false,
-    description: '',
+    note: '',
   }){
     this.props = {
       ...objExpense
@@ -66,11 +66,11 @@ export class Expense {
     return this.props.deleted;
   }
 
-  public set description(value: string){
-    this.props.description = value;
+  public set note(value: string){
+    this.props.note = value;
   }
 
-  public get description(): string {
-    return this.props.description;
+  public get note(): string {
+    return this.props.note;
   }
 }

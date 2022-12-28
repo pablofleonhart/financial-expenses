@@ -1,0 +1,25 @@
+mutation addExpense(
+  $amount: Float!,
+  $card: Boolean!,
+  $date: Date!,
+  $deleted: Boolean!,
+  $note: String!,
+  $categoryID: ID!)
+{
+  createExpense(
+    data: {
+      amount: $amount,
+      card: $card
+      date: $date,
+      deleted: $deleted,
+      note: $note,
+      category: {
+        connect: {
+          id: $categoryID
+        }
+      }
+    }
+  ) {
+    id
+  }
+}
