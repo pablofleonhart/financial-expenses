@@ -68,7 +68,7 @@ export const addExpense = async(expense: Expense) => {
   return onDone((result) => {
     const expenseID = result.data?.createExpense?.id
     expense.id = expenseID || ''
-    expenseItems.push(expense)
+    expenseItems.push(new Expense(expense.props))
     updateLocalStorage()
     publishExpense(expenseID)
   })

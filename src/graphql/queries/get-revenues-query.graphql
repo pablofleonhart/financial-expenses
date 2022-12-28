@@ -1,5 +1,5 @@
 query GetRevenues {
-  revenues(first: 100) {
+  revenues(first: 100, orderBy: date_DESC) {
     id
     amount
     bank

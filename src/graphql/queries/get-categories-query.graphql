@@ -1,5 +1,5 @@
 query GetCategories {
-  categories {
+  categories(first: 15, orderBy: name_ASC) {
     id
     name
     type

@@ -6111,7 +6111,7 @@ export function useUpdateRevenueMutation(options: VueApolloComposable.UseMutatio
 export type UpdateRevenueMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<UpdateRevenueMutation, UpdateRevenueMutationVariables>;
 export const GetCategoriesDocument = gql`
     query GetCategories {
-  categories {
+  categories(first: 15, orderBy: name_ASC) {
     id
     name
     type
@@ -6140,7 +6140,7 @@ export function useGetCategoriesLazyQuery(options: VueApolloComposable.UseQueryO
 export type GetCategoriesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetCategoriesQuery, GetCategoriesQueryVariables>;
 export const GetExpensesDocument = gql`
     query GetExpenses {
-  expenses(first: 100) {
+  expenses(first: 100, orderBy: date_DESC) {
     id
     amount
     card
@@ -6177,7 +6177,7 @@ export function useGetExpensesLazyQuery(options: VueApolloComposable.UseQueryOpt
 export type GetExpensesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetExpensesQuery, GetExpensesQueryVariables>;
 export const GetRevenuesDocument = gql`
     query GetRevenues {
-  revenues(first: 100) {
+  revenues(first: 100, orderBy: date_DESC) {
     id
     amount
     bank

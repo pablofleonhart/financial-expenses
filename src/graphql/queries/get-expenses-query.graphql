@@ -1,5 +1,5 @@
 query GetExpenses {
-  expenses(first: 100) {
+  expenses(first: 100, orderBy: date_DESC) {
     id
     amount
     card
