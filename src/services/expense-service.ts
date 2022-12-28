@@ -68,7 +68,7 @@ export const addExpense = async(expense: Expense) => {
   return onDone((result) => {
     const expenseID = result.data?.createExpense?.id
     expense.id = expenseID || ''
-    expenseItems.push(new Expense(expense.props))
+    expenseItems.push(new Expense(expense))
     updateLocalStorage()
     publishExpense(expenseID)
   })
@@ -97,7 +97,7 @@ export const editExpense = async(expense: Expense) => {
     // update expense on local storage
     const oldExpense = getExpenseByID(expense.id);
     if(oldExpense) {
-      expenseItems[expenseItems.indexOf(oldExpense)] = expense.props as Expense
+      Object.assign(expenseItems[expenseItems.indexOf(oldExpense)], expense)
       updateLocalStorage()
     }
     publishExpense(expense.id)

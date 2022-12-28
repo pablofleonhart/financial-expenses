@@ -55,7 +55,7 @@ const onAddExpense = () => {
 }
 
 const onEditExpense = (expense: Expense) => {
-    objExpense.value = new Expense(expense.props)
+    objExpense.value = new Expense(expense)
     showExpenseItemModal.value = true
 }
 

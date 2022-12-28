@@ -57,7 +57,7 @@ const onAddRevenue = () => {
 }
 
 const onEditRevenue = (revenue: Revenue) => {
-    objRevenue.value = new Revenue(revenue.props)
+    objRevenue.value = new Revenue(revenue)
     showRevenueItemModal.value = true
 }
 
