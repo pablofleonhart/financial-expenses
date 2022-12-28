@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Revenue from "../components/revenues/Revenue.vue";
+import Revenues from "../components/revenues/Revenues.vue";
 import Expenses from "../components/expenses/Expenses.vue";
 import Investments from '../components/investments/Investments.vue';
 
@@ -12,9 +12,9 @@ const router = createRouter({
       component: Expenses,
     },
     {
-      path: "/revenue",
-      name: "revenue",
-      component: Revenue,
+      path: "/revenues",
+      name: "revenues",
+      component: Revenues,
     },
     {
       path: "/investments",

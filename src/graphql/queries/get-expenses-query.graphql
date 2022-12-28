@@ -1,0 +1,15 @@
+query GetExpenses {
+  expenses(first: 100) {
+    id
+    amount
+    card
+    category {
+      id
+      name
+      type
+    }
+    date
+    deleted
+    description
+  }
+}

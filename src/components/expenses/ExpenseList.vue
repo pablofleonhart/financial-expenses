@@ -1,0 +1,98 @@
+<template>
+  <div class="expense-list">
+    <table class="table-auto w-full overflow-hidden">
+      <thead class="expense-list-head flex w-full">
+        <tr class="flex w-full h-12 bg-secondary-color-dark">
+          <th class="flex items-center p-2 h-full w-1/6 justify-end">Valor</th>
+          <th class="flex items-center p-2 h-full w-1/6">Descrição</th>
+          <th class="flex items-center p-2 h-full w-1/6">Data</th>
+          <th class="flex items-center p-2 h-full w-1/6 justify-center">Categoria</th>
+          <th class="flex items-center p-2 h-full w-1/6 justify-center">Cartão</th>
+          <th class="flex items-center p-2 h-full w-1/6 justify-center">Ações</th>
+        </tr>
+      </thead>
+      <tbody class="expense-list-body flex flex-col w-full">
+        <tr class="flex w-full items-center h-12 even:bg-secondary-color-dark"
+          v-for="(item, index) in expenseList" :key="item.id">
+          <td class="flex items-center p-2 h-full w-1/6 justify-end">
+            {{ formatCurrency(item.amount) }}
+          </td>
+          <td class="flex items-center p-2 h-full w-1/6">
+            {{ item.description }}
+          </td>
+          <td class="flex items-center p-2 h-full w-1/6">
+            {{ formatDate(item.date) }}
+          </td>
+          <td class="flex items-center p-2 h-full w-1/6">
+            <div class="flex w-full justify-center">
+              <component 
+                :is="getCategoryIcon(item.category.type)"
+                class="h-6 w-6"
+              />
+              <span class="ml-2">
+                {{ item.category.name }}
+              </span>
+            </div>
+          </td>
+          <td class="flex items-center justify-center p-2 h-full w-1/6">
+            <component 
+              :is="getPaymentIcon(item.card)"
+              class="h-6 w-6"
+            />
+          </td>
+          <td class="flex items-center p-2 h-full w-1/6">
+            <div class="flex w-full justify-evenly">
+              <EditIcon class="h-6 w-6 cursor-pointer"
+                @click="onEditExpense(index)"
+              />
+              <DeleteIcon class="h-6 w-6 cursor-pointer"
+                @click="onDeleteExpense(index)"
+              />
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+</template>
+
+<script lang="ts" setup>
+import { computed } from "vue";
+import { formatCurrency, formatDate } from '../../utils/index'
+import DeleteIcon from "../../assets/DeleteIcon.vue"
+import EditIcon from "../../assets/EditIcon.vue"
+import { expenseItems } from "../../services";
+import { Expense } from "./Expense";
+import CreditCardIcon from "../../assets/CreditCardIcon.vue";
+import MoneyIcon from '../../assets/MoneyIcon.vue'
+import MarketIcon from "../../assets/MarketIcon.vue";
+import PetIcon from "../../assets/PetIcon.vue";
+import TransportIcon from "../../assets/TransportIcon.vue";
+
+const emit = defineEmits(['onEditExpense', 'onDeleteExpense'])
+
+let expenseList = computed<Array<Expense>>(() => expenseItems )
+
+const categoryTypes: Record<string, any> = {
+  'market': MarketIcon,
+  'pet': PetIcon,
+  'transport': TransportIcon
+}
+
+const getCategoryIcon = (categoryType: string) => {
+  return categoryTypes[categoryType]
+}
+
+const getPaymentIcon = (card: boolean) => {
+  return card ? CreditCardIcon : MoneyIcon
+}
+
+const onEditExpense = (index: number) => {
+  emit('onEditExpense', expenseList.value[index])
+}
+
+const onDeleteExpense = (index: number) => {
+  emit('onDeleteExpense', expenseList.value[index])
+}
+</script>

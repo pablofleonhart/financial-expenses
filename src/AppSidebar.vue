@@ -18,8 +18,8 @@
 
 <script lang="ts" setup>
 import CoinsIcon from '../src/assets/CoinsIcon.vue'
-import CreditCardIcon from '../src/assets/CreditCardIcon.vue'
 import CurrencyIcon from '../src/assets/CurrencyIcon.vue'
+import RevenueIcon from './assets/RevenueIcon.vue';
 
 interface ISidebarItem {
     id: number
@@ -32,8 +32,8 @@ let sidebarItems: Array<ISidebarItem> = [
     {
         id: 1,
         name: 'Faturas',
-        icon: CreditCardIcon,
-        route: 'revenue'
+        icon: RevenueIcon,
+        route: 'revenues'
     },
     {
         id: 2,

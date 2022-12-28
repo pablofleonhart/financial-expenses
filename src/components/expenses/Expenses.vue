@@ -1,6 +1,15 @@
 <template>
-    <h1 class="flex justify-center w-full">Controle de gastos</h1>
+    <ExpenseList
+        class="flex mt-8"
+    />
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from 'vue';
+import ExpenseList from './ExpenseList.vue';
+import { loadExpenses } from '../../services';
+
+onMounted(() => {
+    loadExpenses()
+})
 </script>

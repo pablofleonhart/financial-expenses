@@ -38,7 +38,7 @@ import RevenueHeader from './RevenueHeader.vue';
 import RevenueItemModal from './RevenueItemModal.vue';
 import RevenueList from './RevenueList.vue';
 import { onMounted, ref } from 'vue';
-import { deleteRevenue, loadRevenues } from '../../services/'
+import { deleteRevenue, loadRevenues } from '../../services'
 import { Revenue } from './Revenue';
 
 let showRevenueItemModal = ref(false)
