@@ -15,7 +15,8 @@
         </div>
         <RevenueList
             class="flex mt-8"
-            @edit-revenue="onEditRevenue"
+            @on-edit-revenue="onEditRevenue"
+            @on-delete-revenue="onDeleteRevenue"
         />
     </div>
     <RevenueItemModal
@@ -23,20 +24,27 @@
         :revenue="objRevenue"
         @close="showRevenueItemModal = false"
     />
+    <RevenueDeleteConfirmation
+        :show-delete-confirmation="showDeleteConfirmationModal"
+        @accept="onAcceptDelete"
+        @cancel="showDeleteConfirmationModal = false"
+    />
 </template>
 
 <script lang="ts" setup>
 import AddIcon from '../../assets/AddIcon.vue';
+import RevenueDeleteConfirmation from "./RevenueDeleteConfirmation.vue";
 import RevenueHeader from './RevenueHeader.vue';
 import RevenueItemModal from './RevenueItemModal.vue';
 import RevenueList from './RevenueList.vue';
 import { onMounted, ref } from 'vue';
-import { IRevenueItem } from '../../interfaces';
-import { loadRevenues } from '../../services/'
+import { deleteRevenue, loadRevenues } from '../../services/'
 import { Revenue } from './Revenue';
 
 let showRevenueItemModal = ref(false)
+let showDeleteConfirmationModal = ref(false)
 let objRevenue = ref(new Revenue())
+let revenueToDelete: Revenue = new Revenue()
 
 onMounted(() => {
     loadRevenues()
@@ -47,10 +55,21 @@ const onAddRevenue = () => {
     showRevenueItemModal.value = true
 }
 
-const onEditRevenue = (revenue: IRevenueItem) => {
+const onEditRevenue = (revenue: Revenue) => {
     objRevenue.value = new Revenue(revenue)
     showRevenueItemModal.value = true
 }
+
+const onDeleteRevenue = (revenue: Revenue) => {
+    showDeleteConfirmationModal.value = true
+    revenueToDelete = revenue
+}
+
+const onAcceptDelete = async() => {
+    showDeleteConfirmationModal.value = false
+    await deleteRevenue(revenueToDelete)
+}
+
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
 import { IRevenueItem } from "../../interfaces";
 
 export class Revenue {
-  private props: IRevenueItem;
+  public props: IRevenueItem;
 
   constructor(objRevenue: IRevenueItem = {
     id: '',

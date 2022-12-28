@@ -63,7 +63,6 @@
 <script lang="ts" setup>
 import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/props/formatting/
 import { PropType, reactive, watch } from 'vue';
-import { IRevenueItem } from '../../interfaces';
 import { addRevenue, editRevenue } from '../../services';
 import { Revenue } from './Revenue';
 
@@ -73,7 +72,7 @@ const emit = defineEmits(['addRevenue', 'close'])
 
 const props = defineProps({
   opened: { type: Boolean, default: false },
-  revenue: { type: Object as PropType<IRevenueItem>, required: true },
+  revenue: { type: Object as PropType<Revenue>, required: true },
 })
 
 watch(() => props.opened, () => {

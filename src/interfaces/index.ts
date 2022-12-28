@@ -1,9 +1,9 @@
 export interface IRevenueItem {
   id: string,
   amount: number
-  description: string
-  date: Date
   bank: string
-  type: string
+  date: Date
   deleted: boolean
+  description: string
+  type: string
 }

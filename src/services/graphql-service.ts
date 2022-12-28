@@ -6,20 +6,40 @@ import {
   usePublishRevenueMutation,
   useUpdateRevenueMutation
 } from '../graphql/generated';
-import { IRevenueItem } from '../interfaces';
-import { reactive } from 'vue';
-
-export let revenueItems: Array<IRevenueItem> = reactive(new Array())
+import { computed, reactive } from 'vue';
+import { Revenue } from '../components/revenues/Revenue';
 
 const initialize = () => {
   provideApolloClient(apolloClient)
 }
 
+export let revenueItems: Array<Revenue> = reactive(new Array())
+
+export const incomeAmount = computed<number>(() => {
+  let result = 0;
+  revenueItems.forEach((item) => {
+    if(item.type === 'income') {
+      result += item.amount
+    }
+  })
+  return result;
+})
+
+export const outcomeAmount = computed<number>(() => {
+  let result = 0;
+  revenueItems.forEach((item) => {
+    if(item.type === 'outcome') {
+      result += item.amount
+    }
+  })
+  return result;
+})
+
 const updateLocalStorage = () => {
   localStorage.setItem('revenueItems', JSON.stringify(revenueItems))
 }
 
-const getRevenueByID = (id: string): IRevenueItem | undefined | null => {
+const getRevenueByID = (id: string): Revenue | null => {
   if(!id){
     return null
   }
@@ -50,7 +70,7 @@ export const loadRevenues = () => {
   }
 }
 
-export const addRevenue = async(revenue: IRevenueItem) => {
+export const addRevenue = async(revenue: Revenue) => {
   const { mutate: createRevenue, onDone } = useAddRevenueMutation({});
   createRevenue(
       {
@@ -71,7 +91,7 @@ export const addRevenue = async(revenue: IRevenueItem) => {
   })
 }
 
-export const editRevenue = (revenue: IRevenueItem) => {
+export const editRevenue = async(revenue: Revenue) => {
   if(!revenue){
     throw new Error('Revenue does not exist')
   }
@@ -101,7 +121,7 @@ export const editRevenue = (revenue: IRevenueItem) => {
   })
 }
 
-export const deleteRevenue = (revenue: IRevenueItem) => {
+export const deleteRevenue = (revenue: Revenue) => {
   if(!revenue){
     throw new Error('Revenue does not exist')
   }

@@ -39,6 +39,7 @@
       </tbody>
     </table>
   </div>
+  
 </template>
 
 <script lang="ts" setup>
@@ -46,18 +47,18 @@ import { computed } from "vue";
 import { formatCurrency, formatDate } from '../../utils/index'
 import DeleteIcon from "../../assets/DeleteIcon.vue"
 import EditIcon from "../../assets/EditIcon.vue"
-import { IRevenueItem } from "../../interfaces";
-import { deleteRevenue, revenueItems } from "../../services";
+import { revenueItems } from "../../services";
+import { Revenue } from "./Revenue";
 
-const emit = defineEmits(['editRevenue'])
+const emit = defineEmits(['onEditRevenue', 'onDeleteRevenue'])
 
-let revenueList = computed<Array<IRevenueItem>>(() => revenueItems )
+let revenueList = computed<Array<Revenue>>(() => revenueItems )
 
 const onEditRevenue = (index: number) => {
-  emit('editRevenue', revenueList.value[index])
+  emit('onEditRevenue', revenueList.value[index])
 }
 
 const onDeleteRevenue = (index: number) => {
-  deleteRevenue(revenueList.value[index])
+  emit('onDeleteRevenue', revenueList.value[index])
 }
 </script>
