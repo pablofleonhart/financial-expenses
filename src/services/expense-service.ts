@@ -9,6 +9,7 @@ import {
   useUpdateExpenseMutation
 } from '../graphql/generated';
 import { loadCategories } from './category-service';
+import { copyObjectWithoutID } from '../utils';
 
 const initialize = () => {
   provideApolloClient(apolloClient)
@@ -97,7 +98,7 @@ export const editExpense = async(expense: Expense) => {
     // update expense on local storage
     const oldExpense = getExpenseByID(expense.id);
     if(oldExpense) {
-      Object.assign(expenseItems[expenseItems.indexOf(oldExpense)], expense)
+      copyObjectWithoutID(expenseItems[expenseItems.indexOf(oldExpense)], expense);
       updateLocalStorage()
     }
     publishExpense(expense.id)
