@@ -1,0 +1,7 @@
+mutation publishAccount($id: ID!) {
+  publishAccount(where: { id: $id}, to: PUBLISHED) {
+    name
+    email
+    password
+  }
+}

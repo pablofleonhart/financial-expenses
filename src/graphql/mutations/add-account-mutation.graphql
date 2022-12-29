@@ -1,0 +1,13 @@
+mutation addAccount(
+  $email: String!,
+  $password: String!)
+{
+  createAccount(
+    data: {
+      email: $email
+      password: $password
+    }
+  ) {
+    id
+  }
+}
