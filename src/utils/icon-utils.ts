@@ -10,6 +10,7 @@ import PharmacyIcon from '../assets/PharmacyIcon.vue'
 import PhoneIcon from '../assets/PhoneIcon.vue'
 import RecreationIcon from '../assets/RecreationIcon.vue'
 import TransportIcon from "../assets/TransportIcon.vue"
+import VapeIcon from "../assets/VapeIcon.vue"
 
 const categoryTypes: Record<string, any> = {
   'clothes': ClothesIcon,
@@ -22,6 +23,7 @@ const categoryTypes: Record<string, any> = {
   'phone': PhoneIcon,
   'recreation': RecreationIcon,
   'transport': TransportIcon,
+  'vape': VapeIcon
 }
 
 export const getCategoryIcon = (categoryType: string) => {
