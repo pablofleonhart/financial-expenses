@@ -3,11 +3,13 @@ export class Category {
   public name: string;
   public type: string;
 
-  constructor(objCategory: Category = {
-    id: '',
-    name: '',
-    type: ''
-  }){
+  constructor(
+    objCategory: Category = {
+      id: '',
+      name: '',
+      type: '',
+    }
+  ) {
     this.id = objCategory.id;
     this.name = objCategory.name;
     this.type = objCategory.type;

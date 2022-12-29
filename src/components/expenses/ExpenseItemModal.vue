@@ -1,14 +1,17 @@
 <template>
-  <div 
+  <div
     v-show="opened"
-    class="expense-item-modal absolute flex justify-center 
-    items-center h-full w-full bg-black bg-opacity-30"
+    class="expense-item-modal absolute flex justify-center items-center h-full w-full bg-black bg-opacity-30"
   >
-    <div class="expense-item-container flex flex-col bg-secondary-color h-92 w-1/2 p-4 rounded-lg">
+    <div
+      class="expense-item-container flex flex-col bg-secondary-color h-92 w-1/2 p-4 rounded-lg"
+    >
       <span class="flex justify-center font-bold text-lg w-full">
         Adicionar/Editar gasto
       </span>
-      <div class="expense-fields grid grid-rows-[60px_60px] grid-cols-2 gap-4 items-center">
+      <div
+        class="expense-fields grid grid-rows-[60px_60px] grid-cols-2 gap-4 items-center"
+      >
         <input
           v-model="expense.amount"
           class="outline-0 rounded p-2 border border-secondary-color-dark h-10"
@@ -17,9 +20,11 @@
           required
           placeholder="Valor a receber/pagar"
         />
-        <Datepicker
+        <datepicker
           :model-value="expense.date"
-          locale="pt" select-text="Selecionar" text-input
+          locale="pt"
+          select-text="Selecionar"
+          text-input
           format="dd/MM/yyyy HH:mm"
           placeholder="Data da renda ou despesa"
           @update:model-value="setDate"
@@ -30,15 +35,16 @@
             :class="{ open: categorySelectorOpen }"
             @click="categorySelectorOpen = !categorySelectorOpen"
           >
-            <component 
+            <component
               :is="getCategoryIcon(selectedCategory?.type)"
               class="h-6 w-6"
             />
             <span class="selected-option-name ml-2">
-              {{ selectedCategory?.name || ''}}
+              {{ selectedCategory?.name || '' }}
             </span>
           </div>
-          <ul class="period-items absolute bg-white border border-secondary-color-dark w-52"
+          <ul
+            class="period-items absolute bg-white border border-secondary-color-dark w-52"
             :class="{ hidden: !categorySelectorOpen }"
           >
             <li
@@ -48,10 +54,7 @@
               :key="category.id"
               @click="selectCategory(category)"
             >
-              <component 
-                :is="getCategoryIcon(category.type)"
-                class="h-6 w-6"
-              />
+              <component :is="getCategoryIcon(category.type)" class="h-6 w-6" />
               <span class="item-name ml-2">
                 {{ category.name }}
               </span>
@@ -60,10 +63,7 @@
         </div>
         <div class="flex justify-center items-center text-lg">
           <input class="mr-2" type="checkbox" v-model="expense.card" />
-          <component 
-            :is="getPaymentIcon(true)"
-            class="h-6 w-6"
-          />
+          <component :is="getPaymentIcon(true)" class="h-6 w-6" />
           <label>Cartão</label>
         </div>
         <textarea
@@ -74,19 +74,19 @@
       </div>
       <div class="expense-item-actions flex justify-end mt-6">
         <button
-          class="expense-item-confirm max-w-fit h-8 px-2 bg-primary-color-dark text-white border-2 
-          border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
-          @click="onActionItem">
+          class="expense-item-confirm max-w-fit h-8 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
+          @click="onActionItem"
+        >
           {{ expense.id === '' ? 'Adicionar' : 'Editar' }}
         </button>
         <button
-          class="expense-item-cancel ml-4 max-w-fit h-8 px-2 bg-primary-color
-          border-2 border-primary-color-dark hover:bg-secondary-color rounded"
-          @click="emit('close')">
+          class="expense-item-cancel ml-4 max-w-fit h-8 px-2 bg-primary-color border-2 border-primary-color-dark hover:bg-secondary-color rounded"
+          @click="emit('close')"
+        >
           Cancelar
         </button>
       </div>
-    </div>    
+    </div>
   </div>
 </template>
 
@@ -95,54 +95,56 @@ import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/pr
 import { computed, PropType, reactive, ref, shallowRef, watch } from 'vue';
 import { Expense } from './Expense';
 import { Category } from '../categories/Category';
-import { getCategoryIcon, getPaymentIcon } from '../../utils/index'
+import { getCategoryIcon, getPaymentIcon } from '../../utils/index';
 import { addExpense, categoryItems, editExpense } from '../../services';
 
-let expense = reactive(new Expense())
-let categories = computed<Array<Category>>(() => categoryItems )
+let expense = reactive(new Expense());
+const categories = computed<Array<Category>>(() => categoryItems);
 
-const selectedCategory = shallowRef(null)
-const categorySelectorOpen = ref(false)
+const selectedCategory = shallowRef(null);
+const categorySelectorOpen = ref(false);
 
-const emit = defineEmits(['addExpense', 'close'])
+const emit = defineEmits(['addExpense', 'close']);
 
 const props = defineProps({
   opened: { type: Boolean, default: false },
   expense: { type: Object as PropType<Expense>, required: true },
-})
+});
 
-watch(() => props.opened, () => {
-  if(props.opened) {
-    expense = props.expense
-    selectedCategory.value = props.expense.category
+watch(
+  () => props.opened,
+  () => {
+    if (props.opened) {
+      expense = props.expense;
+      selectedCategory.value = props.expense.category;
+    }
   }
-})
+);
 
 const selectCategory = (option: any) => {
-  selectedCategory.value = option
-  expense.category = option
-  categorySelectorOpen.value = false
-}
+  selectedCategory.value = option;
+  expense.category = option;
+  categorySelectorOpen.value = false;
+};
 
 const setDate = (value: Date) => {
   expense.date = value;
-}
+};
 
-const onActionItem = async() => {
-  if(expense.id === '') {
-    await addExpense(expense)
+const onActionItem = async () => {
+  if (expense.id === '') {
+    await addExpense(expense);
+  } else {
+    await editExpense(expense);
   }
-  else {
-    await editExpense(expense)
-  }
-  emit('close')
-}
+  emit('close');
+};
 
 const closeSelector = () => {
-  categorySelectorOpen.value = false
-}
+  categorySelectorOpen.value = false;
+};
 
-window.addEventListener('click', closeSelector)
+window.addEventListener('click', closeSelector);
 </script>
 
 <style lang="scss" scoped>

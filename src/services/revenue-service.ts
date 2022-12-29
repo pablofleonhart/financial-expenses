@@ -1,154 +1,151 @@
 import { provideApolloClient } from '@vue/apollo-composable';
 import { apolloClient } from '../lib/apollo';
-import { 
+import {
   useAddRevenueMutation,
   useGetRevenuesQuery,
   usePublishRevenueMutation,
-  useUpdateRevenueMutation
+  useUpdateRevenueMutation,
 } from '../graphql/generated';
 import { computed, reactive } from 'vue';
 import { Revenue } from '../components/revenues/Revenue';
 import { copyObjectWithoutID } from '../utils';
 
 const initialize = () => {
-  provideApolloClient(apolloClient)
-}
+  provideApolloClient(apolloClient);
+};
 
-export let revenueItems: Array<Revenue> = reactive(new Array())
+export const revenueItems: Array<Revenue> = reactive([]);
 
 export const incomeAmount = computed<number>(() => {
   let result = 0;
   revenueItems.forEach((item) => {
-    if(item.type === 'income') {
-      result += item.amount
+    if (item.type === 'income') {
+      result += item.amount;
     }
-  })
+  });
   return result;
-})
+});
 
 export const outcomeAmount = computed<number>(() => {
   let result = 0;
   revenueItems.forEach((item) => {
-    if(item.type === 'outcome') {
-      result += item.amount
+    if (item.type === 'outcome') {
+      result += item.amount;
     }
-  })
+  });
   return result;
-})
+});
 
 const updateLocalStorage = () => {
-  localStorage.setItem('revenueItems', JSON.stringify(revenueItems))
-}
+  localStorage.setItem('revenueItems', JSON.stringify(revenueItems));
+};
 
 const getRevenueByID = (id: string): Revenue | null => {
-  if(!id){
-    return null
+  if (!id) {
+    return null;
   }
-  return revenueItems.filter((item) => item.id === id)[0]
-}
+  return revenueItems.filter((item) => item.id === id)[0];
+};
 
 const publishRevenue = (id: string | undefined): void => {
-  if(!id) {
-    throw new Error('Revenue ID invalid')
+  if (!id) {
+    throw new Error('Revenue ID invalid');
   }
   const { mutate: publishRevenue } = usePublishRevenueMutation({});
   publishRevenue({ id });
-}
+};
 
 export const loadRevenues = () => {
-  const localItems = localStorage.getItem('revenueItems')
-  if(localItems){
-    Object.assign(revenueItems, JSON.parse(localItems))
+  const localItems = localStorage.getItem('revenueItems');
+  if (localItems) {
+    Object.assign(revenueItems, JSON.parse(localItems));
   } else {
-      const { onResult } = useGetRevenuesQuery()
-      // TODO catch errors
-      return onResult((result) => {
-        const items = result.data.revenues;
-        const itemsNoDeleted = items.filter((item) => item.deleted === false);
-        Object.assign(revenueItems, itemsNoDeleted);
-        updateLocalStorage()
-      })
+    const { onResult } = useGetRevenuesQuery();
+    // TODO catch errors
+    return onResult((result) => {
+      const items = result.data.revenues;
+      const itemsNoDeleted = items.filter((item) => item.deleted === false);
+      Object.assign(revenueItems, itemsNoDeleted);
+      updateLocalStorage();
+    });
   }
-}
+};
 
-export const addRevenue = async(revenue: Revenue) => {
+export const addRevenue = async (revenue: Revenue) => {
   const { mutate: createRevenue, onDone } = useAddRevenueMutation({});
-  createRevenue(
-      {
-          amount: revenue.amount,
-          date: revenue.date,
-          description: revenue.description,
-          type: revenue.type,
-          bank: revenue.bank
-      }
-  )
+  createRevenue({
+    amount: revenue.amount,
+    date: revenue.date,
+    description: revenue.description,
+    type: revenue.type,
+    bank: revenue.bank,
+  });
 
   return onDone((result) => {
-    const revenueID = result.data?.createRevenue?.id
-    revenue.id = revenueID || ''
-    revenueItems.push(revenue)
-    updateLocalStorage()
-    publishRevenue(revenueID)
-  })
-}
+    const revenueID = result.data?.createRevenue?.id;
+    revenue.id = revenueID || '';
+    revenueItems.push(revenue);
+    updateLocalStorage();
+    publishRevenue(revenueID);
+  });
+};
 
-export const editRevenue = async(revenue: Revenue) => {
-  if(!revenue){
-    throw new Error('Revenue does not exist')
+export const editRevenue = async (revenue: Revenue) => {
+  if (!revenue) {
+    throw new Error('Revenue does not exist');
   }
 
   // update on graph cms
   const { mutate: updateRevenue, onDone } = useUpdateRevenueMutation({});
-  updateRevenue(
-      {
-        id: revenue.id,
-        bank: revenue.bank,
-        amount: revenue.amount,
-        date: revenue.date,
-        deleted: revenue.deleted,
-        description: revenue.description,
-        type: revenue.type
-      }
-  )
+  updateRevenue({
+    id: revenue.id,
+    bank: revenue.bank,
+    amount: revenue.amount,
+    date: revenue.date,
+    deleted: revenue.deleted,
+    description: revenue.description,
+    type: revenue.type,
+  });
 
   return onDone(() => {
     // update revenue on local storage
     const oldRevenue = getRevenueByID(revenue.id);
-    if(oldRevenue) {
-      copyObjectWithoutID(revenueItems[revenueItems.indexOf(oldRevenue)], revenue)
-      updateLocalStorage()
+    if (oldRevenue) {
+      copyObjectWithoutID(
+        revenueItems[revenueItems.indexOf(oldRevenue)],
+        revenue
+      );
+      updateLocalStorage();
     }
-    publishRevenue(revenue.id)
-  })
-}
+    publishRevenue(revenue.id);
+  });
+};
 
 export const deleteRevenue = (revenue: Revenue) => {
-  if(!revenue){
-    throw new Error('Revenue does not exist')
+  if (!revenue) {
+    throw new Error('Revenue does not exist');
   }
 
   // update on graph cms
-  revenue.deleted = true
-  
+  revenue.deleted = true;
+
   const { mutate: updateRevenue, onDone } = useUpdateRevenueMutation({});
-  updateRevenue(
-      {
-        id: revenue.id,
-        bank: revenue.bank,
-        amount: revenue.amount,
-        date: revenue.date,
-        deleted: revenue.deleted,
-        description: revenue.description,
-        type: revenue.type
-      }
-  )
+  updateRevenue({
+    id: revenue.id,
+    bank: revenue.bank,
+    amount: revenue.amount,
+    date: revenue.date,
+    deleted: revenue.deleted,
+    description: revenue.description,
+    type: revenue.type,
+  });
 
   return onDone(() => {
     // remove from local storage
-    revenueItems.splice(revenueItems.indexOf(revenue), 1)
-    updateLocalStorage()
-    publishRevenue(revenue.id)
-  })
-}
+    revenueItems.splice(revenueItems.indexOf(revenue), 1);
+    updateLocalStorage();
+    publishRevenue(revenue.id);
+  });
+};
 
-initialize()
+initialize();

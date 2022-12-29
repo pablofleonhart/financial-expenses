@@ -7,15 +7,17 @@ export class Revenue {
   public description: string;
   public type: string;
 
-  constructor(objRevenue: Revenue = {
-    id: '',
-    amount: 0,
-    bank: '',
-    date: new Date(),
-    deleted: false,
-    description: '',
-    type: 'income'
-  }){
+  constructor(
+    objRevenue: Revenue = {
+      id: '',
+      amount: 0,
+      bank: '',
+      date: new Date(),
+      deleted: false,
+      description: '',
+      type: 'income',
+    }
+  ) {
     this.id = objRevenue.id;
     this.amount = objRevenue.amount;
     this.bank = objRevenue.bank;

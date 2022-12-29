@@ -11,5 +11,8 @@ query GetExpenses {
     date
     deleted
     note
+    account {
+      name
+    }
   }
 }

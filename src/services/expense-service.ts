@@ -6,132 +6,129 @@ import {
   useAddExpenseMutation,
   useGetExpensesQuery,
   usePublishExpenseMutation,
-  useUpdateExpenseMutation
+  useUpdateExpenseMutation,
 } from '../graphql/generated';
 import { loadCategories } from './category-service';
 import { copyObjectWithoutID } from '../utils';
 
 const initialize = () => {
-  provideApolloClient(apolloClient)
-}
+  provideApolloClient(apolloClient);
+};
 
-export let expenseItems: Array<Expense> = reactive(new Array())
+export const expenseItems: Array<Expense> = reactive([]);
 
 const updateLocalStorage = () => {
-  localStorage.setItem('expenseItems', JSON.stringify(expenseItems))
-}
+  localStorage.setItem('expenseItems', JSON.stringify(expenseItems));
+};
 
 const getExpenseByID = (id: string): Expense | null => {
-  if(!id){
-    return null
+  if (!id) {
+    return null;
   }
-  return expenseItems.filter((item) => item.id === id)[0]
-}
+  return expenseItems.filter((item) => item.id === id)[0];
+};
 
 const publishExpense = (id: string | undefined): void => {
-  if(!id) {
-    throw new Error('Expense ID invalid')
+  if (!id) {
+    throw new Error('Expense ID invalid');
   }
   const { mutate: publishExpense } = usePublishExpenseMutation({});
   publishExpense({ id });
-}
+};
 
 export const loadExpenses = () => {
-  const localItems = localStorage.getItem('expenseItems')
-  if(localItems){
-    Object.assign(expenseItems, JSON.parse(localItems))
+  const localItems = localStorage.getItem('expenseItems');
+  if (localItems) {
+    Object.assign(expenseItems, JSON.parse(localItems));
   } else {
-    const { onResult } = useGetExpensesQuery()
+    const { onResult } = useGetExpensesQuery();
     // TODO catch errors
     onResult((result) => {
       const items = result.data.expenses;
       const itemsNoDeleted = items.filter((item) => item.deleted === false);
       Object.assign(expenseItems, itemsNoDeleted);
-      updateLocalStorage()
-    })
+      updateLocalStorage();
+    });
   }
-  loadCategories()
-}
+  loadCategories();
+};
 
-export const addExpense = async(expense: Expense) => {
+export const addExpense = async (expense: Expense) => {
   const { mutate: createExpense, onDone } = useAddExpenseMutation({});
-  createExpense(
-      {
-          amount: expense.amount,
-          card: expense.card,
-          date: expense.date,
-          deleted: expense.deleted,
-          note: expense.note,
-          categoryID: expense.category.id,
-      }
-  )
+  createExpense({
+    amount: expense.amount,
+    card: expense.card,
+    date: expense.date,
+    deleted: expense.deleted,
+    note: expense.note,
+    categoryID: expense.category.id,
+  });
 
   return onDone((result) => {
-    const expenseID = result.data?.createExpense?.id
-    expense.id = expenseID || ''
-    expenseItems.push(new Expense(expense))
-    updateLocalStorage()
-    publishExpense(expenseID)
-  })
-}
+    const expenseID = result.data?.createExpense?.id;
+    expense.id = expenseID || '';
+    expenseItems.push(new Expense(expense));
+    updateLocalStorage();
+    publishExpense(expenseID);
+  });
+};
 
-export const editExpense = async(expense: Expense) => {
-  if(!expense){
-    throw new Error('Expense does not exist')
+export const editExpense = async (expense: Expense) => {
+  if (!expense) {
+    throw new Error('Expense does not exist');
   }
 
   // update on graph cms
   const { mutate: updateExpense, onDone } = useUpdateExpenseMutation({});
-  updateExpense(
-      {
-        id: expense.id,
-        amount: expense.amount,
-        card: expense.card,
-        date: expense.date,
-        deleted: expense.deleted,
-        note: expense.note,
-        categoryID: expense.category.id
-      }
-  )
+  updateExpense({
+    id: expense.id,
+    amount: expense.amount,
+    card: expense.card,
+    date: expense.date,
+    deleted: expense.deleted,
+    note: expense.note,
+    categoryID: expense.category.id,
+  });
 
   return onDone(() => {
     // update expense on local storage
     const oldExpense = getExpenseByID(expense.id);
-    if(oldExpense) {
-      copyObjectWithoutID(expenseItems[expenseItems.indexOf(oldExpense)], expense);
-      updateLocalStorage()
+    if (oldExpense) {
+      copyObjectWithoutID(
+        expenseItems[expenseItems.indexOf(oldExpense)],
+        expense
+      );
+      updateLocalStorage();
     }
-    publishExpense(expense.id)
-  })
-}
+    publishExpense(expense.id);
+  });
+};
 
 export const deleteExpense = (expense: Expense) => {
-  if(!expense){
-    throw new Error('Expense does not exist')
+  if (!expense) {
+    throw new Error('Expense does not exist');
   }
 
   // update on graph cms
-  expense.deleted = true
-  
+  expense.deleted = true;
+
   const { mutate: updateExpense, onDone } = useUpdateExpenseMutation({});
-  updateExpense(
-      {
-        id: expense.id,
-        amount: expense.amount,
-        card: expense.card,
-        date: expense.date,
-        deleted: expense.deleted,
-        note: expense.note,
-        categoryID: expense.category.id
-      }
-  )
+  updateExpense({
+    id: expense.id,
+    amount: expense.amount,
+    card: expense.card,
+    date: expense.date,
+    deleted: expense.deleted,
+    note: expense.note,
+    categoryID: expense.category.id,
+  });
 
   return onDone(() => {
     // remove from local storage
-    expenseItems.splice(expenseItems.indexOf(expense), 1)
-    updateLocalStorage()
-    publishExpense(expense.id)
-  })
-}
+    expenseItems.splice(expenseItems.indexOf(expense), 1);
+    updateLocalStorage();
+    publishExpense(expense.id);
+  });
+};
 
-initialize()
+initialize();

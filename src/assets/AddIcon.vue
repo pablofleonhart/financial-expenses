@@ -1,9 +1,44 @@
 <template>
-  <svg class="add-icon" xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="#FFF" viewBox="0 0 256 256">
-    <rect width="256" height="256" fill="none"></rect>
-    <circle cx="128" cy="128" r="96" fill="none" stroke="#FFF" stroke-miterlimit="10" stroke-width="16"></circle>
-    <line x1="88" y1="128" x2="168" y2="128" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line>
-    <line x1="128" y1="88" x2="128" y2="168" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line>
+  <svg
+    class="add-icon"
+    xmlns="http://www.w3.org/2000/svg"
+    width="192"
+    height="192"
+    fill="#FFF"
+    viewBox="0 0 256 256"
+  >
+    <rect width="256" height="256" fill="none" />
+    <circle
+      cx="128"
+      cy="128"
+      r="96"
+      fill="none"
+      stroke="#FFF"
+      stroke-miterlimit="10"
+      stroke-width="16"
+    />
+    <line
+      x1="88"
+      y1="128"
+      x2="168"
+      y2="128"
+      fill="none"
+      stroke="#FFF"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="16"
+    />
+    <line
+      x1="128"
+      y1="88"
+      x2="128"
+      y2="168"
+      fill="none"
+      stroke="#FFF"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="16"
+    />
   </svg>
 </template>
 

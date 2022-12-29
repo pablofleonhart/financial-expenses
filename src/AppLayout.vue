@@ -1,13 +1,24 @@
 <template>
-    <div class="grid grid-cols-[156px_1fr] font-sans bg-secondary-color">
-        <app-sidebar />
-        <router-view />
-    </div>
+  <component :is="layout" />
 </template>
 
 <script lang="ts" setup>
-import AppSidebar from './AppSidebar.vue';
-</script>
+import { shallowRef, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import AppLayoutLogin from './AppLayoutLogin.vue';
+import AppLayoutMain from './AppLayoutMain.vue';
 
-<style lang="scss" scoped>
-</style>
+const route = useRoute();
+const layout: any = shallowRef(null);
+
+watch(
+  () => route.meta,
+  () => {
+    if (route.name === 'login') {
+      layout.value = AppLayoutLogin;
+    } else {
+      layout.value = AppLayoutMain;
+    }
+  }
+);
+</script>
