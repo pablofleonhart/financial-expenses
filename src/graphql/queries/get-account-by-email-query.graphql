@@ -1,8 +1,11 @@
 query GetAccountByEmail($email: String!) {
-  accounts( where: { email: $email } ) {
+  account( where: { email: $email } ) {
     id
     email
     name
     password
+    avatar {
+      url
+    }
   }
 }

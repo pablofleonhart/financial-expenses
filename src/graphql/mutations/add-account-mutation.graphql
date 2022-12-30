@@ -1,9 +1,11 @@
 mutation addAccount(
+  $name: String!,
   $email: String!,
   $password: String!)
 {
   createAccount(
     data: {
+      name: $name
       email: $email
       password: $password
     }

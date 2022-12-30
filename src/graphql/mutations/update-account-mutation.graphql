@@ -1,0 +1,16 @@
+mutation updateAccount(
+  $id: ID!,
+  $name: String!,
+  $email: String!,
+  $password: String!)
+{
+  updateAccount(
+    data: { name: $name, email: $email, password: $password }
+    where: { id: $id }
+  ){
+    id
+    name
+    email
+    password
+  }
+}

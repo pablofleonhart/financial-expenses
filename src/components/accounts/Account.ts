@@ -1,6 +1,6 @@
 export class Account {
-  public id: string | null | undefined;
-  public name?: string | null | undefined;
+  public id: string;
+  public name: string;
   public email: string;
   public password: string;
 
@@ -9,7 +9,7 @@ export class Account {
       id: '',
       name: '',
       email: '',
-      password: ''
+      password: '',
     }
   ) {
     this.id = objAccount.id;
