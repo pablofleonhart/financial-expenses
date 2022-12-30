@@ -9,9 +9,9 @@ import { Account } from '../components/accounts/Account';
 import router from '../router';
 import { DEFAULT_ROUTE, EXPIRATION_TIME } from '../components/common/config';
 
-export const errorMessage = ref('');
-let account: Account = reactive(new Account());
 let sessionStart = 0;
+export const errorMessage = ref('');
+export let account: Account = reactive(new Account());
 
 const initializeData = () => {
   const userAccount = localStorage.getItem('userAccount');
