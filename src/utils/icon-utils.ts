@@ -1,3 +1,5 @@
+import CaretDownIcon from '../assets/CaretDownIcon.vue';
+import CaretUpIcon from '../assets/CaretUpIcon.vue';
 import ClothesIcon from '../assets/ClothesIcon.vue';
 import CreditCardIcon from '../assets/CreditCardIcon.vue';
 import ElectronicIcon from '../assets/ElectronicIcon.vue';
@@ -32,4 +34,8 @@ export const getCategoryIcon = (categoryType: string) => {
 
 export const getPaymentIcon = (card: boolean) => {
   return card ? CreditCardIcon : MoneyIcon;
+};
+
+export const getOrderIcon = (ascending: boolean) => {
+  return ascending ? CaretUpIcon : CaretDownIcon;
 };

@@ -95,7 +95,7 @@ import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/pr
 import { computed, PropType, reactive, ref, shallowRef, watch } from 'vue';
 import { Expense } from './Expense';
 import { Category } from '../categories/Category';
-import { getCategoryIcon, getPaymentIcon } from '../../utils/index';
+import { getCategoryIcon, getPaymentIcon } from '../../utils';
 import { addExpense, categoryItems, editExpense } from '../../services';
 
 let expense = reactive(new Expense());

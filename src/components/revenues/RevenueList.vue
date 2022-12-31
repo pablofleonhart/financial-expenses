@@ -3,12 +3,21 @@
     <table class="table-auto w-full overflow-hidden">
       <thead class="revenue-list-head flex w-full">
         <tr class="flex w-full h-12 bg-secondary-color-dark">
-          <th class="flex items-center p-2 h-full w-1/5 justify-end">Valor</th>
-          <th class="flex items-center p-2 h-full w-1/5">Descrição</th>
-          <th class="flex items-center p-2 h-full w-1/5">Data</th>
-          <th class="flex items-center p-2 h-full w-1/5">Banco</th>
-          <th class="flex items-center p-2 h-full w-1/5 justify-center">
-            Ações
+          <th
+            v-for="column in revenueColumns"
+            :key="column.key"
+            class="flex items-center p-2 h-full w-1/5 cursor-pointer hover:bg-primary-color"
+            :class="column.class"
+            @click="orderList(column)"
+          >
+            <component
+              v-if="!column.static && orderColumn === column.key"
+              :is="getOrderIcon(orderDirection)"
+              class="h-4 w-4 mr-1"
+            />
+            <span>
+              {{ column.name }}
+            </span>
           </th>
         </tr>
       </thead>
@@ -50,15 +59,58 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { formatCurrency, formatDate } from '../../utils/index';
+import { formatCurrency, formatDate, getOrderIcon } from '../../utils';
 import DeleteIcon from '../../assets/DeleteIcon.vue';
 import EditIcon from '../../assets/EditIcon.vue';
-import { revenueItems } from '../../services';
+import { revenueItems, revenueSettings, sortRevenues } from '../../services';
 import { Revenue } from './Revenue';
+
+const revenueColumns = [
+  {
+    key: 'amount',
+    name: 'Valor',
+    class: 'justify-end',
+  },
+  {
+    key: 'description',
+    name: 'Descrição',
+    class: '',
+  },
+  {
+    key: 'date',
+    name: 'Data',
+    class: '',
+  },
+  {
+    key: 'bank',
+    name: 'Banco',
+    class: '',
+  },
+  {
+    key: 'actions',
+    name: 'Ações',
+    class: 'justify-center cursor-default',
+    static: true,
+  },
+];
 
 const emit = defineEmits(['onEditRevenue', 'onDeleteRevenue']);
 
 const revenueList = computed<Array<Revenue>>(() => revenueItems);
+const orderColumn = computed(() => {
+  return revenueSettings.column;
+});
+
+const orderDirection = computed(() => {
+  return revenueSettings.ascending;
+});
+
+const orderList = (column: any) => {
+  if (column.static) {
+    return;
+  }
+  sortRevenues(column.key);
+};
 
 const onEditRevenue = (index: number) => {
   emit('onEditRevenue', revenueList.value[index]);

@@ -6,9 +6,22 @@ import {
 } from '../graphql/generated';
 import { computed, reactive } from 'vue';
 import { Revenue } from '../components/revenues/Revenue';
-import { copyRevenue } from '../utils';
+import { copyRevenue, sortList } from '../utils';
 
 export const revenueItems: Array<Revenue> = reactive([]);
+export const revenueSettings: Record<string, any> = reactive({});
+
+const REVENUE_LIST_KEY = 'revenue-list';
+
+const initializeData = () => {
+  const localSettings = localStorage.getItem(REVENUE_LIST_KEY);
+
+  if (localSettings) {
+    Object.assign(revenueSettings, JSON.parse(localSettings));
+  } else {
+    Object.assign(revenueSettings, { ascending: false, column: 'date' });
+  }
+};
 
 export const incomeAmount = computed<number>(() => {
   let result = 0;
@@ -63,6 +76,7 @@ export const loadRevenues = () => {
       updateLocalStorage();
     });
   }
+  sortList(revenueItems, revenueSettings.column, revenueSettings.ascending);
 };
 
 export const addRevenue = async (revenue: Revenue) => {
@@ -143,3 +157,16 @@ export const syncRevenues = () => {
   localStorage.removeItem('revenueItems');
   loadRevenues();
 };
+
+export const sortRevenues = (column: string) => {
+  if (revenueSettings.column === column) {
+    revenueSettings.ascending = !revenueSettings.ascending;
+  } else {
+    revenueSettings.column = column;
+  }
+
+  sortList(revenueItems, revenueSettings.column, revenueSettings.ascending);
+  localStorage.setItem(REVENUE_LIST_KEY, JSON.stringify(revenueSettings));
+};
+
+initializeData();

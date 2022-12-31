@@ -12,7 +12,7 @@
           >
             <component
               v-if="!column.static && orderColumn === column.key"
-              :is="getOrderIcon"
+              :is="getOrderIcon(orderDirection)"
               class="h-4 w-4 mr-1"
             />
             <span>
@@ -78,10 +78,9 @@ import {
   formatCurrency,
   formatDate,
   getCategoryIcon,
+  getOrderIcon,
   getPaymentIcon,
-} from '../../utils/index';
-import CaretDownIcon from '../../assets/CaretDownIcon.vue';
-import CaretUpIcon from '../../assets/CaretUpIcon.vue';
+} from '../../utils';
 import DeleteIcon from '../../assets/DeleteIcon.vue';
 import EditIcon from '../../assets/EditIcon.vue';
 import { expenseItems, expenseSettings, sortExpenses } from '../../services';
@@ -105,7 +104,7 @@ const expenseColumns = [
   },
   {
     key: 'card',
-    name: 'Metodo',
+    name: 'Método',
     class: 'min-w-16 justify-center',
   },
   {
@@ -128,8 +127,8 @@ const orderColumn = computed(() => {
   return expenseSettings.column;
 });
 
-const getOrderIcon = computed(() => {
-  return expenseSettings.ascending ? CaretUpIcon : CaretDownIcon;
+const orderDirection = computed(() => {
+  return expenseSettings.ascending;
 });
 
 const orderList = (column: any) => {
