@@ -113,4 +113,9 @@ export const changePassword = (account: Account, newPassword: string) => {
   });
 };
 
+export const logout = async () => {
+  sessionStart = 0;
+  await router.push('/login');
+};
+
 initializeData();

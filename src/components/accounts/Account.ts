@@ -13,7 +13,7 @@ export class Account {
       name: '',
       email: '',
       password: '',
-      avatar: new Avatar()
+      avatar: new Avatar(),
     }
   ) {
     this.id = objAccount.id;

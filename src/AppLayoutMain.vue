@@ -1,6 +1,8 @@
 <template>
-  <div class="grid grid-cols-[156px_1fr] grid-rows-[60px_1fr] font-sans bg-secondary-color">
-    <app-sidebar class="row-span-2"/>
+  <div
+    class="grid grid-cols-[156px_1fr] grid-rows-[60px_1fr] font-sans bg-secondary-color"
+  >
+    <app-sidebar class="row-span-2" />
     <app-header />
     <router-view />
   </div>

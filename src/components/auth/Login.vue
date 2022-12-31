@@ -15,6 +15,7 @@
       <div class="flex flex-col w-3/4">
         <span class="mb-2 text-sm"> Email </span>
         <input
+          id="email-input"
           class="border border-secondary-color-dark p-2 h-10 w-full outline-0 rounded"
           type="email"
           placeholder="Enter your email"
@@ -24,6 +25,7 @@
       <div class="flex flex-col mt-6 w-3/4">
         <span class="mb-2 text-sm"> Password </span>
         <input
+          id="password-input"
           class="border border-secondary-color-dark p-2 h-10 w-full outline-0 rounded"
           type="password"
           placeholder="Enter your password"
@@ -42,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ArrowRight from '../../assets/ArrowRight.vue';
 import { authorizeUser, errorMessage } from '../../services';
 
@@ -51,7 +53,26 @@ const password = ref('');
 
 const loginError = computed(() => errorMessage);
 
-const onLogin = async () => {
+const registerEnterEvent = (input: HTMLElement | null) => {
+  if (!input) {
+    return;
+  }
+  input.addEventListener('keypress', (event: any) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      onLogin();
+    }
+  });
+};
+
+onMounted(() => {
+  const emailInput = document.getElementById('email-input');
+  const passwordInput = document.getElementById('password-input');
+  registerEnterEvent(emailInput);
+  registerEnterEvent(passwordInput);
+});
+
+const onLogin = () => {
   authorizeUser(email.value, password.value);
 };
 </script>
