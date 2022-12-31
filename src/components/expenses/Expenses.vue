@@ -61,9 +61,9 @@ const onDeleteExpense = (expense: Expense) => {
   expenseToDelete = expense;
 };
 
-const onAcceptDelete = async () => {
+const onAcceptDelete = () => {
   showDeleteConfirmationModal.value = false;
-  await deleteExpense(expenseToDelete);
+  deleteExpense(expenseToDelete);
 };
 </script>
 

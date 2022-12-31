@@ -23,7 +23,7 @@
     <div
       class="incomes p-4 grid grid-cols-[max-content_1fr] grid-rows-2 items-center"
     >
-      <caret-up-icon class="row-span-2 h-8 w-8 mr-2" color="#22C55E" />
+      <caret-double-up-icon class="row-span-2 h-8 w-8 mr-2" color="#22C55E" />
       <span>Receitas</span>
       <div class="incomes-value text-positive-color">
         {{ formatCurrency(incomeAmount) }}
@@ -32,7 +32,7 @@
     <div
       class="outcomes p-4 grid grid-cols-[max-content_1fr] grid-rows-2 items-center"
     >
-      <caret-down-icon class="row-span-2 h-8 w-8 mr-2" color="#EF4444" />
+      <caret-double-down-icon class="row-span-2 h-8 w-8 mr-2" color="#EF4444" />
       <span>Despesas</span>
       <div class="outcomes-value text-negative-color">
         {{ formatCurrency(outcomeAmount) }}
@@ -43,8 +43,8 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import CaretDownIcon from '../../assets/CaretDownIcon.vue';
-import CaretUpIcon from '../../assets/CaretUpIcon.vue';
+import CaretDoubleDownIcon from '../../assets/CaretDoubleDownIcon.vue';
+import CaretDoubleUpIcon from '../../assets/CaretDoubleUpIcon.vue';
 import { formatCurrency } from '../../utils';
 import { incomeAmount, outcomeAmount } from '../../services';
 
@@ -55,10 +55,10 @@ const balanceFormatted = computed(() => {
 const balanceComponent = computed(() => {
   const balance = incomeAmount.value - outcomeAmount.value;
   if (balance > 0) {
-    return CaretUpIcon;
+    return CaretDoubleUpIcon;
   }
   if (balance < 0) {
-    return CaretDownIcon;
+    return CaretDoubleDownIcon;
   }
   return '';
 });

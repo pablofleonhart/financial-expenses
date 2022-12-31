@@ -7,9 +7,22 @@ import {
   useUpdateExpenseMutation,
 } from '../graphql/generated';
 import { loadCategories } from './category-service';
-import { copyExpense } from '../utils';
+import { copyExpense, sortList } from '../utils';
 
 export const expenseItems: Array<Expense> = reactive([]);
+export const expenseSettings: Record<string, any> = reactive({});
+
+const EXPENSE_LIST_KEY = 'expense-list';
+
+const initializeData = () => {
+  const localSettings = localStorage.getItem(EXPENSE_LIST_KEY);
+
+  if (localSettings) {
+    Object.assign(expenseSettings, JSON.parse(localSettings));
+  } else {
+    Object.assign(expenseSettings, { ascending: false, column: 'date' });
+  }
+};
 
 const updateLocalStorage = () => {
   localStorage.setItem('expenseItems', JSON.stringify(expenseItems));
@@ -45,6 +58,7 @@ export const loadExpenses = () => {
     });
   }
   loadCategories();
+  sortList(expenseItems, expenseSettings.column, expenseSettings.ascending);
 };
 
 export const addExpense = async (expense: Expense) => {
@@ -114,7 +128,7 @@ export const deleteExpense = (expense: Expense) => {
     categoryID: expense.category.id,
   });
 
-  return onDone(() => {
+  onDone(() => {
     // remove from local storage
     expenseItems.splice(expenseItems.indexOf(expense), 1);
     updateLocalStorage();
@@ -126,3 +140,16 @@ export const syncExpenses = () => {
   localStorage.removeItem('expenseItems');
   loadExpenses();
 };
+
+export const sortExpenses = (column: string) => {
+  if (expenseSettings.column === column) {
+    expenseSettings.ascending = !expenseSettings.ascending;
+  } else {
+    expenseSettings.column = column;
+  }
+
+  sortList(expenseItems, expenseSettings.column, expenseSettings.ascending);
+  localStorage.setItem(EXPENSE_LIST_KEY, JSON.stringify(expenseSettings));
+};
+
+initializeData();

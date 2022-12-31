@@ -6,28 +6,16 @@
     fill="#000000"
     viewBox="0 0 256 256"
   >
-    <rect width="256" height="256" fill="none" />
+    <rect width="256" height="256" fill="none"></rect>
     <polyline
-      points="48 208 128 128 208 208"
+      points="48 160 128 80 208 160"
       fill="none"
-      :stroke="color"
+      stroke="#000000"
       stroke-linecap="round"
       stroke-linejoin="round"
-      stroke-width="20"
-    />
-    <polyline
-      points="48 128 128 48 208 128"
-      fill="none"
-      :stroke="color"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="20"
-    />
+      stroke-width="36"
+    ></polyline>
   </svg>
 </template>
 
-<script lang="ts" setup>
-defineProps({
-  color: { type: String, default: '#000000' },
-});
-</script>
+<script lang="ts" setup></script>

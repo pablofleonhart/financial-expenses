@@ -3,29 +3,21 @@
     <table class="table-auto w-full overflow-hidden">
       <thead class="expense-list-head flex w-full">
         <tr class="flex w-full h-12 bg-secondary-color-dark">
-          <th class="flex items-center p-2 h-full w-1/6 min-w-24 justify-end">
-            Valor
-          </th>
           <th
-            class="flex items-center p-2 h-full w-1/6 min-w-24 justify-center"
+            v-for="column in expenseColumns"
+            :key="column.key"
+            class="flex items-center p-2 h-full w-1/6 cursor-pointer hover:bg-primary-color"
+            :class="column.class"
+            @click="orderList(column)"
           >
-            Data
-          </th>
-          <th
-            class="flex items-center p-2 h-full w-1/6 min-w-36 justify-center"
-          >
-            Categoria
-          </th>
-          <th
-            class="flex items-center p-2 h-full w-1/6 min-w-16 justify-center"
-          >
-            Cartão
-          </th>
-          <th class="flex items-center p-2 h-full w-1/6 min-w-44">Descrição</th>
-          <th
-            class="flex items-center p-2 h-full w-1/6 min-w-24 justify-center"
-          >
-            Ações
+            <component
+              v-if="!column.static && orderColumn === column.key"
+              :is="getOrderIcon"
+              class="h-4 w-4 mr-1"
+            />
+            <span>
+              {{ column.name }}
+            </span>
           </th>
         </tr>
       </thead>
@@ -88,14 +80,64 @@ import {
   getCategoryIcon,
   getPaymentIcon,
 } from '../../utils/index';
+import CaretDownIcon from '../../assets/CaretDownIcon.vue';
+import CaretUpIcon from '../../assets/CaretUpIcon.vue';
 import DeleteIcon from '../../assets/DeleteIcon.vue';
 import EditIcon from '../../assets/EditIcon.vue';
-import { expenseItems } from '../../services';
+import { expenseItems, expenseSettings, sortExpenses } from '../../services';
 import { Expense } from './Expense';
+
+const expenseColumns = [
+  {
+    key: 'amount',
+    name: 'Valor',
+    class: 'min-w-24 justify-end',
+  },
+  {
+    key: 'date',
+    name: 'Data',
+    class: 'min-w-24 justify-center',
+  },
+  {
+    key: 'category.name',
+    name: 'Categoria',
+    class: 'min-w-36 justify-center',
+  },
+  {
+    key: 'card',
+    name: 'Metodo',
+    class: 'min-w-16 justify-center',
+  },
+  {
+    key: 'note',
+    name: 'Descrição',
+    class: 'min-w-44',
+  },
+  {
+    key: 'actions',
+    name: 'Ações',
+    class: 'min-w-24 justify-center cursor-default',
+    static: true,
+  },
+];
 
 const emit = defineEmits(['onEditExpense', 'onDeleteExpense']);
 
 const expenseList = computed<Array<Expense>>(() => expenseItems);
+const orderColumn = computed(() => {
+  return expenseSettings.column;
+});
+
+const getOrderIcon = computed(() => {
+  return expenseSettings.ascending ? CaretUpIcon : CaretDownIcon;
+});
+
+const orderList = (column: any) => {
+  if (column.static) {
+    return;
+  }
+  sortExpenses(column.key);
+};
 
 const onEditExpense = (index: number) => {
   emit('onEditExpense', expenseList.value[index]);
