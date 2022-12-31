@@ -8,7 +8,7 @@ import {
 } from '../graphql/generated';
 import { computed, reactive } from 'vue';
 import { Revenue } from '../components/revenues/Revenue';
-import { copyObjectWithoutID } from '../utils';
+import { copyRevenue } from '../utils';
 
 const initialize = () => {
   provideApolloClient(apolloClient);
@@ -111,7 +111,7 @@ export const editRevenue = async (revenue: Revenue) => {
     // update revenue on local storage
     const oldRevenue = getRevenueByID(revenue.id);
     if (oldRevenue) {
-      copyObjectWithoutID(
+      copyRevenue(
         revenueItems[revenueItems.indexOf(oldRevenue)],
         revenue
       );
