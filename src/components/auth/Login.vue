@@ -1,7 +1,10 @@
 <template>
-  <div class="grid grid-cols-2 w-screen h-screen">
+  <div class="grid grid-cols-2 min-h-screen min-w-full h-full w-full">
     <div>
-      <img class="h-screen w-screen" src="../../assets/img/banner.jpg" />
+      <img
+        class="min-w-full h-screen w-full"
+        src="../../assets/img/banner.jpg"
+      />
     </div>
     <div
       class="flex flex-col justify-center items-center bg-primary-color w-full"

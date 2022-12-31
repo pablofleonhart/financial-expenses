@@ -1,5 +1,3 @@
-import { provideApolloClient } from '@vue/apollo-composable';
-import { apolloClient } from '../lib/apollo';
 import { reactive } from 'vue';
 import { Expense } from '../components/expenses/Expense';
 import {
@@ -10,10 +8,6 @@ import {
 } from '../graphql/generated';
 import { loadCategories } from './category-service';
 import { copyExpense } from '../utils';
-
-const initialize = () => {
-  provideApolloClient(apolloClient);
-};
 
 export const expenseItems: Array<Expense> = reactive([]);
 
@@ -94,10 +88,7 @@ export const editExpense = async (expense: Expense) => {
     // update expense on local storage
     const oldExpense = getExpenseByID(expense.id);
     if (oldExpense) {
-      copyExpense(
-        expenseItems[expenseItems.indexOf(oldExpense)],
-        expense
-      );
+      copyExpense(expenseItems[expenseItems.indexOf(oldExpense)], expense);
       updateLocalStorage();
     }
     publishExpense(expense.id);
@@ -131,4 +122,7 @@ export const deleteExpense = (expense: Expense) => {
   });
 };
 
-initialize();
+export const syncExpenses = () => {
+  localStorage.removeItem('expenseItems');
+  loadExpenses();
+};

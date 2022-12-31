@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="sidebar-list h-screen pt-12 flex flex-col bg-primary-color border-r border-primary-color-dark"
+    class="sidebar-list min-h-screen h-full pt-12 flex flex-col bg-primary-color border-r border-primary-color-dark"
   >
     <router-link
       v-for="item in sidebarItems"

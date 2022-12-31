@@ -21,3 +21,8 @@ export const loadCategories = () => {
     });
   }
 };
+
+export const syncCategories = () => {
+  localStorage.removeItem('categoryItems');
+  loadCategories();
+};

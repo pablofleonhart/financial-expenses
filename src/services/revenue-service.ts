@@ -1,5 +1,3 @@
-import { provideApolloClient } from '@vue/apollo-composable';
-import { apolloClient } from '../lib/apollo';
 import {
   useAddRevenueMutation,
   useGetRevenuesQuery,
@@ -9,10 +7,6 @@ import {
 import { computed, reactive } from 'vue';
 import { Revenue } from '../components/revenues/Revenue';
 import { copyRevenue } from '../utils';
-
-const initialize = () => {
-  provideApolloClient(apolloClient);
-};
 
 export const revenueItems: Array<Revenue> = reactive([]);
 
@@ -111,10 +105,7 @@ export const editRevenue = async (revenue: Revenue) => {
     // update revenue on local storage
     const oldRevenue = getRevenueByID(revenue.id);
     if (oldRevenue) {
-      copyRevenue(
-        revenueItems[revenueItems.indexOf(oldRevenue)],
-        revenue
-      );
+      copyRevenue(revenueItems[revenueItems.indexOf(oldRevenue)], revenue);
       updateLocalStorage();
     }
     publishRevenue(revenue.id);
@@ -148,4 +139,7 @@ export const deleteRevenue = (revenue: Revenue) => {
   });
 };
 
-initialize();
+export const syncRevenues = () => {
+  localStorage.removeItem('revenueItems');
+  loadRevenues();
+};
