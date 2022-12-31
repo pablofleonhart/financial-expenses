@@ -101,7 +101,7 @@ import { addExpense, categoryItems, editExpense } from '../../services';
 let expense = reactive(new Expense());
 const categories = computed<Array<Category>>(() => categoryItems);
 
-const selectedCategory = shallowRef(null);
+const selectedCategory = shallowRef(new Category());
 const categorySelectorOpen = ref(false);
 
 const emit = defineEmits(['addExpense', 'close']);
