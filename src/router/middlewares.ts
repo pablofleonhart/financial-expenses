@@ -11,6 +11,16 @@ export const isAuthenticated = async ({ to }: any) => {
   }
 };
 
+export const isRootAuthenticated = async () => {
+  const isAuthenticated = userAuthenticated();
+
+  if (isAuthenticated) {
+    return { path: DEFAULT_ROUTE }
+  } else {
+    return { path: '/login' }
+  }
+}
+
 export const isNotAuthenticated = async () => {
   const isAuthenticated = userAuthenticated();
   if (isAuthenticated) {
