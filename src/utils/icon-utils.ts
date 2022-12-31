@@ -1,3 +1,6 @@
+import ArrowHorizontal from '../assets/ArrowHorizontal.vue';
+import CaretDoubleDownIcon from '../assets/CaretDoubleDownIcon.vue';
+import CaretDoubleUpIcon from '../assets/CaretDoubleUpIcon.vue';
 import CaretDownIcon from '../assets/CaretDownIcon.vue';
 import CaretUpIcon from '../assets/CaretUpIcon.vue';
 import ClothesIcon from '../assets/ClothesIcon.vue';
@@ -38,4 +41,14 @@ export const getPaymentIcon = (card: boolean) => {
 
 export const getOrderIcon = (ascending: boolean) => {
   return ascending ? CaretUpIcon : CaretDownIcon;
+};
+
+export const getRevenueTypeIcon = (type: string) => {
+  if (type === 'income') {
+    return CaretDoubleUpIcon;
+  }
+  if (type === 'outcome') {
+    return CaretDoubleDownIcon;
+  }
+  return ArrowHorizontal;
 };

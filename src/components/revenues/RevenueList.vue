@@ -6,7 +6,7 @@
           <th
             v-for="column in revenueColumns"
             :key="column.key"
-            class="flex items-center p-2 h-full w-1/5 cursor-pointer hover:bg-primary-color"
+            class="flex items-center p-2 h-full w-1/6 cursor-pointer hover:bg-primary-color"
             :class="column.class"
             @click="orderList(column)"
           >
@@ -27,19 +27,22 @@
           v-for="(item, index) in revenueList"
           :key="item.id"
         >
-          <td class="flex items-center p-2 h-full w-1/5 justify-end">
+          <td class="flex items-center p-2 h-full w-16">
+            <component :is="getRevenueTypeIcon(item.type)" class="h-5 w-5" />
+          </td>
+          <td class="flex items-center p-2 h-full w-1/6 justify-end">
             {{ formatCurrency(item.amount) }}
           </td>
-          <td class="flex items-center p-2 h-full w-1/5">
+          <td class="flex items-center p-2 h-full w-1/6">
             {{ item.description }}
           </td>
-          <td class="flex items-center p-2 h-full w-1/5">
+          <td class="flex items-center p-2 h-full w-1/6">
             {{ formatDate(item.date) }}
           </td>
-          <td class="flex items-center p-2 h-full w-1/5">
+          <td class="flex items-center p-2 h-full w-1/6">
             {{ item.bank }}
           </td>
-          <td class="flex items-center p-2 h-full w-1/5">
+          <td class="flex items-center p-2 h-full w-1/6">
             <div class="flex w-full justify-evenly">
               <edit-icon
                 class="h-6 w-6 cursor-pointer"
@@ -59,13 +62,23 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { formatCurrency, formatDate, getOrderIcon } from '../../utils';
+import {
+  formatCurrency,
+  formatDate,
+  getOrderIcon,
+  getRevenueTypeIcon,
+} from '../../utils';
 import DeleteIcon from '../../assets/DeleteIcon.vue';
 import EditIcon from '../../assets/EditIcon.vue';
 import { revenueItems, revenueSettings, sortRevenues } from '../../services';
 import { Revenue } from './Revenue';
 
 const revenueColumns = [
+  {
+    key: 'type',
+    name: 'T',
+    class: 'w-16',
+  },
   {
     key: 'amount',
     name: 'Valor',

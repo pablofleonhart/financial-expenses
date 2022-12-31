@@ -13,7 +13,7 @@
       :stroke="color"
       stroke-linecap="round"
       stroke-linejoin="round"
-      stroke-width="20"
+      stroke-width="28"
     />
     <polyline
       points="48 128 128 48 208 128"
@@ -21,13 +21,13 @@
       :stroke="color"
       stroke-linecap="round"
       stroke-linejoin="round"
-      stroke-width="20"
+      stroke-width="28"
     />
   </svg>
 </template>
 
 <script lang="ts" setup>
 defineProps({
-  color: { type: String, default: '#000000' },
+  color: { type: String, default: '#22C55E' },
 });
 </script>

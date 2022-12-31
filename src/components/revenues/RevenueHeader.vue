@@ -10,11 +10,7 @@
           : 'balance-negative'
       "
     >
-      <component
-        :is="balanceComponent"
-        class="row-span-2 h-8 w-8 mr-2"
-        :color="incomeAmount - outcomeAmount > 0 ? '#22C55E' : '#EF4444'"
-      />
+      <component :is="balanceComponent" class="row-span-2 h-8 w-8 mr-2" />
       <span>Saldo</span>
       <div class="balance-value">
         {{ balanceFormatted }}
@@ -23,7 +19,7 @@
     <div
       class="incomes p-4 grid grid-cols-[max-content_1fr] grid-rows-2 items-center"
     >
-      <caret-double-up-icon class="row-span-2 h-8 w-8 mr-2" color="#22C55E" />
+      <caret-double-up-icon class="row-span-2 h-8 w-8 mr-2" />
       <span>Receitas</span>
       <div class="incomes-value text-positive-color">
         {{ formatCurrency(incomeAmount) }}
@@ -32,7 +28,7 @@
     <div
       class="outcomes p-4 grid grid-cols-[max-content_1fr] grid-rows-2 items-center"
     >
-      <caret-double-down-icon class="row-span-2 h-8 w-8 mr-2" color="#EF4444" />
+      <caret-double-down-icon class="row-span-2 h-8 w-8 mr-2" />
       <span>Despesas</span>
       <div class="outcomes-value text-negative-color">
         {{ formatCurrency(outcomeAmount) }}
@@ -45,7 +41,7 @@
 import { computed } from 'vue';
 import CaretDoubleDownIcon from '../../assets/CaretDoubleDownIcon.vue';
 import CaretDoubleUpIcon from '../../assets/CaretDoubleUpIcon.vue';
-import { formatCurrency } from '../../utils';
+import { formatCurrency, getRevenueTypeIcon } from '../../utils';
 import { incomeAmount, outcomeAmount } from '../../services';
 
 const balanceFormatted = computed(() => {
@@ -54,13 +50,14 @@ const balanceFormatted = computed(() => {
 
 const balanceComponent = computed(() => {
   const balance = incomeAmount.value - outcomeAmount.value;
+  let type = '';
   if (balance > 0) {
-    return CaretDoubleUpIcon;
+    type = 'income';
   }
   if (balance < 0) {
-    return CaretDoubleDownIcon;
+    type = 'outcome';
   }
-  return '';
+  return getRevenueTypeIcon(type);
 });
 </script>
 
