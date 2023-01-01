@@ -16,6 +16,7 @@ import PhoneIcon from '../assets/PhoneIcon.vue';
 import RecreationIcon from '../assets/RecreationIcon.vue';
 import TransportIcon from '../assets/TransportIcon.vue';
 import VapeIcon from '../assets/VapeIcon.vue';
+import WarningIcon from '../assets/WarningIcon.vue';
 
 const categoryTypes: Record<string, any> = {
   clothes: ClothesIcon,
@@ -32,7 +33,10 @@ const categoryTypes: Record<string, any> = {
 };
 
 export const getCategoryIcon = (categoryType: string) => {
-  return categoryTypes[categoryType];
+  if(categoryType in categoryTypes) {
+    return categoryTypes[categoryType];
+  }
+  return WarningIcon;
 };
 
 export const getPaymentIcon = (card: boolean) => {
