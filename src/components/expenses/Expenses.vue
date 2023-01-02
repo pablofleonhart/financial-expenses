@@ -1,5 +1,9 @@
 <template>
   <div class="m-3">
+    <div class="flex w-full justify-center font-bold">
+      <span class="mr-2">Total:</span>
+      {{ formatCurrency(expensesSum) }}
+    </div>
     <div class="flex justify-end mt-12">
       <div
         class="add-button flex items-center justify-end cursor-pointer max-w-fit h-8 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
@@ -31,11 +35,12 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import ExpenseList from './ExpenseList.vue';
-import { deleteExpense, loadExpenses } from '../../services';
+import { deleteExpense, expensesSum, loadExpenses } from '../../services';
 import { Expense } from './Expense';
 import AddIcon from '../../assets/AddIcon.vue';
 import ExpenseItemModal from './ExpenseItemModal.vue';
 import DeleteConfirmationModal from '../common/DeleteConfirmationModal.vue';
+import { formatCurrency } from '../../utils';
 
 const showExpenseItemModal = ref(false);
 const showDeleteConfirmationModal = ref(false);

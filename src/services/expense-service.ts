@@ -1,4 +1,4 @@
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import { Expense } from '../components/expenses/Expense';
 import {
   useAddExpenseMutation,
@@ -11,6 +11,12 @@ import { copyExpense, sortList } from '../utils';
 
 export const expenseItems: Array<Expense> = reactive([]);
 export const expenseSettings: Record<string, any> = reactive({});
+
+export const expensesSum = computed(() => {
+  let result = 0;
+  expenseItems.forEach((item) => result += item.amount );
+  return result;
+})
 
 const EXPENSE_LIST_KEY = 'expense-list';
 

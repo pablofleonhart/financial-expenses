@@ -22,7 +22,7 @@
       <caret-double-up-icon class="row-span-2 h-8 w-8 mr-2" />
       <span>Receitas</span>
       <div class="incomes-value text-positive-color">
-        {{ formatCurrency(incomeAmount) }}
+        {{ formatCurrency(incomeAmount, 'BRL') }}
       </div>
     </div>
     <div
@@ -31,7 +31,7 @@
       <caret-double-down-icon class="row-span-2 h-8 w-8 mr-2" />
       <span>Despesas</span>
       <div class="outcomes-value text-negative-color">
-        {{ formatCurrency(outcomeAmount) }}
+        {{ formatCurrency(outcomeAmount, 'BRL') }}
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@ import { formatCurrency, getRevenueTypeIcon } from '../../utils';
 import { incomeAmount, outcomeAmount } from '../../services';
 
 const balanceFormatted = computed(() => {
-  return formatCurrency(incomeAmount.value - outcomeAmount.value);
+  return formatCurrency(incomeAmount.value - outcomeAmount.value, 'BRL');
 });
 
 const balanceComponent = computed(() => {

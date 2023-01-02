@@ -31,7 +31,7 @@
             <component :is="getRevenueTypeIcon(item.type)" class="h-5 w-5" />
           </td>
           <td class="flex items-center p-2 h-full w-1/6 justify-end">
-            {{ formatCurrency(item.amount) }}
+            {{ formatCurrency(item.amount, 'BRL') }}
           </td>
           <td class="flex items-center p-2 h-full w-1/6">
             {{ item.description }}
