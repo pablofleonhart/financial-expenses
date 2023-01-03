@@ -1,14 +1,13 @@
 <template>
   <div
-    class="revenue-header grid grid-cols-2 grid-rows-2 justify-items-center h-40 font-bold"
+    class="revenue-header flex justify-evenly h-20 font-bold"
   >
     <div
-      class="balance p-4 col-span-2 grid grid-cols-[max-content_1fr] grid-rows-2 items-center"
-      :class="
-        incomeAmount - outcomeAmount > 0
-          ? 'balance-positive'
-          : 'balance-negative'
-      "
+      class="balance p-4 grid grid-cols-[max-content_1fr] grid-rows-2 items-center"
+      :class="[
+        {'balance-positive': incomeSumBRL - outcomeSumBRL > 0},
+        {'balance-positinegativeve': incomeSumBRL - outcomeSumBRL < 0}
+      ]"
     >
       <component :is="balanceComponent" class="row-span-2 h-8 w-8 mr-2" />
       <span>Saldo</span>
@@ -22,7 +21,7 @@
       <caret-double-up-icon class="row-span-2 h-8 w-8 mr-2" />
       <span>Receitas</span>
       <div class="incomes-value text-positive-color">
-        {{ formatCurrency(incomeAmount, 'BRL') }}
+        {{ formatCurrency(incomeSumBRL, 'BRL') }}
       </div>
     </div>
     <div
@@ -31,7 +30,7 @@
       <caret-double-down-icon class="row-span-2 h-8 w-8 mr-2" />
       <span>Despesas</span>
       <div class="outcomes-value text-negative-color">
-        {{ formatCurrency(outcomeAmount, 'BRL') }}
+        {{ formatCurrency(outcomeSumBRL, 'BRL') }}
       </div>
     </div>
   </div>
@@ -42,14 +41,14 @@ import { computed } from 'vue';
 import CaretDoubleDownIcon from '../../assets/CaretDoubleDownIcon.vue';
 import CaretDoubleUpIcon from '../../assets/CaretDoubleUpIcon.vue';
 import { formatCurrency, getRevenueTypeIcon } from '../../utils';
-import { incomeAmount, outcomeAmount } from '../../services';
+import { incomeSumBRL, outcomeSumBRL } from '../../services';
 
 const balanceFormatted = computed(() => {
-  return formatCurrency(incomeAmount.value - outcomeAmount.value, 'BRL');
+  return formatCurrency(incomeSumBRL.value - outcomeSumBRL.value, 'BRL');
 });
 
 const balanceComponent = computed(() => {
-  const balance = incomeAmount.value - outcomeAmount.value;
+  const balance = incomeSumBRL.value - outcomeSumBRL.value;
   let type = '';
   if (balance > 0) {
     type = 'income';

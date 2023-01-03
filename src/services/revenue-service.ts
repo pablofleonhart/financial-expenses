@@ -23,20 +23,20 @@ const initializeData = () => {
   }
 };
 
-export const incomeAmount = computed<number>(() => {
+export const incomeSumBRL = computed<number>(() => {
   let result = 0;
   revenueItems.forEach((item) => {
-    if (item.type === 'income') {
+    if (item.type === 'income' && item.currency === 'real') {
       result += item.amount;
     }
   });
   return result;
 });
 
-export const outcomeAmount = computed<number>(() => {
+export const outcomeSumBRL = computed<number>(() => {
   let result = 0;
   revenueItems.forEach((item) => {
-    if (item.type === 'outcome') {
+    if (item.type === 'outcome' && item.currency === 'real') {
       result += item.amount;
     }
   });

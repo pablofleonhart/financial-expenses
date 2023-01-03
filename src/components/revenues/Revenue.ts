@@ -6,6 +6,7 @@ export class Revenue {
   public deleted: boolean;
   public description: string;
   public type: string;
+  public currency: string;
 
   constructor(
     objRevenue: Revenue = {
@@ -16,6 +17,7 @@ export class Revenue {
       deleted: false,
       description: '',
       type: 'income',
+      currency: 'real'
     }
   ) {
     this.id = objRevenue.id;
@@ -25,5 +27,6 @@ export class Revenue {
     this.deleted = objRevenue.deleted;
     this.description = objRevenue.description;
     this.type = objRevenue.type;
+    this.currency = objRevenue.currency;
   }
 }
