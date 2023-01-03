@@ -3,7 +3,9 @@ mutation addRevenue(
   $bank: String!,
   $date: Date!,
   $description: String!,
-  $type: String!)
+  $type: String!,
+  $currency: String!
+)
 {
   createRevenue(
     data: {
@@ -13,6 +15,7 @@ mutation addRevenue(
       deleted: false,
       description: $description,
       type: $type,
+      currency: $currency
     }
   ) {
     id

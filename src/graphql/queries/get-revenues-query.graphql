@@ -7,5 +7,6 @@ query GetRevenues {
     deleted
     description
     type
+    currency
   }
 }
