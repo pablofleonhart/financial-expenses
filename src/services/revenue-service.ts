@@ -43,6 +43,26 @@ export const outcomeSumBRL = computed<number>(() => {
   return result;
 });
 
+export const incomeSumEUR = computed<number>(() => {
+  let result = 0;
+  revenueItems.forEach((item) => {
+    if (item.type === 'income' && item.currency === 'euro') {
+      result += item.amount;
+    }
+  });
+  return result;
+});
+
+export const outcomeSumEUR = computed<number>(() => {
+  let result = 0;
+  revenueItems.forEach((item) => {
+    if (item.type === 'outcome' && item.currency === 'euro') {
+      result += item.amount;
+    }
+  });
+  return result;
+});
+
 const updateLocalStorage = () => {
   localStorage.setItem('revenueItems', JSON.stringify(revenueItems));
 };
