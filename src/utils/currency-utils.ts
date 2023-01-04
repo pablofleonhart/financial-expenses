@@ -17,6 +17,6 @@ const converters: Record<string, any> = {
   EUR: toEUR,
 };
 
-export const formatCurrency = (value: number, currency = 'EUR'): string => {
+export const formatCurrency = (value: number | null, currency = 'EUR'): string => {
   return converters[currency].format(value || 0);
 };

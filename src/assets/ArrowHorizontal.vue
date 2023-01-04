@@ -37,8 +37,4 @@
   </svg>
 </template>
 
-<script lang="ts" setup>
-defineProps({
-  color: { type: String, default: '#000000' },
-});
-</script>
+<script lang="ts" setup></script>
