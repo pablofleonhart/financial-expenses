@@ -4,7 +4,9 @@ mutation addExpense(
   $date: Date!,
   $deleted: Boolean!,
   $note: String!,
-  $categoryID: ID!)
+  $categoryID: ID!,
+  $currency: String!
+)
 {
   createExpense(
     data: {
@@ -17,7 +19,8 @@ mutation addExpense(
         connect: {
           id: $categoryID
         }
-      }
+      },
+      currency: $currency
     }
   ) {
     id

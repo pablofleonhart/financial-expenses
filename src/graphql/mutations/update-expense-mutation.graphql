@@ -5,7 +5,9 @@ mutation updateExpense(
   $date: Date!,
   $deleted: Boolean!,
   $note: String!,
-  $categoryID: ID!)
+  $categoryID: ID!,
+  $currency: String!
+)
 {
   updateExpense(
     data: {
@@ -18,7 +20,8 @@ mutation updateExpense(
         connect: {
           id: $categoryID
         }
-      }
+      },
+      currency: $currency
     }
     where: { id: $id }
   ){
@@ -33,5 +36,6 @@ mutation updateExpense(
       name
       type
     }
+    currency
   }
 }

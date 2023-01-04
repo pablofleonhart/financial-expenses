@@ -14,9 +14,9 @@ export const expenseSettings: Record<string, any> = reactive({});
 
 export const expensesSum = computed(() => {
   let result = 0;
-  expenseItems.forEach((item) => result += item.amount );
+  expenseItems.forEach((item) => (result += item.amount));
   return result;
-})
+});
 
 const EXPENSE_LIST_KEY = 'expense-list';
 
@@ -76,6 +76,7 @@ export const addExpense = async (expense: Expense) => {
     deleted: expense.deleted,
     note: expense.note,
     categoryID: expense.category.id,
+    currency: expense.currency,
   });
 
   return onDone((result) => {
@@ -102,6 +103,7 @@ export const editExpense = async (expense: Expense) => {
     deleted: expense.deleted,
     note: expense.note,
     categoryID: expense.category.id,
+    currency: expense.currency,
   });
 
   return onDone(() => {
@@ -132,6 +134,7 @@ export const deleteExpense = (expense: Expense) => {
     deleted: expense.deleted,
     note: expense.note,
     categoryID: expense.category.id,
+    currency: expense.currency,
   });
 
   onDone(() => {

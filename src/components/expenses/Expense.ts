@@ -10,6 +10,7 @@ export class Expense {
   public deleted: boolean;
   public note: string;
   public author: Author;
+  public currency: string;
 
   constructor(
     objExpense: Expense = {
@@ -21,6 +22,7 @@ export class Expense {
       deleted: false,
       note: '',
       author: new Author(),
+      currency: 'euro',
     }
   ) {
     this.id = objExpense.id;
@@ -31,5 +33,6 @@ export class Expense {
     this.deleted = objExpense.deleted;
     this.note = objExpense.note;
     this.author = objExpense.author;
+    this.currency = objExpense.currency;
   }
 }

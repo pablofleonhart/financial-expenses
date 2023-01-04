@@ -1,16 +1,21 @@
-import { describe, expect, it } from "vitest";
-import { getCategoryIcon, getOrderIcon, getPaymentIcon, getRevenueTypeIcon } from "../icon-utils";
-import ArrowHorizontal from "../../assets/ArrowHorizontal.vue";
-import CaretDoubleUpIcon from "../../assets/CaretDoubleUpIcon.vue";
-import CaretDoubleDownIcon from "../../assets/CaretDoubleDownIcon.vue";
-import CaretDownIcon from "../../assets/CaretDownIcon.vue";
-import CaretUpIcon from "../../assets/CaretUpIcon.vue";
-import CreditCardIcon from "../../assets/CreditCardIcon.vue";
-import FoodIcon from "../../assets/FoodIcon.vue";
-import MoneyIcon from "../../assets/MoneyIcon.vue";
-import WarningIcon from "../../assets/WarningIcon.vue";
+import { describe, expect, it } from 'vitest';
+import {
+  getCategoryIcon,
+  getOrderIcon,
+  getPaymentIcon,
+  getRevenueTypeIcon,
+} from '../icon-utils';
+import ArrowHorizontal from '../../assets/ArrowHorizontal.vue';
+import CaretDoubleUpIcon from '../../assets/CaretDoubleUpIcon.vue';
+import CaretDoubleDownIcon from '../../assets/CaretDoubleDownIcon.vue';
+import CaretDownIcon from '../../assets/CaretDownIcon.vue';
+import CaretUpIcon from '../../assets/CaretUpIcon.vue';
+import CreditCardIcon from '../../assets/CreditCardIcon.vue';
+import FoodIcon from '../../assets/FoodIcon.vue';
+import MoneyIcon from '../../assets/MoneyIcon.vue';
+import WarningIcon from '../../assets/WarningIcon.vue';
 
-describe("Icon utils tests", () => {
+describe('Icon utils tests', () => {
   it('should be food icon', () => {
     expect(getCategoryIcon('food')).toEqual(FoodIcon);
   });
@@ -46,4 +51,4 @@ describe("Icon utils tests", () => {
   it('should be neutral icon', () => {
     expect(getRevenueTypeIcon('abc')).toEqual(ArrowHorizontal);
   });
-})
+});

@@ -33,7 +33,7 @@ const categoryTypes: Record<string, any> = {
 };
 
 export const getCategoryIcon = (categoryType: string) => {
-  if(categoryType in categoryTypes) {
+  if (categoryType in categoryTypes) {
     return categoryTypes[categoryType];
   }
   return WarningIcon;

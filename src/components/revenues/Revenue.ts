@@ -17,7 +17,7 @@ export class Revenue {
       deleted: false,
       description: '',
       type: 'income',
-      currency: 'real'
+      currency: 'real',
     }
   ) {
     this.id = objRevenue.id;
