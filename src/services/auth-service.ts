@@ -77,25 +77,6 @@ export const authorizeUser = async (email: string, password: string) => {
     } else {
       errorMessage.value = 'Forbidden access';
     }
-    // console.log('new')
-    // const { mutate: createAccount, onDone } = useAddAccountMutation({});
-
-    // const hashPassword = encrypt(password);
-    // createAccount({
-    //   email,
-    //   password: hashPassword
-    // })
-
-    // onDone(async(result) => {
-    //   const accountID = result.data?.createAccount?.id;
-    //   console.log(accountID)
-    //   account = new Account({
-    //     id: accountID,
-    //     email,
-    //     password: '',
-    //   });
-    //   await router.push('/expenses');
-    // });
   });
 };
 
