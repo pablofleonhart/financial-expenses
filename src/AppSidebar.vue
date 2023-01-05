@@ -15,7 +15,6 @@
 </template>
 
 <script lang="ts" setup>
-import CoinsIcon from '../src/assets/CoinsIcon.vue';
 import CurrencyIcon from '../src/assets/CurrencyIcon.vue';
 import RevenueIcon from './assets/RevenueIcon.vue';
 
@@ -38,12 +37,6 @@ const sidebarItems: Array<ISidebarItem> = [
     name: 'Gastos',
     icon: CurrencyIcon,
     route: 'expenses',
-  },
-  {
-    id: 3,
-    name: 'Investimentos',
-    icon: CoinsIcon,
-    route: 'investments',
   },
 ];
 </script>

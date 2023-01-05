@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Expenses from '../components/expenses/Expenses.vue';
-import Investments from '../components/investments/Investments.vue';
 import Login from '../components/auth/Login.vue';
 import Revenues from '../components/revenues/Revenues.vue';
 import {
@@ -34,12 +33,6 @@ const router = createRouter({
       path: '/revenues',
       name: 'revenues',
       component: Revenues,
-      meta: { middlewares: [isAuthenticated] },
-    },
-    {
-      path: '/investments',
-      name: 'investments',
-      component: Investments,
       meta: { middlewares: [isAuthenticated] },
     },
   ] as RouteRecordRaw[],

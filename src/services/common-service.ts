@@ -15,9 +15,9 @@ const TIME_TO_SYNC = 28800000;
 const checkLastSync = () => {
   const syncTime = localStorage.getItem('lastSync');
 
-  if(syncTime){
+  if (syncTime) {
     const diffTime = new Date().getTime() - JSON.parse(syncTime);
-    if( diffTime > TIME_TO_SYNC ) {
+    if (diffTime > TIME_TO_SYNC) {
       syncAllData();
       localStorage.setItem('lastSync', JSON.stringify(new Date().getTime()));
     }
@@ -25,11 +25,11 @@ const checkLastSync = () => {
     syncAllData();
     localStorage.setItem('lastSync', JSON.stringify(new Date().getTime()));
   }
-}
+};
 
 const initializeServices = () => {
   provideApolloClient(apolloClient);
   checkLastSync();
-}
+};
 
 initializeServices();
