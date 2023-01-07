@@ -47,3 +47,7 @@ export const isDateInPeriod = (
   const value = new Date(date);
   return new Date(period.from) <= value && value <= new Date(period.to);
 };
+
+export const dateToString = (date: Date): string => {
+  return date ? date.toJSON().slice(0, 10) : 'Invalid date';
+};

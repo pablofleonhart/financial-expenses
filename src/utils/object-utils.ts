@@ -1,6 +1,7 @@
 import { Category } from '../components/categories/Category';
 import { Expense } from '../components/expenses/Expense';
 import { Revenue } from '../components/revenues/Revenue';
+import { dateToString } from './date-utils';
 
 const copyCategory = (target: Category, source: Category) => {
   target.name = source.name;
@@ -31,6 +32,13 @@ const getValues = (
   columns: Array<string>,
   index = 0
 ): any => {
+  if (valueA instanceof Date) {
+    valueA = dateToString(valueA);
+  }
+  if (valueB instanceof Date) {
+    valueB = dateToString(valueB);
+  }
+
   if (valueA instanceof Object) {
     return getValues(
       valueA[columns[index]],
