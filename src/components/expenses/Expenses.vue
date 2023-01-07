@@ -5,7 +5,7 @@
         <button
           class="login-button flex items-center h-full px-2 text-black hover:bg-secondary-color-dark hover:border-x hover:border-t hover:border-primary-color-dark"
           :class="{
-            'bg-secondary-color-dark border-x border-t border-primary-color-dark':
+            'bg-secondary-color-dark font-bold border-x border-t border-primary-color-dark':
               tab.name === selectedTab,
           }"
           @click="filterItems(tab)"
