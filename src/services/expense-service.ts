@@ -93,6 +93,7 @@ export const loadExpenses = () => {
     });
   }
   loadCategories();
+  filterExpenses();
 };
 
 export const addExpense = (expense: Expense) => {
@@ -112,7 +113,6 @@ export const addExpense = (expense: Expense) => {
     expense.id = expenseID || '';
     allExpenseItems.push(new Expense(expense));
     filterExpenses();
-    sortExpenses();
     updateLocalStorage();
     publishExpense(expenseID);
   });
@@ -147,7 +147,6 @@ export const editExpense = (expense: Expense) => {
       updateLocalStorage();
     }
     filterExpenses();
-    sortExpenses();
     publishExpense(expense.id);
   });
 };
@@ -176,7 +175,6 @@ export const deleteExpense = (expense: Expense) => {
     // remove from local storage
     allExpenseItems.splice(allExpenseItems.indexOf(expense), 1);
     filterExpenses();
-    sortExpenses();
     updateLocalStorage();
     publishExpense(expense.id);
   });

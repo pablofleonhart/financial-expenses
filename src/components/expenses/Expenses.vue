@@ -60,7 +60,11 @@ import { Expense } from './Expense';
 import AddIcon from '../../assets/AddIcon.vue';
 import ExpenseItemModal from './ExpenseItemModal.vue';
 import DeleteConfirmationModal from '../common/DeleteConfirmationModal.vue';
-import { formatCurrency, getFirstDayOfMonth, getLastDayOfMonth } from '../../utils';
+import {
+  formatCurrency,
+  getFirstDayOfMonth,
+  getLastDayOfMonth,
+} from '../../utils';
 
 const showExpenseItemModal = ref(false);
 const showDeleteConfirmationModal = ref(false);
@@ -71,7 +75,7 @@ const tabItems = [
   {
     name: 'Dezembro/22',
     from: new Date('2022-12-01'),
-    to: new Date('2022-12-31')
+    to: new Date('2022-12-31'),
   },
   {
     name: 'Janeiro/23',
@@ -84,7 +88,6 @@ const selectedTab = computed(() => selectedPeriod.name);
 
 onMounted(() => {
   loadExpenses();
-  filterExpenses();
 });
 
 const filterItems = (tab: any) => {
@@ -113,8 +116,6 @@ const onAcceptDelete = () => {
 </script>
 
 <style lang="scss" scoped>
-.selected-tab {
-}
 .add-button {
   &:hover {
     :deep(.add-icon) {
