@@ -7,7 +7,15 @@ import {
   useUpdateExpenseMutation,
 } from '../graphql/generated';
 import { loadCategories } from './category-service';
-import { copyExpense, sortList } from '../utils';
+import {
+  copyExpense,
+  getCurrentMonthYear,
+  getFirstDayOfMonth,
+  getLastDayOfMonth,
+  isDateInPeriod,
+  sortList,
+} from '../utils';
+import { MonthPeriod } from '../types';
 
 export const allExpenseItems: Array<Expense> = reactive([]);
 export const filteredExpenseItems: Array<Expense> = reactive([]);
@@ -20,8 +28,23 @@ export const expensesSum = computed(() => {
 });
 
 const EXPENSE_LIST_KEY = 'expense-list';
+const EXPENSE_PERIOD = 'expense-period';
 
-const initializeData = () => {
+export const selectedPeriod: MonthPeriod = reactive({
+  name: getCurrentMonthYear(),
+  from: getFirstDayOfMonth(),
+  to: getLastDayOfMonth(),
+});
+
+const loadSelectedPeriod = () => {
+  const localSettings = localStorage.getItem(EXPENSE_PERIOD);
+
+  if (localSettings) {
+    Object.assign(selectedPeriod, JSON.parse(localSettings));
+  }
+};
+
+const loadSortSettings = () => {
   const localSettings = localStorage.getItem(EXPENSE_LIST_KEY);
 
   if (localSettings) {
@@ -29,6 +52,11 @@ const initializeData = () => {
   } else {
     Object.assign(expenseSettings, { ascending: false, column: 'date' });
   }
+};
+
+const initializeService = () => {
+  loadSelectedPeriod();
+  loadSortSettings();
 };
 
 const updateLocalStorage = () => {
@@ -67,7 +95,7 @@ export const loadExpenses = () => {
   loadCategories();
 };
 
-export const addExpense = async (expense: Expense) => {
+export const addExpense = (expense: Expense) => {
   const { mutate: createExpense, onDone } = useAddExpenseMutation({});
   createExpense({
     amount: expense.amount,
@@ -79,16 +107,18 @@ export const addExpense = async (expense: Expense) => {
     currency: expense.currency,
   });
 
-  return onDone((result) => {
+  onDone((result) => {
     const expenseID = result.data?.createExpense?.id;
     expense.id = expenseID || '';
     allExpenseItems.push(new Expense(expense));
+    filterExpenses();
+    sortExpenses();
     updateLocalStorage();
     publishExpense(expenseID);
   });
 };
 
-export const editExpense = async (expense: Expense) => {
+export const editExpense = (expense: Expense) => {
   if (!expense) {
     throw new Error('Expense does not exist');
   }
@@ -106,13 +136,18 @@ export const editExpense = async (expense: Expense) => {
     currency: expense.currency,
   });
 
-  return onDone(() => {
+  onDone(() => {
     // update expense on local storage
     const oldExpense = getExpenseByID(expense.id);
     if (oldExpense) {
-      copyExpense(allExpenseItems[allExpenseItems.indexOf(oldExpense)], expense);
+      copyExpense(
+        allExpenseItems[allExpenseItems.indexOf(oldExpense)],
+        expense
+      );
       updateLocalStorage();
     }
+    filterExpenses();
+    sortExpenses();
     publishExpense(expense.id);
   });
 };
@@ -140,6 +175,8 @@ export const deleteExpense = (expense: Expense) => {
   onDone(() => {
     // remove from local storage
     allExpenseItems.splice(allExpenseItems.indexOf(expense), 1);
+    filterExpenses();
+    sortExpenses();
     updateLocalStorage();
     publishExpense(expense.id);
   });
@@ -150,24 +187,32 @@ export const syncExpenses = () => {
   loadExpenses();
 };
 
-export const sortExpenses = (column: string) => {
-  if (expenseSettings.column === column) {
-    expenseSettings.ascending = !expenseSettings.ascending;
-  } else {
-    expenseSettings.column = column;
+export const sortExpenses = (column?: string) => {
+  if (column) {
+    if (expenseSettings.column === column) {
+      expenseSettings.ascending = !expenseSettings.ascending;
+    } else {
+      expenseSettings.column = column;
+    }
   }
 
-  sortList(filteredExpenseItems, expenseSettings.column, expenseSettings.ascending);
+  sortList(
+    filteredExpenseItems,
+    expenseSettings.column,
+    expenseSettings.ascending
+  );
   localStorage.setItem(EXPENSE_LIST_KEY, JSON.stringify(expenseSettings));
 };
 
-export const filterExpenses = (dateFrom: string, dateTo: string) => {
+export const filterExpenses = (period: MonthPeriod = selectedPeriod) => {
   const result = allExpenseItems.filter((item) => {
-    return item.date >= dateFrom && item.date <= dateTo
-  })
-  filteredExpenseItems.splice(0)
+    return isDateInPeriod(item.date, period);
+  });
+  filteredExpenseItems.splice(0);
   Object.assign(filteredExpenseItems, result);
-  sortList(filteredExpenseItems, expenseSettings.column, expenseSettings.ascending);
-}
+  sortExpenses();
+  Object.assign(selectedPeriod, period);
+  localStorage.setItem(EXPENSE_PERIOD, JSON.stringify(selectedPeriod));
+};
 
-initializeData();
+initializeService();

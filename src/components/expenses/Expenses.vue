@@ -1,13 +1,13 @@
 <template>
-  <div class="m-3">
-    <ul class="tabs flex h-8 w-full">
-      <li 
-        v-for="tab in tabItems"
-        :key="tab.name"
-      >
+  <div class="expenses-page m-1">
+    <ul class="tabs flex h-8 w-full border-b border-primary-color-dark">
+      <li v-for="tab in tabItems" :key="tab.name">
         <button
-          class="login-button flex items-center mr-1 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
-          :class="{'bg-secondary-color-dark text-black border-2 border-primary-color-dark' : tab.name === selectedTab }"
+          class="login-button flex items-center h-full px-2 text-black hover:bg-secondary-color-dark hover:border-x hover:border-t hover:border-primary-color-dark"
+          :class="{
+            'bg-secondary-color-dark border-x border-t border-primary-color-dark':
+              tab.name === selectedTab,
+          }"
           @click="filterItems(tab)"
         >
           {{ tab.name }}
@@ -47,14 +47,20 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ExpenseList from './ExpenseList.vue';
-import { deleteExpense, expensesSum, filterExpenses, loadExpenses } from '../../services';
+import {
+  deleteExpense,
+  expensesSum,
+  filterExpenses,
+  loadExpenses,
+  selectedPeriod,
+} from '../../services';
 import { Expense } from './Expense';
 import AddIcon from '../../assets/AddIcon.vue';
 import ExpenseItemModal from './ExpenseItemModal.vue';
 import DeleteConfirmationModal from '../common/DeleteConfirmationModal.vue';
-import { formatCurrency } from '../../utils';
+import { formatCurrency, getFirstDayOfMonth, getLastDayOfMonth } from '../../utils';
 
 const showExpenseItemModal = ref(false);
 const showDeleteConfirmationModal = ref(false);
@@ -64,27 +70,26 @@ let expenseToDelete: Expense = new Expense();
 const tabItems = [
   {
     name: 'Dezembro/22',
-    from: '2022-12-01',
-    to: '2022-12-31'
+    from: new Date('2022-12-01'),
+    to: new Date('2022-12-31')
   },
   {
     name: 'Janeiro/23',
-    from: '2023-01-01',
-    to: '2023-01-31'
-  }
-]
+    from: getFirstDayOfMonth(),
+    to: getLastDayOfMonth(),
+  },
+];
 
-const selectedTab = ref(tabItems[0].name)
+const selectedTab = computed(() => selectedPeriod.name);
 
 onMounted(() => {
   loadExpenses();
-  filterExpenses(tabItems[0].from, tabItems[0].to)
+  filterExpenses();
 });
 
 const filterItems = (tab: any) => {
-  selectedTab.value = tab.name
-  filterExpenses(tab.from, tab.to)
-}
+  filterExpenses(tab);
+};
 
 const onAddExpense = () => {
   objExpense.value = new Expense();
@@ -109,7 +114,6 @@ const onAcceptDelete = () => {
 
 <style lang="scss" scoped>
 .selected-tab {
-
 }
 .add-button {
   &:hover {

@@ -131,11 +131,11 @@ const setDate = (value: Date) => {
   expense.date = value;
 };
 
-const onActionItem = async () => {
+const onActionItem = () => {
   if (expense.id === '') {
-    await addExpense(expense);
+    addExpense(expense);
   } else {
-    await editExpense(expense);
+    editExpense(expense);
   }
   emit('close');
 };

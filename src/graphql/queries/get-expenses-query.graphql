@@ -14,5 +14,6 @@ query GetExpenses {
     account {
       name
     }
+    currency
   }
 }

@@ -83,7 +83,11 @@ import {
 } from '../../utils';
 import DeleteIcon from '../../assets/DeleteIcon.vue';
 import EditIcon from '../../assets/EditIcon.vue';
-import { filteredExpenseItems, expenseSettings, sortExpenses } from '../../services';
+import {
+  filteredExpenseItems,
+  expenseSettings,
+  sortExpenses,
+} from '../../services';
 import { Expense } from './Expense';
 
 const expenseColumns = [
