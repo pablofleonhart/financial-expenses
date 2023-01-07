@@ -6,7 +6,7 @@ export class Expense {
   public amount: number;
   public card: boolean;
   public category: Category;
-  public date: Date;
+  public date: Date | string;
   public deleted: boolean;
   public note: string;
   public author: Author;

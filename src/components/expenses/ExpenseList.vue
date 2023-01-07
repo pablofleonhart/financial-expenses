@@ -83,7 +83,7 @@ import {
 } from '../../utils';
 import DeleteIcon from '../../assets/DeleteIcon.vue';
 import EditIcon from '../../assets/EditIcon.vue';
-import { expenseItems, expenseSettings, sortExpenses } from '../../services';
+import { filteredExpenseItems, expenseSettings, sortExpenses } from '../../services';
 import { Expense } from './Expense';
 
 const expenseColumns = [
@@ -122,7 +122,7 @@ const expenseColumns = [
 
 const emit = defineEmits(['onEditExpense', 'onDeleteExpense']);
 
-const expenseList = computed<Array<Expense>>(() => expenseItems);
+const expenseList = computed<Array<Expense>>(() => filteredExpenseItems);
 const orderColumn = computed(() => {
   return expenseSettings.column;
 });

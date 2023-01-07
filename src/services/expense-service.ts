@@ -9,12 +9,13 @@ import {
 import { loadCategories } from './category-service';
 import { copyExpense, sortList } from '../utils';
 
-export const expenseItems: Array<Expense> = reactive([]);
+export const allExpenseItems: Array<Expense> = reactive([]);
+export const filteredExpenseItems: Array<Expense> = reactive([]);
 export const expenseSettings: Record<string, any> = reactive({});
 
 export const expensesSum = computed(() => {
   let result = 0;
-  expenseItems.forEach((item) => (result += item.amount));
+  filteredExpenseItems.forEach((item) => (result += item.amount));
   return result;
 });
 
@@ -31,14 +32,14 @@ const initializeData = () => {
 };
 
 const updateLocalStorage = () => {
-  localStorage.setItem('expenseItems', JSON.stringify(expenseItems));
+  localStorage.setItem('expenseItems', JSON.stringify(allExpenseItems));
 };
 
 const getExpenseByID = (id: string): Expense | null => {
   if (!id) {
     return null;
   }
-  return expenseItems.filter((item) => item.id === id)[0];
+  return allExpenseItems.filter((item) => item.id === id)[0];
 };
 
 const publishExpense = (id: string | undefined): void => {
@@ -52,19 +53,18 @@ const publishExpense = (id: string | undefined): void => {
 export const loadExpenses = () => {
   const localItems = localStorage.getItem('expenseItems');
   if (localItems) {
-    Object.assign(expenseItems, JSON.parse(localItems));
+    Object.assign(allExpenseItems, JSON.parse(localItems));
   } else {
     const { onResult } = useGetExpensesQuery();
     // TODO catch errors
     onResult((result) => {
       const items = result.data.expenses;
       const itemsNoDeleted = items.filter((item) => item.deleted === false);
-      Object.assign(expenseItems, itemsNoDeleted);
+      Object.assign(allExpenseItems, itemsNoDeleted);
       updateLocalStorage();
     });
   }
   loadCategories();
-  sortList(expenseItems, expenseSettings.column, expenseSettings.ascending);
 };
 
 export const addExpense = async (expense: Expense) => {
@@ -82,7 +82,7 @@ export const addExpense = async (expense: Expense) => {
   return onDone((result) => {
     const expenseID = result.data?.createExpense?.id;
     expense.id = expenseID || '';
-    expenseItems.push(new Expense(expense));
+    allExpenseItems.push(new Expense(expense));
     updateLocalStorage();
     publishExpense(expenseID);
   });
@@ -110,7 +110,7 @@ export const editExpense = async (expense: Expense) => {
     // update expense on local storage
     const oldExpense = getExpenseByID(expense.id);
     if (oldExpense) {
-      copyExpense(expenseItems[expenseItems.indexOf(oldExpense)], expense);
+      copyExpense(allExpenseItems[allExpenseItems.indexOf(oldExpense)], expense);
       updateLocalStorage();
     }
     publishExpense(expense.id);
@@ -139,7 +139,7 @@ export const deleteExpense = (expense: Expense) => {
 
   onDone(() => {
     // remove from local storage
-    expenseItems.splice(expenseItems.indexOf(expense), 1);
+    allExpenseItems.splice(allExpenseItems.indexOf(expense), 1);
     updateLocalStorage();
     publishExpense(expense.id);
   });
@@ -157,8 +157,17 @@ export const sortExpenses = (column: string) => {
     expenseSettings.column = column;
   }
 
-  sortList(expenseItems, expenseSettings.column, expenseSettings.ascending);
+  sortList(filteredExpenseItems, expenseSettings.column, expenseSettings.ascending);
   localStorage.setItem(EXPENSE_LIST_KEY, JSON.stringify(expenseSettings));
 };
+
+export const filterExpenses = (dateFrom: string, dateTo: string) => {
+  const result = allExpenseItems.filter((item) => {
+    return item.date >= dateFrom && item.date <= dateTo
+  })
+  filteredExpenseItems.splice(0)
+  Object.assign(filteredExpenseItems, result);
+  sortList(filteredExpenseItems, expenseSettings.column, expenseSettings.ascending);
+}
 
 initializeData();

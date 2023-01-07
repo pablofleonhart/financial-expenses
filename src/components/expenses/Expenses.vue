@@ -1,5 +1,19 @@
 <template>
   <div class="m-3">
+    <ul class="tabs flex h-8 w-full">
+      <li 
+        v-for="tab in tabItems"
+        :key="tab.name"
+      >
+        <button
+          class="login-button flex items-center mr-1 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
+          :class="{'bg-secondary-color-dark text-black border-2 border-primary-color-dark' : tab.name === selectedTab }"
+          @click="filterItems(tab)"
+        >
+          {{ tab.name }}
+        </button>
+      </li>
+    </ul>
     <div class="flex w-full justify-center font-bold">
       <span class="mr-2">Total:</span>
       {{ formatCurrency(expensesSum) }}
@@ -35,7 +49,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import ExpenseList from './ExpenseList.vue';
-import { deleteExpense, expensesSum, loadExpenses } from '../../services';
+import { deleteExpense, expensesSum, filterExpenses, loadExpenses } from '../../services';
 import { Expense } from './Expense';
 import AddIcon from '../../assets/AddIcon.vue';
 import ExpenseItemModal from './ExpenseItemModal.vue';
@@ -47,9 +61,30 @@ const showDeleteConfirmationModal = ref(false);
 const objExpense = ref(new Expense());
 let expenseToDelete: Expense = new Expense();
 
+const tabItems = [
+  {
+    name: 'Dezembro/22',
+    from: '2022-12-01',
+    to: '2022-12-31'
+  },
+  {
+    name: 'Janeiro/23',
+    from: '2023-01-01',
+    to: '2023-01-31'
+  }
+]
+
+const selectedTab = ref(tabItems[0].name)
+
 onMounted(() => {
   loadExpenses();
+  filterExpenses(tabItems[0].from, tabItems[0].to)
 });
+
+const filterItems = (tab: any) => {
+  selectedTab.value = tab.name
+  filterExpenses(tab.from, tab.to)
+}
 
 const onAddExpense = () => {
   objExpense.value = new Expense();
@@ -73,6 +108,9 @@ const onAcceptDelete = () => {
 </script>
 
 <style lang="scss" scoped>
+.selected-tab {
+
+}
 .add-button {
   &:hover {
     :deep(.add-icon) {
