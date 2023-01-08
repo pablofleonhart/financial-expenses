@@ -82,6 +82,7 @@ export const loadExpenses = () => {
   const localItems = localStorage.getItem('expenseItems');
   if (localItems) {
     Object.assign(allExpenseItems, JSON.parse(localItems));
+    filterExpenses();
   } else {
     const { onResult } = useGetExpensesQuery();
     // TODO catch errors
@@ -89,11 +90,11 @@ export const loadExpenses = () => {
       const items = result.data.expenses;
       const itemsNoDeleted = items.filter((item) => item.deleted === false);
       Object.assign(allExpenseItems, itemsNoDeleted);
+      filterExpenses();
       updateLocalStorage();
     });
   }
   loadCategories();
-  filterExpenses();
 };
 
 export const addExpense = (expense: Expense) => {

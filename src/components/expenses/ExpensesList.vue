@@ -24,7 +24,7 @@
       <tbody class="expense-list-body flex flex-col w-full">
         <tr
           class="flex w-full items-center h-12 even:bg-secondary-color-dark"
-          v-for="(item, index) in expenseList"
+          v-for="(item, index) in expensesList"
           :key="item.id"
         >
           <td class="flex items-center p-2 h-full w-1/6 min-w-24 justify-end">
@@ -126,7 +126,7 @@ const expenseColumns = [
 
 const emit = defineEmits(['onEditExpense', 'onDeleteExpense']);
 
-const expenseList = computed<Array<Expense>>(() => filteredExpenseItems);
+const expensesList = computed<Array<Expense>>(() => filteredExpenseItems);
 const orderColumn = computed(() => {
   return expenseSettings.column;
 });
@@ -143,10 +143,10 @@ const orderList = (column: any) => {
 };
 
 const onEditExpense = (index: number) => {
-  emit('onEditExpense', expenseList.value[index]);
+  emit('onEditExpense', expensesList.value[index]);
 };
 
 const onDeleteExpense = (index: number) => {
-  emit('onDeleteExpense', expenseList.value[index]);
+  emit('onDeleteExpense', expensesList.value[index]);
 };
 </script>
