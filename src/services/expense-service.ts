@@ -1,4 +1,4 @@
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { Expense } from '../components/expenses/Expense';
 import {
   useAddExpenseMutation,
@@ -26,6 +26,20 @@ export const expensesSum = computed(() => {
   filteredExpenseItems.forEach((item) => (result += item.amount));
   return result;
 });
+
+let expenseCategoriesLabels: string[] = [];
+let expenseCategoriesValues: number[] = [];
+
+export const getExpenseChartData = () => ({
+  labels: expenseCategoriesLabels,
+  datasets: [
+    {
+      data: expenseCategoriesValues,
+    },
+  ],
+});
+
+export const reloadCharts = ref(false);
 
 const EXPENSE_LIST_KEY = 'expense-list';
 const EXPENSE_PERIOD = 'expense-period';
@@ -203,6 +217,21 @@ export const sortExpenses = (column?: string) => {
   localStorage.setItem(EXPENSE_LIST_KEY, JSON.stringify(expenseSettings));
 };
 
+const getTopCategories = () => {
+  const categories: Record<string, any> = {};
+
+  filteredExpenseItems.forEach((expense) => {
+    if (!(expense.category.name in categories)) {
+      categories[expense.category.name] = 0;
+    }
+    categories[expense.category.name] += expense.amount;
+  });
+
+  expenseCategoriesLabels = Object.keys(categories);
+  expenseCategoriesValues = Object.values(categories);
+  reloadCharts.value = !reloadCharts.value;
+};
+
 export const filterExpenses = (period: MonthPeriod = selectedPeriod) => {
   const result = allExpenseItems.filter((item) => {
     return isDateInPeriod(item.date, period);
@@ -212,6 +241,7 @@ export const filterExpenses = (period: MonthPeriod = selectedPeriod) => {
   sortExpenses();
   Object.assign(selectedPeriod, period);
   localStorage.setItem(EXPENSE_PERIOD, JSON.stringify(selectedPeriod));
+  getTopCategories();
 };
 
 initializeService();

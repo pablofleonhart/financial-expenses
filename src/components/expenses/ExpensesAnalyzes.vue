@@ -1,22 +1,46 @@
 <template>
-  <div class="h-56 w-full">
-    <pie :data="chartData" />
+  <div class="flex h-screen w-1/2">
+    <doughnut :data="chartData" :options="chartOptions" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'vue-chartjs';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title,
+  ChartOptions,
+  registerables,
+  ChartData,
+} from 'chart.js';
+import { onMounted, ref, watch } from 'vue';
+import { Doughnut } from 'vue-chartjs';
+import { getExpenseChartData, reloadCharts } from '../../services';
 
-const chartData = {
-  labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
-  datasets: [
-    {
-      backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-      data: [40, 20, 80, 10],
+ChartJS.register(ArcElement, Tooltip, Legend, Title, ...registerables);
+
+const chartData = ref<ChartData<'doughnut'>>({
+  datasets: [],
+});
+
+watch(reloadCharts, () => {
+  chartData.value = getExpenseChartData();
+});
+
+onMounted(() => {
+  chartData.value = getExpenseChartData();
+});
+
+const chartOptions: ChartOptions = {
+  responsive: true,
+  maintainAspectRatio: true,
+  plugins: {
+    title: {
+      display: true,
+      text: 'Categorias',
     },
-  ],
+  },
 };
-
-ChartJS.register(ArcElement, Tooltip, Legend);
 </script>

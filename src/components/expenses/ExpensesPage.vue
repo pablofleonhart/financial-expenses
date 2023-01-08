@@ -27,17 +27,25 @@
     @on-edit-expense="onEditExpense"
     @on-delete-expense="onDeleteExpense"
   />
-  <expenses-analyzes v-else />
+  <expenses-analyzes v-else :on-reload="reloadChart" />
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import ExpensesList from './ExpensesList.vue';
 import ExpensesAnalyzes from './ExpensesAnalyzes.vue';
 
 const selectedTab = ref('list');
 
 const emit = defineEmits(['onEditExpense', 'onDeleteExpense']);
+const reloadChart = ref(false);
+
+onMounted(() => {
+  const tabSettings = localStorage.getItem('expense-tab');
+  if (tabSettings) {
+    selectedTab.value = JSON.parse(tabSettings);
+  }
+});
 
 const onEditExpense = (index: number) => {
   emit('onEditExpense', index);
@@ -50,6 +58,7 @@ const onDeleteExpense = (index: number) => {
 const onClickTab = (tab: string) => {
   if (tab !== selectedTab.value) {
     selectedTab.value = tab;
+    localStorage.setItem('expense-tab', JSON.stringify(tab));
   }
 };
 </script>
