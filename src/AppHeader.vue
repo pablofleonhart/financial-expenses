@@ -4,15 +4,17 @@
   >
     <img
       v-if="user?.avatar?.url"
-      class="avatar object-contain h-12 w-12 p-1 my-1 mr-2 rounded-3xl border-2 border-blue-400 cursor-pointer"
+      class="avatar object-contain h-12 w-12 p-1 my-1 mr-2 rounded-3xl border-2 border-blue-400 cursor-pointer hover:bg-primary-color-dark"
       :src="user?.avatar?.url"
       @click="toggleProfileMenu"
     />
-    <user-icon
+    <div
       v-else
-      class="avatar h-12 w-12 p-1 my-1 mr-2 rounded-3xl border-2 border-blue-400 cursor-pointer"
+      class="avatar flex items-center justify-center h-12 w-12 p-1 my-1 mr-2 rounded-3xl border-2 border-blue-400 text-2xl cursor-pointer hover:bg-primary-color-dark hover:text-white"
       @click="toggleProfileMenu"
-    />
+    >
+      {{ getInitials(account.name) }}
+    </div>
   </div>
   <profile :show-profile-menu="showProfile" />
 </template>
@@ -21,8 +23,8 @@
 import { computed, ref } from 'vue';
 import { Account } from './components/accounts/Account';
 import { account } from './services';
-import UserIcon from './assets/UserIcon.vue';
 import Profile from './components/profile/Profile.vue';
+import { getInitials } from './utils/string-utils';
 
 const user = computed<Account>(() => account);
 const showProfile = ref(false);
