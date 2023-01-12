@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "codegen": "graphql-codegen",
     "lint": "eslint src --ext .ts,.vue --fix",
+    "tdd": "vitest --config ./vitest.config.ts --watch=true",
     "test": "vitest --config ./vitest.config.ts",
     "coverage": "vitest run --coverage"
   },
@@ -36,6 +37,7 @@
     "@vitejs/plugin-vue": "^3.2.0",
     "@vitest/coverage-c8": "^0.26.2",
     "@vitest/coverage-istanbul": "^0.26.3",
+    "@vitest/ui": "^0.27.1",
     "@vue/eslint-config-typescript": "^11.0.1",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.30.0",

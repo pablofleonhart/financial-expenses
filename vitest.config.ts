@@ -11,8 +11,12 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     coverage: {
-      provider: 'c8', // or 'c8'
+      all: true,
+      exclude: ['*.cjs', '**/generated.ts', 'coverage', 'dist', 'node_modules'],
+      provider: 'istanbul', // or 'c8'
       reporter: ['text', 'json', 'html']
     },
+    reporters: ['verbose'],
+    watch: false
   },
 })
