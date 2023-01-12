@@ -1,4 +1,5 @@
 import ArrowHorizontal from '../assets/ArrowHorizontal.vue';
+import BarberIcon from '../assets/BarberIcon.vue';
 import CaretDoubleDownIcon from '../assets/CaretDoubleDownIcon.vue';
 import CaretDoubleUpIcon from '../assets/CaretDoubleUpIcon.vue';
 import CaretDownIcon from '../assets/CaretDownIcon.vue';
@@ -14,11 +15,13 @@ import PetIcon from '../assets/PetIcon.vue';
 import PharmacyIcon from '../assets/PharmacyIcon.vue';
 import PhoneIcon from '../assets/PhoneIcon.vue';
 import RecreationIcon from '../assets/RecreationIcon.vue';
+import SubscriptionIcon from '../assets/SubscriptionsIcon.vue';
 import TransportIcon from '../assets/TransportIcon.vue';
 import VapeIcon from '../assets/VapeIcon.vue';
 import WarningIcon from '../assets/WarningIcon.vue';
 
 const categoryTypes: Record<string, any> = {
+  barber: BarberIcon,
   clothes: ClothesIcon,
   electronic: ElectronicIcon,
   food: FoodIcon,
@@ -28,6 +31,7 @@ const categoryTypes: Record<string, any> = {
   pharmacy: PharmacyIcon,
   phone: PhoneIcon,
   recreation: RecreationIcon,
+  subscription: SubscriptionIcon,
   transport: TransportIcon,
   vape: VapeIcon,
 };

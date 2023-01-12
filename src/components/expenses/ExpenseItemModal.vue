@@ -40,7 +40,7 @@
               class="h-6 w-6"
             />
             <span class="selected-option-name ml-2">
-              {{ selectedCategory?.name || '' }}
+              {{ selectedCategory?.name || 'Categoria' }}
             </span>
           </div>
           <ul
