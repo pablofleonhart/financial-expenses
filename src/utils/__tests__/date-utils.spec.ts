@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDate } from '../date-utils';
+import { dateToString, formatDate, getCurrentMonthYear } from '../date-utils';
 
 describe('Date utils tests', () => {
   it('should deal with null date', () => {
@@ -15,4 +15,16 @@ describe('Date utils tests', () => {
     const date = '2023-10-01';
     expect(formatDate(date)).equal('10/1/2023');
   });
+
+  it('should get the current month', () => {
+    expect(getCurrentMonthYear()).toEqual('Janeiro/23');
+  })
+
+  it('should get invalid date trying to convert null', () => {
+    expect(dateToString(null)).toBe('Invalid date')
+  })
+
+  it('should get date in YYYY-MM-DD format after convert date', () => {
+    expect(dateToString(new Date(2023, 1, 16))).toBe('2023-02-15')
+  })
 });
