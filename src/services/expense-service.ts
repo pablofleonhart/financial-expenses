@@ -10,6 +10,7 @@ import { loadCategories } from './category-service';
 import {
   copyExpense,
   getCurrentMonthYear,
+  getExpenseCategoryColor,
   getFirstDayOfMonth,
   getLastDayOfMonth,
   isDateInPeriod,
@@ -29,11 +30,13 @@ export const expensesSum = computed(() => {
 
 let expenseCategoriesLabels: string[] = [];
 let expenseCategoriesValues: number[] = [];
+let expenseCategoriesColorValues: string[] = [];
 
 export const getExpenseChartData = () => ({
   labels: expenseCategoriesLabels,
   datasets: [
     {
+      backgroundColor: expenseCategoriesColorValues,
       data: expenseCategoriesValues,
     },
   ],
@@ -218,17 +221,33 @@ export const sortExpenses = (column?: string) => {
 };
 
 const getTopCategories = () => {
-  const categories: Record<string, any> = {};
+  const categories: Record<
+    string,
+    { color: string; name: string; value: number }
+  > = {};
 
   filteredExpenseItems.forEach((expense) => {
-    if (!(expense.category.name in categories)) {
-      categories[expense.category.name] = 0;
+    if (!(expense.category.type in categories)) {
+      categories[expense.category.type] = {
+        color: getExpenseCategoryColor(expense.category.type),
+        name: expense.category.name,
+        value: 0,
+      };
     }
-    categories[expense.category.name] += expense.amount;
+    categories[expense.category.type].value += expense.amount;
   });
 
-  expenseCategoriesLabels = Object.keys(categories);
-  expenseCategoriesValues = Object.values(categories);
+  const sortedCategories = sortList(Object.values(categories), 'value', false);
+
+  expenseCategoriesLabels = Object.values(sortedCategories).map(
+    (item) => item.name
+  );
+  expenseCategoriesValues = Object.values(sortedCategories).map(
+    (item) => item.value
+  );
+  expenseCategoriesColorValues = Object.values(sortedCategories).map(
+    (item) => item.color
+  );
   reloadCharts.value = !reloadCharts.value;
 };
 

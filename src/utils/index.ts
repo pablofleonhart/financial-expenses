@@ -1,3 +1,4 @@
+export * from './color-utils';
 export * from './currency-utils';
 export * from './date-utils';
 export * from './hash-utils';

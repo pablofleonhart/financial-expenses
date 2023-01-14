@@ -57,7 +57,7 @@ export const sortList = (
   ascOrder = true
 ) => {
   const columns = column.split('.');
-  source.sort((itemA, itemB) => {
+  return source.sort((itemA, itemB) => {
     const { valueA, valueB } = getValues(itemA, itemB, columns);
 
     if (valueA < valueB) {

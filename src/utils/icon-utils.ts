@@ -19,21 +19,22 @@ import SubscriptionIcon from '../assets/SubscriptionsIcon.vue';
 import TransportIcon from '../assets/TransportIcon.vue';
 import VapeIcon from '../assets/VapeIcon.vue';
 import WarningIcon from '../assets/WarningIcon.vue';
+import { EXPENSE_CATEGORY } from '../types';
 
 const categoryTypes: Record<string, any> = {
-  barber: BarberIcon,
-  clothes: ClothesIcon,
-  electronic: ElectronicIcon,
-  food: FoodIcon,
-  house: HouseIcon,
-  market: MarketIcon,
-  pet: PetIcon,
-  pharmacy: PharmacyIcon,
-  phone: PhoneIcon,
-  recreation: RecreationIcon,
-  subscription: SubscriptionIcon,
-  transport: TransportIcon,
-  vape: VapeIcon,
+  [EXPENSE_CATEGORY.BARBER]: BarberIcon,
+  [EXPENSE_CATEGORY.CLOTHES]: ClothesIcon,
+  [EXPENSE_CATEGORY.ELECTRONIC]: ElectronicIcon,
+  [EXPENSE_CATEGORY.FOOD]: FoodIcon,
+  [EXPENSE_CATEGORY.HOUSE]: HouseIcon,
+  [EXPENSE_CATEGORY.MARKET]: MarketIcon,
+  [EXPENSE_CATEGORY.PET]: PetIcon,
+  [EXPENSE_CATEGORY.PHARMACY]: PharmacyIcon,
+  [EXPENSE_CATEGORY.PHONE]: PhoneIcon,
+  [EXPENSE_CATEGORY.RECREATION]: RecreationIcon,
+  [EXPENSE_CATEGORY.SUBSCRIPTION]: SubscriptionIcon,
+  [EXPENSE_CATEGORY.TRANSPORT]: TransportIcon,
+  [EXPENSE_CATEGORY.VAPE]: VapeIcon,
 };
 
 export const getCategoryIcon = (categoryType: string) => {

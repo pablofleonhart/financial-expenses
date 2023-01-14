@@ -18,13 +18,13 @@ describe('Date utils tests', () => {
 
   it('should get the current month', () => {
     expect(getCurrentMonthYear()).toEqual('Janeiro/23');
-  })
+  });
 
   it('should get invalid date trying to convert null', () => {
-    expect(dateToString(null)).toBe('Invalid date')
-  })
+    expect(dateToString(null)).toBe('Invalid date');
+  });
 
   it('should get date in YYYY-MM-DD format after convert date', () => {
-    expect(dateToString(new Date(2023, 1, 16))).toBe('2023-02-15')
-  })
+    expect(dateToString(new Date(2023, 1, 16))).toBe('2023-02-15');
+  });
 });
