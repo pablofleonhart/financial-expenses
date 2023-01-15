@@ -25,13 +25,35 @@ import {
 } from 'chart.js';
 import { onMounted, ref, watch } from 'vue';
 import { Doughnut } from 'vue-chartjs';
-import { getExpenseChartData, reloadCharts } from '../../services';
+import {
+  expenseCategoriesLabels,
+  expenseCategoriesValues,
+  expenseCategoriesColorValues,
+  reloadCharts,
+} from '../../services';
+import { formatCurrency } from '../../utils';
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title, ...registerables);
 ChartJS.register(Colors);
 
 const chartData = ref<ChartData<'doughnut'>>({
-  datasets: [],
+  labels: [],
+  datasets: [
+    {
+      backgroundColor: [],
+      data: [],
+    },
+  ],
+});
+
+const getExpenseChartData = (): ChartData<'doughnut'> => ({
+  labels: expenseCategoriesLabels,
+  datasets: [
+    {
+      backgroundColor: expenseCategoriesColorValues,
+      data: expenseCategoriesValues,
+    },
+  ],
 });
 
 watch(reloadCharts, () => {
@@ -51,6 +73,18 @@ const chartOptions: ChartOptions<'doughnut'> = {
   responsive: true,
   maintainAspectRatio: true,
   plugins: {
+    legend: {
+      position: 'left',
+      labels: {
+        filter: (legendItem, data) => {
+          console.log(legendItem, data);
+          const index = legendItem.index || 0;
+          const item = data.datasets[0].data[index] as number;
+          legendItem.text += ` - ${formatCurrency(item)}`;
+          return true;
+        },
+      },
+    },
     title: {
       color: '#000',
       display: true,

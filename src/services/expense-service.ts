@@ -28,19 +28,9 @@ export const expensesSum = computed(() => {
   return result;
 });
 
-let expenseCategoriesLabels: string[] = [];
-let expenseCategoriesValues: number[] = [];
-let expenseCategoriesColorValues: string[] = [];
-
-export const getExpenseChartData = () => ({
-  labels: expenseCategoriesLabels,
-  datasets: [
-    {
-      backgroundColor: expenseCategoriesColorValues,
-      data: expenseCategoriesValues,
-    },
-  ],
-});
+export let expenseCategoriesLabels: string[] = [];
+export let expenseCategoriesValues: number[] = [];
+export let expenseCategoriesColorValues: string[] = [];
 
 export const reloadCharts = ref(false);
 
