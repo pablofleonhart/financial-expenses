@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen w-1/2">
+  <div class="flex h-4/5 w-4/5">
     <doughnut
       :data="chartData"
       :options="chartOptions"
@@ -77,11 +77,13 @@ const chartOptions: ChartOptions<'doughnut'> = {
       position: 'left',
       labels: {
         filter: (legendItem, data) => {
-          console.log(legendItem, data);
           const index = legendItem.index || 0;
           const item = data.datasets[0].data[index] as number;
           legendItem.text += ` - ${formatCurrency(item)}`;
           return true;
+        },
+        font: {
+          size: 16,
         },
       },
     },
