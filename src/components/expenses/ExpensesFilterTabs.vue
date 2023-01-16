@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { getFirstDayOfMonth, getLastDayOfMonth } from '../../utils';
-import { filterExpenses, selectedPeriod } from '../../services';
+import { filterExpenses, selectedExpensePeriod } from '../../services';
 
 const tabItems = [
   {
@@ -33,7 +33,7 @@ const tabItems = [
   },
 ];
 
-const selectedTab = computed(() => selectedPeriod.name);
+const selectedTab = computed(() => selectedExpensePeriod.name);
 
 const filterItems = (tab: any) => {
   filterExpenses(tab);

@@ -37,7 +37,7 @@ export const reloadCharts = ref(false);
 const EXPENSE_LIST_KEY = 'expense-list';
 const EXPENSE_PERIOD = 'expense-period';
 
-export const selectedPeriod: MonthPeriod = reactive({
+export const selectedExpensePeriod: MonthPeriod = reactive({
   name: getCurrentMonthYear(),
   from: getFirstDayOfMonth(),
   to: getLastDayOfMonth(),
@@ -47,7 +47,7 @@ const loadSelectedPeriod = () => {
   const localSettings = localStorage.getItem(EXPENSE_PERIOD);
 
   if (localSettings) {
-    Object.assign(selectedPeriod, JSON.parse(localSettings));
+    Object.assign(selectedExpensePeriod, JSON.parse(localSettings));
   }
 };
 
@@ -241,15 +241,15 @@ const getTopCategories = () => {
   reloadCharts.value = !reloadCharts.value;
 };
 
-export const filterExpenses = (period: MonthPeriod = selectedPeriod) => {
+export const filterExpenses = (period: MonthPeriod = selectedExpensePeriod) => {
   const result = allExpenseItems.filter((item) => {
     return isDateInPeriod(item.date, period);
   });
   filteredExpenseItems.splice(0);
   Object.assign(filteredExpenseItems, result);
   sortExpenses();
-  Object.assign(selectedPeriod, period);
-  localStorage.setItem(EXPENSE_PERIOD, JSON.stringify(selectedPeriod));
+  Object.assign(selectedExpensePeriod, period);
+  localStorage.setItem(EXPENSE_PERIOD, JSON.stringify(selectedExpensePeriod));
   getTopCategories();
 };
 
