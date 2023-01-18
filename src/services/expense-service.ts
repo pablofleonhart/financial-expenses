@@ -37,6 +37,8 @@ export const reloadCharts = ref(false);
 const EXPENSE_LIST_KEY = 'expense-list';
 const EXPENSE_PERIOD = 'expense-period';
 
+export const expensePeriods: Array<string | Date> = [];
+
 export const selectedExpensePeriod: MonthPeriod = reactive({
   name: getCurrentMonthYear(),
   from: getFirstDayOfMonth(),
@@ -104,6 +106,10 @@ export const loadExpenses = () => {
   loadCategories();
 };
 
+const updateExpensePeriods = (date: Date | string) => {
+  expensePeriods.push(date);
+};
+
 export const addExpense = (expense: Expense) => {
   const { mutate: createExpense, onDone } = useAddExpenseMutation({});
   createExpense({
@@ -115,6 +121,8 @@ export const addExpense = (expense: Expense) => {
     categoryID: expense.category.id,
     currency: expense.currency,
   });
+
+  updateExpensePeriods(expense.date);
 
   onDone((result) => {
     const expenseID = result.data?.createExpense?.id;
