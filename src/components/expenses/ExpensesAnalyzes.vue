@@ -69,9 +69,6 @@ onMounted(() => {
 const chartOptions: ChartOptions<'doughnut'> = {
   color: '#000',
   cutout: '35%',
-  font: {
-    size: 16,
-  },
   responsive: true,
   maintainAspectRatio: true,
   plugins: {
@@ -93,7 +90,7 @@ const chartOptions: ChartOptions<'doughnut'> = {
       color: '#000',
       display: true,
       font: {
-        size: 16,
+        size: 20,
       },
       text: 'Categorias',
     },
