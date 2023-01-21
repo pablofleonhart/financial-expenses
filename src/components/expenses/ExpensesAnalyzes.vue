@@ -57,12 +57,10 @@ const getExpenseChartData = (): ChartData<'doughnut'> => ({
 });
 
 watch(reloadCharts, () => {
-  console.log('watch reload');
   chartData.value = getExpenseChartData();
 });
 
 onMounted(() => {
-  console.log('mounted page');
   chartData.value = getExpenseChartData();
 });
 
