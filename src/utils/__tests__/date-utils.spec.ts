@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dateToString, formatDate, getCurrentMonthYear } from '../date-utils';
+import { dateToString, formatDate, getMonthYear } from '../date-utils';
 
 describe('Date utils tests', () => {
   it('should deal with null date', () => {
@@ -17,7 +17,7 @@ describe('Date utils tests', () => {
   });
 
   it('should get the current month', () => {
-    expect(getCurrentMonthYear()).toEqual('Janeiro/23');
+    expect(getMonthYear()).toEqual('janeiro/23');
   });
 
   it('should get invalid date trying to convert null', () => {

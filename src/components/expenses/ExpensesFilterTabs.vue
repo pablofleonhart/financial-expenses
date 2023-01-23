@@ -17,21 +17,13 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { getFirstDayOfMonth, getLastDayOfMonth } from '../../utils';
-import { filterExpenses, selectedExpensePeriod } from '../../services';
+import {
+  expensePeriods,
+  filterExpenses,
+  selectedExpensePeriod,
+} from '../../services';
 
-const tabItems = [
-  {
-    name: 'Dezembro/22',
-    from: new Date('2022-12-01'),
-    to: new Date('2022-12-31'),
-  },
-  {
-    name: 'Janeiro/23',
-    from: getFirstDayOfMonth(),
-    to: getLastDayOfMonth(),
-  },
-];
+const tabItems = computed(() => expensePeriods);
 
 const selectedTab = computed(() => selectedExpensePeriod.name);
 

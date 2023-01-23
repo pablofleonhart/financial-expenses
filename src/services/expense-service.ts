@@ -9,12 +9,13 @@ import {
 import { loadCategories } from './category-service';
 import {
   copyExpense,
-  getCurrentMonthYear,
+  getMonthYear,
   getExpenseCategoryColor,
   getFirstDayOfMonth,
   getLastDayOfMonth,
   isDateInPeriod,
   sortList,
+  getMonths,
 } from '../utils';
 import { MonthPeriod } from '../types';
 
@@ -37,10 +38,10 @@ export const reloadCharts = ref(false);
 const EXPENSE_LIST_KEY = 'expense-list';
 const EXPENSE_PERIOD = 'expense-period';
 
-export const expensePeriods: Array<string | Date> = [];
+export const expensePeriods: Array<MonthPeriod> = reactive([]);
 
 export const selectedExpensePeriod: MonthPeriod = reactive({
-  name: getCurrentMonthYear(),
+  name: getMonthYear(),
   from: getFirstDayOfMonth(),
   to: getLastDayOfMonth(),
 });
@@ -63,9 +64,14 @@ const loadSortSettings = () => {
   }
 };
 
+const loadMonths = () => {
+  Object.assign(expensePeriods, getMonths());
+};
+
 const initializeService = () => {
   loadSelectedPeriod();
   loadSortSettings();
+  loadMonths();
 };
 
 const updateLocalStorage = () => {
@@ -106,10 +112,6 @@ export const loadExpenses = () => {
   loadCategories();
 };
 
-const updateExpensePeriods = (date: Date | string) => {
-  expensePeriods.push(date);
-};
-
 export const addExpense = (expense: Expense) => {
   const { mutate: createExpense, onDone } = useAddExpenseMutation({});
   createExpense({
@@ -121,8 +123,6 @@ export const addExpense = (expense: Expense) => {
     categoryID: expense.category.id,
     currency: expense.currency,
   });
-
-  updateExpensePeriods(expense.date);
 
   onDone((result) => {
     const expenseID = result.data?.createExpense?.id;

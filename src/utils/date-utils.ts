@@ -1,19 +1,6 @@
+import '../lib/dayjs';
+import dayjs from 'dayjs';
 import { MonthPeriod } from '../types';
-
-const months = [
-  'Janeiro',
-  'Fevereiro',
-  'Março',
-  'Abril',
-  'Maio',
-  'Junho',
-  'Julho',
-  'Agosto',
-  'Setembro',
-  'Outubro',
-  'Novembro',
-  'Dezembro',
-];
 
 const currentDate = new Date();
 
@@ -24,20 +11,16 @@ export const formatDate = (date: Date | string | null): string => {
   return new Date(date).toLocaleDateString();
 };
 
-export const getCurrentMonthYear = (): string => {
-  const today = new Date();
-  const year = `${new Date().getFullYear()}`.slice(2);
-  return `${months[today.getMonth()]}/${year}`;
+export const getMonthYear = (date: Date | string = new Date()) => {
+  return dayjs(date).format('MMMM/YY');
 };
 
-export const getFirstDayOfMonth = (date?: Date): Date => {
-  const selectedDate = date || currentDate;
-  return new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+export const getFirstDayOfMonth = (date: Date = new Date()): Date => {
+  return dayjs(date).startOf('month').toDate();
 };
 
-export const getLastDayOfMonth = (date?: Date): Date => {
-  const selectedDate = date || currentDate;
-  return new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
+export const getLastDayOfMonth = (date: Date = new Date()): Date => {
+  return dayjs(date).endOf('month').toDate();
 };
 
 export const isDateInPeriod = (
@@ -50,4 +33,21 @@ export const isDateInPeriod = (
 
 export const dateToString = (date: Date | null): string => {
   return date ? date.toJSON().slice(0, 10) : 'Invalid date';
+};
+
+export const getMonths = (): MonthPeriod[] => {
+  const initialDate = dayjs('2022-12-01').toDate();
+  const result: MonthPeriod[] = [];
+
+  while (initialDate < currentDate) {
+    result.push({
+      name: getMonthYear(initialDate),
+      from: getFirstDayOfMonth(initialDate),
+      to: getLastDayOfMonth(initialDate),
+    });
+
+    initialDate.setMonth(initialDate.getMonth() + 1);
+  }
+
+  return result;
 };
