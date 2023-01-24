@@ -1,6 +1,7 @@
 import '../lib/dayjs';
 import dayjs from 'dayjs';
 import { MonthPeriod } from '../types';
+import { capitalizeFirstLetter } from './string-utils';
 
 const currentDate = new Date();
 
@@ -12,7 +13,8 @@ export const formatDate = (date: Date | string | null): string => {
 };
 
 export const getMonthYear = (date: Date | string = new Date()) => {
-  return dayjs(date).format('MMMM/YY');
+  const monthYear = dayjs(date).format('MMMM/YY');
+  return capitalizeFirstLetter(monthYear);
 };
 
 export const getFirstDayOfMonth = (date: Date = new Date()): Date => {

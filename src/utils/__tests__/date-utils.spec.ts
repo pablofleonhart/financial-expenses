@@ -17,7 +17,7 @@ describe('Date utils tests', () => {
   });
 
   it('should get the current month', () => {
-    expect(getMonthYear()).toEqual('janeiro/23');
+    expect(getMonthYear()).toEqual('Janeiro/23');
   });
 
   it('should get invalid date trying to convert null', () => {
