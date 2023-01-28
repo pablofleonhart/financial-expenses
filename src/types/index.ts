@@ -1,7 +1,7 @@
 export type MonthPeriod = {
   name: string;
-  from: Date;
-  to: Date;
+  from: Date | string;
+  to: Date | string;
 };
 
 export enum EXPENSE_CATEGORY {

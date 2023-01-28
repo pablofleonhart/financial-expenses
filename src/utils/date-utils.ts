@@ -17,12 +17,14 @@ export const getMonthYear = (date: Date | string = new Date()) => {
   return capitalizeFirstLetter(monthYear);
 };
 
-export const getFirstDayOfMonth = (date: Date = new Date()): Date => {
-  return dayjs(date).startOf('month').toDate();
+export const getFirstDayOfMonth = (date: Date = new Date()): string => {
+  const firstDay = dayjs(date).startOf('month').toDate();
+  return dayjs(firstDay).format('YYYY-MM-DD');
 };
 
-export const getLastDayOfMonth = (date: Date = new Date()): Date => {
-  return dayjs(date).endOf('month').toDate();
+export const getLastDayOfMonth = (date: Date = new Date()): string => {
+  const lastDay = dayjs(date).endOf('month').toDate();
+  return dayjs(lastDay).format('YYYY-MM-DD');
 };
 
 export const isDateInPeriod = (

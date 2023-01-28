@@ -6,8 +6,8 @@ export const getInitials = (name: string): string => {
 };
 
 export const capitalizeFirstLetter = (sentence: string) => {
-  if(!sentence){
-    return ''
+  if (!sentence) {
+    return '';
   }
   return sentence.charAt(0).toUpperCase() + sentence.slice(1);
-}
+};
