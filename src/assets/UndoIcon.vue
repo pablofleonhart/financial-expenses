@@ -1,5 +1,6 @@
 <template>
   <svg
+    class="undo-icon"
     xmlns="http://www.w3.org/2000/svg"
     width="192"
     height="192"
@@ -27,3 +28,14 @@
 </template>
 
 <script lang="ts" setup></script>
+
+<style lang="scss" scoped>
+.undo-icon {
+  &:hover {
+    path,
+    polyline {
+      stroke: #fff;
+    }
+  }
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="revenue-list">
-    <table class="table-auto w-full overflow-hidden">
+    <table class="w-full overflow-hidden">
       <thead class="revenue-list-head flex w-full">
         <tr class="flex w-full h-12 bg-secondary-color-dark">
           <th
@@ -46,20 +46,20 @@
             <div class="flex w-full justify-evenly">
               <complete-icon
                 v-if="showRevenueActions"
-                class="h-6 w-6 cursor-pointer"
+                class="h-8 w-8 p-1 cursor-pointer rounded-xl hover:bg-green-500"
                 @click="onCompleteRevenue(index)"
               />
               <undo-icon
                 v-else
-                class="h-6 w-6 cursor-pointer"
+                class="h-8 w-8 p-1 cursor-pointer rounded-xl hover:bg-yellow-500"
                 @click="onReopenRevenue(index)"
               />
               <edit-icon
-                class="h-6 w-6 cursor-pointer"
+                class="h-8 w-8 p-1 cursor-pointer rounded-xl hover:bg-blue-500"
                 @click="onEditRevenue(index)"
               />
               <delete-icon
-                class="h-6 w-6 cursor-pointer"
+                class="h-8 w-8 p-1 cursor-pointer rounded-xl hover:bg-red-500"
                 @click="onDeleteRevenue(index)"
               />
             </div>

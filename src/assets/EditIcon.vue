@@ -59,7 +59,7 @@
   &:hover {
     line,
     path {
-      stroke: #064fcc;
+      stroke: #fff;
     }
   }
 }

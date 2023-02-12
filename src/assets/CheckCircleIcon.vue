@@ -1,5 +1,6 @@
 <template>
   <svg
+    class="check-icon"
     xmlns="http://www.w3.org/2000/svg"
     width="192"
     height="192"
@@ -29,3 +30,14 @@
 </template>
 
 <script lang="ts" setup></script>
+
+<style lang="scss" scoped>
+.check-icon {
+  &:hover {
+    circle,
+    polyline {
+      stroke: #fff;
+    }
+  }
+}
+</style>
