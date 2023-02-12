@@ -1,9 +1,11 @@
 <template>
   <div
-    v-show="showDeleteConfirmation"
+    v-show="showModal"
     class="absolute flex justify-center items-center h-full w-full bg-black bg-opacity-30"
   >
-    <div class="flex flex-col bg-secondary-color h-40 w-1/3 p-4 rounded-lg">
+    <div
+      class="flex flex-col justify-center bg-secondary-color h-40 w-1/3 p-4 rounded-lg"
+    >
       <span class="text-center">
         {{ message }}
       </span>
@@ -29,7 +31,7 @@
 const emit = defineEmits(['accept', 'cancel']);
 
 defineProps({
-  showDeleteConfirmation: { type: Boolean, default: false },
+  showModal: { type: Boolean, default: false },
   message: { type: String, required: true },
 });
 </script>

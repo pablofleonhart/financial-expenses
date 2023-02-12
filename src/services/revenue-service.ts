@@ -18,6 +18,10 @@ export const selectedRevenueStatus: RevenueStatus = reactive({
   name: 'Em aberto',
 });
 
+export const showRevenueActions = computed(
+  () => selectedRevenueStatus.id === REVENUE_STATUS.OPEN
+);
+
 const REVENUE_LIST_KEY = 'revenue-list';
 const REVENUE_STATUS_KEY = 'revenue-status';
 
@@ -99,8 +103,8 @@ const publishRevenue = (id: string | undefined): void => {
   if (!id) {
     throw new Error('Revenue ID invalid');
   }
-  const { mutate: publishRevenue } = usePublishRevenueMutation({});
-  publishRevenue({ id });
+  const { mutate: publishRevenueMutate } = usePublishRevenueMutation({});
+  publishRevenueMutate({ id });
 };
 
 export const loadRevenues = () => {
@@ -140,6 +144,7 @@ export const addRevenue = async (revenue: Revenue) => {
     allRevenueItems.push(revenue);
     updateLocalStorage();
     publishRevenue(revenueID);
+    filterRevenues();
   });
 };
 
@@ -173,6 +178,7 @@ export const editRevenue = async (revenue: Revenue) => {
       updateLocalStorage();
     }
     publishRevenue(revenue.id);
+    filterRevenues();
   });
 };
 
@@ -202,6 +208,7 @@ export const deleteRevenue = (revenue: Revenue) => {
     allRevenueItems.splice(allRevenueItems.indexOf(revenue), 1);
     updateLocalStorage();
     publishRevenue(revenue.id);
+    filterRevenues();
   });
 };
 
@@ -244,6 +251,24 @@ export const filterRevenues = (
     REVENUE_STATUS_KEY,
     JSON.stringify(selectedRevenueStatus)
   );
+};
+
+export const completeRevenue = (revenue: Revenue) => {
+  if (!revenue) {
+    return;
+  }
+  revenue.itemStatus = REVENUE_STATUS.DONE;
+  editRevenue(revenue);
+  filterRevenues();
+};
+
+export const reopenRevenue = (revenue: Revenue) => {
+  if (!revenue) {
+    return;
+  }
+  revenue.itemStatus = REVENUE_STATUS.OPEN;
+  editRevenue(revenue);
+  filterRevenues();
 };
 
 initializeData();

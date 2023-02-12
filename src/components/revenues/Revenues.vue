@@ -22,17 +22,17 @@
     :revenue="objRevenue"
     @close="showRevenueItemModal = false"
   />
-  <delete-confirmation
-    message="Deseja realmente excluir essa renda/despesa?"
-    :show-delete-confirmation="showDeleteConfirmationModal"
+  <confirmation-modal
+    :message="modalMessage"
+    :show-modal="showConfirmationModal"
     @accept="onAcceptDelete"
-    @cancel="showDeleteConfirmationModal = false"
+    @cancel="showConfirmationModal = false"
   />
 </template>
 
 <script lang="ts" setup>
 import AddIcon from '../../assets/AddIcon.vue';
-import DeleteConfirmation from '../common/DeleteConfirmationModal.vue';
+import ConfirmationModal from '../common/ConfirmationModal.vue';
 import RevenuesFilterTabs from './RevenuesFilterTabs.vue';
 import RevenueHeader from './RevenueHeader.vue';
 import RevenueItemModal from './RevenueItemModal.vue';
@@ -42,7 +42,8 @@ import { deleteRevenue, loadRevenues } from '../../services';
 import { Revenue } from './Revenue';
 
 const showRevenueItemModal = ref(false);
-const showDeleteConfirmationModal = ref(false);
+const showConfirmationModal = ref(false);
+const modalMessage = ref('');
 const objRevenue = ref(new Revenue());
 let revenueToDelete: Revenue = new Revenue();
 
@@ -61,12 +62,13 @@ const onEditRevenue = (revenue: Revenue) => {
 };
 
 const onDeleteRevenue = (revenue: Revenue) => {
-  showDeleteConfirmationModal.value = true;
+  modalMessage.value = 'Deseja realmente excluir essa renda/despesa?';
+  showConfirmationModal.value = true;
   revenueToDelete = revenue;
 };
 
 const onAcceptDelete = async () => {
-  showDeleteConfirmationModal.value = false;
+  showConfirmationModal.value = false;
   await deleteRevenue(revenueToDelete);
 };
 </script>

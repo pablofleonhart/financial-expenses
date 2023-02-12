@@ -44,6 +44,16 @@
           </td>
           <td class="flex items-center p-2 h-full w-1/6">
             <div class="flex w-full justify-evenly">
+              <complete-icon
+                v-if="showRevenueActions"
+                class="h-6 w-6 cursor-pointer"
+                @click="onCompleteRevenue(index)"
+              />
+              <undo-icon
+                v-else
+                class="h-6 w-6 cursor-pointer"
+                @click="onReopenRevenue(index)"
+              />
               <edit-icon
                 class="h-6 w-6 cursor-pointer"
                 @click="onEditRevenue(index)"
@@ -68,11 +78,16 @@ import {
   getOrderIcon,
   getRevenueTypeIcon,
 } from '../../utils';
+import CompleteIcon from '../../assets/CheckCircleIcon.vue';
 import DeleteIcon from '../../assets/DeleteIcon.vue';
 import EditIcon from '../../assets/EditIcon.vue';
+import UndoIcon from '../../assets/UndoIcon.vue';
 import {
+  completeRevenue,
   filteredRevenueItems,
+  reopenRevenue,
   revenueSettings,
+  showRevenueActions,
   sortRevenues,
 } from '../../services';
 import { Revenue } from './Revenue';
@@ -111,7 +126,11 @@ const revenueColumns = [
   },
 ];
 
-const emit = defineEmits(['onEditRevenue', 'onDeleteRevenue']);
+const emit = defineEmits([
+  'onCompleteRevenue',
+  'onEditRevenue',
+  'onDeleteRevenue',
+]);
 
 const revenueList = computed<Array<Revenue>>(() => filteredRevenueItems);
 const orderColumn = computed(() => {
@@ -127,6 +146,14 @@ const orderList = (column: any) => {
     return;
   }
   sortRevenues(column.key);
+};
+
+const onCompleteRevenue = (index: number) => {
+  completeRevenue(revenueList.value[index]);
+};
+
+const onReopenRevenue = (index: number) => {
+  reopenRevenue(revenueList.value[index]);
 };
 
 const onEditRevenue = (index: number) => {

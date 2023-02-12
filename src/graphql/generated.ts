@@ -6846,7 +6846,7 @@ export type GetExpensesQueryCompositionFunctionResult =
   >;
 export const GetRevenuesDocument = gql`
   query GetRevenues {
-    revenues(orderBy: date_DESC) {
+    revenues(first: 100, orderBy: date_DESC) {
       id
       amount
       bank

@@ -12,9 +12,9 @@
     :expense="objExpense"
     @close="showExpenseItemModal = false"
   />
-  <delete-confirmation-modal
+  <confirmation-modal
     message="Deseja realmente excluir esse gasto?"
-    :show-delete-confirmation="showDeleteConfirmationModal"
+    :show-modal="showDeleteConfirmationModal"
     @accept="onAcceptDelete"
     @cancel="showDeleteConfirmationModal = false"
   />
@@ -27,8 +27,8 @@ import ExpensesHeader from './ExpensesHeader.vue';
 import ExpensesPage from './ExpensesPage.vue';
 import { deleteExpense, loadExpenses } from '../../services';
 import { Expense } from './Expense';
+import ConfirmationModal from '../common/ConfirmationModal.vue';
 import ExpenseItemModal from './ExpenseItemModal.vue';
-import DeleteConfirmationModal from '../common/DeleteConfirmationModal.vue';
 
 const showExpenseItemModal = ref(false);
 const showDeleteConfirmationModal = ref(false);
