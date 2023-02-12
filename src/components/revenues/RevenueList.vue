@@ -70,13 +70,17 @@ import {
 } from '../../utils';
 import DeleteIcon from '../../assets/DeleteIcon.vue';
 import EditIcon from '../../assets/EditIcon.vue';
-import { revenueItems, revenueSettings, sortRevenues } from '../../services';
+import {
+  filteredRevenueItems,
+  revenueSettings,
+  sortRevenues,
+} from '../../services';
 import { Revenue } from './Revenue';
 
 const revenueColumns = [
   {
     key: 'type',
-    name: 'T',
+    name: 'Tipo',
     class: 'w-16',
   },
   {
@@ -109,7 +113,7 @@ const revenueColumns = [
 
 const emit = defineEmits(['onEditRevenue', 'onDeleteRevenue']);
 
-const revenueList = computed<Array<Revenue>>(() => revenueItems);
+const revenueList = computed<Array<Revenue>>(() => filteredRevenueItems);
 const orderColumn = computed(() => {
   return revenueSettings.column;
 });

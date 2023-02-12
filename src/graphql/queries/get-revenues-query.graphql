@@ -1,5 +1,5 @@
 query GetRevenues {
-  revenues(first: 100, orderBy: date_DESC) {
+  revenues(orderBy: date_DESC) {
     id
     amount
     bank
@@ -8,5 +8,6 @@ query GetRevenues {
     description
     type
     currency
+    itemStatus
   }
 }

@@ -3623,6 +3623,7 @@ export type Revenue = Node & {
   history: Array<Version>;
   /** The unique identifier */
   id: Scalars['ID'];
+  itemStatus: Scalars['Int'];
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -3706,6 +3707,7 @@ export type RevenueCreateInput = {
   date: Scalars['Date'];
   deleted?: InputMaybe<Scalars['Boolean']>;
   description: Scalars['String'];
+  itemStatus: Scalars['Int'];
   type: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
@@ -3871,6 +3873,21 @@ export type RevenueManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  itemStatus?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  itemStatus_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  itemStatus_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  itemStatus_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  /** All values less than the given value. */
+  itemStatus_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  itemStatus_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  itemStatus_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  itemStatus_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -3944,6 +3961,8 @@ export enum RevenueOrderByInput {
   DescriptionDesc = 'description_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  ItemStatusAsc = 'itemStatus_ASC',
+  ItemStatusDesc = 'itemStatus_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   TypeAsc = 'type_ASC',
@@ -3959,6 +3978,7 @@ export type RevenueUpdateInput = {
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   description?: InputMaybe<Scalars['String']>;
+  itemStatus?: InputMaybe<Scalars['Int']>;
   type?: InputMaybe<Scalars['String']>;
 };
 
@@ -3986,6 +4006,7 @@ export type RevenueUpdateManyInput = {
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   description?: InputMaybe<Scalars['String']>;
+  itemStatus?: InputMaybe<Scalars['Int']>;
   type?: InputMaybe<Scalars['String']>;
 };
 
@@ -4176,6 +4197,21 @@ export type RevenueWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  itemStatus?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  itemStatus_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  itemStatus_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  itemStatus_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  /** All values less than the given value. */
+  itemStatus_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  itemStatus_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  itemStatus_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  itemStatus_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -5792,6 +5828,7 @@ export type AddRevenueMutationVariables = Exact<{
   description: Scalars['String'];
   type: Scalars['String'];
   currency: Scalars['String'];
+  itemStatus: Scalars['Int'];
 }>;
 
 export type AddRevenueMutation = {
@@ -5851,6 +5888,7 @@ export type PublishRevenueMutation = {
     deleted?: boolean | null;
     type: string;
     currency: string;
+    itemStatus: number;
   } | null;
 };
 
@@ -5912,6 +5950,7 @@ export type UpdateRevenueMutationVariables = Exact<{
   description: Scalars['String'];
   type: Scalars['String'];
   currency: Scalars['String'];
+  itemStatus: Scalars['Int'];
 }>;
 
 export type UpdateRevenueMutation = {
@@ -5926,6 +5965,7 @@ export type UpdateRevenueMutation = {
     description: string;
     type: string;
     currency: string;
+    itemStatus: number;
   } | null;
 };
 
@@ -5994,6 +6034,7 @@ export type GetRevenuesQuery = {
     description: string;
     type: string;
     currency: string;
+    itemStatus: number;
   }>;
 };
 
@@ -6127,6 +6168,7 @@ export const AddRevenueDocument = gql`
     $description: String!
     $type: String!
     $currency: String!
+    $itemStatus: Int!
   ) {
     createRevenue(
       data: {
@@ -6137,6 +6179,7 @@ export const AddRevenueDocument = gql`
         description: $description
         type: $type
         currency: $currency
+        itemStatus: $itemStatus
       }
     ) {
       id
@@ -6163,6 +6206,7 @@ export const AddRevenueDocument = gql`
  *     description: // value for 'description'
  *     type: // value for 'type'
  *     currency: // value for 'currency'
+ *     itemStatus: // value for 'itemStatus'
  *   },
  * });
  */
@@ -6307,6 +6351,7 @@ export const PublishRevenueDocument = gql`
       deleted
       type
       currency
+      itemStatus
     }
   }
 `;
@@ -6509,6 +6554,7 @@ export const UpdateRevenueDocument = gql`
     $description: String!
     $type: String!
     $currency: String!
+    $itemStatus: Int!
   ) {
     updateRevenue(
       data: {
@@ -6519,6 +6565,7 @@ export const UpdateRevenueDocument = gql`
         description: $description
         type: $type
         currency: $currency
+        itemStatus: $itemStatus
       }
       where: { id: $id }
     ) {
@@ -6530,6 +6577,7 @@ export const UpdateRevenueDocument = gql`
       description
       type
       currency
+      itemStatus
     }
   }
 `;
@@ -6555,6 +6603,7 @@ export const UpdateRevenueDocument = gql`
  *     description: // value for 'description'
  *     type: // value for 'type'
  *     currency: // value for 'currency'
+ *     itemStatus: // value for 'itemStatus'
  *   },
  * });
  */
@@ -6797,7 +6846,7 @@ export type GetExpensesQueryCompositionFunctionResult =
   >;
 export const GetRevenuesDocument = gql`
   query GetRevenues {
-    revenues(first: 100, orderBy: date_DESC) {
+    revenues(orderBy: date_DESC) {
       id
       amount
       bank
@@ -6806,6 +6855,7 @@ export const GetRevenuesDocument = gql`
       description
       type
       currency
+      itemStatus
     }
   }
 `;

@@ -7,13 +7,29 @@ import {
 import { computed, reactive } from 'vue';
 import { Revenue } from '../components/revenues/Revenue';
 import { copyRevenue, sortList } from '../utils';
+import { REVENUE_STATUS, RevenueStatus } from '../types';
 
-export const revenueItems: Array<Revenue> = reactive([]);
+export const allRevenueItems: Array<Revenue> = reactive([]);
+export const filteredRevenueItems: Array<Revenue> = reactive([]);
 export const revenueSettings: Record<string, any> = reactive({});
 
-const REVENUE_LIST_KEY = 'revenue-list';
+export const selectedRevenueStatus: RevenueStatus = reactive({
+  id: REVENUE_STATUS.OPEN,
+  name: 'Em aberto',
+});
 
-const initializeData = () => {
+const REVENUE_LIST_KEY = 'revenue-list';
+const REVENUE_STATUS_KEY = 'revenue-status';
+
+const loadSelectedStatus = () => {
+  const localSettings = localStorage.getItem(REVENUE_STATUS_KEY);
+
+  if (localSettings) {
+    Object.assign(selectedRevenueStatus, JSON.parse(localSettings));
+  }
+};
+
+const loadSortSettings = () => {
   const localSettings = localStorage.getItem(REVENUE_LIST_KEY);
 
   if (localSettings) {
@@ -23,9 +39,14 @@ const initializeData = () => {
   }
 };
 
+const initializeData = () => {
+  loadSelectedStatus();
+  loadSortSettings();
+};
+
 export const incomeSumBRL = computed<number>(() => {
   let result = 0;
-  revenueItems.forEach((item) => {
+  allRevenueItems.forEach((item) => {
     if (item.type === 'income' && item.currency === 'real') {
       result += item.amount;
     }
@@ -35,7 +56,7 @@ export const incomeSumBRL = computed<number>(() => {
 
 export const outcomeSumBRL = computed<number>(() => {
   let result = 0;
-  revenueItems.forEach((item) => {
+  allRevenueItems.forEach((item) => {
     if (item.type === 'outcome' && item.currency === 'real') {
       result += item.amount;
     }
@@ -45,7 +66,7 @@ export const outcomeSumBRL = computed<number>(() => {
 
 export const incomeSumEUR = computed<number>(() => {
   let result = 0;
-  revenueItems.forEach((item) => {
+  allRevenueItems.forEach((item) => {
     if (item.type === 'income' && item.currency === 'euro') {
       result += item.amount;
     }
@@ -55,7 +76,7 @@ export const incomeSumEUR = computed<number>(() => {
 
 export const outcomeSumEUR = computed<number>(() => {
   let result = 0;
-  revenueItems.forEach((item) => {
+  allRevenueItems.forEach((item) => {
     if (item.type === 'outcome' && item.currency === 'euro') {
       result += item.amount;
     }
@@ -64,14 +85,14 @@ export const outcomeSumEUR = computed<number>(() => {
 });
 
 const updateLocalStorage = () => {
-  localStorage.setItem('revenueItems', JSON.stringify(revenueItems));
+  localStorage.setItem('revenueItems', JSON.stringify(allRevenueItems));
 };
 
 const getRevenueByID = (id: string): Revenue | null => {
   if (!id) {
     return null;
   }
-  return revenueItems.filter((item) => item.id === id)[0];
+  return allRevenueItems.filter((item) => item.id === id)[0];
 };
 
 const publishRevenue = (id: string | undefined): void => {
@@ -85,18 +106,20 @@ const publishRevenue = (id: string | undefined): void => {
 export const loadRevenues = () => {
   const localItems = localStorage.getItem('revenueItems');
   if (localItems) {
-    Object.assign(revenueItems, JSON.parse(localItems));
+    Object.assign(allRevenueItems, JSON.parse(localItems));
+    filterRevenues();
   } else {
     const { onResult } = useGetRevenuesQuery();
     // TODO catch errors
     return onResult((result) => {
       const items = result.data.revenues;
       const itemsNoDeleted = items.filter((item) => item.deleted === false);
-      Object.assign(revenueItems, itemsNoDeleted);
+      Object.assign(allRevenueItems, itemsNoDeleted);
+      filterRevenues();
       updateLocalStorage();
     });
   }
-  sortList(revenueItems, revenueSettings.column, revenueSettings.ascending);
+  sortList(allRevenueItems, revenueSettings.column, revenueSettings.ascending);
 };
 
 export const addRevenue = async (revenue: Revenue) => {
@@ -108,12 +131,13 @@ export const addRevenue = async (revenue: Revenue) => {
     type: revenue.type,
     bank: revenue.bank,
     currency: revenue.currency,
+    itemStatus: revenue.itemStatus,
   });
 
   return onDone((result) => {
     const revenueID = result.data?.createRevenue?.id;
     revenue.id = revenueID || '';
-    revenueItems.push(revenue);
+    allRevenueItems.push(revenue);
     updateLocalStorage();
     publishRevenue(revenueID);
   });
@@ -135,13 +159,17 @@ export const editRevenue = async (revenue: Revenue) => {
     description: revenue.description,
     type: revenue.type,
     currency: revenue.currency,
+    itemStatus: revenue.itemStatus,
   });
 
   return onDone(() => {
     // update revenue on local storage
     const oldRevenue = getRevenueByID(revenue.id);
     if (oldRevenue) {
-      copyRevenue(revenueItems[revenueItems.indexOf(oldRevenue)], revenue);
+      copyRevenue(
+        allRevenueItems[allRevenueItems.indexOf(oldRevenue)],
+        revenue
+      );
       updateLocalStorage();
     }
     publishRevenue(revenue.id);
@@ -166,11 +194,12 @@ export const deleteRevenue = (revenue: Revenue) => {
     description: revenue.description,
     type: revenue.type,
     currency: revenue.currency,
+    itemStatus: revenue.itemStatus,
   });
 
   return onDone(() => {
     // remove from local storage
-    revenueItems.splice(revenueItems.indexOf(revenue), 1);
+    allRevenueItems.splice(allRevenueItems.indexOf(revenue), 1);
     updateLocalStorage();
     publishRevenue(revenue.id);
   });
@@ -181,15 +210,40 @@ export const syncRevenues = () => {
   loadRevenues();
 };
 
-export const sortRevenues = (column: string) => {
-  if (revenueSettings.column === column) {
-    revenueSettings.ascending = !revenueSettings.ascending;
-  } else {
-    revenueSettings.column = column;
+export const sortRevenues = (column?: string) => {
+  if (!filteredRevenueItems.length) {
+    return;
+  }
+  if (column) {
+    if (revenueSettings.column === column) {
+      revenueSettings.ascending = !revenueSettings.ascending;
+    } else {
+      revenueSettings.column = column;
+    }
   }
 
-  sortList(revenueItems, revenueSettings.column, revenueSettings.ascending);
+  sortList(
+    filteredRevenueItems,
+    revenueSettings.column,
+    revenueSettings.ascending
+  );
   localStorage.setItem(REVENUE_LIST_KEY, JSON.stringify(revenueSettings));
+};
+
+export const filterRevenues = (
+  status: RevenueStatus = selectedRevenueStatus
+) => {
+  const result = allRevenueItems.filter((item) => {
+    return item.itemStatus === status.id;
+  });
+  filteredRevenueItems.splice(0);
+  Object.assign(filteredRevenueItems, result);
+  sortRevenues();
+  Object.assign(selectedRevenueStatus, status);
+  localStorage.setItem(
+    REVENUE_STATUS_KEY,
+    JSON.stringify(selectedRevenueStatus)
+  );
 };
 
 initializeData();

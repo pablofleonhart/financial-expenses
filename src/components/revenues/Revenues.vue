@@ -1,6 +1,7 @@
 <template>
   <div class="m-3">
     <revenue-header />
+    <revenues-filter-tabs />
     <div class="flex justify-end mt-12">
       <div
         class="add-button flex items-center justify-end cursor-pointer max-w-fit h-8 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
@@ -32,6 +33,7 @@
 <script lang="ts" setup>
 import AddIcon from '../../assets/AddIcon.vue';
 import DeleteConfirmation from '../common/DeleteConfirmationModal.vue';
+import RevenuesFilterTabs from './RevenuesFilterTabs.vue';
 import RevenueHeader from './RevenueHeader.vue';
 import RevenueItemModal from './RevenueItemModal.vue';
 import RevenueList from './RevenueList.vue';

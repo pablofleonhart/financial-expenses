@@ -6,7 +6,8 @@ mutation updateRevenue(
   $deleted: Boolean!,
   $description: String!,
   $type: String!,
-  $currency: String!)
+  $currency: String!,
+  $itemStatus: Int!)
 {
   updateRevenue(
     data: {
@@ -16,7 +17,8 @@ mutation updateRevenue(
       deleted: $deleted,
       description: $description,
       type: $type,
-      currency: $currency
+      currency: $currency,
+      itemStatus: $itemStatus
     }
     where: { id: $id }
   ){
@@ -28,5 +30,6 @@ mutation updateRevenue(
     description
     type
     currency
+    itemStatus
   }
 }
