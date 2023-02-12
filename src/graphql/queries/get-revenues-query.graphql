@@ -8,5 +8,6 @@ query GetRevenues {
     description
     type
     currency
+    itemStatus
   }
 }

@@ -7,5 +7,6 @@ mutation publishRevenue($id: ID!) {
     deleted
     type
     currency
+    itemStatus
   }
 }

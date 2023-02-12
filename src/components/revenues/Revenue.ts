@@ -1,3 +1,5 @@
+import { REVENUE_STATUS } from '../../types';
+
 export class Revenue {
   public id: string;
   public amount: number;
@@ -7,6 +9,7 @@ export class Revenue {
   public description: string;
   public type: string;
   public currency: string;
+  public itemStatus: number;
 
   constructor(
     objRevenue: Revenue = {
@@ -18,6 +21,7 @@ export class Revenue {
       description: '',
       type: 'income',
       currency: 'real',
+      itemStatus: REVENUE_STATUS.OPEN,
     }
   ) {
     this.id = objRevenue.id;
@@ -28,5 +32,6 @@ export class Revenue {
     this.description = objRevenue.description;
     this.type = objRevenue.type;
     this.currency = objRevenue.currency;
+    this.itemStatus = objRevenue.itemStatus;
   }
 }

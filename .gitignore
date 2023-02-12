@@ -3,3 +3,5 @@ dist
 .DS_Store
 .env.local
 coverage/
+.vscode
+todo.txt

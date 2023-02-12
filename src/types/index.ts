@@ -19,3 +19,13 @@ export enum EXPENSE_CATEGORY {
   TRANSPORT = 'transport',
   VAPE = 'vape',
 }
+
+export enum REVENUE_STATUS {
+  OPEN = 0,
+  DONE = 1,
+}
+
+export type RevenueStatus = {
+  id: number;
+  name: string;
+};

@@ -1,6 +1,6 @@
 <template>
   <div class="revenue-list">
-    <table class="table-auto w-full overflow-hidden">
+    <table class="w-full overflow-hidden">
       <thead class="revenue-list-head flex w-full">
         <tr class="flex w-full h-12 bg-secondary-color-dark">
           <th
@@ -44,12 +44,22 @@
           </td>
           <td class="flex items-center p-2 h-full w-1/6">
             <div class="flex w-full justify-evenly">
+              <complete-icon
+                v-if="showRevenueActions"
+                class="h-8 w-8 p-1 cursor-pointer rounded-xl hover:bg-green-500"
+                @click="onCompleteRevenue(index)"
+              />
+              <undo-icon
+                v-else
+                class="h-8 w-8 p-1 cursor-pointer rounded-xl hover:bg-yellow-500"
+                @click="onReopenRevenue(index)"
+              />
               <edit-icon
-                class="h-6 w-6 cursor-pointer"
+                class="h-8 w-8 p-1 cursor-pointer rounded-xl hover:bg-blue-500"
                 @click="onEditRevenue(index)"
               />
               <delete-icon
-                class="h-6 w-6 cursor-pointer"
+                class="h-8 w-8 p-1 cursor-pointer rounded-xl hover:bg-red-500"
                 @click="onDeleteRevenue(index)"
               />
             </div>
@@ -68,15 +78,24 @@ import {
   getOrderIcon,
   getRevenueTypeIcon,
 } from '../../utils';
+import CompleteIcon from '../../assets/CheckCircleIcon.vue';
 import DeleteIcon from '../../assets/DeleteIcon.vue';
 import EditIcon from '../../assets/EditIcon.vue';
-import { revenueItems, revenueSettings, sortRevenues } from '../../services';
+import UndoIcon from '../../assets/UndoIcon.vue';
+import {
+  completeRevenue,
+  filteredRevenueItems,
+  reopenRevenue,
+  revenueSettings,
+  showRevenueActions,
+  sortRevenues,
+} from '../../services';
 import { Revenue } from './Revenue';
 
 const revenueColumns = [
   {
     key: 'type',
-    name: 'T',
+    name: 'Tipo',
     class: 'w-16',
   },
   {
@@ -107,9 +126,13 @@ const revenueColumns = [
   },
 ];
 
-const emit = defineEmits(['onEditRevenue', 'onDeleteRevenue']);
+const emit = defineEmits([
+  'onCompleteRevenue',
+  'onEditRevenue',
+  'onDeleteRevenue',
+]);
 
-const revenueList = computed<Array<Revenue>>(() => revenueItems);
+const revenueList = computed<Array<Revenue>>(() => filteredRevenueItems);
 const orderColumn = computed(() => {
   return revenueSettings.column;
 });
@@ -123,6 +146,14 @@ const orderList = (column: any) => {
     return;
   }
   sortRevenues(column.key);
+};
+
+const onCompleteRevenue = (index: number) => {
+  completeRevenue(revenueList.value[index]);
+};
+
+const onReopenRevenue = (index: number) => {
+  reopenRevenue(revenueList.value[index]);
 };
 
 const onEditRevenue = (index: number) => {

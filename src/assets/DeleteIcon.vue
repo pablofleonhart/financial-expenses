@@ -67,7 +67,7 @@
   &:hover {
     line,
     path {
-      stroke: red;
+      stroke: #fff;
     }
   }
 }

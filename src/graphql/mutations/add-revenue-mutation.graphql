@@ -4,7 +4,8 @@ mutation addRevenue(
   $date: Date!,
   $description: String!,
   $type: String!,
-  $currency: String!
+  $currency: String!,
+  $itemStatus: Int!
 )
 {
   createRevenue(
@@ -15,7 +16,8 @@ mutation addRevenue(
       deleted: false,
       description: $description,
       type: $type,
-      currency: $currency
+      currency: $currency,
+      itemStatus: $itemStatus
     }
   ) {
     id
