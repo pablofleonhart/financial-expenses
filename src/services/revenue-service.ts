@@ -48,41 +48,45 @@ const initializeData = () => {
   loadSortSettings();
 };
 
-export const incomeSumBRL = computed<number>(() => {
+const getAmount = (revenue: Revenue) => {
+  return revenue.type === 'income' ? revenue.amount : revenue.amount * -1;
+};
+
+export const expectedSumBRL = computed<number>(() => {
   let result = 0;
   allRevenueItems.forEach((item) => {
-    if (item.type === 'income' && item.currency === 'real') {
-      result += item.amount;
+    if (item.currency === 'real') {
+      result += getAmount(item);
     }
   });
   return result;
 });
 
-export const outcomeSumBRL = computed<number>(() => {
+export const currentSumBRL = computed<number>(() => {
   let result = 0;
   allRevenueItems.forEach((item) => {
-    if (item.type === 'outcome' && item.currency === 'real') {
-      result += item.amount;
+    if (item.itemStatus === REVENUE_STATUS.DONE && item.currency === 'real') {
+      result += getAmount(item);
     }
   });
   return result;
 });
 
-export const incomeSumEUR = computed<number>(() => {
+export const expectedSumEUR = computed<number>(() => {
   let result = 0;
   allRevenueItems.forEach((item) => {
-    if (item.type === 'income' && item.currency === 'euro') {
-      result += item.amount;
+    if (item.currency === 'euro') {
+      result += getAmount(item);
     }
   });
   return result;
 });
 
-export const outcomeSumEUR = computed<number>(() => {
+export const currentSumEUR = computed<number>(() => {
   let result = 0;
   allRevenueItems.forEach((item) => {
-    if (item.type === 'outcome' && item.currency === 'euro') {
-      result += item.amount;
+    if (item.itemStatus === REVENUE_STATUS.DONE && item.currency === 'euro') {
+      result += getAmount(item);
     }
   });
   return result;

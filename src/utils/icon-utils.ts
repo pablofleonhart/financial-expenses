@@ -49,7 +49,7 @@ export const getPaymentIcon = (card: boolean) => {
 };
 
 export const getOrderIcon = (ascending: boolean) => {
-  return ascending ? CaretUpIcon : CaretDownIcon;
+  return ascending ? CaretDownIcon : CaretUpIcon;
 };
 
 export const getRevenueTypeIcon = (type: string) => {

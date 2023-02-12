@@ -1,14 +1,16 @@
 <template>
   <div class="m-3">
     <revenue-header />
-    <revenues-filter-tabs />
-    <div class="flex justify-end mt-12">
-      <div
-        class="add-button flex items-center justify-end cursor-pointer max-w-fit h-8 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
-        @click="onAddRevenue"
-      >
-        <add-icon class="h-6 w-6" />
-        <span class="ml-2"> Adicionar </span>
+    <div class="flex flex-row">
+      <revenues-filter-tabs />
+      <div class="flex justify-end">
+        <div
+          class="add-button flex items-center justify-end cursor-pointer max-w-fit h-8 ml-4 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
+          @click="onAddRevenue"
+        >
+          <add-icon class="h-6 w-6" />
+          <span class="ml-2"> Adicionar </span>
+        </div>
       </div>
     </div>
     <revenue-list

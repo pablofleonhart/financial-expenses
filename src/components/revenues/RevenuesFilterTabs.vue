@@ -24,7 +24,7 @@ import { filterRevenues, selectedRevenueStatus } from '../../services';
 
 const tabItems = [
   { id: 0, name: 'Em aberto' },
-  { id: 1, name: 'Historico' },
+  { id: 1, name: 'Histórico' },
 ];
 const selectedTab = computed(() => selectedRevenueStatus.name);
 

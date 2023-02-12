@@ -1,54 +1,51 @@
 <template>
   <div class="revenue-header flex justify-evenly h-22 font-bold">
-    <div class="balance p-4 grid grid-rows-3 items-center">
-      <span class="flex justify-center">Saldo</span>
+    <div class="balance mb-4 grid grid-rows-2 items-center">
+      <span class="flex justify-center">Saldo previsto</span>
       <div class="flex items-center">
-        <component :is="balanceBRLComponent" class="h-8 w-8 mr-2" />
         <div
           class="balance-value"
           :class="[
-            { 'balance-positive': incomeSumBRL - outcomeSumBRL > 0 },
-            { 'balance-negative': incomeSumBRL - outcomeSumBRL < 0 },
+            { 'balance-positive': expectedSumBRL > 0 },
+            { 'balance-negative': expectedSumBRL < 0 },
           ]"
         >
-          {{ balanceBRLFormatted }}
+          {{ expectedBRLFormatted }}
         </div>
-      </div>
-      <div class="flex items-center">
-        <component :is="balanceEURComponent" class="h-8 w-8 mr-2" />
+        <span class="text-center w-4">|</span>
         <div
           class="balance-value"
           :class="[
-            { 'balance-positive': incomeSumEUR - outcomeSumEUR > 0 },
-            { 'balance-negative': incomeSumEUR - outcomeSumEUR < 0 },
+            { 'balance-positive': expectedSumEUR > 0 },
+            { 'balance-negative': expectedSumEUR < 0 },
           ]"
         >
-          {{ balanceEURFormatted }}
+          {{ expectedEURFormatted }}
         </div>
       </div>
     </div>
-    <div
-      class="incomes p-4 grid grid-cols-[max-content_1fr] grid-rows-3 items-center"
-    >
-      <caret-double-up-icon class="row-span-3 h-8 w-8 mr-2" />
-      <span>Receitas</span>
-      <div class="incomes-value text-positive-color">
-        {{ formatCurrency(incomeSumBRL, 'real') }}
-      </div>
-      <div class="incomes-value text-positive-color">
-        {{ formatCurrency(incomeSumEUR) }}
-      </div>
-    </div>
-    <div
-      class="outcomes p-4 grid grid-cols-[max-content_1fr] grid-rows-3 items-center"
-    >
-      <caret-double-down-icon class="row-span-3 h-8 w-8 mr-2" />
-      <span>Despesas</span>
-      <div class="outcomes-value text-negative-color">
-        {{ formatCurrency(outcomeSumBRL, 'real') }}
-      </div>
-      <div class="outcomes-value text-negative-color">
-        {{ formatCurrency(outcomeSumEUR) }}
+    <div class="balance p-2 grid grid-rows-2 items-center">
+      <span class="flex justify-center">Saldo atual</span>
+      <div class="flex items-center">
+        <div
+          class="balance-value"
+          :class="[
+            { 'balance-positive': currentSumBRL > 0 },
+            { 'balance-negative': currentSumBRL < 0 },
+          ]"
+        >
+          {{ currentBRLFormatted }}
+        </div>
+        <span class="text-center w-4">|</span>
+        <div
+          class="balance-value"
+          :class="[
+            { 'balance-positive': currentSumEUR > 0 },
+            { 'balance-negative': currentSumEUR < 0 },
+          ]"
+        >
+          {{ currentEURFormatted }}
+        </div>
       </div>
     </div>
   </div>
@@ -56,52 +53,34 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import CaretDoubleDownIcon from '../../assets/CaretDoubleDownIcon.vue';
-import CaretDoubleUpIcon from '../../assets/CaretDoubleUpIcon.vue';
-import { formatCurrency, getRevenueTypeIcon } from '../../utils';
+import { formatCurrency } from '../../utils';
 import {
-  incomeSumBRL,
-  incomeSumEUR,
-  outcomeSumBRL,
-  outcomeSumEUR,
+  currentSumBRL,
+  currentSumEUR,
+  expectedSumBRL,
+  expectedSumEUR,
 } from '../../services';
 
-const balanceBRLFormatted = computed(() => {
-  return formatCurrency(incomeSumBRL.value - outcomeSumBRL.value, 'real');
+const currentBRLFormatted = computed(() => {
+  return formatCurrency(currentSumBRL.value, 'real');
 });
 
-const balanceBRLComponent = computed(() => {
-  const balance = incomeSumBRL.value - outcomeSumBRL.value;
-  let type = '';
-  if (balance > 0) {
-    type = 'income';
-  }
-  if (balance < 0) {
-    type = 'outcome';
-  }
-  return getRevenueTypeIcon(type);
+const currentEURFormatted = computed(() => {
+  return formatCurrency(currentSumEUR.value);
 });
 
-const balanceEURFormatted = computed(() => {
-  return formatCurrency(incomeSumEUR.value - outcomeSumEUR.value);
+const expectedBRLFormatted = computed(() => {
+  return formatCurrency(expectedSumBRL.value, 'real');
 });
 
-const balanceEURComponent = computed(() => {
-  const balance = incomeSumEUR.value - outcomeSumEUR.value;
-  let type = '';
-  if (balance > 0) {
-    type = 'income';
-  }
-  if (balance < 0) {
-    type = 'outcome';
-  }
-  return getRevenueTypeIcon(type);
+const expectedEURFormatted = computed(() => {
+  return formatCurrency(expectedSumEUR.value);
 });
 </script>
 
 <style lang="scss" scoped>
 .balance-positive {
-  color: #22c55e;
+  color: #06a641;
 }
 
 .balance-negative {
