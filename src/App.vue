@@ -3,7 +3,10 @@
 </template>
 
 <script setup lang="ts">
+import { provide } from 'vue';
 import AppLayout from './AppLayout.vue';
+
+provide('size', 32);
 </script>
 
 <style scoped>

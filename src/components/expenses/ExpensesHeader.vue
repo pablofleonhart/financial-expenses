@@ -11,7 +11,7 @@
         class="add-button flex items-center justify-end max-w-fit h-8 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
         @click="emit('onAddExpense')"
       >
-        <add-icon class="h-6 w-6" />
+        <ph-plus-circle size="24" />
         <span class="ml-2"> Adicionar </span>
       </button>
     </div>
@@ -21,7 +21,6 @@
 <script lang="ts" setup>
 import { expensesSum } from '../../services';
 import { formatCurrency } from '../../utils';
-import AddIcon from '../../assets/AddIcon.vue';
 
 const emit = defineEmits(['onAddExpense']);
 </script>

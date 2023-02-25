@@ -9,7 +9,11 @@
       @click="toggleMenu"
     >
       <component
-        :is="collapsedMenu ? CaretDoubleRightIcon : CaretDoubleLeftIcon"
+        :is="
+          collapsedMenu
+            ? 'ph-caret-circle-double-right'
+            : 'ph-caret-circle-double-left'
+        "
         class="button-toggle-icon w-8 h-8 mx-2"
       />
       <span v-if="!collapsedMenu"> Retrair </span>
@@ -30,10 +34,6 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import CurrencyIcon from '../src/assets/CurrencyIcon.vue';
-import RevenueIcon from './assets/RevenueIcon.vue';
-import CaretDoubleLeftIcon from './assets/CaretDoubleLeftIcon.vue';
-import CaretDoubleRightIcon from './assets/CaretDoubleRightIcon.vue';
 
 const collapsedMenu = ref(true);
 
@@ -48,13 +48,13 @@ const sidebarItems: Array<ISidebarItem> = [
   {
     id: 1,
     name: 'Faturas',
-    icon: RevenueIcon,
+    icon: 'ph-receipt',
     route: 'revenues',
   },
   {
     id: 2,
     name: 'Gastos',
-    icon: CurrencyIcon,
+    icon: 'ph-currency-circle-dollar',
     route: 'expenses',
   },
 ];

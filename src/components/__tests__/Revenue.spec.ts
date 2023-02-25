@@ -23,7 +23,7 @@ describe('Revenue', () => {
       description: 'Description',
       type: 'expense',
       currency: 'dollar',
-      itemStatus: 0
+      itemStatus: 0,
     };
     const revenue2 = new Revenue(objRevenue);
     expect(revenue2.id).toEqual('123');

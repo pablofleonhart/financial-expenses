@@ -63,8 +63,8 @@
         </div>
         <div class="flex justify-center items-center text-lg">
           <input class="mr-2" type="checkbox" v-model="expense.card" />
-          <component :is="getPaymentIcon(true)" class="h-6 w-6" />
-          <label>Cartão</label>
+          <component :is="getPaymentIcon(true)" size="24" />
+          <label class="ml-2">Cartão</label>
         </div>
         <textarea
           v-model="expense.note"
