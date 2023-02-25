@@ -40,7 +40,7 @@
         @click="onLogin"
       >
         <span class="mr-2"> Log me in </span>
-        <arrow-right class="h-6 w-6" />
+        <ph-sign-in size="24" />
       </button>
     </div>
   </div>
@@ -48,7 +48,6 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
-import ArrowRight from '../../assets/ArrowRight.vue';
 import { authorizeUser, errorMessage } from '../../services';
 
 const email = ref('');

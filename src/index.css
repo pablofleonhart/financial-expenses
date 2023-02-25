@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .button-action {
+    @apply p-1 cursor-pointer rounded-xl hover:text-white;
+  }
+}

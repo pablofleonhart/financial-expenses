@@ -13,6 +13,7 @@ const expenseCategoryColors: Record<string, any> = {
   [EXPENSE_CATEGORY.RECREATION]: '#dd4c65',
   [EXPENSE_CATEGORY.SUBSCRIPTION]: '#be214d',
   [EXPENSE_CATEGORY.TRANSPORT]: '#bf812d',
+  [EXPENSE_CATEGORY.TRAVEL]: '#07c9b8',
   [EXPENSE_CATEGORY.VAPE]: '#b8e186',
 };
 

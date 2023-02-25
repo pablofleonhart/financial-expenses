@@ -17,6 +17,7 @@ export enum EXPENSE_CATEGORY {
   RECREATION = 'recreation',
   SUBSCRIPTION = 'subscription',
   TRANSPORT = 'transport',
+  TRAVEL = 'travel',
   VAPE = 'vape',
 }
 

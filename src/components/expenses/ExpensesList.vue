@@ -13,7 +13,8 @@
             <component
               v-if="!column.static && orderColumn === column.key"
               :is="getOrderIcon(orderDirection)"
-              class="h-4 w-4 mr-1"
+              size="20"
+              class="mr-1"
             />
             <span>
               {{ column.name }}
@@ -49,19 +50,19 @@
           <td
             class="flex items-center justify-center p-2 h-full w-1/6 min-w-16"
           >
-            <component :is="getPaymentIcon(item.card)" class="h-6 w-6" />
+            <component :is="getPaymentIcon(item.card)" size="24" />
           </td>
           <td class="flex items-center p-2 h-full w-1/6 min-w-44">
             {{ item.note }}
           </td>
           <td class="flex items-center p-2 h-full w-1/6 min-w-24">
             <div class="flex w-full justify-evenly">
-              <edit-icon
-                class="h-6 w-6 cursor-pointer"
+              <ph-pencil
+                class="button-action hover:bg-blue-500"
                 @click="onEditExpense(index)"
               />
-              <delete-icon
-                class="h-6 w-6 cursor-pointer"
+              <ph-trash
+                class="button-action hover:bg-red-500"
                 @click="onDeleteExpense(index)"
               />
             </div>
@@ -81,8 +82,6 @@ import {
   getOrderIcon,
   getPaymentIcon,
 } from '../../utils';
-import DeleteIcon from '../../assets/DeleteIcon.vue';
-import EditIcon from '../../assets/EditIcon.vue';
 import {
   filteredExpenseItems,
   expenseSettings,

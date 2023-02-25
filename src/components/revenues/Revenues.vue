@@ -8,7 +8,7 @@
           class="add-button flex items-center justify-end cursor-pointer max-w-fit h-8 ml-4 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
           @click="onAddRevenue"
         >
-          <add-icon class="h-6 w-6" />
+          <ph-plus-circle size="24" />
           <span class="ml-2"> Adicionar </span>
         </div>
       </div>
@@ -33,7 +33,6 @@
 </template>
 
 <script lang="ts" setup>
-import AddIcon from '../../assets/AddIcon.vue';
 import ConfirmationModal from '../common/ConfirmationModal.vue';
 import RevenuesFilterTabs from './RevenuesFilterTabs.vue';
 import RevenueHeader from './RevenueHeader.vue';

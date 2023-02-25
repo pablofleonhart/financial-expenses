@@ -13,7 +13,8 @@
             <component
               v-if="!column.static && orderColumn === column.key"
               :is="getOrderIcon(orderDirection)"
-              class="h-4 w-4 mr-1"
+              size="20"
+              class="mr-1"
             />
             <span>
               {{ column.name }}
@@ -28,7 +29,15 @@
           :key="item.id"
         >
           <td class="flex items-center p-2 h-full w-16">
-            <component :is="getRevenueTypeIcon(item.type)" class="h-5 w-5" />
+            <component
+              :is="getRevenueTypeIcon(item.type)"
+              size="22"
+              weight="bold"
+              :class="{
+                'text-[#06a641]': item.type === 'income',
+                'text-[#ef4444]': item.type === 'outcome',
+              }"
+            />
           </td>
           <td class="flex items-center p-2 h-full w-1/6 justify-end">
             {{ formatCurrency(item.amount, item.currency) }}
@@ -44,22 +53,22 @@
           </td>
           <td class="flex items-center p-2 h-full w-1/6">
             <div class="flex w-full justify-evenly">
-              <complete-icon
+              <ph-check-circle
                 v-if="showRevenueActions"
-                class="h-8 w-8 p-1 cursor-pointer rounded-xl hover:bg-green-500"
+                class="button-action hover:bg-green-500"
                 @click="onCompleteRevenue(index)"
               />
-              <undo-icon
+              <ph-arrow-counter-clockwise
                 v-else
-                class="h-8 w-8 p-1 cursor-pointer rounded-xl hover:bg-yellow-500"
+                class="button-action hover:bg-yellow-500"
                 @click="onReopenRevenue(index)"
               />
-              <edit-icon
-                class="h-8 w-8 p-1 cursor-pointer rounded-xl hover:bg-blue-500"
+              <ph-pencil
+                class="button-action hover:bg-blue-500"
                 @click="onEditRevenue(index)"
               />
-              <delete-icon
-                class="h-8 w-8 p-1 cursor-pointer rounded-xl hover:bg-red-500"
+              <ph-trash
+                class="button-action hover:bg-red-500"
                 @click="onDeleteRevenue(index)"
               />
             </div>
@@ -78,10 +87,6 @@ import {
   getOrderIcon,
   getRevenueTypeIcon,
 } from '../../utils';
-import CompleteIcon from '../../assets/CheckCircleIcon.vue';
-import DeleteIcon from '../../assets/DeleteIcon.vue';
-import EditIcon from '../../assets/EditIcon.vue';
-import UndoIcon from '../../assets/UndoIcon.vue';
 import {
   completeRevenue,
   filteredRevenueItems,

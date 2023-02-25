@@ -8,22 +8,20 @@
       class="sync-button flex w-full p-2 h-10 m-2 hover:bg-primary-color-dark hover:text-white"
       @click="syncAllData"
     >
-      <sync-icon class="h-6 w-6 mr-2" />
+      <ph-cloud-arrow-down class="h-6 w-6 mr-2" />
       <span>Sincronizar</span>
     </button>
     <button
       class="logout-button flex w-full p-2 h-10 mb-2 hover:bg-primary-color-dark hover:text-white"
       @click="logout"
     >
-      <logout-icon class="h-6 w-6 mr-2" />
+      <ph-power class="h-6 w-6 mr-2" />
       <span>Logout</span>
     </button>
   </div>
 </template>
 
 <script lang="ts" setup>
-import LogoutIcon from '../../assets/LogoutIcon.vue';
-import SyncIcon from '../../assets/SyncIcon.vue';
 import { logout, syncAllData } from '../../services';
 
 defineProps({
@@ -31,27 +29,4 @@ defineProps({
 });
 </script>
 
-<style lang="scss" scoped>
-.logout-button {
-  &:hover {
-    :deep(.sign-out) {
-      line,
-      path,
-      polyline {
-        stroke: #fff;
-      }
-    }
-  }
-}
-
-.sync-button {
-  &:hover {
-    :deep(.sync-icon) {
-      path,
-      polyline {
-        stroke: #fff;
-      }
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

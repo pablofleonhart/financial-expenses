@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import PhosphorVue from 'phosphor-vue';
 import App from './App.vue';
 import './index.css';
 import router from './router';
@@ -14,6 +15,7 @@ const apolloProvider = createApolloProvider({
 
 const app = createApp(App);
 app.use(apolloProvider);
+app.use(PhosphorVue);
 app.component('Datepicker', Datepicker);
 app.use(router);
 app.mount('#app');

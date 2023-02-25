@@ -5,50 +5,41 @@ import {
   getPaymentIcon,
   getRevenueTypeIcon,
 } from '../icon-utils';
-import ArrowHorizontal from '../../assets/ArrowHorizontal.vue';
-import CaretDoubleUpIcon from '../../assets/CaretDoubleUpIcon.vue';
-import CaretDoubleDownIcon from '../../assets/CaretDoubleDownIcon.vue';
-import CaretDownIcon from '../../assets/CaretDownIcon.vue';
-import CaretUpIcon from '../../assets/CaretUpIcon.vue';
-import CreditCardIcon from '../../assets/CreditCardIcon.vue';
-import FoodIcon from '../../assets/FoodIcon.vue';
-import MoneyIcon from '../../assets/MoneyIcon.vue';
-import WarningIcon from '../../assets/WarningIcon.vue';
 
 describe('Icon utils tests', () => {
   it('should be food icon', () => {
-    expect(getCategoryIcon('food')).toEqual(FoodIcon);
+    expect(getCategoryIcon('food')).toEqual('ph-pizza');
   });
 
   it('should be default icon', () => {
-    expect(getCategoryIcon('xyz')).toEqual(WarningIcon);
+    expect(getCategoryIcon('xyz')).toEqual('ph-warning-octagon');
   });
 
   it('should be credit card icon', () => {
-    expect(getPaymentIcon(true)).toEqual(CreditCardIcon);
+    expect(getPaymentIcon(true)).toEqual('ph-credit-card');
   });
 
   it('should be money icon', () => {
-    expect(getPaymentIcon(false)).toEqual(MoneyIcon);
+    expect(getPaymentIcon(false)).toEqual('ph-coin-vertical');
   });
 
   it('should be ascending order icon', () => {
-    expect(getOrderIcon(true)).toEqual(CaretUpIcon);
+    expect(getOrderIcon(true)).toEqual('ph-caret-up');
   });
 
   it('should be descending order icon', () => {
-    expect(getOrderIcon(false)).toEqual(CaretDownIcon);
+    expect(getOrderIcon(false)).toEqual('ph-caret-down');
   });
 
   it('should be income icon', () => {
-    expect(getRevenueTypeIcon('income')).toEqual(CaretDoubleUpIcon);
+    expect(getRevenueTypeIcon('income')).toEqual('ph-trend-up');
   });
 
   it('should be outcome icon', () => {
-    expect(getRevenueTypeIcon('outcome')).toEqual(CaretDoubleDownIcon);
+    expect(getRevenueTypeIcon('outcome')).toEqual('ph-trend-down');
   });
 
   it('should be neutral icon', () => {
-    expect(getRevenueTypeIcon('abc')).toEqual(ArrowHorizontal);
+    expect(getRevenueTypeIcon('abc')).toEqual('ph-minus');
   });
 });
