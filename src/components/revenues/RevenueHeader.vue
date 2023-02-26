@@ -12,7 +12,7 @@
         >
           {{ expectedBRLFormatted }}
         </div>
-        <span class="text-center w-4">|</span>
+        <span class="text-center w-8">|</span>
         <div
           class="balance-value"
           :class="[
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div class="balance p-2 grid grid-rows-2 items-center">
+    <div class="balance mb-4 grid grid-rows-2 items-center">
       <span class="flex justify-center">Saldo atual</span>
       <div class="flex items-center">
         <div
@@ -36,7 +36,7 @@
         >
           {{ currentBRLFormatted }}
         </div>
-        <span class="text-center w-4">|</span>
+        <span class="text-center w-8">|</span>
         <div
           class="balance-value"
           :class="[

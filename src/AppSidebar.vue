@@ -1,10 +1,10 @@
 <template>
   <nav
-    class="sidebar min-h-screen h-full pt-1 w-36 flex flex-col bg-primary-color border-r border-primary-color-dark"
+    class="sidebar min-h-screen h-full pt-1 w-40 flex flex-col bg-primary-color border-r border-primary-color-dark"
     :class="{ 'sidebar-collapsed': collapsedMenu }"
   >
     <button
-      class="button-toggle flex top-0 h-9 w-36 mt-1 mb-12 items-center hover:bg-primary-color-dark hover:text-white"
+      class="button-toggle flex top-0 h-9 w-40 mt-1 mb-12 items-center hover:bg-primary-color-dark hover:text-white"
       :class="{ 'button-toggle-collapsed': collapsedMenu }"
       @click="toggleMenu"
     >
@@ -56,6 +56,12 @@ const sidebarItems: Array<ISidebarItem> = [
     name: 'Gastos',
     icon: 'ph-currency-circle-dollar',
     route: 'expenses',
+  },
+  {
+    id: 3,
+    name: 'Investimentos',
+    icon: 'ph-currency-btc',
+    route: 'investments',
   },
 ];
 

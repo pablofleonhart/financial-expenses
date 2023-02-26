@@ -1,0 +1,9 @@
+mutation publishInvestment($id: ID!) {
+  publishInvestment(where: { id: $id}, to: PUBLISHED) {
+    amount
+    broker
+    currency
+    deleted
+    holder
+  }
+}

@@ -1,0 +1,26 @@
+mutation updateInvestment(
+  $id: ID!,
+  $amount: Float!,
+  $broker: String!,
+  $currency: String!,
+  $deleted: Boolean!,
+  $holder: String!)
+{
+  updateInvestment(
+    data: {
+      amount: $amount,
+      broker: $broker,
+      currency: $currency,
+      deleted: $deleted,
+      holder: $holder
+    }
+    where: { id: $id }
+  ){
+    id
+    amount
+    broker
+    currency
+    deleted
+    holder
+  }
+}
