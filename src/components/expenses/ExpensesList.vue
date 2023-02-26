@@ -23,51 +23,56 @@
         </tr>
       </thead>
       <tbody class="expense-list-body flex flex-col w-full">
-        <tr
-          class="flex w-full items-center h-12 even:bg-secondary-color-dark"
-          v-for="(item, index) in expensesList"
-          :key="item.id"
-        >
-          <td class="flex items-center p-2 h-full w-1/6 min-w-24 justify-end">
-            {{ formatCurrency(item.amount, item.currency) }}
-          </td>
-          <td
-            class="flex items-center p-2 h-full w-1/6 min-w-24 justify-center"
+        <div v-if="expensesList.length">
+          <tr
+            class="flex w-full items-center h-12 even:bg-secondary-color-dark"
+            v-for="(item, index) in expensesList"
+            :key="item.id"
           >
-            {{ formatDate(item.date) }}
-          </td>
-          <td class="flex items-center p-2 h-full w-1/6 min-w-36">
-            <div class="flex w-full justify-center">
-              <component
-                :is="getCategoryIcon(item.category.type)"
-                class="h-6 w-6"
-              />
-              <span class="ml-2">
-                {{ item.category.name }}
-              </span>
-            </div>
-          </td>
-          <td
-            class="flex items-center justify-center p-2 h-full w-1/6 min-w-16"
-          >
-            <component :is="getPaymentIcon(item.card)" size="24" />
-          </td>
-          <td class="flex items-center p-2 h-full w-1/6 min-w-44">
-            {{ item.note }}
-          </td>
-          <td class="flex items-center p-2 h-full w-1/6 min-w-24">
-            <div class="flex w-full justify-evenly">
-              <ph-pencil
-                class="button-action hover:bg-blue-500"
-                @click="onEditExpense(index)"
-              />
-              <ph-trash
-                class="button-action hover:bg-red-500"
-                @click="onDeleteExpense(index)"
-              />
-            </div>
-          </td>
-        </tr>
+            <td class="flex items-center p-2 h-full w-1/6 min-w-24 justify-end">
+              {{ formatCurrency(item.amount, item.currency) }}
+            </td>
+            <td
+              class="flex items-center p-2 h-full w-1/6 min-w-24 justify-center"
+            >
+              {{ formatDate(item.date) }}
+            </td>
+            <td class="flex items-center p-2 h-full w-1/6 min-w-36">
+              <div class="flex w-full justify-center">
+                <component
+                  :is="getCategoryIcon(item.category.type)"
+                  class="h-6 w-6"
+                />
+                <span class="ml-2">
+                  {{ item.category.name }}
+                </span>
+              </div>
+            </td>
+            <td
+              class="flex items-center justify-center p-2 h-full w-1/6 min-w-16"
+            >
+              <component :is="getPaymentIcon(item.card)" size="24" />
+            </td>
+            <td class="flex items-center p-2 h-full w-1/6 min-w-44">
+              {{ item.note }}
+            </td>
+            <td class="flex items-center p-2 h-full w-1/6 min-w-24">
+              <div class="flex w-full justify-evenly">
+                <ph-pencil
+                  class="button-action hover:bg-blue-500"
+                  @click="onEditExpense(index)"
+                />
+                <ph-trash
+                  class="button-action hover:bg-red-500"
+                  @click="onDeleteExpense(index)"
+                />
+              </div>
+            </td>
+          </tr>
+        </div>
+        <div v-else class="font-bold flex justify-center mt-4">
+          Nenhuma despesa cadastrada para este periodo
+        </div>
       </tbody>
     </table>
   </div>

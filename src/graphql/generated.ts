@@ -6816,7 +6816,10 @@ export type GetCategoriesQuery = {
   }>;
 };
 
-export type GetExpensesQueryVariables = Exact<{ [key: string]: never }>;
+export type GetExpensesQueryVariables = Exact<{
+  startDate: Scalars['Date'];
+  endDate: Scalars['Date'];
+}>;
 
 export type GetExpensesQuery = {
   __typename?: 'Query';
@@ -7794,8 +7797,12 @@ export type GetCategoriesQueryCompositionFunctionResult =
     GetCategoriesQueryVariables
   >;
 export const GetExpensesDocument = gql`
-  query GetExpenses {
-    expenses(first: 100, orderBy: date_DESC) {
+  query GetExpenses($startDate: Date!, $endDate: Date!) {
+    expenses(
+      first: 100
+      orderBy: date_DESC
+      where: { date_gte: $startDate, date_lte: $endDate }
+    ) {
       id
       amount
       card
@@ -7822,12 +7829,19 @@ export const GetExpensesDocument = gql`
  * When your component renders, `useGetExpensesQuery` returns an object from Apollo Client that contains result, loading and error properties
  * you can use to render your UI.
  *
+ * @param variables that will be passed into the query
  * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
  *
  * @example
- * const { result, loading, error } = useGetExpensesQuery();
+ * const { result, loading, error } = useGetExpensesQuery({
+ *   startDate: // value for 'startDate'
+ *   endDate: // value for 'endDate'
+ * });
  */
 export function useGetExpensesQuery(
+  variables:
+    | GetExpensesQueryVariables
+    | ReactiveFunction<GetExpensesQueryVariables>,
   options:
     | VueApolloComposable.UseQueryOptions<
         GetExpensesQuery,
@@ -7843,9 +7857,12 @@ export function useGetExpensesQuery(
   return VueApolloComposable.useQuery<
     GetExpensesQuery,
     GetExpensesQueryVariables
-  >(GetExpensesDocument, {}, options);
+  >(GetExpensesDocument, variables, options);
 }
 export function useGetExpensesLazyQuery(
+  variables:
+    | GetExpensesQueryVariables
+    | ReactiveFunction<GetExpensesQueryVariables>,
   options:
     | VueApolloComposable.UseQueryOptions<
         GetExpensesQuery,
@@ -7861,7 +7878,7 @@ export function useGetExpensesLazyQuery(
   return VueApolloComposable.useLazyQuery<
     GetExpensesQuery,
     GetExpensesQueryVariables
-  >(GetExpensesDocument, {}, options);
+  >(GetExpensesDocument, variables, options);
 }
 export type GetExpensesQueryCompositionFunctionResult =
   VueApolloComposable.UseQueryReturn<

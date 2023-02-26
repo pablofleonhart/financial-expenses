@@ -19,7 +19,7 @@ import {
 } from '../utils';
 import { MonthPeriod } from '../types';
 
-export const allExpenseItems: Array<Expense> = reactive([]);
+export let allExpenseItems: Array<Expense> = [];
 export const filteredExpenseItems: Array<Expense> = reactive([]);
 export const expenseSettings: Record<string, any> = reactive({});
 
@@ -93,18 +93,39 @@ const publishExpense = (id: string | undefined): void => {
   publishExpense({ id });
 };
 
-export const loadExpenses = () => {
-  const localItems = localStorage.getItem('expenseItems');
-  if (localItems) {
-    Object.assign(allExpenseItems, JSON.parse(localItems));
-    filterExpenses();
-  } else {
-    const { onResult } = useGetExpensesQuery();
-    // TODO catch errors
+const loadMonthExpenses = (month: MonthPeriod): Promise<any> => {
+  return new Promise((resolve) => {
+    const { onResult } = useGetExpensesQuery({
+      startDate: month.from,
+      endDate: month.to,
+    });
+
     onResult((result) => {
       const items = result.data.expenses;
       const itemsNoDeleted = items.filter((item) => item.deleted === false);
-      Object.assign(allExpenseItems, itemsNoDeleted);
+      resolve(itemsNoDeleted);
+    });
+  });
+};
+
+export const loadExpenses = () => {
+  const localItems = localStorage.getItem('expenseItems');
+  if (localItems) {
+    allExpenseItems = JSON.parse(localItems);
+    filterExpenses();
+  } else {
+    allExpenseItems = [];
+    const periodsPromise = new Promise((resolve) => {
+      expensePeriods.forEach(async (period: MonthPeriod, index, array) => {
+        const monthsItems = await loadMonthExpenses(period);
+        allExpenseItems = [...allExpenseItems, ...monthsItems];
+        if (index === array.length - 1) {
+          resolve(true);
+        }
+      });
+    });
+
+    periodsPromise.then(() => {
       filterExpenses();
       updateLocalStorage();
     });
