@@ -4,16 +4,17 @@
       <thead class="expense-list-head flex w-full">
         <tr class="flex w-full h-12 bg-secondary-color-dark">
           <th
-            v-for="column in expenseColumns"
+            v-for="column in investmentColumns"
             :key="column.key"
-            class="flex items-center p-2 h-full w-1/6 cursor-pointer hover:bg-primary-color"
+            class="flex items-center p-2 h-full w-1/4 cursor-pointer hover:bg-primary-color"
             :class="column.class"
             @click="orderList(column)"
           >
             <component
               v-if="!column.static && orderColumn === column.key"
               :is="getOrderIcon(orderDirection)"
-              class="h-4 w-4 mr-1"
+              size="20"
+              class="mr-1"
             />
             <span>
               {{ column.name }}
@@ -24,49 +25,38 @@
       <tbody class="expense-list-body flex flex-col w-full">
         <tr
           class="flex w-full items-center h-12 even:bg-secondary-color-dark"
-          v-for="(item, index) in expensesList"
+          v-for="(item, index) in investmentList"
           :key="item.id"
         >
-          <td class="flex items-center p-2 h-full w-1/6 min-w-24 justify-end">
+          <td class="flex items-center p-2 h-full w-1/4 min-w-24 justify-end">
             {{ formatCurrency(item.amount, item.currency) }}
           </td>
           <td
-            class="flex items-center p-2 h-full w-1/6 min-w-24 justify-center"
+            class="flex items-center p-2 h-full w-1/4 min-w-24 justify-center"
           >
-            {{ formatDate(item.date) }}
-          </td>
-          <td class="flex items-center p-2 h-full w-1/6 min-w-36">
-            <div class="flex w-full justify-center">
-              <component
-                :is="getCategoryIcon(item.category.type)"
-                class="h-6 w-6"
-              />
-              <span class="ml-2">
-                {{ item.category.name }}
-              </span>
-            </div>
+            {{ item.broker }}
           </td>
           <td
-            class="flex items-center justify-center p-2 h-full w-1/6 min-w-16"
+            class="flex items-center justify-center p-2 h-full w-1/4 min-w-44"
           >
-            <component :is="getPaymentIcon(item.card)" class="h-6 w-6" />
+            {{ item.holder }}
           </td>
-          <td class="flex items-center p-2 h-full w-1/6 min-w-44">
-            {{ item.note }}
-          </td>
-          <td class="flex items-center p-2 h-full w-1/6 min-w-24">
+          <td class="flex items-center p-2 h-full w-1/4 min-w-24">
             <div class="flex w-full justify-evenly">
-              <edit-icon
-                class="h-6 w-6 cursor-pointer"
-                @click="onEditExpense(index)"
+              <ph-pencil
+                class="button-action hover:bg-blue-500"
+                @click="onEditInvestment(index)"
               />
-              <delete-icon
-                class="h-6 w-6 cursor-pointer"
-                @click="onDeleteExpense(index)"
+              <ph-trash
+                class="button-action hover:bg-red-500"
+                @click="onDeleteInvestment(index)"
               />
             </div>
           </td>
         </tr>
+        <!-- <div v-else class="flex justify-center mt-4">
+          Nenhum investimento cadastrado ainda
+        </div> -->
       </tbody>
     </table>
   </div>
@@ -74,47 +64,29 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { formatCurrency, getOrderIcon } from '../../utils';
 import {
-  formatCurrency,
-  formatDate,
-  getCategoryIcon,
-  getOrderIcon,
-  getPaymentIcon,
-} from '../../utils';
-import DeleteIcon from '../../assets/DeleteIcon.vue';
-import EditIcon from '../../assets/EditIcon.vue';
-import {
-  filteredExpenseItems,
-  expenseSettings,
-  sortExpenses,
+  allInvestmentItems,
+  investmentSettings,
+  sortInvestments,
 } from '../../services';
-import { Expense } from './Expense';
+import { Investment } from './Investment';
 
-const expenseColumns = [
+const investmentColumns = [
   {
     key: 'amount',
     name: 'Valor',
     class: 'min-w-24 justify-end',
   },
   {
-    key: 'date',
-    name: 'Data',
-    class: 'min-w-24 justify-center',
-  },
-  {
-    key: 'category.name',
-    name: 'Categoria',
+    key: 'broker',
+    name: 'Banco/Corretora',
     class: 'min-w-36 justify-center',
   },
   {
-    key: 'card',
-    name: 'Método',
+    key: 'holder',
+    name: 'Titular',
     class: 'min-w-16 justify-center',
-  },
-  {
-    key: 'note',
-    name: 'Descrição',
-    class: 'min-w-44',
   },
   {
     key: 'actions',
@@ -124,29 +96,29 @@ const expenseColumns = [
   },
 ];
 
-const emit = defineEmits(['onEditExpense', 'onDeleteExpense']);
+const emit = defineEmits(['onEditInvestment', 'onDeleteInvestment']);
 
-const expensesList = computed<Array<Expense>>(() => filteredExpenseItems);
+const investmentList = computed<Array<Investment>>(() => allInvestmentItems);
 const orderColumn = computed(() => {
-  return expenseSettings.column;
+  return investmentSettings.column;
 });
 
 const orderDirection = computed(() => {
-  return expenseSettings.ascending;
+  return investmentSettings.ascending;
 });
 
 const orderList = (column: any) => {
   if (column.static) {
     return;
   }
-  sortExpenses(column.key);
+  sortInvestments(column.key);
 };
 
-const onEditExpense = (index: number) => {
-  emit('onEditExpense', expensesList.value[index]);
+const onEditInvestment = (index: number) => {
+  emit('onEditInvestment', investmentList.value[index]);
 };
 
-const onDeleteExpense = (index: number) => {
-  emit('onDeleteExpense', expensesList.value[index]);
+const onDeleteInvestment = (index: number) => {
+  emit('onDeleteInvestment', investmentList.value[index]);
 };
 </script>

@@ -12,9 +12,17 @@ const toEUR = new Intl.NumberFormat('de-DE', {
   maximumFractionDigits: 2,
 });
 
+const toUSD = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 const converters: Record<string, any> = {
-  real: toBRL,
+  dollar: toUSD,
   euro: toEUR,
+  real: toBRL,
 };
 
 export const formatCurrency = (

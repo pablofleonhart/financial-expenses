@@ -1,6 +1,11 @@
-import { computed, reactive } from 'vue';
+import { reactive } from 'vue';
 import { Investment } from '../components/investments/Investment';
-import { useAddInvestmentMutation, useGetInvestmentsQuery, usePublishInvestmentMutation, useUpdateInvestmentMutation } from '../graphql/generated';
+import {
+  useAddInvestmentMutation,
+  useGetInvestmentsQuery,
+  usePublishInvestmentMutation,
+  useUpdateInvestmentMutation,
+} from '../graphql/generated';
 import { copyInvestment, sortList } from '../utils';
 
 export const allInvestmentItems: Array<Investment> = reactive([]);
@@ -17,7 +22,7 @@ export const investmentSettings: Record<string, any> = reactive({});
 // );
 
 const INVESTMENT_LIST_KEY = 'investment-list';
-const INVESTMENT_STATUS_KEY = 'investment-status';
+// const INVESTMENT_STATUS_KEY = 'investment-status';
 
 // const loadSelectedStatus = () => {
 //   const localSettings = localStorage.getItem(INVESTMENT_STATUS_KEY);
@@ -121,7 +126,11 @@ export const loadInvestments = () => {
       updateLocalStorage();
     });
   }
-  sortList(allInvestmentItems, investmentSettings.column, investmentSettings.ascending);
+  sortList(
+    allInvestmentItems,
+    investmentSettings.column,
+    investmentSettings.ascending
+  );
 };
 
 export const addInvestment = async (investment: Investment) => {
@@ -130,7 +139,7 @@ export const addInvestment = async (investment: Investment) => {
     amount: investment.amount,
     broker: investment.broker,
     currency: investment.currency,
-    holder: investment.holder
+    holder: investment.holder,
   });
 
   return onDone((result) => {
@@ -156,7 +165,7 @@ export const editInvestment = async (investment: Investment) => {
     broker: investment.broker,
     currency: investment.currency,
     deleted: investment.deleted,
-    holder: investment.holder
+    holder: investment.holder,
   });
 
   return onDone(() => {
