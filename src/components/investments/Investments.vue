@@ -1,12 +1,16 @@
 <template>
   <div class="m-3">
-    <div class="flex justify-end">
-      <div
-        class="add-button flex items-center justify-end cursor-pointer max-w-fit h-8 ml-4 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
-        @click="onAddInvestment"
-      >
-        <ph-plus-circle size="24" />
-        <span class="ml-2"> Adicionar </span>
+    <investments-header />
+    <div class="flex flex-row">
+      <investments-filter-tabs />
+      <div class="flex justify-end">
+        <div
+          class="add-button flex items-center justify-end cursor-pointer max-w-fit h-8 ml-4 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
+          @click="onAddInvestment"
+        >
+          <ph-plus-circle size="24" />
+          <span class="ml-2"> Adicionar </span>
+        </div>
       </div>
     </div>
     <investments-list
@@ -33,6 +37,8 @@ import { onMounted, ref } from 'vue';
 import { deleteInvestment, loadInvestments } from '../../services';
 import { Investment } from './Investment';
 import ConfirmationModal from '../common/ConfirmationModal.vue';
+import InvestmentsFilterTabs from './InvestmentsFilterTabs.vue';
+import InvestmentsHeader from './InvestmentsHeader.vue';
 import InvestmentItemModal from './InvestmentItemModal.vue';
 import InvestmentsList from './InvestmentsList.vue';
 

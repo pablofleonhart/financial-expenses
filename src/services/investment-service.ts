@@ -1,4 +1,4 @@
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import { Investment } from '../components/investments/Investment';
 import {
   useAddInvestmentMutation,
@@ -61,15 +61,35 @@ const initializeData = () => {
 //   return result;
 // });
 
-// export const currentSumBRL = computed<number>(() => {
-//   let result = 0;
-//   allInvestmentItems.forEach((item) => {
-//     if (item.itemStatus === REVENUE_STATUS.DONE && item.currency === 'real') {
-//       result += getAmount(item);
-//     }
-//   });
-//   return result;
-// });
+export const investmentSumBRL = computed<number>(() => {
+  let result = 0;
+  allInvestmentItems.forEach((item) => {
+    if (item.currency === 'real') {
+      result += item.amount;
+    }
+  });
+  return result;
+});
+
+export const investmentSumEUR = computed<number>(() => {
+  let result = 0;
+  allInvestmentItems.forEach((item) => {
+    if (item.currency === 'euro') {
+      result += item.amount;
+    }
+  });
+  return result;
+});
+
+export const investmentSumUSD = computed<number>(() => {
+  let result = 0;
+  allInvestmentItems.forEach((item) => {
+    if (item.currency === 'dollar') {
+      result += item.amount;
+    }
+  });
+  return result;
+});
 
 // export const expectedSumEUR = computed<number>(() => {
 //   let result = 0;
