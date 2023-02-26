@@ -2,15 +2,9 @@ import gql from 'graphql-tag';
 import * as VueApolloComposable from '@vue/apollo-composable';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type ReactiveFunction<TParam> = () => TParam;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -59,21 +53,25 @@ export type Account = Node & {
   updatedBy?: Maybe<User>;
 };
 
+
 export type AccountAvatarArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 export type AccountCreatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
+
 export type AccountDocumentInStagesArgs = {
   includeCurrent?: Scalars['Boolean'];
   inheritLocale?: Scalars['Boolean'];
   stages?: Array<Stage>;
 };
+
 
 export type AccountExpensesArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -87,16 +85,19 @@ export type AccountExpensesArgs = {
   where?: InputMaybe<ExpenseWhereInput>;
 };
 
+
 export type AccountHistoryArgs = {
   limit?: Scalars['Int'];
   skip?: Scalars['Int'];
   stageOverride?: InputMaybe<Stage>;
 };
 
+
 export type AccountPublishedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 export type AccountScheduledInArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -108,6 +109,7 @@ export type AccountScheduledInArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
+
 
 export type AccountUpdatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
@@ -324,7 +326,7 @@ export enum AccountOrderByInput {
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC',
+  UpdatedAtDesc = 'updatedAt_DESC'
 }
 
 export type AccountUpdateInput = {
@@ -622,6 +624,7 @@ export type Asset = Node & {
   width?: Maybe<Scalars['Float']>;
 };
 
+
 /** Asset system model */
 export type AssetAvatarAccountArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -635,16 +638,19 @@ export type AssetAvatarAccountArgs = {
   where?: InputMaybe<AccountWhereInput>;
 };
 
+
 /** Asset system model */
 export type AssetCreatedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
+
 
 /** Asset system model */
 export type AssetCreatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 /** Asset system model */
 export type AssetDocumentInStagesArgs = {
@@ -653,6 +659,7 @@ export type AssetDocumentInStagesArgs = {
   stages?: Array<Stage>;
 };
 
+
 /** Asset system model */
 export type AssetHistoryArgs = {
   limit?: Scalars['Int'];
@@ -660,22 +667,26 @@ export type AssetHistoryArgs = {
   stageOverride?: InputMaybe<Stage>;
 };
 
+
 /** Asset system model */
 export type AssetLocalizationsArgs = {
   includeCurrent?: Scalars['Boolean'];
   locales?: Array<Locale>;
 };
 
+
 /** Asset system model */
 export type AssetPublishedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
+
 
 /** Asset system model */
 export type AssetPublishedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 /** Asset system model */
 export type AssetScheduledInArgs = {
@@ -689,16 +700,19 @@ export type AssetScheduledInArgs = {
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
+
 /** Asset system model */
 export type AssetUpdatedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
+
 
 /** Asset system model */
 export type AssetUpdatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 /** Asset system model */
 export type AssetUrlArgs = {
@@ -889,7 +903,7 @@ export enum AssetOrderByInput {
   UpdatedAtAsc = 'updatedAt_ASC',
   UpdatedAtDesc = 'updatedAt_DESC',
   WidthAsc = 'width_ASC',
-  WidthDesc = 'width_DESC',
+  WidthDesc = 'width_DESC'
 }
 
 /** Transformations for Assets */
@@ -1278,10 +1292,12 @@ export type Category = Node & {
   updatedBy?: Maybe<User>;
 };
 
+
 export type CategoryCreatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 export type CategoryDocumentInStagesArgs = {
   includeCurrent?: Scalars['Boolean'];
@@ -1289,16 +1305,19 @@ export type CategoryDocumentInStagesArgs = {
   stages?: Array<Stage>;
 };
 
+
 export type CategoryHistoryArgs = {
   limit?: Scalars['Int'];
   skip?: Scalars['Int'];
   stageOverride?: InputMaybe<Stage>;
 };
 
+
 export type CategoryPublishedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 export type CategoryScheduledInArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -1310,6 +1329,7 @@ export type CategoryScheduledInArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
+
 
 export type CategoryUpdatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
@@ -1499,7 +1519,7 @@ export enum CategoryOrderByInput {
   TypeAsc = 'type_ASC',
   TypeDesc = 'type_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC',
+  UpdatedAtDesc = 'updatedAt_DESC'
 }
 
 export type CategoryUpdateInput = {
@@ -1762,7 +1782,7 @@ export enum DocumentFileTypes {
   Txt = 'txt',
   Webp = 'webp',
   Xls = 'xls',
-  Xlsx = 'xlsx',
+  Xlsx = 'xlsx'
 }
 
 export type DocumentOutputInput = {
@@ -1843,20 +1863,24 @@ export type Expense = Node & {
   updatedBy?: Maybe<User>;
 };
 
+
 export type ExpenseAccountArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 export type ExpenseCategoryArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
+
 export type ExpenseCreatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 export type ExpenseDocumentInStagesArgs = {
   includeCurrent?: Scalars['Boolean'];
@@ -1864,16 +1888,19 @@ export type ExpenseDocumentInStagesArgs = {
   stages?: Array<Stage>;
 };
 
+
 export type ExpenseHistoryArgs = {
   limit?: Scalars['Int'];
   skip?: Scalars['Int'];
   stageOverride?: InputMaybe<Stage>;
 };
 
+
 export type ExpensePublishedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 export type ExpenseScheduledInArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -1885,6 +1912,7 @@ export type ExpenseScheduledInArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
+
 
 export type ExpenseUpdatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
@@ -2125,7 +2153,7 @@ export enum ExpenseOrderByInput {
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC',
+  UpdatedAtDesc = 'updatedAt_DESC'
 }
 
 export type ExpenseUpdateInput = {
@@ -2402,7 +2430,7 @@ export enum ImageFit {
   /** Resizes the image to fit within the parameters, but as opposed to 'fit:clip' will not scale the image if the image is smaller than the output size. */
   Max = 'max',
   /** Resizes the image to fit the specified parameters exactly by scaling the image to the desired size. The aspect ratio of the image is not respected and the image can be distorted using this method. */
-  Scale = 'scale',
+  Scale = 'scale'
 }
 
 export type ImageResizeInput = {
@@ -2420,10 +2448,576 @@ export type ImageTransformationInput = {
   resize?: InputMaybe<ImageResizeInput>;
 };
 
+export type Investment = Node & {
+  __typename?: 'Investment';
+  amount: Scalars['Float'];
+  broker?: Maybe<Scalars['String']>;
+  /** The time the document was created */
+  createdAt: Scalars['DateTime'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  currency?: Maybe<Scalars['String']>;
+  deleted?: Maybe<Scalars['Boolean']>;
+  /** Get the document in other stages */
+  documentInStages: Array<Investment>;
+  /** List of Investment versions */
+  history: Array<Version>;
+  holder: Scalars['String'];
+  /** The unique identifier */
+  id: Scalars['ID'];
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  /** System stage field */
+  stage: Stage;
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+
+export type InvestmentCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type InvestmentDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  inheritLocale?: Scalars['Boolean'];
+  stages?: Array<Stage>;
+};
+
+
+export type InvestmentHistoryArgs = {
+  limit?: Scalars['Int'];
+  skip?: Scalars['Int'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+export type InvestmentPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type InvestmentScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+export type InvestmentUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type InvestmentConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: InvestmentWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type InvestmentConnection = {
+  __typename?: 'InvestmentConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<InvestmentEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type InvestmentCreateInput = {
+  amount: Scalars['Float'];
+  broker?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  currency?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  holder: Scalars['String'];
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type InvestmentCreateManyInlineInput = {
+  /** Connect multiple existing Investment documents */
+  connect?: InputMaybe<Array<InvestmentWhereUniqueInput>>;
+  /** Create and connect multiple existing Investment documents */
+  create?: InputMaybe<Array<InvestmentCreateInput>>;
+};
+
+export type InvestmentCreateOneInlineInput = {
+  /** Connect one existing Investment document */
+  connect?: InputMaybe<InvestmentWhereUniqueInput>;
+  /** Create and connect one Investment document */
+  create?: InputMaybe<InvestmentCreateInput>;
+};
+
+/** An edge in a connection. */
+export type InvestmentEdge = {
+  __typename?: 'InvestmentEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: Investment;
+};
+
+/** Identifies documents */
+export type InvestmentManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<InvestmentWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<InvestmentWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<InvestmentWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  amount?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  amount_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  amount_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  amount_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  /** All values less than the given value. */
+  amount_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  amount_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  amount_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  broker?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  broker_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  broker_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  broker_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  broker_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  broker_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  broker_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  broker_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  broker_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  broker_starts_with?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  currency?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  currency_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  currency_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  currency_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  currency_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  currency_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  currency_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  currency_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  currency_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  currency_starts_with?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  deleted_not?: InputMaybe<Scalars['Boolean']>;
+  documentInStages_every?: InputMaybe<InvestmentWhereStageInput>;
+  documentInStages_none?: InputMaybe<InvestmentWhereStageInput>;
+  documentInStages_some?: InputMaybe<InvestmentWhereStageInput>;
+  holder?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  holder_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  holder_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  holder_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  holder_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  holder_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  holder_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  holder_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  holder_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  holder_starts_with?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export enum InvestmentOrderByInput {
+  AmountAsc = 'amount_ASC',
+  AmountDesc = 'amount_DESC',
+  BrokerAsc = 'broker_ASC',
+  BrokerDesc = 'broker_DESC',
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  CurrencyAsc = 'currency_ASC',
+  CurrencyDesc = 'currency_DESC',
+  DeletedAsc = 'deleted_ASC',
+  DeletedDesc = 'deleted_DESC',
+  HolderAsc = 'holder_ASC',
+  HolderDesc = 'holder_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+}
+
+export type InvestmentUpdateInput = {
+  amount?: InputMaybe<Scalars['Float']>;
+  broker?: InputMaybe<Scalars['String']>;
+  currency?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  holder?: InputMaybe<Scalars['String']>;
+};
+
+export type InvestmentUpdateManyInlineInput = {
+  /** Connect multiple existing Investment documents */
+  connect?: InputMaybe<Array<InvestmentConnectInput>>;
+  /** Create and connect multiple Investment documents */
+  create?: InputMaybe<Array<InvestmentCreateInput>>;
+  /** Delete multiple Investment documents */
+  delete?: InputMaybe<Array<InvestmentWhereUniqueInput>>;
+  /** Disconnect multiple Investment documents */
+  disconnect?: InputMaybe<Array<InvestmentWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing Investment documents */
+  set?: InputMaybe<Array<InvestmentWhereUniqueInput>>;
+  /** Update multiple Investment documents */
+  update?: InputMaybe<Array<InvestmentUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple Investment documents */
+  upsert?: InputMaybe<Array<InvestmentUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type InvestmentUpdateManyInput = {
+  amount?: InputMaybe<Scalars['Float']>;
+  broker?: InputMaybe<Scalars['String']>;
+  currency?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  holder?: InputMaybe<Scalars['String']>;
+};
+
+export type InvestmentUpdateManyWithNestedWhereInput = {
+  /** Update many input */
+  data: InvestmentUpdateManyInput;
+  /** Document search */
+  where: InvestmentWhereInput;
+};
+
+export type InvestmentUpdateOneInlineInput = {
+  /** Connect existing Investment document */
+  connect?: InputMaybe<InvestmentWhereUniqueInput>;
+  /** Create and connect one Investment document */
+  create?: InputMaybe<InvestmentCreateInput>;
+  /** Delete currently connected Investment document */
+  delete?: InputMaybe<Scalars['Boolean']>;
+  /** Disconnect currently connected Investment document */
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  /** Update single Investment document */
+  update?: InputMaybe<InvestmentUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single Investment document */
+  upsert?: InputMaybe<InvestmentUpsertWithNestedWhereUniqueInput>;
+};
+
+export type InvestmentUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: InvestmentUpdateInput;
+  /** Unique document search */
+  where: InvestmentWhereUniqueInput;
+};
+
+export type InvestmentUpsertInput = {
+  /** Create document if it didn't exist */
+  create: InvestmentCreateInput;
+  /** Update document if it exists */
+  update: InvestmentUpdateInput;
+};
+
+export type InvestmentUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: InvestmentUpsertInput;
+  /** Unique document search */
+  where: InvestmentWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type InvestmentWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Identifies documents */
+export type InvestmentWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<InvestmentWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<InvestmentWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<InvestmentWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  amount?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  amount_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  amount_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  amount_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  /** All values less than the given value. */
+  amount_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  amount_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  amount_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  broker?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  broker_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  broker_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  broker_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  broker_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  broker_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  broker_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  broker_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  broker_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  broker_starts_with?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  currency?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  currency_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  currency_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  currency_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  currency_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  currency_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  currency_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  currency_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  currency_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  currency_starts_with?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  deleted_not?: InputMaybe<Scalars['Boolean']>;
+  documentInStages_every?: InputMaybe<InvestmentWhereStageInput>;
+  documentInStages_none?: InputMaybe<InvestmentWhereStageInput>;
+  documentInStages_some?: InputMaybe<InvestmentWhereStageInput>;
+  holder?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  holder_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  holder_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  holder_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  holder_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  holder_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  holder_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  holder_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  holder_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  holder_starts_with?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type InvestmentWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<InvestmentWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<InvestmentWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<InvestmentWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<InvestmentWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References Investment record uniquely */
+export type InvestmentWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
 /** Locale system enumeration */
 export enum Locale {
   /** System locale */
-  En = 'en',
+  En = 'en'
 }
 
 /** Representing a geolocation point with latitude and longitude */
@@ -2433,6 +3027,7 @@ export type Location = {
   latitude: Scalars['Float'];
   longitude: Scalars['Float'];
 };
+
 
 /** Representing a geolocation point with latitude and longitude */
 export type LocationDistanceArgs = {
@@ -2458,6 +3053,8 @@ export type Mutation = {
   createCategory?: Maybe<Category>;
   /** Create one expense */
   createExpense?: Maybe<Expense>;
+  /** Create one investment */
+  createInvestment?: Maybe<Investment>;
   /** Create one revenue */
   createRevenue?: Maybe<Revenue>;
   /** Create one scheduledRelease */
@@ -2470,6 +3067,8 @@ export type Mutation = {
   deleteCategory?: Maybe<Category>;
   /** Delete one expense from _all_ existing stages. Returns deleted document. */
   deleteExpense?: Maybe<Expense>;
+  /** Delete one investment from _all_ existing stages. Returns deleted document. */
+  deleteInvestment?: Maybe<Investment>;
   /**
    * Delete many Account documents
    * @deprecated Please use the new paginated many mutation (deleteManyAccountsConnection)
@@ -2499,6 +3098,13 @@ export type Mutation = {
   /** Delete many Expense documents, return deleted documents */
   deleteManyExpensesConnection: ExpenseConnection;
   /**
+   * Delete many Investment documents
+   * @deprecated Please use the new paginated many mutation (deleteManyInvestmentsConnection)
+   */
+  deleteManyInvestments: BatchPayload;
+  /** Delete many Investment documents, return deleted documents */
+  deleteManyInvestmentsConnection: InvestmentConnection;
+  /**
    * Delete many Revenue documents
    * @deprecated Please use the new paginated many mutation (deleteManyRevenuesConnection)
    */
@@ -2519,6 +3125,8 @@ export type Mutation = {
   publishCategory?: Maybe<Category>;
   /** Publish one expense */
   publishExpense?: Maybe<Expense>;
+  /** Publish one investment */
+  publishInvestment?: Maybe<Investment>;
   /**
    * Publish many Account documents
    * @deprecated Please use the new paginated many mutation (publishManyAccountsConnection)
@@ -2548,6 +3156,13 @@ export type Mutation = {
   /** Publish many Expense documents */
   publishManyExpensesConnection: ExpenseConnection;
   /**
+   * Publish many Investment documents
+   * @deprecated Please use the new paginated many mutation (publishManyInvestmentsConnection)
+   */
+  publishManyInvestments: BatchPayload;
+  /** Publish many Investment documents */
+  publishManyInvestmentsConnection: InvestmentConnection;
+  /**
    * Publish many Revenue documents
    * @deprecated Please use the new paginated many mutation (publishManyRevenuesConnection)
    */
@@ -2564,6 +3179,8 @@ export type Mutation = {
   schedulePublishCategory?: Maybe<Category>;
   /** Schedule to publish one expense */
   schedulePublishExpense?: Maybe<Expense>;
+  /** Schedule to publish one investment */
+  schedulePublishInvestment?: Maybe<Investment>;
   /** Schedule to publish one revenue */
   schedulePublishRevenue?: Maybe<Revenue>;
   /** Unpublish one account from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -2574,6 +3191,8 @@ export type Mutation = {
   scheduleUnpublishCategory?: Maybe<Category>;
   /** Unpublish one expense from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishExpense?: Maybe<Expense>;
+  /** Unpublish one investment from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishInvestment?: Maybe<Investment>;
   /** Unpublish one revenue from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishRevenue?: Maybe<Revenue>;
   /** Unpublish one account from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -2584,6 +3203,8 @@ export type Mutation = {
   unpublishCategory?: Maybe<Category>;
   /** Unpublish one expense from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishExpense?: Maybe<Expense>;
+  /** Unpublish one investment from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishInvestment?: Maybe<Investment>;
   /**
    * Unpublish many Account documents
    * @deprecated Please use the new paginated many mutation (unpublishManyAccountsConnection)
@@ -2613,6 +3234,13 @@ export type Mutation = {
   /** Find many Expense documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyExpensesConnection: ExpenseConnection;
   /**
+   * Unpublish many Investment documents
+   * @deprecated Please use the new paginated many mutation (unpublishManyInvestmentsConnection)
+   */
+  unpublishManyInvestments: BatchPayload;
+  /** Find many Investment documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyInvestmentsConnection: InvestmentConnection;
+  /**
    * Unpublish many Revenue documents
    * @deprecated Please use the new paginated many mutation (unpublishManyRevenuesConnection)
    */
@@ -2629,6 +3257,8 @@ export type Mutation = {
   updateCategory?: Maybe<Category>;
   /** Update one expense */
   updateExpense?: Maybe<Expense>;
+  /** Update one investment */
+  updateInvestment?: Maybe<Investment>;
   /**
    * Update many accounts
    * @deprecated Please use the new paginated many mutation (updateManyAccountsConnection)
@@ -2658,6 +3288,13 @@ export type Mutation = {
   /** Update many Expense documents */
   updateManyExpensesConnection: ExpenseConnection;
   /**
+   * Update many investments
+   * @deprecated Please use the new paginated many mutation (updateManyInvestmentsConnection)
+   */
+  updateManyInvestments: BatchPayload;
+  /** Update many Investment documents */
+  updateManyInvestmentsConnection: InvestmentConnection;
+  /**
    * Update many revenues
    * @deprecated Please use the new paginated many mutation (updateManyRevenuesConnection)
    */
@@ -2676,53 +3313,77 @@ export type Mutation = {
   upsertCategory?: Maybe<Category>;
   /** Upsert one expense */
   upsertExpense?: Maybe<Expense>;
+  /** Upsert one investment */
+  upsertInvestment?: Maybe<Investment>;
   /** Upsert one revenue */
   upsertRevenue?: Maybe<Revenue>;
 };
+
 
 export type MutationCreateAccountArgs = {
   data: AccountCreateInput;
 };
 
+
 export type MutationCreateAssetArgs = {
   data: AssetCreateInput;
 };
+
 
 export type MutationCreateCategoryArgs = {
   data: CategoryCreateInput;
 };
 
+
 export type MutationCreateExpenseArgs = {
   data: ExpenseCreateInput;
 };
+
+
+export type MutationCreateInvestmentArgs = {
+  data: InvestmentCreateInput;
+};
+
 
 export type MutationCreateRevenueArgs = {
   data: RevenueCreateInput;
 };
 
+
 export type MutationCreateScheduledReleaseArgs = {
   data: ScheduledReleaseCreateInput;
 };
+
 
 export type MutationDeleteAccountArgs = {
   where: AccountWhereUniqueInput;
 };
 
+
 export type MutationDeleteAssetArgs = {
   where: AssetWhereUniqueInput;
 };
+
 
 export type MutationDeleteCategoryArgs = {
   where: CategoryWhereUniqueInput;
 };
 
+
 export type MutationDeleteExpenseArgs = {
   where: ExpenseWhereUniqueInput;
 };
 
+
+export type MutationDeleteInvestmentArgs = {
+  where: InvestmentWhereUniqueInput;
+};
+
+
 export type MutationDeleteManyAccountsArgs = {
   where?: InputMaybe<AccountManyWhereInput>;
 };
+
 
 export type MutationDeleteManyAccountsConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -2733,9 +3394,11 @@ export type MutationDeleteManyAccountsConnectionArgs = {
   where?: InputMaybe<AccountManyWhereInput>;
 };
 
+
 export type MutationDeleteManyAssetsArgs = {
   where?: InputMaybe<AssetManyWhereInput>;
 };
+
 
 export type MutationDeleteManyAssetsConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -2746,9 +3409,11 @@ export type MutationDeleteManyAssetsConnectionArgs = {
   where?: InputMaybe<AssetManyWhereInput>;
 };
 
+
 export type MutationDeleteManyCategoriesArgs = {
   where?: InputMaybe<CategoryManyWhereInput>;
 };
+
 
 export type MutationDeleteManyCategoriesConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -2759,9 +3424,11 @@ export type MutationDeleteManyCategoriesConnectionArgs = {
   where?: InputMaybe<CategoryManyWhereInput>;
 };
 
+
 export type MutationDeleteManyExpensesArgs = {
   where?: InputMaybe<ExpenseManyWhereInput>;
 };
+
 
 export type MutationDeleteManyExpensesConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -2772,9 +3439,26 @@ export type MutationDeleteManyExpensesConnectionArgs = {
   where?: InputMaybe<ExpenseManyWhereInput>;
 };
 
+
+export type MutationDeleteManyInvestmentsArgs = {
+  where?: InputMaybe<InvestmentManyWhereInput>;
+};
+
+
+export type MutationDeleteManyInvestmentsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<InvestmentManyWhereInput>;
+};
+
+
 export type MutationDeleteManyRevenuesArgs = {
   where?: InputMaybe<RevenueManyWhereInput>;
 };
+
 
 export type MutationDeleteManyRevenuesConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -2785,22 +3469,27 @@ export type MutationDeleteManyRevenuesConnectionArgs = {
   where?: InputMaybe<RevenueManyWhereInput>;
 };
 
+
 export type MutationDeleteRevenueArgs = {
   where: RevenueWhereUniqueInput;
 };
+
 
 export type MutationDeleteScheduledOperationArgs = {
   where: ScheduledOperationWhereUniqueInput;
 };
 
+
 export type MutationDeleteScheduledReleaseArgs = {
   where: ScheduledReleaseWhereUniqueInput;
 };
+
 
 export type MutationPublishAccountArgs = {
   to?: Array<Stage>;
   where: AccountWhereUniqueInput;
 };
+
 
 export type MutationPublishAssetArgs = {
   locales?: InputMaybe<Array<Locale>>;
@@ -2810,20 +3499,30 @@ export type MutationPublishAssetArgs = {
   withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
 };
 
+
 export type MutationPublishCategoryArgs = {
   to?: Array<Stage>;
   where: CategoryWhereUniqueInput;
 };
+
 
 export type MutationPublishExpenseArgs = {
   to?: Array<Stage>;
   where: ExpenseWhereUniqueInput;
 };
 
+
+export type MutationPublishInvestmentArgs = {
+  to?: Array<Stage>;
+  where: InvestmentWhereUniqueInput;
+};
+
+
 export type MutationPublishManyAccountsArgs = {
   to?: Array<Stage>;
   where?: InputMaybe<AccountManyWhereInput>;
 };
+
 
 export type MutationPublishManyAccountsConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -2836,6 +3535,7 @@ export type MutationPublishManyAccountsConnectionArgs = {
   where?: InputMaybe<AccountManyWhereInput>;
 };
 
+
 export type MutationPublishManyAssetsArgs = {
   locales?: InputMaybe<Array<Locale>>;
   publishBase?: InputMaybe<Scalars['Boolean']>;
@@ -2843,6 +3543,7 @@ export type MutationPublishManyAssetsArgs = {
   where?: InputMaybe<AssetManyWhereInput>;
   withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
 };
+
 
 export type MutationPublishManyAssetsConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -2858,10 +3559,12 @@ export type MutationPublishManyAssetsConnectionArgs = {
   withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
 };
 
+
 export type MutationPublishManyCategoriesArgs = {
   to?: Array<Stage>;
   where?: InputMaybe<CategoryManyWhereInput>;
 };
+
 
 export type MutationPublishManyCategoriesConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -2874,10 +3577,12 @@ export type MutationPublishManyCategoriesConnectionArgs = {
   where?: InputMaybe<CategoryManyWhereInput>;
 };
 
+
 export type MutationPublishManyExpensesArgs = {
   to?: Array<Stage>;
   where?: InputMaybe<ExpenseManyWhereInput>;
 };
+
 
 export type MutationPublishManyExpensesConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -2890,10 +3595,30 @@ export type MutationPublishManyExpensesConnectionArgs = {
   where?: InputMaybe<ExpenseManyWhereInput>;
 };
 
+
+export type MutationPublishManyInvestmentsArgs = {
+  to?: Array<Stage>;
+  where?: InputMaybe<InvestmentManyWhereInput>;
+};
+
+
+export type MutationPublishManyInvestmentsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<InvestmentManyWhereInput>;
+};
+
+
 export type MutationPublishManyRevenuesArgs = {
   to?: Array<Stage>;
   where?: InputMaybe<RevenueManyWhereInput>;
 };
+
 
 export type MutationPublishManyRevenuesConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -2906,10 +3631,12 @@ export type MutationPublishManyRevenuesConnectionArgs = {
   where?: InputMaybe<RevenueManyWhereInput>;
 };
 
+
 export type MutationPublishRevenueArgs = {
   to?: Array<Stage>;
   where: RevenueWhereUniqueInput;
 };
+
 
 export type MutationSchedulePublishAccountArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']>;
@@ -2917,6 +3644,7 @@ export type MutationSchedulePublishAccountArgs = {
   to?: Array<Stage>;
   where: AccountWhereUniqueInput;
 };
+
 
 export type MutationSchedulePublishAssetArgs = {
   locales?: InputMaybe<Array<Locale>>;
@@ -2928,12 +3656,14 @@ export type MutationSchedulePublishAssetArgs = {
   withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
 };
 
+
 export type MutationSchedulePublishCategoryArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']>;
   releaseId?: InputMaybe<Scalars['String']>;
   to?: Array<Stage>;
   where: CategoryWhereUniqueInput;
 };
+
 
 export type MutationSchedulePublishExpenseArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']>;
@@ -2942,6 +3672,15 @@ export type MutationSchedulePublishExpenseArgs = {
   where: ExpenseWhereUniqueInput;
 };
 
+
+export type MutationSchedulePublishInvestmentArgs = {
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  to?: Array<Stage>;
+  where: InvestmentWhereUniqueInput;
+};
+
+
 export type MutationSchedulePublishRevenueArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']>;
   releaseId?: InputMaybe<Scalars['String']>;
@@ -2949,12 +3688,14 @@ export type MutationSchedulePublishRevenueArgs = {
   where: RevenueWhereUniqueInput;
 };
 
+
 export type MutationScheduleUnpublishAccountArgs = {
   from?: Array<Stage>;
   releaseAt?: InputMaybe<Scalars['DateTime']>;
   releaseId?: InputMaybe<Scalars['String']>;
   where: AccountWhereUniqueInput;
 };
+
 
 export type MutationScheduleUnpublishAssetArgs = {
   from?: Array<Stage>;
@@ -2965,12 +3706,14 @@ export type MutationScheduleUnpublishAssetArgs = {
   where: AssetWhereUniqueInput;
 };
 
+
 export type MutationScheduleUnpublishCategoryArgs = {
   from?: Array<Stage>;
   releaseAt?: InputMaybe<Scalars['DateTime']>;
   releaseId?: InputMaybe<Scalars['String']>;
   where: CategoryWhereUniqueInput;
 };
+
 
 export type MutationScheduleUnpublishExpenseArgs = {
   from?: Array<Stage>;
@@ -2979,6 +3722,15 @@ export type MutationScheduleUnpublishExpenseArgs = {
   where: ExpenseWhereUniqueInput;
 };
 
+
+export type MutationScheduleUnpublishInvestmentArgs = {
+  from?: Array<Stage>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  where: InvestmentWhereUniqueInput;
+};
+
+
 export type MutationScheduleUnpublishRevenueArgs = {
   from?: Array<Stage>;
   releaseAt?: InputMaybe<Scalars['DateTime']>;
@@ -2986,10 +3738,12 @@ export type MutationScheduleUnpublishRevenueArgs = {
   where: RevenueWhereUniqueInput;
 };
 
+
 export type MutationUnpublishAccountArgs = {
   from?: Array<Stage>;
   where: AccountWhereUniqueInput;
 };
+
 
 export type MutationUnpublishAssetArgs = {
   from?: Array<Stage>;
@@ -2998,20 +3752,30 @@ export type MutationUnpublishAssetArgs = {
   where: AssetWhereUniqueInput;
 };
 
+
 export type MutationUnpublishCategoryArgs = {
   from?: Array<Stage>;
   where: CategoryWhereUniqueInput;
 };
+
 
 export type MutationUnpublishExpenseArgs = {
   from?: Array<Stage>;
   where: ExpenseWhereUniqueInput;
 };
 
+
+export type MutationUnpublishInvestmentArgs = {
+  from?: Array<Stage>;
+  where: InvestmentWhereUniqueInput;
+};
+
+
 export type MutationUnpublishManyAccountsArgs = {
   from?: Array<Stage>;
   where?: InputMaybe<AccountManyWhereInput>;
 };
+
 
 export type MutationUnpublishManyAccountsConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -3024,12 +3788,14 @@ export type MutationUnpublishManyAccountsConnectionArgs = {
   where?: InputMaybe<AccountManyWhereInput>;
 };
 
+
 export type MutationUnpublishManyAssetsArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
   unpublishBase?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<AssetManyWhereInput>;
 };
+
 
 export type MutationUnpublishManyAssetsConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -3044,10 +3810,12 @@ export type MutationUnpublishManyAssetsConnectionArgs = {
   where?: InputMaybe<AssetManyWhereInput>;
 };
 
+
 export type MutationUnpublishManyCategoriesArgs = {
   from?: Array<Stage>;
   where?: InputMaybe<CategoryManyWhereInput>;
 };
+
 
 export type MutationUnpublishManyCategoriesConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -3060,10 +3828,12 @@ export type MutationUnpublishManyCategoriesConnectionArgs = {
   where?: InputMaybe<CategoryManyWhereInput>;
 };
 
+
 export type MutationUnpublishManyExpensesArgs = {
   from?: Array<Stage>;
   where?: InputMaybe<ExpenseManyWhereInput>;
 };
+
 
 export type MutationUnpublishManyExpensesConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -3076,10 +3846,30 @@ export type MutationUnpublishManyExpensesConnectionArgs = {
   where?: InputMaybe<ExpenseManyWhereInput>;
 };
 
+
+export type MutationUnpublishManyInvestmentsArgs = {
+  from?: Array<Stage>;
+  where?: InputMaybe<InvestmentManyWhereInput>;
+};
+
+
+export type MutationUnpublishManyInvestmentsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: InputMaybe<Stage>;
+  where?: InputMaybe<InvestmentManyWhereInput>;
+};
+
+
 export type MutationUnpublishManyRevenuesArgs = {
   from?: Array<Stage>;
   where?: InputMaybe<RevenueManyWhereInput>;
 };
+
 
 export type MutationUnpublishManyRevenuesConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -3092,35 +3882,48 @@ export type MutationUnpublishManyRevenuesConnectionArgs = {
   where?: InputMaybe<RevenueManyWhereInput>;
 };
 
+
 export type MutationUnpublishRevenueArgs = {
   from?: Array<Stage>;
   where: RevenueWhereUniqueInput;
 };
+
 
 export type MutationUpdateAccountArgs = {
   data: AccountUpdateInput;
   where: AccountWhereUniqueInput;
 };
 
+
 export type MutationUpdateAssetArgs = {
   data: AssetUpdateInput;
   where: AssetWhereUniqueInput;
 };
+
 
 export type MutationUpdateCategoryArgs = {
   data: CategoryUpdateInput;
   where: CategoryWhereUniqueInput;
 };
 
+
 export type MutationUpdateExpenseArgs = {
   data: ExpenseUpdateInput;
   where: ExpenseWhereUniqueInput;
 };
 
+
+export type MutationUpdateInvestmentArgs = {
+  data: InvestmentUpdateInput;
+  where: InvestmentWhereUniqueInput;
+};
+
+
 export type MutationUpdateManyAccountsArgs = {
   data: AccountUpdateManyInput;
   where?: InputMaybe<AccountManyWhereInput>;
 };
+
 
 export type MutationUpdateManyAccountsConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -3132,10 +3935,12 @@ export type MutationUpdateManyAccountsConnectionArgs = {
   where?: InputMaybe<AccountManyWhereInput>;
 };
 
+
 export type MutationUpdateManyAssetsArgs = {
   data: AssetUpdateManyInput;
   where?: InputMaybe<AssetManyWhereInput>;
 };
+
 
 export type MutationUpdateManyAssetsConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -3147,10 +3952,12 @@ export type MutationUpdateManyAssetsConnectionArgs = {
   where?: InputMaybe<AssetManyWhereInput>;
 };
 
+
 export type MutationUpdateManyCategoriesArgs = {
   data: CategoryUpdateManyInput;
   where?: InputMaybe<CategoryManyWhereInput>;
 };
+
 
 export type MutationUpdateManyCategoriesConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -3162,10 +3969,12 @@ export type MutationUpdateManyCategoriesConnectionArgs = {
   where?: InputMaybe<CategoryManyWhereInput>;
 };
 
+
 export type MutationUpdateManyExpensesArgs = {
   data: ExpenseUpdateManyInput;
   where?: InputMaybe<ExpenseManyWhereInput>;
 };
+
 
 export type MutationUpdateManyExpensesConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -3177,10 +3986,29 @@ export type MutationUpdateManyExpensesConnectionArgs = {
   where?: InputMaybe<ExpenseManyWhereInput>;
 };
 
+
+export type MutationUpdateManyInvestmentsArgs = {
+  data: InvestmentUpdateManyInput;
+  where?: InputMaybe<InvestmentManyWhereInput>;
+};
+
+
+export type MutationUpdateManyInvestmentsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  data: InvestmentUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<InvestmentManyWhereInput>;
+};
+
+
 export type MutationUpdateManyRevenuesArgs = {
   data: RevenueUpdateManyInput;
   where?: InputMaybe<RevenueManyWhereInput>;
 };
+
 
 export type MutationUpdateManyRevenuesConnectionArgs = {
   after?: InputMaybe<Scalars['ID']>;
@@ -3192,35 +4020,48 @@ export type MutationUpdateManyRevenuesConnectionArgs = {
   where?: InputMaybe<RevenueManyWhereInput>;
 };
 
+
 export type MutationUpdateRevenueArgs = {
   data: RevenueUpdateInput;
   where: RevenueWhereUniqueInput;
 };
+
 
 export type MutationUpdateScheduledReleaseArgs = {
   data: ScheduledReleaseUpdateInput;
   where: ScheduledReleaseWhereUniqueInput;
 };
 
+
 export type MutationUpsertAccountArgs = {
   upsert: AccountUpsertInput;
   where: AccountWhereUniqueInput;
 };
+
 
 export type MutationUpsertAssetArgs = {
   upsert: AssetUpsertInput;
   where: AssetWhereUniqueInput;
 };
 
+
 export type MutationUpsertCategoryArgs = {
   upsert: CategoryUpsertInput;
   where: CategoryWhereUniqueInput;
 };
 
+
 export type MutationUpsertExpenseArgs = {
   upsert: ExpenseUpsertInput;
   where: ExpenseWhereUniqueInput;
 };
+
+
+export type MutationUpsertInvestmentArgs = {
+  upsert: InvestmentUpsertInput;
+  where: InvestmentWhereUniqueInput;
+};
+
 
 export type MutationUpsertRevenueArgs = {
   upsert: RevenueUpsertInput;
@@ -3291,6 +4132,14 @@ export type Query = {
   expenses: Array<Expense>;
   /** Retrieve multiple expenses using the Relay connection interface */
   expensesConnection: ExpenseConnection;
+  /** Retrieve a single investment */
+  investment?: Maybe<Investment>;
+  /** Retrieve document version */
+  investmentVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple investments */
+  investments: Array<Investment>;
+  /** Retrieve multiple investments using the Relay connection interface */
+  investmentsConnection: InvestmentConnection;
   /** Fetches an object given its ID */
   node?: Maybe<Node>;
   /** Retrieve a single revenue */
@@ -3321,15 +4170,18 @@ export type Query = {
   usersConnection: UserConnection;
 };
 
+
 export type QueryAccountArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
   where: AccountWhereUniqueInput;
 };
 
+
 export type QueryAccountVersionArgs = {
   where: VersionWhereInput;
 };
+
 
 export type QueryAccountsArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -3343,6 +4195,7 @@ export type QueryAccountsArgs = {
   where?: InputMaybe<AccountWhereInput>;
 };
 
+
 export type QueryAccountsConnectionArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
@@ -3355,15 +4208,18 @@ export type QueryAccountsConnectionArgs = {
   where?: InputMaybe<AccountWhereInput>;
 };
 
+
 export type QueryAssetArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
   where: AssetWhereUniqueInput;
 };
 
+
 export type QueryAssetVersionArgs = {
   where: VersionWhereInput;
 };
+
 
 export type QueryAssetsArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -3377,6 +4233,7 @@ export type QueryAssetsArgs = {
   where?: InputMaybe<AssetWhereInput>;
 };
 
+
 export type QueryAssetsConnectionArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
@@ -3388,6 +4245,7 @@ export type QueryAssetsConnectionArgs = {
   stage?: Stage;
   where?: InputMaybe<AssetWhereInput>;
 };
+
 
 export type QueryCategoriesArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -3401,6 +4259,7 @@ export type QueryCategoriesArgs = {
   where?: InputMaybe<CategoryWhereInput>;
 };
 
+
 export type QueryCategoriesConnectionArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
@@ -3413,15 +4272,18 @@ export type QueryCategoriesConnectionArgs = {
   where?: InputMaybe<CategoryWhereInput>;
 };
 
+
 export type QueryCategoryArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
   where: CategoryWhereUniqueInput;
 };
 
+
 export type QueryCategoryVersionArgs = {
   where: VersionWhereInput;
 };
+
 
 export type QueryExpenseArgs = {
   locales?: Array<Locale>;
@@ -3429,9 +4291,11 @@ export type QueryExpenseArgs = {
   where: ExpenseWhereUniqueInput;
 };
 
+
 export type QueryExpenseVersionArgs = {
   where: VersionWhereInput;
 };
+
 
 export type QueryExpensesArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -3445,6 +4309,7 @@ export type QueryExpensesArgs = {
   where?: InputMaybe<ExpenseWhereInput>;
 };
 
+
 export type QueryExpensesConnectionArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
@@ -3457,11 +4322,51 @@ export type QueryExpensesConnectionArgs = {
   where?: InputMaybe<ExpenseWhereInput>;
 };
 
+
+export type QueryInvestmentArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: InvestmentWhereUniqueInput;
+};
+
+
+export type QueryInvestmentVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
+export type QueryInvestmentsArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<InvestmentOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<InvestmentWhereInput>;
+};
+
+
+export type QueryInvestmentsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<InvestmentOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<InvestmentWhereInput>;
+};
+
+
 export type QueryNodeArgs = {
   id: Scalars['ID'];
   locales?: Array<Locale>;
   stage?: Stage;
 };
+
 
 export type QueryRevenueArgs = {
   locales?: Array<Locale>;
@@ -3469,9 +4374,11 @@ export type QueryRevenueArgs = {
   where: RevenueWhereUniqueInput;
 };
 
+
 export type QueryRevenueVersionArgs = {
   where: VersionWhereInput;
 };
+
 
 export type QueryRevenuesArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -3485,6 +4392,7 @@ export type QueryRevenuesArgs = {
   where?: InputMaybe<RevenueWhereInput>;
 };
 
+
 export type QueryRevenuesConnectionArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
@@ -3497,11 +4405,13 @@ export type QueryRevenuesConnectionArgs = {
   where?: InputMaybe<RevenueWhereInput>;
 };
 
+
 export type QueryScheduledOperationArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
   where: ScheduledOperationWhereUniqueInput;
 };
+
 
 export type QueryScheduledOperationsArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -3515,6 +4425,7 @@ export type QueryScheduledOperationsArgs = {
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
+
 export type QueryScheduledOperationsConnectionArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
@@ -3527,11 +4438,13 @@ export type QueryScheduledOperationsConnectionArgs = {
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
+
 export type QueryScheduledReleaseArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
   where: ScheduledReleaseWhereUniqueInput;
 };
+
 
 export type QueryScheduledReleasesArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -3545,6 +4458,7 @@ export type QueryScheduledReleasesArgs = {
   where?: InputMaybe<ScheduledReleaseWhereInput>;
 };
 
+
 export type QueryScheduledReleasesConnectionArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
@@ -3557,11 +4471,13 @@ export type QueryScheduledReleasesConnectionArgs = {
   where?: InputMaybe<ScheduledReleaseWhereInput>;
 };
 
+
 export type QueryUserArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
   where: UserWhereUniqueInput;
 };
+
 
 export type QueryUsersArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -3574,6 +4490,7 @@ export type QueryUsersArgs = {
   stage?: Stage;
   where?: InputMaybe<UserWhereInput>;
 };
+
 
 export type QueryUsersConnectionArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -3638,11 +4555,13 @@ export type Revenue = Node & {
   updatedBy?: Maybe<User>;
 };
 
+
 /** Armazena dados de rendas e despesas */
 export type RevenueCreatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 /** Armazena dados de rendas e despesas */
 export type RevenueDocumentInStagesArgs = {
@@ -3651,6 +4570,7 @@ export type RevenueDocumentInStagesArgs = {
   stages?: Array<Stage>;
 };
 
+
 /** Armazena dados de rendas e despesas */
 export type RevenueHistoryArgs = {
   limit?: Scalars['Int'];
@@ -3658,11 +4578,13 @@ export type RevenueHistoryArgs = {
   stageOverride?: InputMaybe<Stage>;
 };
 
+
 /** Armazena dados de rendas e despesas */
 export type RevenuePublishedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 /** Armazena dados de rendas e despesas */
 export type RevenueScheduledInArgs = {
@@ -3675,6 +4597,7 @@ export type RevenueScheduledInArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
+
 
 /** Armazena dados de rendas e despesas */
 export type RevenueUpdatedByArgs = {
@@ -3968,7 +4891,7 @@ export enum RevenueOrderByInput {
   TypeAsc = 'type_ASC',
   TypeDesc = 'type_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC',
+  UpdatedAtDesc = 'updatedAt_DESC'
 }
 
 export type RevenueUpdateInput = {
@@ -4334,6 +5257,7 @@ export type ScheduledOperation = Node & {
   updatedBy?: Maybe<User>;
 };
 
+
 /** Scheduled Operation system model */
 export type ScheduledOperationAffectedDocumentsArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -4345,11 +5269,13 @@ export type ScheduledOperationAffectedDocumentsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
 };
 
+
 /** Scheduled Operation system model */
 export type ScheduledOperationCreatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 /** Scheduled Operation system model */
 export type ScheduledOperationDocumentInStagesArgs = {
@@ -4358,11 +5284,13 @@ export type ScheduledOperationDocumentInStagesArgs = {
   stages?: Array<Stage>;
 };
 
+
 /** Scheduled Operation system model */
 export type ScheduledOperationPublishedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 /** Scheduled Operation system model */
 export type ScheduledOperationReleaseArgs = {
@@ -4370,18 +5298,14 @@ export type ScheduledOperationReleaseArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
+
 /** Scheduled Operation system model */
 export type ScheduledOperationUpdatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument =
-  | Account
-  | Asset
-  | Category
-  | Expense
-  | Revenue;
+export type ScheduledOperationAffectedDocument = Account | Asset | Category | Expense | Investment | Revenue;
 
 export type ScheduledOperationConnectInput = {
   /** Allow to specify document position in list of connected documents, will default to appending at end of list */
@@ -4518,6 +5442,15 @@ export type ScheduledOperationManyWhereInput = {
   /** All values that are not contained in given list. */
   publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
+  /** All values containing the given json path. */
+  rawPayload_json_path_exists?: InputMaybe<Scalars['String']>;
+  /**
+   * Recursively tries to find the provided JSON scalar value inside the field.
+   * It does use an exact match when comparing values.
+   * If you pass `null` as value the filter will be ignored.
+   * Note: This filter fails if you try to look for a non scalar JSON value!
+   */
+  rawPayload_value_recursive?: InputMaybe<Scalars['Json']>;
   release?: InputMaybe<ScheduledReleaseWhereInput>;
   status?: InputMaybe<ScheduledOperationStatus>;
   /** All values that are contained in given list. */
@@ -4558,7 +5491,7 @@ export enum ScheduledOperationOrderByInput {
   StatusAsc = 'status_ASC',
   StatusDesc = 'status_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC',
+  UpdatedAtDesc = 'updatedAt_DESC'
 }
 
 /** System Scheduled Operation Status */
@@ -4567,7 +5500,7 @@ export enum ScheduledOperationStatus {
   Completed = 'COMPLETED',
   Failed = 'FAILED',
   InProgress = 'IN_PROGRESS',
-  Pending = 'PENDING',
+  Pending = 'PENDING'
 }
 
 export type ScheduledOperationUpdateManyInlineInput = {
@@ -4685,6 +5618,15 @@ export type ScheduledOperationWhereInput = {
   /** All values that are not contained in given list. */
   publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
+  /** All values containing the given json path. */
+  rawPayload_json_path_exists?: InputMaybe<Scalars['String']>;
+  /**
+   * Recursively tries to find the provided JSON scalar value inside the field.
+   * It does use an exact match when comparing values.
+   * If you pass `null` as value the filter will be ignored.
+   * Note: This filter fails if you try to look for a non scalar JSON value!
+   */
+  rawPayload_value_recursive?: InputMaybe<Scalars['Json']>;
   release?: InputMaybe<ScheduledReleaseWhereInput>;
   status?: InputMaybe<ScheduledOperationStatus>;
   /** All values that are contained in given list. */
@@ -4755,11 +5697,13 @@ export type ScheduledRelease = Node & {
   updatedBy?: Maybe<User>;
 };
 
+
 /** Scheduled Release system model */
 export type ScheduledReleaseCreatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 /** Scheduled Release system model */
 export type ScheduledReleaseDocumentInStagesArgs = {
@@ -4767,6 +5711,7 @@ export type ScheduledReleaseDocumentInStagesArgs = {
   inheritLocale?: Scalars['Boolean'];
   stages?: Array<Stage>;
 };
+
 
 /** Scheduled Release system model */
 export type ScheduledReleaseOperationsArgs = {
@@ -4781,11 +5726,13 @@ export type ScheduledReleaseOperationsArgs = {
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
+
 /** Scheduled Release system model */
 export type ScheduledReleasePublishedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
+
 
 /** Scheduled Release system model */
 export type ScheduledReleaseUpdatedByArgs = {
@@ -5032,7 +5979,7 @@ export enum ScheduledReleaseOrderByInput {
   TitleAsc = 'title_ASC',
   TitleDesc = 'title_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC',
+  UpdatedAtDesc = 'updatedAt_DESC'
 }
 
 /** System Scheduled Release Status */
@@ -5040,7 +5987,7 @@ export enum ScheduledReleaseStatus {
   Completed = 'COMPLETED',
   Failed = 'FAILED',
   InProgress = 'IN_PROGRESS',
-  Pending = 'PENDING',
+  Pending = 'PENDING'
 }
 
 export type ScheduledReleaseUpdateInput = {
@@ -5296,13 +6243,13 @@ export enum Stage {
   /** The Draft is the default stage for all your content. */
   Draft = 'DRAFT',
   /** The Published stage is where you can publish your content to. */
-  Published = 'PUBLISHED',
+  Published = 'PUBLISHED'
 }
 
 export enum SystemDateTimeFieldVariation {
   Base = 'BASE',
   Combined = 'COMBINED',
-  Localization = 'LOCALIZATION',
+  Localization = 'LOCALIZATION'
 }
 
 export type UnpublishLocaleInput = {
@@ -5336,6 +6283,7 @@ export type User = Node & {
   /** The time the document was updated */
   updatedAt: Scalars['DateTime'];
 };
+
 
 /** User system model */
 export type UserDocumentInStagesArgs = {
@@ -5385,7 +6333,7 @@ export enum UserKind {
   Member = 'MEMBER',
   Pat = 'PAT',
   Public = 'PUBLIC',
-  Webhook = 'WEBHOOK',
+  Webhook = 'WEBHOOK'
 }
 
 /** Identifies documents */
@@ -5531,7 +6479,7 @@ export enum UserOrderByInput {
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC',
+  UpdatedAtDesc = 'updatedAt_DESC'
 }
 
 export type UserUpdateManyInlineInput = {
@@ -5730,6 +6678,8 @@ export enum _FilterKind {
   Gt = 'gt',
   Gte = 'gte',
   In = 'in',
+  JsonPathExists = 'json_path_exists',
+  JsonValueRecursive = 'json_value_recursive',
   Lt = 'lt',
   Lte = 'lte',
   NotContains = 'not_contains',
@@ -5741,7 +6691,7 @@ export enum _FilterKind {
   RelationalSingle = 'relational_single',
   RelationalSome = 'relational_some',
   Search = 'search',
-  StartsWith = 'starts_with',
+  StartsWith = 'starts_with'
 }
 
 export enum _MutationInputFieldKind {
@@ -5751,7 +6701,7 @@ export enum _MutationInputFieldKind {
   RichTextWithEmbeds = 'richTextWithEmbeds',
   Scalar = 'scalar',
   Union = 'union',
-  Virtual = 'virtual',
+  Virtual = 'virtual'
 }
 
 export enum _MutationKind {
@@ -5766,33 +6716,33 @@ export enum _MutationKind {
   UnpublishMany = 'unpublishMany',
   Update = 'update',
   UpdateMany = 'updateMany',
-  Upsert = 'upsert',
+  Upsert = 'upsert'
 }
 
 export enum _OrderDirection {
   Asc = 'asc',
-  Desc = 'desc',
+  Desc = 'desc'
 }
 
 export enum _RelationInputCardinality {
   Many = 'many',
-  One = 'one',
+  One = 'one'
 }
 
 export enum _RelationInputKind {
   Create = 'create',
-  Update = 'update',
+  Update = 'update'
 }
 
 export enum _RelationKind {
   Regular = 'regular',
-  Union = 'union',
+  Union = 'union'
 }
 
 export enum _SystemDateTimeFieldVariation {
   Base = 'base',
   Combined = 'combined',
-  Localization = 'localization',
+  Localization = 'localization'
 }
 
 export type AddAccountMutationVariables = Exact<{
@@ -5801,10 +6751,8 @@ export type AddAccountMutationVariables = Exact<{
   password: Scalars['String'];
 }>;
 
-export type AddAccountMutation = {
-  __typename?: 'Mutation';
-  createAccount?: { __typename?: 'Account'; id: string } | null;
-};
+
+export type AddAccountMutation = { __typename?: 'Mutation', createAccount?: { __typename?: 'Account', id: string } | null };
 
 export type AddExpenseMutationVariables = Exact<{
   amount: Scalars['Float'];
@@ -5816,10 +6764,18 @@ export type AddExpenseMutationVariables = Exact<{
   currency: Scalars['String'];
 }>;
 
-export type AddExpenseMutation = {
-  __typename?: 'Mutation';
-  createExpense?: { __typename?: 'Expense'; id: string } | null;
-};
+
+export type AddExpenseMutation = { __typename?: 'Mutation', createExpense?: { __typename?: 'Expense', id: string } | null };
+
+export type AddInvestmentMutationVariables = Exact<{
+  amount: Scalars['Float'];
+  broker: Scalars['String'];
+  currency: Scalars['String'];
+  holder: Scalars['String'];
+}>;
+
+
+export type AddInvestmentMutation = { __typename?: 'Mutation', createInvestment?: { __typename?: 'Investment', id: string } | null };
 
 export type AddRevenueMutationVariables = Exact<{
   amount: Scalars['Float'];
@@ -5831,66 +6787,36 @@ export type AddRevenueMutationVariables = Exact<{
   itemStatus: Scalars['Int'];
 }>;
 
-export type AddRevenueMutation = {
-  __typename?: 'Mutation';
-  createRevenue?: { __typename?: 'Revenue'; id: string } | null;
-};
+
+export type AddRevenueMutation = { __typename?: 'Mutation', createRevenue?: { __typename?: 'Revenue', id: string } | null };
 
 export type PublishAccountMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-export type PublishAccountMutation = {
-  __typename?: 'Mutation';
-  publishAccount?: {
-    __typename?: 'Account';
-    name: string;
-    email: string;
-    password: string;
-  } | null;
-};
+
+export type PublishAccountMutation = { __typename?: 'Mutation', publishAccount?: { __typename?: 'Account', name: string, email: string, password: string } | null };
 
 export type PublishExpenseMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-export type PublishExpenseMutation = {
-  __typename?: 'Mutation';
-  publishExpense?: {
-    __typename?: 'Expense';
-    amount: number;
-    card?: boolean | null;
-    date?: any | null;
-    deleted?: boolean | null;
-    note?: string | null;
-    currency: string;
-    category?: {
-      __typename?: 'Category';
-      id: string;
-      name: string;
-      type?: string | null;
-    } | null;
-  } | null;
-};
+
+export type PublishExpenseMutation = { __typename?: 'Mutation', publishExpense?: { __typename?: 'Expense', amount: number, card?: boolean | null, date?: any | null, deleted?: boolean | null, note?: string | null, currency: string, category?: { __typename?: 'Category', id: string, name: string, type?: string | null } | null } | null };
+
+export type PublishInvestmentMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type PublishInvestmentMutation = { __typename?: 'Mutation', publishInvestment?: { __typename?: 'Investment', amount: number, broker?: string | null, currency?: string | null, deleted?: boolean | null, holder: string } | null };
 
 export type PublishRevenueMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-export type PublishRevenueMutation = {
-  __typename?: 'Mutation';
-  publishRevenue?: {
-    __typename?: 'Revenue';
-    amount: number;
-    bank: string;
-    date: any;
-    description: string;
-    deleted?: boolean | null;
-    type: string;
-    currency: string;
-    itemStatus: number;
-  } | null;
-};
+
+export type PublishRevenueMutation = { __typename?: 'Mutation', publishRevenue?: { __typename?: 'Revenue', amount: number, bank: string, date: any, description: string, deleted?: boolean | null, type: string, currency: string, itemStatus: number } | null };
 
 export type UpdateAccountMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -5899,16 +6825,8 @@ export type UpdateAccountMutationVariables = Exact<{
   password: Scalars['String'];
 }>;
 
-export type UpdateAccountMutation = {
-  __typename?: 'Mutation';
-  updateAccount?: {
-    __typename?: 'Account';
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-  } | null;
-};
+
+export type UpdateAccountMutation = { __typename?: 'Mutation', updateAccount?: { __typename?: 'Account', id: string, name: string, email: string, password: string } | null };
 
 export type UpdateExpenseMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -5921,25 +6839,20 @@ export type UpdateExpenseMutationVariables = Exact<{
   currency: Scalars['String'];
 }>;
 
-export type UpdateExpenseMutation = {
-  __typename?: 'Mutation';
-  updateExpense?: {
-    __typename?: 'Expense';
-    id: string;
-    amount: number;
-    card?: boolean | null;
-    date?: any | null;
-    deleted?: boolean | null;
-    note?: string | null;
-    currency: string;
-    category?: {
-      __typename?: 'Category';
-      id: string;
-      name: string;
-      type?: string | null;
-    } | null;
-  } | null;
-};
+
+export type UpdateExpenseMutation = { __typename?: 'Mutation', updateExpense?: { __typename?: 'Expense', id: string, amount: number, card?: boolean | null, date?: any | null, deleted?: boolean | null, note?: string | null, currency: string, category?: { __typename?: 'Category', id: string, name: string, type?: string | null } | null } | null };
+
+export type UpdateInvestmentMutationVariables = Exact<{
+  id: Scalars['ID'];
+  amount: Scalars['Float'];
+  broker: Scalars['String'];
+  currency: Scalars['String'];
+  deleted: Scalars['Boolean'];
+  holder: Scalars['String'];
+}>;
+
+
+export type UpdateInvestmentMutation = { __typename?: 'Mutation', updateInvestment?: { __typename?: 'Investment', id: string, amount: number, broker?: string | null, currency?: string | null, deleted?: boolean | null, holder: string } | null };
 
 export type UpdateRevenueMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -5953,98 +6866,44 @@ export type UpdateRevenueMutationVariables = Exact<{
   itemStatus: Scalars['Int'];
 }>;
 
-export type UpdateRevenueMutation = {
-  __typename?: 'Mutation';
-  updateRevenue?: {
-    __typename?: 'Revenue';
-    id: string;
-    amount: number;
-    bank: string;
-    date: any;
-    deleted?: boolean | null;
-    description: string;
-    type: string;
-    currency: string;
-    itemStatus: number;
-  } | null;
-};
+
+export type UpdateRevenueMutation = { __typename?: 'Mutation', updateRevenue?: { __typename?: 'Revenue', id: string, amount: number, bank: string, date: any, deleted?: boolean | null, description: string, type: string, currency: string, itemStatus: number } | null };
 
 export type GetAccountByEmailQueryVariables = Exact<{
   email: Scalars['String'];
 }>;
 
-export type GetAccountByEmailQuery = {
-  __typename?: 'Query';
-  account?: {
-    __typename?: 'Account';
-    id: string;
-    email: string;
-    name: string;
-    password: string;
-    avatar?: { __typename?: 'Asset'; url: string } | null;
-  } | null;
-};
 
-export type GetCategoriesQueryVariables = Exact<{ [key: string]: never }>;
+export type GetAccountByEmailQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, email: string, name: string, password: string, avatar?: { __typename?: 'Asset', url: string } | null } | null };
 
-export type GetCategoriesQuery = {
-  __typename?: 'Query';
-  categories: Array<{
-    __typename?: 'Category';
-    id: string;
-    name: string;
-    type?: string | null;
-  }>;
-};
+export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type GetExpensesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetExpensesQuery = {
-  __typename?: 'Query';
-  expenses: Array<{
-    __typename?: 'Expense';
-    id: string;
-    amount: number;
-    card?: boolean | null;
-    date?: any | null;
-    deleted?: boolean | null;
-    note?: string | null;
-    currency: string;
-    category?: {
-      __typename?: 'Category';
-      id: string;
-      name: string;
-      type?: string | null;
-    } | null;
-    account?: { __typename?: 'Account'; name: string } | null;
-  }>;
-};
+export type GetCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: string, name: string, type?: string | null }> };
 
-export type GetRevenuesQueryVariables = Exact<{ [key: string]: never }>;
+export type GetExpensesQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type GetRevenuesQuery = {
-  __typename?: 'Query';
-  revenues: Array<{
-    __typename?: 'Revenue';
-    id: string;
-    amount: number;
-    bank: string;
-    date: any;
-    deleted?: boolean | null;
-    description: string;
-    type: string;
-    currency: string;
-    itemStatus: number;
-  }>;
-};
+
+export type GetExpensesQuery = { __typename?: 'Query', expenses: Array<{ __typename?: 'Expense', id: string, amount: number, card?: boolean | null, date?: any | null, deleted?: boolean | null, note?: string | null, currency: string, category?: { __typename?: 'Category', id: string, name: string, type?: string | null } | null, account?: { __typename?: 'Account', name: string } | null }> };
+
+export type GetInvestmentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetInvestmentsQuery = { __typename?: 'Query', investments: Array<{ __typename?: 'Investment', id: string, amount: number, broker?: string | null, deleted?: boolean | null, currency?: string | null, holder: string }> };
+
+export type GetRevenuesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetRevenuesQuery = { __typename?: 'Query', revenues: Array<{ __typename?: 'Revenue', id: string, amount: number, bank: string, date: any, deleted?: boolean | null, description: string, type: string, currency: string, itemStatus: number }> };
+
 
 export const AddAccountDocument = gql`
-  mutation addAccount($name: String!, $email: String!, $password: String!) {
-    createAccount(data: { name: $name, email: $email, password: $password }) {
-      id
-    }
+    mutation addAccount($name: String!, $email: String!, $password: String!) {
+  createAccount(data: {name: $name, email: $email, password: $password}) {
+    id
   }
-`;
+}
+    `;
 
 /**
  * __useAddAccountMutation__
@@ -6065,54 +6924,19 @@ export const AddAccountDocument = gql`
  *   },
  * });
  */
-export function useAddAccountMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        AddAccountMutation,
-        AddAccountMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          AddAccountMutation,
-          AddAccountMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    AddAccountMutation,
-    AddAccountMutationVariables
-  >(AddAccountDocument, options);
+export function useAddAccountMutation(options: VueApolloComposable.UseMutationOptions<AddAccountMutation, AddAccountMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<AddAccountMutation, AddAccountMutationVariables>>) {
+  return VueApolloComposable.useMutation<AddAccountMutation, AddAccountMutationVariables>(AddAccountDocument, options);
 }
-export type AddAccountMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    AddAccountMutation,
-    AddAccountMutationVariables
-  >;
+export type AddAccountMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AddAccountMutation, AddAccountMutationVariables>;
 export const AddExpenseDocument = gql`
-  mutation addExpense(
-    $amount: Float!
-    $card: Boolean!
-    $date: Date!
-    $deleted: Boolean!
-    $note: String!
-    $categoryID: ID!
-    $currency: String!
+    mutation addExpense($amount: Float!, $card: Boolean!, $date: Date!, $deleted: Boolean!, $note: String!, $categoryID: ID!, $currency: String!) {
+  createExpense(
+    data: {amount: $amount, card: $card, date: $date, deleted: $deleted, note: $note, category: {connect: {id: $categoryID}}, currency: $currency}
   ) {
-    createExpense(
-      data: {
-        amount: $amount
-        card: $card
-        date: $date
-        deleted: $deleted
-        note: $note
-        category: { connect: { id: $categoryID } }
-        currency: $currency
-      }
-    ) {
-      id
-    }
+    id
   }
-`;
+}
+    `;
 
 /**
  * __useAddExpenseMutation__
@@ -6137,55 +6961,53 @@ export const AddExpenseDocument = gql`
  *   },
  * });
  */
-export function useAddExpenseMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        AddExpenseMutation,
-        AddExpenseMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          AddExpenseMutation,
-          AddExpenseMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    AddExpenseMutation,
-    AddExpenseMutationVariables
-  >(AddExpenseDocument, options);
+export function useAddExpenseMutation(options: VueApolloComposable.UseMutationOptions<AddExpenseMutation, AddExpenseMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<AddExpenseMutation, AddExpenseMutationVariables>>) {
+  return VueApolloComposable.useMutation<AddExpenseMutation, AddExpenseMutationVariables>(AddExpenseDocument, options);
 }
-export type AddExpenseMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    AddExpenseMutation,
-    AddExpenseMutationVariables
-  >;
-export const AddRevenueDocument = gql`
-  mutation addRevenue(
-    $amount: Float!
-    $bank: String!
-    $date: Date!
-    $description: String!
-    $type: String!
-    $currency: String!
-    $itemStatus: Int!
+export type AddExpenseMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AddExpenseMutation, AddExpenseMutationVariables>;
+export const AddInvestmentDocument = gql`
+    mutation addInvestment($amount: Float!, $broker: String!, $currency: String!, $holder: String!) {
+  createInvestment(
+    data: {amount: $amount, broker: $broker, currency: $currency, deleted: false, holder: $holder}
   ) {
-    createRevenue(
-      data: {
-        amount: $amount
-        bank: $bank
-        date: $date
-        deleted: false
-        description: $description
-        type: $type
-        currency: $currency
-        itemStatus: $itemStatus
-      }
-    ) {
-      id
-    }
+    id
   }
-`;
+}
+    `;
+
+/**
+ * __useAddInvestmentMutation__
+ *
+ * To run a mutation, you first call `useAddInvestmentMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useAddInvestmentMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useAddInvestmentMutation({
+ *   variables: {
+ *     amount: // value for 'amount'
+ *     broker: // value for 'broker'
+ *     currency: // value for 'currency'
+ *     holder: // value for 'holder'
+ *   },
+ * });
+ */
+export function useAddInvestmentMutation(options: VueApolloComposable.UseMutationOptions<AddInvestmentMutation, AddInvestmentMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<AddInvestmentMutation, AddInvestmentMutationVariables>>) {
+  return VueApolloComposable.useMutation<AddInvestmentMutation, AddInvestmentMutationVariables>(AddInvestmentDocument, options);
+}
+export type AddInvestmentMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AddInvestmentMutation, AddInvestmentMutationVariables>;
+export const AddRevenueDocument = gql`
+    mutation addRevenue($amount: Float!, $bank: String!, $date: Date!, $description: String!, $type: String!, $currency: String!, $itemStatus: Int!) {
+  createRevenue(
+    data: {amount: $amount, bank: $bank, date: $date, deleted: false, description: $description, type: $type, currency: $currency, itemStatus: $itemStatus}
+  ) {
+    id
+  }
+}
+    `;
 
 /**
  * __useAddRevenueMutation__
@@ -6210,38 +7032,19 @@ export const AddRevenueDocument = gql`
  *   },
  * });
  */
-export function useAddRevenueMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        AddRevenueMutation,
-        AddRevenueMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          AddRevenueMutation,
-          AddRevenueMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    AddRevenueMutation,
-    AddRevenueMutationVariables
-  >(AddRevenueDocument, options);
+export function useAddRevenueMutation(options: VueApolloComposable.UseMutationOptions<AddRevenueMutation, AddRevenueMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<AddRevenueMutation, AddRevenueMutationVariables>>) {
+  return VueApolloComposable.useMutation<AddRevenueMutation, AddRevenueMutationVariables>(AddRevenueDocument, options);
 }
-export type AddRevenueMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    AddRevenueMutation,
-    AddRevenueMutationVariables
-  >;
+export type AddRevenueMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AddRevenueMutation, AddRevenueMutationVariables>;
 export const PublishAccountDocument = gql`
-  mutation publishAccount($id: ID!) {
-    publishAccount(where: { id: $id }, to: PUBLISHED) {
-      name
-      email
-      password
-    }
+    mutation publishAccount($id: ID!) {
+  publishAccount(where: {id: $id}, to: PUBLISHED) {
+    name
+    email
+    password
   }
-`;
+}
+    `;
 
 /**
  * __usePublishAccountMutation__
@@ -6260,46 +7063,27 @@ export const PublishAccountDocument = gql`
  *   },
  * });
  */
-export function usePublishAccountMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        PublishAccountMutation,
-        PublishAccountMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          PublishAccountMutation,
-          PublishAccountMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    PublishAccountMutation,
-    PublishAccountMutationVariables
-  >(PublishAccountDocument, options);
+export function usePublishAccountMutation(options: VueApolloComposable.UseMutationOptions<PublishAccountMutation, PublishAccountMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<PublishAccountMutation, PublishAccountMutationVariables>>) {
+  return VueApolloComposable.useMutation<PublishAccountMutation, PublishAccountMutationVariables>(PublishAccountDocument, options);
 }
-export type PublishAccountMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    PublishAccountMutation,
-    PublishAccountMutationVariables
-  >;
+export type PublishAccountMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<PublishAccountMutation, PublishAccountMutationVariables>;
 export const PublishExpenseDocument = gql`
-  mutation publishExpense($id: ID!) {
-    publishExpense(where: { id: $id }, to: PUBLISHED) {
-      amount
-      card
-      category {
-        id
-        name
-        type
-      }
-      date
-      deleted
-      note
-      currency
+    mutation publishExpense($id: ID!) {
+  publishExpense(where: {id: $id}, to: PUBLISHED) {
+    amount
+    card
+    category {
+      id
+      name
+      type
     }
+    date
+    deleted
+    note
+    currency
   }
-`;
+}
+    `;
 
 /**
  * __usePublishExpenseMutation__
@@ -6318,43 +7102,57 @@ export const PublishExpenseDocument = gql`
  *   },
  * });
  */
-export function usePublishExpenseMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        PublishExpenseMutation,
-        PublishExpenseMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          PublishExpenseMutation,
-          PublishExpenseMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    PublishExpenseMutation,
-    PublishExpenseMutationVariables
-  >(PublishExpenseDocument, options);
+export function usePublishExpenseMutation(options: VueApolloComposable.UseMutationOptions<PublishExpenseMutation, PublishExpenseMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<PublishExpenseMutation, PublishExpenseMutationVariables>>) {
+  return VueApolloComposable.useMutation<PublishExpenseMutation, PublishExpenseMutationVariables>(PublishExpenseDocument, options);
 }
-export type PublishExpenseMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    PublishExpenseMutation,
-    PublishExpenseMutationVariables
-  >;
-export const PublishRevenueDocument = gql`
-  mutation publishRevenue($id: ID!) {
-    publishRevenue(where: { id: $id }, to: PUBLISHED) {
-      amount
-      bank
-      date
-      description
-      deleted
-      type
-      currency
-      itemStatus
-    }
+export type PublishExpenseMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<PublishExpenseMutation, PublishExpenseMutationVariables>;
+export const PublishInvestmentDocument = gql`
+    mutation publishInvestment($id: ID!) {
+  publishInvestment(where: {id: $id}, to: PUBLISHED) {
+    amount
+    broker
+    currency
+    deleted
+    holder
   }
-`;
+}
+    `;
+
+/**
+ * __usePublishInvestmentMutation__
+ *
+ * To run a mutation, you first call `usePublishInvestmentMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `usePublishInvestmentMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = usePublishInvestmentMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePublishInvestmentMutation(options: VueApolloComposable.UseMutationOptions<PublishInvestmentMutation, PublishInvestmentMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<PublishInvestmentMutation, PublishInvestmentMutationVariables>>) {
+  return VueApolloComposable.useMutation<PublishInvestmentMutation, PublishInvestmentMutationVariables>(PublishInvestmentDocument, options);
+}
+export type PublishInvestmentMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<PublishInvestmentMutation, PublishInvestmentMutationVariables>;
+export const PublishRevenueDocument = gql`
+    mutation publishRevenue($id: ID!) {
+  publishRevenue(where: {id: $id}, to: PUBLISHED) {
+    amount
+    bank
+    date
+    description
+    deleted
+    type
+    currency
+    itemStatus
+  }
+}
+    `;
 
 /**
  * __usePublishRevenueMutation__
@@ -6373,47 +7171,23 @@ export const PublishRevenueDocument = gql`
  *   },
  * });
  */
-export function usePublishRevenueMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        PublishRevenueMutation,
-        PublishRevenueMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          PublishRevenueMutation,
-          PublishRevenueMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    PublishRevenueMutation,
-    PublishRevenueMutationVariables
-  >(PublishRevenueDocument, options);
+export function usePublishRevenueMutation(options: VueApolloComposable.UseMutationOptions<PublishRevenueMutation, PublishRevenueMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<PublishRevenueMutation, PublishRevenueMutationVariables>>) {
+  return VueApolloComposable.useMutation<PublishRevenueMutation, PublishRevenueMutationVariables>(PublishRevenueDocument, options);
 }
-export type PublishRevenueMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    PublishRevenueMutation,
-    PublishRevenueMutationVariables
-  >;
+export type PublishRevenueMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<PublishRevenueMutation, PublishRevenueMutationVariables>;
 export const UpdateAccountDocument = gql`
-  mutation updateAccount(
-    $id: ID!
-    $name: String!
-    $email: String!
-    $password: String!
+    mutation updateAccount($id: ID!, $name: String!, $email: String!, $password: String!) {
+  updateAccount(
+    data: {name: $name, email: $email, password: $password}
+    where: {id: $id}
   ) {
-    updateAccount(
-      data: { name: $name, email: $email, password: $password }
-      where: { id: $id }
-    ) {
-      id
-      name
-      email
-      password
-    }
+    id
+    name
+    email
+    password
   }
-`;
+}
+    `;
 
 /**
  * __useUpdateAccountMutation__
@@ -6435,67 +7209,31 @@ export const UpdateAccountDocument = gql`
  *   },
  * });
  */
-export function useUpdateAccountMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        UpdateAccountMutation,
-        UpdateAccountMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          UpdateAccountMutation,
-          UpdateAccountMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    UpdateAccountMutation,
-    UpdateAccountMutationVariables
-  >(UpdateAccountDocument, options);
+export function useUpdateAccountMutation(options: VueApolloComposable.UseMutationOptions<UpdateAccountMutation, UpdateAccountMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<UpdateAccountMutation, UpdateAccountMutationVariables>>) {
+  return VueApolloComposable.useMutation<UpdateAccountMutation, UpdateAccountMutationVariables>(UpdateAccountDocument, options);
 }
-export type UpdateAccountMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    UpdateAccountMutation,
-    UpdateAccountMutationVariables
-  >;
+export type UpdateAccountMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<UpdateAccountMutation, UpdateAccountMutationVariables>;
 export const UpdateExpenseDocument = gql`
-  mutation updateExpense(
-    $id: ID!
-    $amount: Float!
-    $card: Boolean!
-    $date: Date!
-    $deleted: Boolean!
-    $note: String!
-    $categoryID: ID!
-    $currency: String!
+    mutation updateExpense($id: ID!, $amount: Float!, $card: Boolean!, $date: Date!, $deleted: Boolean!, $note: String!, $categoryID: ID!, $currency: String!) {
+  updateExpense(
+    data: {amount: $amount, card: $card, date: $date, deleted: $deleted, note: $note, category: {connect: {id: $categoryID}}, currency: $currency}
+    where: {id: $id}
   ) {
-    updateExpense(
-      data: {
-        amount: $amount
-        card: $card
-        date: $date
-        deleted: $deleted
-        note: $note
-        category: { connect: { id: $categoryID } }
-        currency: $currency
-      }
-      where: { id: $id }
-    ) {
+    id
+    amount
+    card
+    date
+    deleted
+    note
+    category {
       id
-      amount
-      card
-      date
-      deleted
-      note
-      category {
-        id
-        name
-        type
-      }
-      currency
+      name
+      type
     }
+    currency
   }
-`;
+}
+    `;
 
 /**
  * __useUpdateExpenseMutation__
@@ -6521,66 +7259,70 @@ export const UpdateExpenseDocument = gql`
  *   },
  * });
  */
-export function useUpdateExpenseMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        UpdateExpenseMutation,
-        UpdateExpenseMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          UpdateExpenseMutation,
-          UpdateExpenseMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    UpdateExpenseMutation,
-    UpdateExpenseMutationVariables
-  >(UpdateExpenseDocument, options);
+export function useUpdateExpenseMutation(options: VueApolloComposable.UseMutationOptions<UpdateExpenseMutation, UpdateExpenseMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<UpdateExpenseMutation, UpdateExpenseMutationVariables>>) {
+  return VueApolloComposable.useMutation<UpdateExpenseMutation, UpdateExpenseMutationVariables>(UpdateExpenseDocument, options);
 }
-export type UpdateExpenseMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    UpdateExpenseMutation,
-    UpdateExpenseMutationVariables
-  >;
-export const UpdateRevenueDocument = gql`
-  mutation updateRevenue(
-    $id: ID!
-    $amount: Float!
-    $bank: String!
-    $date: Date!
-    $deleted: Boolean!
-    $description: String!
-    $type: String!
-    $currency: String!
-    $itemStatus: Int!
+export type UpdateExpenseMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<UpdateExpenseMutation, UpdateExpenseMutationVariables>;
+export const UpdateInvestmentDocument = gql`
+    mutation updateInvestment($id: ID!, $amount: Float!, $broker: String!, $currency: String!, $deleted: Boolean!, $holder: String!) {
+  updateInvestment(
+    data: {amount: $amount, broker: $broker, currency: $currency, deleted: $deleted, holder: $holder}
+    where: {id: $id}
   ) {
-    updateRevenue(
-      data: {
-        amount: $amount
-        bank: $bank
-        date: $date
-        deleted: $deleted
-        description: $description
-        type: $type
-        currency: $currency
-        itemStatus: $itemStatus
-      }
-      where: { id: $id }
-    ) {
-      id
-      amount
-      bank
-      date
-      deleted
-      description
-      type
-      currency
-      itemStatus
-    }
+    id
+    amount
+    broker
+    currency
+    deleted
+    holder
   }
-`;
+}
+    `;
+
+/**
+ * __useUpdateInvestmentMutation__
+ *
+ * To run a mutation, you first call `useUpdateInvestmentMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateInvestmentMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateInvestmentMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *     amount: // value for 'amount'
+ *     broker: // value for 'broker'
+ *     currency: // value for 'currency'
+ *     deleted: // value for 'deleted'
+ *     holder: // value for 'holder'
+ *   },
+ * });
+ */
+export function useUpdateInvestmentMutation(options: VueApolloComposable.UseMutationOptions<UpdateInvestmentMutation, UpdateInvestmentMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<UpdateInvestmentMutation, UpdateInvestmentMutationVariables>>) {
+  return VueApolloComposable.useMutation<UpdateInvestmentMutation, UpdateInvestmentMutationVariables>(UpdateInvestmentDocument, options);
+}
+export type UpdateInvestmentMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<UpdateInvestmentMutation, UpdateInvestmentMutationVariables>;
+export const UpdateRevenueDocument = gql`
+    mutation updateRevenue($id: ID!, $amount: Float!, $bank: String!, $date: Date!, $deleted: Boolean!, $description: String!, $type: String!, $currency: String!, $itemStatus: Int!) {
+  updateRevenue(
+    data: {amount: $amount, bank: $bank, date: $date, deleted: $deleted, description: $description, type: $type, currency: $currency, itemStatus: $itemStatus}
+    where: {id: $id}
+  ) {
+    id
+    amount
+    bank
+    date
+    deleted
+    description
+    type
+    currency
+    itemStatus
+  }
+}
+    `;
 
 /**
  * __useUpdateRevenueMutation__
@@ -6607,42 +7349,23 @@ export const UpdateRevenueDocument = gql`
  *   },
  * });
  */
-export function useUpdateRevenueMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        UpdateRevenueMutation,
-        UpdateRevenueMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          UpdateRevenueMutation,
-          UpdateRevenueMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    UpdateRevenueMutation,
-    UpdateRevenueMutationVariables
-  >(UpdateRevenueDocument, options);
+export function useUpdateRevenueMutation(options: VueApolloComposable.UseMutationOptions<UpdateRevenueMutation, UpdateRevenueMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<UpdateRevenueMutation, UpdateRevenueMutationVariables>>) {
+  return VueApolloComposable.useMutation<UpdateRevenueMutation, UpdateRevenueMutationVariables>(UpdateRevenueDocument, options);
 }
-export type UpdateRevenueMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    UpdateRevenueMutation,
-    UpdateRevenueMutationVariables
-  >;
+export type UpdateRevenueMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<UpdateRevenueMutation, UpdateRevenueMutationVariables>;
 export const GetAccountByEmailDocument = gql`
-  query GetAccountByEmail($email: String!) {
-    account(where: { email: $email }) {
-      id
-      email
-      name
-      password
-      avatar {
-        url
-      }
+    query GetAccountByEmail($email: String!) {
+  account(where: {email: $email}) {
+    id
+    email
+    name
+    password
+    avatar {
+      url
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetAccountByEmailQuery__
@@ -6659,62 +7382,22 @@ export const GetAccountByEmailDocument = gql`
  *   email: // value for 'email'
  * });
  */
-export function useGetAccountByEmailQuery(
-  variables:
-    | GetAccountByEmailQueryVariables
-    | ReactiveFunction<GetAccountByEmailQueryVariables>,
-  options:
-    | VueApolloComposable.UseQueryOptions<
-        GetAccountByEmailQuery,
-        GetAccountByEmailQueryVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseQueryOptions<
-          GetAccountByEmailQuery,
-          GetAccountByEmailQueryVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useQuery<
-    GetAccountByEmailQuery,
-    GetAccountByEmailQueryVariables
-  >(GetAccountByEmailDocument, variables, options);
+export function useGetAccountByEmailQuery(variables: GetAccountByEmailQueryVariables | ReactiveFunction<GetAccountByEmailQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetAccountByEmailQuery, GetAccountByEmailQueryVariables> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables, options);
 }
-export function useGetAccountByEmailLazyQuery(
-  variables:
-    | GetAccountByEmailQueryVariables
-    | ReactiveFunction<GetAccountByEmailQueryVariables>,
-  options:
-    | VueApolloComposable.UseQueryOptions<
-        GetAccountByEmailQuery,
-        GetAccountByEmailQueryVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseQueryOptions<
-          GetAccountByEmailQuery,
-          GetAccountByEmailQueryVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useLazyQuery<
-    GetAccountByEmailQuery,
-    GetAccountByEmailQueryVariables
-  >(GetAccountByEmailDocument, variables, options);
+export function useGetAccountByEmailLazyQuery(variables: GetAccountByEmailQueryVariables | ReactiveFunction<GetAccountByEmailQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetAccountByEmailQuery, GetAccountByEmailQueryVariables> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables, options);
 }
-export type GetAccountByEmailQueryCompositionFunctionResult =
-  VueApolloComposable.UseQueryReturn<
-    GetAccountByEmailQuery,
-    GetAccountByEmailQueryVariables
-  >;
+export type GetAccountByEmailQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>;
 export const GetCategoriesDocument = gql`
-  query GetCategories {
-    categories(first: 15, orderBy: name_ASC) {
-      id
-      name
-      type
-    }
+    query GetCategories {
+  categories(first: 15, orderBy: name_ASC) {
+    id
+    name
+    type
   }
-`;
+}
+    `;
 
 /**
  * __useGetCategoriesQuery__
@@ -6728,68 +7411,34 @@ export const GetCategoriesDocument = gql`
  * @example
  * const { result, loading, error } = useGetCategoriesQuery();
  */
-export function useGetCategoriesQuery(
-  options:
-    | VueApolloComposable.UseQueryOptions<
-        GetCategoriesQuery,
-        GetCategoriesQueryVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseQueryOptions<
-          GetCategoriesQuery,
-          GetCategoriesQueryVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useQuery<
-    GetCategoriesQuery,
-    GetCategoriesQueryVariables
-  >(GetCategoriesDocument, {}, options);
+export function useGetCategoriesQuery(options: VueApolloComposable.UseQueryOptions<GetCategoriesQuery, GetCategoriesQueryVariables> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetCategoriesQuery, GetCategoriesQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, {}, options);
 }
-export function useGetCategoriesLazyQuery(
-  options:
-    | VueApolloComposable.UseQueryOptions<
-        GetCategoriesQuery,
-        GetCategoriesQueryVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseQueryOptions<
-          GetCategoriesQuery,
-          GetCategoriesQueryVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useLazyQuery<
-    GetCategoriesQuery,
-    GetCategoriesQueryVariables
-  >(GetCategoriesDocument, {}, options);
+export function useGetCategoriesLazyQuery(options: VueApolloComposable.UseQueryOptions<GetCategoriesQuery, GetCategoriesQueryVariables> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetCategoriesQuery, GetCategoriesQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, {}, options);
 }
-export type GetCategoriesQueryCompositionFunctionResult =
-  VueApolloComposable.UseQueryReturn<
-    GetCategoriesQuery,
-    GetCategoriesQueryVariables
-  >;
+export type GetCategoriesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetCategoriesQuery, GetCategoriesQueryVariables>;
 export const GetExpensesDocument = gql`
-  query GetExpenses {
-    expenses(first: 100, orderBy: date_DESC) {
+    query GetExpenses {
+  expenses(first: 100, orderBy: date_DESC) {
+    id
+    amount
+    card
+    category {
       id
-      amount
-      card
-      category {
-        id
-        name
-        type
-      }
-      date
-      deleted
-      note
-      account {
-        name
-      }
-      currency
+      name
+      type
     }
+    date
+    deleted
+    note
+    account {
+      name
+    }
+    currency
   }
-`;
+}
+    `;
 
 /**
  * __useGetExpensesQuery__
@@ -6803,62 +7452,60 @@ export const GetExpensesDocument = gql`
  * @example
  * const { result, loading, error } = useGetExpensesQuery();
  */
-export function useGetExpensesQuery(
-  options:
-    | VueApolloComposable.UseQueryOptions<
-        GetExpensesQuery,
-        GetExpensesQueryVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseQueryOptions<
-          GetExpensesQuery,
-          GetExpensesQueryVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useQuery<
-    GetExpensesQuery,
-    GetExpensesQueryVariables
-  >(GetExpensesDocument, {}, options);
+export function useGetExpensesQuery(options: VueApolloComposable.UseQueryOptions<GetExpensesQuery, GetExpensesQueryVariables> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetExpensesQuery, GetExpensesQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetExpensesQuery, GetExpensesQueryVariables>(GetExpensesDocument, {}, options);
 }
-export function useGetExpensesLazyQuery(
-  options:
-    | VueApolloComposable.UseQueryOptions<
-        GetExpensesQuery,
-        GetExpensesQueryVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseQueryOptions<
-          GetExpensesQuery,
-          GetExpensesQueryVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useLazyQuery<
-    GetExpensesQuery,
-    GetExpensesQueryVariables
-  >(GetExpensesDocument, {}, options);
+export function useGetExpensesLazyQuery(options: VueApolloComposable.UseQueryOptions<GetExpensesQuery, GetExpensesQueryVariables> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetExpensesQuery, GetExpensesQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetExpensesQuery, GetExpensesQueryVariables>(GetExpensesDocument, {}, options);
 }
-export type GetExpensesQueryCompositionFunctionResult =
-  VueApolloComposable.UseQueryReturn<
-    GetExpensesQuery,
-    GetExpensesQueryVariables
-  >;
-export const GetRevenuesDocument = gql`
-  query GetRevenues {
-    revenues(first: 100, orderBy: date_DESC) {
-      id
-      amount
-      bank
-      date
-      deleted
-      description
-      type
-      currency
-      itemStatus
-    }
+export type GetExpensesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetExpensesQuery, GetExpensesQueryVariables>;
+export const GetInvestmentsDocument = gql`
+    query GetInvestments {
+  investments(first: 100, orderBy: createdAt_DESC) {
+    id
+    amount
+    broker
+    deleted
+    currency
+    holder
   }
-`;
+}
+    `;
+
+/**
+ * __useGetInvestmentsQuery__
+ *
+ * To run a query within a Vue component, call `useGetInvestmentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInvestmentsQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetInvestmentsQuery();
+ */
+export function useGetInvestmentsQuery(options: VueApolloComposable.UseQueryOptions<GetInvestmentsQuery, GetInvestmentsQueryVariables> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetInvestmentsQuery, GetInvestmentsQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetInvestmentsQuery, GetInvestmentsQueryVariables>(GetInvestmentsDocument, {}, options);
+}
+export function useGetInvestmentsLazyQuery(options: VueApolloComposable.UseQueryOptions<GetInvestmentsQuery, GetInvestmentsQueryVariables> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetInvestmentsQuery, GetInvestmentsQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetInvestmentsQuery, GetInvestmentsQueryVariables>(GetInvestmentsDocument, {}, options);
+}
+export type GetInvestmentsQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetInvestmentsQuery, GetInvestmentsQueryVariables>;
+export const GetRevenuesDocument = gql`
+    query GetRevenues {
+  revenues(first: 100, orderBy: date_DESC) {
+    id
+    amount
+    bank
+    date
+    deleted
+    description
+    type
+    currency
+    itemStatus
+  }
+}
+    `;
 
 /**
  * __useGetRevenuesQuery__
@@ -6872,44 +7519,10 @@ export const GetRevenuesDocument = gql`
  * @example
  * const { result, loading, error } = useGetRevenuesQuery();
  */
-export function useGetRevenuesQuery(
-  options:
-    | VueApolloComposable.UseQueryOptions<
-        GetRevenuesQuery,
-        GetRevenuesQueryVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseQueryOptions<
-          GetRevenuesQuery,
-          GetRevenuesQueryVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useQuery<
-    GetRevenuesQuery,
-    GetRevenuesQueryVariables
-  >(GetRevenuesDocument, {}, options);
+export function useGetRevenuesQuery(options: VueApolloComposable.UseQueryOptions<GetRevenuesQuery, GetRevenuesQueryVariables> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetRevenuesQuery, GetRevenuesQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetRevenuesQuery, GetRevenuesQueryVariables>(GetRevenuesDocument, {}, options);
 }
-export function useGetRevenuesLazyQuery(
-  options:
-    | VueApolloComposable.UseQueryOptions<
-        GetRevenuesQuery,
-        GetRevenuesQueryVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseQueryOptions<
-          GetRevenuesQuery,
-          GetRevenuesQueryVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useLazyQuery<
-    GetRevenuesQuery,
-    GetRevenuesQueryVariables
-  >(GetRevenuesDocument, {}, options);
+export function useGetRevenuesLazyQuery(options: VueApolloComposable.UseQueryOptions<GetRevenuesQuery, GetRevenuesQueryVariables> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetRevenuesQuery, GetRevenuesQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetRevenuesQuery, GetRevenuesQueryVariables>(GetRevenuesDocument, {}, options);
 }
-export type GetRevenuesQueryCompositionFunctionResult =
-  VueApolloComposable.UseQueryReturn<
-    GetRevenuesQuery,
-    GetRevenuesQueryVariables
-  >;
+export type GetRevenuesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetRevenuesQuery, GetRevenuesQueryVariables>;

@@ -1,0 +1,19 @@
+mutation addInvestment(
+  $amount: Float!,
+  $broker: String!,
+  $currency: String!,
+  $holder: String!,
+)
+{
+  createInvestment(
+    data: {
+      amount: $amount,
+      broker: $broker
+      currency: $currency,
+      deleted: false,
+      holder: $holder,
+    }
+  ) {
+    id
+  }
+}
