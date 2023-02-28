@@ -1,5 +1,5 @@
 <template>
-  <div class="expenses-page m-1">
+  <div class="expenses-page m-3">
     <expenses-filter-tabs />
     <expenses-header @on-add-expense="onAddExpense" />
     <expenses-page

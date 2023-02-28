@@ -4,10 +4,13 @@
     class="revenue-item-modal absolute flex justify-center items-center h-full w-full bg-black bg-opacity-30"
   >
     <div
-      class="revenue-item-container flex flex-col bg-secondary-color h-92 w-3/4 p-4 rounded-lg"
+      class="revenue-item-container flex flex-col bg-secondary-color h-92 w-[350px] p-4 rounded-lg"
       :class="revenue.type === 'income' ? 'income-type' : 'outcome-type'"
     >
-      <div class="revenue-fields grid grid-rows-[60px_60px] grid-cols-3">
+      <span class="flex justify-center font-bold text-lg w-full">
+        Adicionar/Editar despesa ou renda
+      </span>
+      <div class="revenue-fields flex flex-col gap-3 my-5">
         <div class="col-span-3 flex justify-center items-center text-lg">
           <input
             class="mr-2"
@@ -27,6 +30,35 @@
           />
           <label for="two">Despesa</label>
         </div>
+        <div class="category-select" @click.stop>
+          <div
+            class="selected-option flex outline-0 rounded p-2 border bg-white border-secondary-color-dark h-10 cursor-pointer"
+            :class="{ open: currencySelectorOpen }"
+            @click="currencySelectorOpen = !currencySelectorOpen"
+          >
+            <component :is="selectedCurrency?.icon" class="h-6 w-6" />
+            <span class="selected-option-name ml-2">
+              {{ selectedCurrency?.name || 'Categoria' }}
+            </span>
+          </div>
+          <ul
+            class="period-items absolute bg-white border border-secondary-color-dark w-52"
+            :class="{ hidden: !currencySelectorOpen }"
+          >
+            <li
+              class="item flex cursor-pointer p-2 h-10 w-full"
+              :class="{ 'item-selected': category.id === selectedCurrency?.id }"
+              v-for="category in currencies"
+              :key="category.id"
+              @click="selectCurrency(category)"
+            >
+              <component :is="category.icon" size="24" />
+              <span class="item-name ml-2">
+                {{ category.name }}
+              </span>
+            </li>
+          </ul>
+        </div>
         <input
           v-model="revenue.amount"
           class="outline-0 rounded p-2 border border-secondary-color-dark h-10"
@@ -37,7 +69,7 @@
         />
         <input
           v-model="revenue.bank"
-          class="outline-0 rounded p-2 border border-secondary-color-dark h-10 mx-4"
+          class="outline-0 rounded p-2 border border-secondary-color-dark h-10"
           type="text"
           placeholder="Informe o banco vinculado"
         />
@@ -76,12 +108,33 @@
 
 <script lang="ts" setup>
 import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/props/formatting/
-import { PropType, reactive, watch } from 'vue';
+import { PropType, reactive, ref, watch } from 'vue';
 import { addRevenue, editRevenue } from '../../services';
 import { Revenue } from './Revenue';
 
 let revenue = reactive(new Revenue());
-
+const currencies = [
+  {
+    id: 1,
+    name: 'Real',
+    icon: 'ph-coins',
+    type: 'real',
+  },
+  {
+    id: 2,
+    name: 'Dolar',
+    icon: 'ph-currency-dollar',
+    type: 'dollar',
+  },
+  {
+    id: 3,
+    name: 'Euro',
+    icon: 'ph-currency-eur',
+    type: 'euro',
+  },
+];
+const selectedCurrency = ref(currencies[0]);
+const currencySelectorOpen = ref(false);
 const emit = defineEmits(['addRevenue', 'close']);
 
 const props = defineProps({
@@ -97,6 +150,12 @@ watch(
     }
   }
 );
+
+const selectCurrency = (option: any) => {
+  selectedCurrency.value = option;
+  revenue.currency = option?.type;
+  currencySelectorOpen.value = false;
+};
 
 const setDate = (value: Date) => {
   revenue.date = value;

@@ -1,6 +1,5 @@
 <template>
   <div class="m-3">
-    <revenue-header />
     <div class="flex flex-row">
       <revenues-filter-tabs />
       <div class="flex justify-end">
@@ -35,7 +34,6 @@
 <script lang="ts" setup>
 import ConfirmationModal from '../common/ConfirmationModal.vue';
 import RevenuesFilterTabs from './RevenuesFilterTabs.vue';
-import RevenueHeader from './RevenueHeader.vue';
 import RevenueItemModal from './RevenueItemModal.vue';
 import RevenueList from './RevenueList.vue';
 import { onMounted, ref } from 'vue';

@@ -28,19 +28,19 @@ const router = createRouter({
       path: '/expenses',
       name: 'expenses',
       component: Expenses,
-      meta: { middlewares: [isAuthenticated] },
+      meta: { middlewares: [isAuthenticated], title: 'Despesas variáveis' },
     },
     {
       path: '/revenues',
       name: 'revenues',
       component: Revenues,
-      meta: { middlewares: [isAuthenticated] },
+      meta: { middlewares: [isAuthenticated], title: 'Despesas previstas' },
     },
     {
       path: '/investments',
       name: 'investments',
       component: Investments,
-      meta: { middlewares: [isAuthenticated] },
+      meta: { middlewares: [isAuthenticated], title: 'Investimentos' },
     },
   ] as RouteRecordRaw[],
 });

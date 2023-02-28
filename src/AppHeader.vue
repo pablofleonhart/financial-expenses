@@ -1,7 +1,10 @@
 <template>
   <div
-    class="flex justify-end h-14 w-full bg-primary-color border-b border-primary-color-dark"
+    class="flex justify-between h-14 w-full bg-primary-color border-b border-primary-color-dark"
   >
+    <span class="page-title flex items-center ml-4 font-bold text-2xl">
+      {{ currentPage }}
+    </span>
     <img
       v-if="user?.avatar?.url"
       class="avatar object-contain h-12 w-12 p-1 my-1 mr-2 rounded-3xl border-2 border-blue-400 cursor-pointer hover:bg-primary-color-dark"
@@ -20,7 +23,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
 import { Account } from './components/accounts/Account';
 import { account } from './services';
 import Profile from './components/profile/Profile.vue';
@@ -28,6 +32,8 @@ import { getInitials } from './utils/string-utils';
 
 const user = computed<Account>(() => account);
 const showProfile = ref(false);
+const currentPage = ref('Home');
+const route = useRoute();
 
 const toggleProfileMenu = (event: Event) => {
   event.stopPropagation();
@@ -39,4 +45,8 @@ const closeProfileMenu = () => {
 };
 
 window.addEventListener('click', closeProfileMenu);
+
+watchEffect(() => {
+  currentPage.value = route.meta.title?.toString() || '';
+});
 </script>
