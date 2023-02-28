@@ -1,5 +1,4 @@
 import { syncCategories } from './category-service';
-import { syncExpenses } from './expense-service';
 import { syncRevenues } from './revenue-service';
 import { provideApolloClient } from '@vue/apollo-composable';
 import { apolloClient } from '../lib/apollo';
@@ -8,7 +7,6 @@ import { syncInvestments } from './investment-service';
 export const syncAllData = () => {
   syncRevenues();
   syncCategories();
-  syncExpenses();
   syncInvestments();
 };
 

@@ -35,8 +35,8 @@ const showDeleteConfirmationModal = ref(false);
 const objExpense = ref(new Expense());
 let expenseToDelete: Expense = new Expense();
 
-onMounted(() => {
-  loadExpenses();
+onMounted(async () => {
+  await loadExpenses();
 });
 
 const onAddExpense = () => {

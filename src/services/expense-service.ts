@@ -74,10 +74,6 @@ const initializeService = () => {
   loadMonths();
 };
 
-const updateLocalStorage = () => {
-  localStorage.setItem('expenseItems', JSON.stringify(allExpenseItems));
-};
-
 const getExpenseByID = (id: string): Expense | null => {
   if (!id) {
     return null;
@@ -108,29 +104,22 @@ const loadMonthExpenses = (month: MonthPeriod): Promise<any> => {
   });
 };
 
-export const loadExpenses = () => {
-  const localItems = localStorage.getItem('expenseItems');
-  if (localItems) {
-    allExpenseItems = JSON.parse(localItems);
-    filterExpenses();
-  } else {
-    allExpenseItems = [];
-    const periodsPromise = new Promise((resolve) => {
-      expensePeriods.forEach(async (period: MonthPeriod, index, array) => {
-        const monthsItems = await loadMonthExpenses(period);
-        allExpenseItems = [...allExpenseItems, ...monthsItems];
-        if (index === array.length - 1) {
-          resolve(true);
-        }
-      });
+export const loadExpenses = async (): Promise<void> => {
+  allExpenseItems = [];
+  const periodsPromise = new Promise((resolve) => {
+    expensePeriods.forEach(async (period: MonthPeriod, index, array) => {
+      const monthsItems = await loadMonthExpenses(period);
+      allExpenseItems = [...allExpenseItems, ...monthsItems];
+      if (index === array.length - 1) {
+        resolve(true);
+      }
     });
+  });
 
-    periodsPromise.then(() => {
-      filterExpenses();
-      updateLocalStorage();
-    });
-  }
-  loadCategories();
+  return periodsPromise.then(() => {
+    filterExpenses();
+    loadCategories();
+  });
 };
 
 export const addExpense = (expense: Expense) => {
@@ -150,7 +139,6 @@ export const addExpense = (expense: Expense) => {
     expense.id = expenseID || '';
     allExpenseItems.push(new Expense(expense));
     filterExpenses();
-    updateLocalStorage();
     publishExpense(expenseID);
   });
 };
@@ -181,7 +169,6 @@ export const editExpense = (expense: Expense) => {
         allExpenseItems[allExpenseItems.indexOf(oldExpense)],
         expense
       );
-      updateLocalStorage();
     }
     filterExpenses();
     publishExpense(expense.id);
@@ -212,14 +199,8 @@ export const deleteExpense = (expense: Expense) => {
     // remove from local storage
     allExpenseItems.splice(allExpenseItems.indexOf(expense), 1);
     filterExpenses();
-    updateLocalStorage();
     publishExpense(expense.id);
   });
-};
-
-export const syncExpenses = () => {
-  localStorage.removeItem('expenseItems');
-  loadExpenses();
 };
 
 export const sortExpenses = (column?: string) => {
