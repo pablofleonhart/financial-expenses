@@ -1,20 +1,18 @@
 <template>
-  <div class="tabs flex h-8 w-full border-b border-primary-color-dark">
+  <div class="tabs flex h-8 w-full border-b border-neutral-color">
     <button
-      class="login-button flex items-center h-full px-2 text-black hover:bg-secondary-color-dark hover:border-x hover:border-t hover:border-primary-color-dark"
+      class="filter-tab"
       :class="{
-        'bg-secondary-color-dark font-bold border-x border-t border-primary-color-dark':
-          selectedTab === 'list',
+        'filter-tab-selected': selectedTab === 'list',
       }"
       @click="onClickTab('list')"
     >
       Lista
     </button>
     <button
-      class="login-button flex items-center h-full px-2 text-black hover:bg-secondary-color-dark hover:border-x hover:border-t hover:border-primary-color-dark"
+      class="filter-tab"
       :class="{
-        'bg-secondary-color-dark font-bold border-x border-t border-primary-color-dark':
-          selectedTab === 'chart',
+        'filter-tab-selected': selectedTab === 'chart',
       }"
       @click="onClickTab('chart')"
     >

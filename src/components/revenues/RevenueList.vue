@@ -1,12 +1,12 @@
 <template>
   <div class="revenue-list">
-    <table class="w-full overflow-hidden">
+    <table class="w-full overflow-hidden bg-neutral-color-500">
       <thead class="revenue-list-head flex w-full">
-        <tr class="flex w-full h-12 bg-secondary-color-dark">
+        <tr class="flex w-full h-12 bg-neutral-color-700">
           <th
             v-for="column in revenueColumns"
             :key="column.key"
-            class="flex items-center p-2 h-full w-1/6 cursor-pointer hover:bg-primary-color"
+            class="flex items-center p-2 h-full w-1/6 cursor-pointer hover:bg-secondary-color-300"
             :class="column.class"
             @click="orderList(column)"
           >
@@ -24,7 +24,7 @@
       </thead>
       <tbody class="revenue-list-body flex flex-col w-full">
         <tr
-          class="flex w-full items-center h-12 even:bg-secondary-color-dark"
+          class="flex w-full items-center h-12 even:bg-neutral-color-700"
           v-for="(item, index) in revenueList"
           :key="item.id"
         >
@@ -34,8 +34,8 @@
               size="22"
               weight="bold"
               :class="{
-                'text-[#06a641]': item.type === 'income',
-                'text-[#ef4444]': item.type === 'outcome',
+                'text-positive-color': item.type === 'income',
+                'text-negative-color': item.type === 'outcome',
               }"
             />
           </td>

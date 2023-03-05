@@ -1,12 +1,12 @@
 <template>
   <div class="expense-list">
-    <table class="table-auto w-full overflow-hidden">
+    <table class="table-auto w-full overflow-hidden bg-neutral-color-500">
       <thead class="expense-list-head flex w-full">
-        <tr class="flex w-full h-12 bg-secondary-color-dark">
+        <tr class="flex w-full h-12 bg-neutral-color-700">
           <th
             v-for="column in expenseColumns"
             :key="column.key"
-            class="flex items-center p-2 h-full w-1/6 cursor-pointer hover:bg-primary-color"
+            class="flex items-center p-2 h-full w-1/6 cursor-pointer hover:bg-secondary-color-300"
             :class="column.class"
             @click="orderList(column)"
           >
@@ -25,7 +25,7 @@
       <tbody class="expense-list-body flex flex-col w-full">
         <div v-if="expensesList.length">
           <tr
-            class="flex w-full items-center h-12 even:bg-secondary-color-dark"
+            class="flex w-full items-center h-12 even:bg-neutral-color-700"
             v-for="(item, index) in expensesList"
             :key="item.id"
           >

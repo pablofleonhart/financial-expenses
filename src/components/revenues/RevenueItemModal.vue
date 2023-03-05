@@ -1,17 +1,16 @@
 <template>
   <div
     v-show="opened"
-    class="revenue-item-modal absolute flex justify-center items-center h-full w-full bg-black bg-opacity-30"
+    class="revenue-item-modal absolute flex justify-center items-center h-full w-full overflow-hidden bg-black bg-opacity-50"
   >
     <div
-      class="revenue-item-container flex flex-col bg-secondary-color h-92 w-[350px] p-4 rounded-lg"
-      :class="revenue.type === 'income' ? 'income-type' : 'outcome-type'"
+      class="revenue-item-container flex flex-col bg-neutral-color-300 h-92 w-[350px] p-4 rounded-lg"
     >
       <span class="flex justify-center font-bold text-lg w-full">
-        Adicionar/Editar despesa ou renda
+        {{ `${getActionName()} despesa ou renda` }}
       </span>
       <div class="revenue-fields flex flex-col gap-3 my-5">
-        <div class="col-span-3 flex justify-center items-center text-lg">
+        <div class="col-span-3 flex justify-center items-center">
           <input
             class="mr-2"
             type="radio"
@@ -20,7 +19,11 @@
             v-model="revenue.type"
           />
           <label for="one">Renda</label>
-
+          <ph-trend-up
+            class="ml-2 text-positive-color"
+            size="24"
+            weight="bold"
+          />
           <input
             class="ml-8 mr-2"
             type="radio"
@@ -29,10 +32,15 @@
             v-model="revenue.type"
           />
           <label for="two">Despesa</label>
+          <ph-trend-down
+            class="ml-2 text-negative-color"
+            size="24"
+            weight="bold"
+          />
         </div>
-        <div class="category-select" @click.stop>
+        <div class="currency-select" @click.stop>
           <div
-            class="selected-option flex outline-0 rounded p-2 border bg-white border-secondary-color-dark h-10 cursor-pointer"
+            class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
             :class="{ open: currencySelectorOpen }"
             @click="currencySelectorOpen = !currencySelectorOpen"
           >
@@ -42,26 +50,26 @@
             </span>
           </div>
           <ul
-            class="period-items absolute bg-white border border-secondary-color-dark w-52"
+            class="period-items absolute bg-neutral-color-700 w-52"
             :class="{ hidden: !currencySelectorOpen }"
           >
             <li
               class="item flex cursor-pointer p-2 h-10 w-full"
-              :class="{ 'item-selected': category.id === selectedCurrency?.id }"
-              v-for="category in currencies"
-              :key="category.id"
-              @click="selectCurrency(category)"
+              :class="{ 'item-selected': currency.id === selectedCurrency?.id }"
+              v-for="currency in currencies"
+              :key="currency.id"
+              @click="selectCurrency(currency)"
             >
-              <component :is="category.icon" size="24" />
+              <component :is="currency.icon" size="24" />
               <span class="item-name ml-2">
-                {{ category.name }}
+                {{ currency.name }}
               </span>
             </li>
           </ul>
         </div>
         <input
           v-model="revenue.amount"
-          class="outline-0 rounded p-2 border border-secondary-color-dark h-10"
+          class="outline-0 rounded p-2 h-10 bg-neutral-color-700"
           type="number"
           min="0"
           required
@@ -69,7 +77,7 @@
         />
         <input
           v-model="revenue.bank"
-          class="outline-0 rounded p-2 border border-secondary-color-dark h-10"
+          class="outline-0 rounded p-2 h-10 bg-neutral-color-700"
           type="text"
           placeholder="Informe o banco vinculado"
         />
@@ -84,22 +92,22 @@
         />
         <textarea
           v-model="revenue.description"
-          class="flex col-span-3 resize-none outline-0 rounded p-2 border border-secondary-color-dark h-32"
+          class="flex col-span-3 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-32"
           placeholder="Descreva a renda ou despesa"
         />
       </div>
-      <div class="revenue-item-actions flex justify-end mt-6">
+      <div class="revenue-item-actions flex justify-end gap-4">
         <button
-          class="revenue-item-confirm max-w-fit h-8 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
-          @click="onActionItem"
-        >
-          {{ revenue.id === '' ? 'Adicionar' : 'Editar' }}
-        </button>
-        <button
-          class="revenue-item-cancel ml-4 max-w-fit h-8 px-2 bg-primary-color border-2 border-primary-color-dark hover:bg-secondary-color rounded"
+          class="revenue-item-cancel max-w-fit h-8 px-2 bg-neutral-color-300 border-2 border-neutral-color-700 hover:bg-neutral-color-700 rounded"
           @click="emit('close')"
         >
           Cancelar
+        </button>
+        <button
+          class="revenue-item-confirm max-w-fit h-8 px-2 bg-secondary-color-300 hover:bg-secondary-color-700 rounded"
+          @click="onActionItem"
+        >
+          {{ getActionName() }}
         </button>
       </div>
     </div>
@@ -151,6 +159,10 @@ watch(
   }
 );
 
+const getActionName = () => {
+  return revenue.id === '' ? 'Adicionar' : 'Editar';
+};
+
 const selectCurrency = (option: any) => {
   selectedCurrency.value = option;
   revenue.currency = option?.type;
@@ -171,12 +183,4 @@ const onActionItem = async () => {
 };
 </script>
 
-<style lang="scss" scoped>
-.income-type {
-  background-color: #b2ecc7;
-}
-
-.outcome-type {
-  background-color: #ffbdbd;
-}
-</style>
+<style lang="scss" scoped></style>

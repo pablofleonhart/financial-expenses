@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid grid-cols-[min-content_1fr] grid-rows-[60px_1fr] font-sans bg-secondary-color"
+    class="grid grid-cols-[min-content_1fr] grid-rows-[60px_1fr] font-sans bg-neutral-color-300 text-neutral-color"
   >
     <app-sidebar class="row-span-2" />
     <app-header />
