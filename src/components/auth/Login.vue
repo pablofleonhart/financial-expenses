@@ -1,13 +1,19 @@
 <template>
-  <div class="grid grid-cols-2 min-h-screen min-w-full h-full w-full">
-    <div>
-      <img
-        class="min-w-full h-screen w-full"
-        src="../../assets/img/banner.jpg"
+  <div
+    class="grid grid-cols-2 min-h-screen min-w-full h-full w-full text-neutral-color"
+  >
+    <div
+      class="flex justify-center items-center bg-primary-color-300 text-secondary-color-700"
+    >
+      <ph-currency-circle-dollar
+        class="flex rotate-[-20deg]"
+        size="80"
+        weight="thin"
       />
+      <span class="font-serif font-bold text-3xl">Meus Pila</span>
     </div>
     <div
-      class="flex flex-col justify-center items-center bg-primary-color w-full"
+      class="flex flex-col justify-center items-center bg-neutral-color-300 w-full"
     >
       <span
         v-if="loginError.value !== ''"
@@ -19,7 +25,7 @@
         <span class="mb-2 text-sm"> Email </span>
         <input
           id="email-input"
-          class="border border-secondary-color-dark p-2 h-10 w-full outline-0 rounded"
+          class="bg-neutral-color-700 border border-primary-color-700 p-2 h-10 w-full outline-0 rounded"
           type="email"
           placeholder="Enter your email"
           v-model="email"
@@ -29,14 +35,14 @@
         <span class="mb-2 text-sm"> Password </span>
         <input
           id="password-input"
-          class="border border-secondary-color-dark p-2 h-10 w-full outline-0 rounded"
+          class="bg-neutral-color-700 border border-primary-color-700 p-2 h-10 w-full outline-0 rounded"
           type="password"
           placeholder="Enter your password"
           v-model="password"
         />
       </div>
       <button
-        class="login-button flex items-center mt-12 max-w-fit h-9 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
+        class="login-button flex items-center mt-12 max-w-fit h-9 px-2 rounded bg-secondary-color-300 border-2 border-secondary-color-300 hover:bg-secondary-color-700 hover:border-secondary-color-700"
         @click="onLogin"
       >
         <span class="mr-2"> Log me in </span>
@@ -68,6 +74,13 @@ const registerEnterEvent = (input: HTMLElement | null) => {
 };
 
 onMounted(() => {
+  const darkThemeConfig = localStorage.getItem('dark-theme');
+  if (darkThemeConfig) {
+    const lightTheme = JSON.parse(darkThemeConfig);
+    if (lightTheme) {
+      document.body.classList.toggle('dark-theme');
+    }
+  }
   const emailInput = document.getElementById('email-input');
   const passwordInput = document.getElementById('password-input');
   registerEnterEvent(emailInput);

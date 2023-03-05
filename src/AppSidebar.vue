@@ -1,11 +1,17 @@
 <template>
   <nav
-    class="sidebar min-h-screen h-full pt-1 w-40 flex flex-col bg-primary-color border-r border-primary-color-dark"
+    class="sidebar min-h-screen h-full pt-1 w-40 flex flex-col bg-primary-color-300 border-r border-primary-color-700"
     :class="{ 'sidebar-collapsed': collapsedMenu }"
   >
+    <div class="flex ml-1 items-center text-secondary-color-700">
+      <ph-currency-circle-dollar class="flex rotate-[-20deg]" size="40" />
+      <span v-if="!collapsedMenu" class="font-serif font-bold text-lg"
+        >Meus Pila</span
+      >
+    </div>
     <button
-      class="button-toggle flex top-0 h-9 w-40 mt-1 mb-12 items-center hover:bg-primary-color-dark hover:text-white"
-      :class="{ 'button-toggle-collapsed': collapsedMenu }"
+      class="toggle-menu-button flex h-9 w-40 my-6 items-center hover:bg-primary-color-700"
+      :class="{ 'toggle-menu-button-collapsed': collapsedMenu }"
       @click="toggleMenu"
     >
       <component
@@ -14,13 +20,13 @@
             ? 'ph-caret-circle-double-right'
             : 'ph-caret-circle-double-left'
         "
-        class="button-toggle-icon w-8 h-8 mx-2"
+        class="toggle-menu-button-icon w-8 h-8 mx-2"
       />
       <span v-if="!collapsedMenu"> Retrair </span>
     </button>
     <router-link
       v-for="item in sidebarItems"
-      class="sidebar-item flex flex-row cursor-pointer h-9 w-full mb-4 items-center hover:bg-primary-color-dark hover:text-white"
+      class="sidebar-item flex flex-row cursor-pointer h-9 w-full mb-4 items-center hover:bg-primary-color-700"
       :key="item.id"
       :to="item.route"
     >
@@ -83,36 +89,14 @@ const toggleMenu = () => {
   width: 50px !important;
 }
 
-.button-toggle {
-  &:hover {
-    :deep(.button-toggle-icon) {
-      * {
-        stroke: #fff;
-      }
-    }
-  }
-
+.toggle-menu-button {
   &-collapsed {
     width: 50px !important;
   }
 }
 .sidebar-item {
   &.router-link-active {
-    background-color: #026670;
-    color: #fff;
-    :deep(.sidebar-item-icon) {
-      * {
-        stroke: #fff;
-      }
-    }
-  }
-
-  &:hover {
-    :deep(.sidebar-item-icon) {
-      * {
-        stroke: #fff;
-      }
-    }
+    background-color: var(--primary-color-700);
   }
 }
 </style>

@@ -2,8 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --primary-color-300: #9BFDF4;
+    --primary-color-700: #04DCC6;
+
+    --secondary-color-300: #C79CFC;
+    --secondary-color-700: #9A4CFA;
+
+    --neutral-color: #000000;
+    --neutral-color-off: #666666;
+    --neutral-color-300: #F5F5F5;
+    --neutral-color-500: #EBEBEB;
+    --neutral-color-700: #D6D6D6;
+
+    --positive-color: #119d45;
+    --negative-color: #EF4444;
+  }
+
+  .dark-theme {
+    --primary-color-300: #02645B;
+    --primary-color-700: #023C36;
+
+    --secondary-color-300: #6D28D9;
+    --secondary-color-700: #25007A;
+
+    --neutral-color: #E0E0E0;
+    --neutral-color-off: #ADADAD;
+    --neutral-color-300: #3D3D3D;
+    --neutral-color-500: #333333;
+    --neutral-color-700: #1F1F1F;
+
+    --positive-color: #01fb5d;
+    --negative-color: #ff0000;
+  }
+}
+
 @layer components {
+  .filter-tab {
+    @apply flex items-center h-full px-2 text-neutral-color-off border-x border-t border-neutral-color-700
+    hover:bg-primary-color-300 hover:border-primary-color-700 hover:text-neutral-color;
+  }
+
+  .filter-tab-selected {
+    @apply bg-primary-color-700 font-bold border-primary-color-300 text-neutral-color;
+  }
+
   .button-action {
-    @apply p-1 cursor-pointer rounded-xl hover:text-white;
+    @apply p-1 cursor-pointer rounded-xl text-neutral-color;
   }
 }

@@ -1,18 +1,18 @@
 <template>
   <div
     v-show="opened"
-    class="investment-item-modal absolute flex justify-center items-center h-full w-full bg-black bg-opacity-30"
+    class="investment-item-modal absolute flex justify-center items-center h-full w-full bg-black bg-opacity-50"
   >
     <div
-      class="investment-item-container flex flex-col bg-secondary-color h-100 w-80 p-4 rounded-lg"
+      class="investment-item-container flex flex-col bg-neutral-color-300 h-92 w-80 p-4 rounded-lg"
     >
       <span class="flex justify-center font-bold text-lg w-full">
-        Adicionar/Editar investimento
+        {{ `${getActionName()} investimento` }}
       </span>
       <div class="investment-fields flex flex-col gap-3 my-5">
         <div class="category-select" @click.stop>
           <div
-            class="selected-option flex outline-0 rounded p-2 border bg-white border-secondary-color-dark h-10 cursor-pointer"
+            class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
             :class="{ open: currencySelectorOpen }"
             @click="currencySelectorOpen = !currencySelectorOpen"
           >
@@ -22,7 +22,7 @@
             </span>
           </div>
           <ul
-            class="period-items absolute bg-white border border-secondary-color-dark w-52"
+            class="period-items absolute bg-neutral-color-700 border border-primary-color-300 w-52"
             :class="{ hidden: !currencySelectorOpen }"
           >
             <li
@@ -41,36 +41,36 @@
         </div>
         <input
           v-model="investment.amount"
-          class="outline-0 rounded p-2 border border-secondary-color-dark h-10"
+          class="outline-0 rounded p-2 bg-neutral-color-700 h-10"
           type="number"
           min="0"
           required
         />
         <input
           v-model="investment.broker"
-          class="outline-0 rounded p-2 border border-secondary-color-dark h-10"
+          class="outline-0 rounded p-2 bg-neutral-color-700 h-10"
           type="text"
           placeholder="Banco ou corretora"
         />
         <input
           v-model="investment.holder"
-          class="outline-0 rounded p-2 border border-secondary-color-dark h-10"
+          class="outline-0 rounded p-2 bg-neutral-color-700 h-10"
           type="text"
           placeholder="Titular da conta"
         />
       </div>
-      <div class="investment-item-actions flex justify-end">
+      <div class="expense-item-actions flex justify-end gap-4">
         <button
-          class="investment-item-confirm max-w-fit h-8 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
-          @click="onActionItem"
-        >
-          {{ investment.id === '' ? 'Adicionar' : 'Editar' }}
-        </button>
-        <button
-          class="investment-item-cancel ml-4 max-w-fit h-8 px-2 bg-primary-color border-2 border-primary-color-dark hover:bg-secondary-color rounded"
+          class="expense-item-cancel max-w-fit h-8 px-2 bg-neutral-color-300 border-2 border-neutral-color-700 hover:bg-neutral-color-700 rounded"
           @click="emit('close')"
         >
           Cancelar
+        </button>
+        <button
+          class="expense-item-confirm max-w-fit h-8 px-2 bg-secondary-color-300 hover:bg-secondary-color-700 rounded"
+          @click="onActionItem"
+        >
+          {{ getActionName() }}
         </button>
       </div>
     </div>
@@ -120,6 +120,10 @@ watch(
     }
   }
 );
+
+const getActionName = () => {
+  return investment.id === '' ? 'Adicionar' : 'Editar';
+};
 
 const selectCurrency = (option: any) => {
   selectedCurrency.value = option;

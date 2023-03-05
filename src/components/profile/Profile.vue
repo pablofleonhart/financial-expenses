@@ -1,18 +1,18 @@
 <template>
   <div
     v-show="showProfileMenu"
-    class="flex flex-col absolute items-center justify-self-end top-16 mr-2 w-40 bg-primary-color border border-primary-color-dark"
+    class="flex flex-col absolute items-center justify-self-end top-16 mr-2 w-40 bg-primary-color-300 border border-primary-color-700"
     @click.stop
   >
     <button
-      class="sync-button flex w-full p-2 h-10 m-2 hover:bg-primary-color-dark hover:text-white"
+      class="sync-button flex w-full p-2 h-10 m-2 hover:bg-primary-color-700"
       @click="syncAllData"
     >
       <ph-cloud-arrow-down class="h-6 w-6 mr-2" />
       <span>Sincronizar</span>
     </button>
     <button
-      class="logout-button flex w-full p-2 h-10 mb-2 hover:bg-primary-color-dark hover:text-white"
+      class="logout-button flex w-full p-2 h-10 mb-2 hover:bg-primary-color-700"
       @click="logout"
     >
       <ph-power class="h-6 w-6 mr-2" />

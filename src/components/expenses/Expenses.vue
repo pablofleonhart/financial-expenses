@@ -1,7 +1,12 @@
 <template>
   <div class="expenses-page m-3">
-    <expenses-filter-tabs />
-    <expenses-header @on-add-expense="onAddExpense" />
+    <div class="flex flex-row">
+      <expenses-filter-tabs />
+      <div class="flex justify-end">
+        <add-button @click="onAddExpense"></add-button>
+      </div>
+    </div>
+    <expenses-header />
     <expenses-page
       @on-edit-expense="onEditExpense"
       @on-delete-expense="onDeleteExpense"
@@ -22,6 +27,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
+import AddButton from '../common/AddButton.vue';
 import ExpensesFilterTabs from './ExpensesFilterTabs.vue';
 import ExpensesHeader from './ExpensesHeader.vue';
 import ExpensesPage from './ExpensesPage.vue';

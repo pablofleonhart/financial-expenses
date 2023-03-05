@@ -1,39 +1,49 @@
 <template>
   <div
-    class="flex justify-between h-14 w-full bg-primary-color border-b border-primary-color-dark"
+    class="flex justify-between h-14 w-full bg-primary-color-300 border-b border-primary-color-700"
   >
-    <span class="page-title flex items-center ml-4 font-bold text-2xl">
+    <span class="page-title flex items-center ml-4 font-bold text-xl">
       {{ currentPage }}
     </span>
-    <img
-      v-if="user?.avatar?.url"
-      class="avatar object-contain h-12 w-12 p-1 my-1 mr-2 rounded-3xl border-2 border-blue-400 cursor-pointer hover:bg-primary-color-dark"
-      :src="user?.avatar?.url"
-      @click="toggleProfileMenu"
-    />
-    <div
-      v-else
-      class="avatar flex items-center justify-center h-12 w-12 p-1 my-1 mr-2 rounded-3xl border-2 border-blue-400 text-2xl cursor-pointer hover:bg-primary-color-dark hover:text-white"
-      @click="toggleProfileMenu"
-    >
-      {{ getInitials(account.name) }}
+    <div class="flex gap-4">
+      <component
+        class="cursor-pointer flex items-center justify-center h-11 w-11 my-1 p-2 rounded-3xl hover:bg-primary-color-700"
+        :is="getThemeIcon()"
+        @click="toggleTheme"
+      />
+      <div
+        class="avatar flex items-center justify-center h-11 w-11 my-1 mr-4 rounded-3xl border-2 border-primary-color-700 text-xl cursor-pointer hover:bg-primary-color-700"
+        @click="toggleProfileMenu"
+      >
+        {{ getInitials(account.name) }}
+      </div>
     </div>
   </div>
   <profile :show-profile-menu="showProfile" />
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watchEffect } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import { Account } from './components/accounts/Account';
-import { account } from './services';
+import { account, reloadCharts } from './services';
 import Profile from './components/profile/Profile.vue';
 import { getInitials } from './utils/string-utils';
 
-const user = computed<Account>(() => account);
+const route = useRoute();
 const showProfile = ref(false);
 const currentPage = ref('Home');
-const route = useRoute();
+const darkTheme = ref(false);
+
+const getThemeIcon = () => {
+  return darkTheme.value ? 'ph-moon' : 'ph-sun';
+};
+
+const toggleTheme = () => {
+  darkTheme.value = !darkTheme.value;
+  document.body.classList.toggle('dark-theme');
+  localStorage.setItem('dark-theme', JSON.stringify(darkTheme.value));
+  reloadCharts.value = !reloadCharts.value;
+};
 
 const toggleProfileMenu = (event: Event) => {
   event.stopPropagation();
@@ -45,6 +55,16 @@ const closeProfileMenu = () => {
 };
 
 window.addEventListener('click', closeProfileMenu);
+
+onMounted(() => {
+  const darkThemeConfig = localStorage.getItem('dark-theme');
+  if (darkThemeConfig) {
+    darkTheme.value = JSON.parse(darkThemeConfig);
+    if (!darkTheme.value) {
+      document.body.classList.toggle('dark-theme');
+    }
+  }
+});
 
 watchEffect(() => {
   currentPage.value = route.meta.title?.toString() || '';

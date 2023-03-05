@@ -1,11 +1,10 @@
 <template>
-  <ul class="tabs flex h-8 w-full border-b border-primary-color-dark">
+  <ul class="tabs flex h-8 w-full border-b border-neutral-color">
     <li v-for="tab in tabItems" :key="tab.name">
       <button
-        class="login-button flex items-center h-full px-2 text-black hover:bg-secondary-color-dark hover:border-x hover:border-t hover:border-primary-color-dark"
+        class="filter-tab"
         :class="{
-          'bg-secondary-color-dark font-bold border-x border-t border-primary-color-dark':
-            tab.name === selectedTab,
+          'filter-tab-selected': tab.name === selectedTab,
         }"
         @click="filterItems(tab)"
       >

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-4/5 w-4/5">
+  <div class="flex h-5/6 w-11/12">
     <doughnut
       :data="chartData"
       :options="chartOptions"
@@ -23,7 +23,7 @@ import {
   ChartData,
   Colors,
 } from 'chart.js';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { Doughnut } from 'vue-chartjs';
 import {
   expenseCategoriesLabels,
@@ -56,6 +56,19 @@ const getExpenseChartData = (): ChartData<'doughnut'> => ({
   ],
 });
 
+const getTextColor = () => {
+  return document.body.classList.contains('dark-theme') ? '#D6D6D6' : '#3D3D3D';
+};
+
+const getTitleSettings = reactive({
+  color: () => getTextColor(),
+  display: true,
+  font: {
+    size: 20,
+  },
+  text: 'Categorias',
+});
+
 watch(reloadCharts, () => {
   chartData.value = getExpenseChartData();
 });
@@ -64,8 +77,9 @@ onMounted(() => {
   chartData.value = getExpenseChartData();
 });
 
-const chartOptions: ChartOptions<'doughnut'> = {
-  color: '#000',
+const chartOptions = ref<ChartOptions<'doughnut'>>({
+  borderColor: () => getTextColor(),
+  color: () => getTextColor(),
   cutout: '35%',
   responsive: true,
   maintainAspectRatio: true,
@@ -82,16 +96,11 @@ const chartOptions: ChartOptions<'doughnut'> = {
         font: {
           size: 16,
         },
+        padding: 12,
       },
     },
-    title: {
-      color: '#000',
-      display: true,
-      font: {
-        size: 20,
-      },
-      text: 'Categorias',
-    },
+    // @ts-ignore
+    title: getTitleSettings,
   },
-};
+});
 </script>

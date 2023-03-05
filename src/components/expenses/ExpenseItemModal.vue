@@ -1,37 +1,31 @@
 <template>
   <div
     v-show="opened"
-    class="expense-item-modal absolute flex justify-center items-center h-full w-full bg-black bg-opacity-30"
+    class="expense-item-modal absolute flex justify-center items-center h-full w-full overflow-hidden bg-black bg-opacity-50"
   >
     <div
-      class="expense-item-container flex flex-col bg-secondary-color h-92 w-1/2 p-4 rounded-lg"
+      class="expense-item-container flex flex-col bg-neutral-color-300 h-92 w-[350px] p-4 rounded-lg"
     >
       <span class="flex justify-center font-bold text-lg w-full">
-        Adicionar/Editar gasto
+        {{ `${getActionName()} gasto` }}
       </span>
-      <div
-        class="expense-fields grid grid-rows-[60px_60px] grid-cols-2 gap-4 items-center"
-      >
+      <div class="expense-fields flex flex-col gap-3 my-5">
+        <div class="flex justify-center items-center text-lg">
+          <input class="mr-2" type="checkbox" v-model="expense.card" />
+          <component :is="getPaymentIcon(true)" size="24" />
+          <label class="ml-2">Cartão</label>
+        </div>
         <input
           v-model="expense.amount"
-          class="outline-0 rounded p-2 border border-secondary-color-dark h-10"
+          class="outline-0 rounded p-2 h-10 bg-neutral-color-700"
           type="number"
           min="0"
           required
           placeholder="Valor a receber/pagar"
         />
-        <datepicker
-          :model-value="expense.date"
-          locale="pt"
-          select-text="Selecionar"
-          text-input
-          format="dd/MM/yyyy HH:mm"
-          placeholder="Data da renda ou despesa"
-          @update:model-value="setDate"
-        />
         <div class="category-select" @click.stop>
           <div
-            class="selected-option flex outline-0 rounded p-2 border bg-white border-secondary-color-dark h-10 cursor-pointer"
+            class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
             :class="{ open: categorySelectorOpen }"
             @click="categorySelectorOpen = !categorySelectorOpen"
           >
@@ -44,7 +38,7 @@
             </span>
           </div>
           <ul
-            class="period-items absolute bg-white border border-secondary-color-dark w-52"
+            class="period-items absolute bg-neutral-color-700 w-52 h-80 overflow-scroll"
             :class="{ hidden: !categorySelectorOpen }"
           >
             <li
@@ -61,29 +55,33 @@
             </li>
           </ul>
         </div>
-        <div class="flex justify-center items-center text-lg">
-          <input class="mr-2" type="checkbox" v-model="expense.card" />
-          <component :is="getPaymentIcon(true)" size="24" />
-          <label class="ml-2">Cartão</label>
-        </div>
+        <datepicker
+          :model-value="expense.date"
+          locale="pt"
+          select-text="Selecionar"
+          text-input
+          format="dd/MM/yyyy HH:mm"
+          placeholder="Data da renda ou despesa"
+          @update:model-value="setDate"
+        />
         <textarea
           v-model="expense.note"
-          class="flex col-span-2 resize-none outline-0 rounded p-2 border border-secondary-color-dark h-24"
+          class="flex col-span-2 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-24"
           placeholder="Descreva a renda ou despesa"
         />
       </div>
-      <div class="expense-item-actions flex justify-end mt-6">
+      <div class="expense-item-actions flex justify-end gap-4">
         <button
-          class="expense-item-confirm max-w-fit h-8 px-2 bg-primary-color-dark text-white border-2 border-primary-color-dark hover:bg-secondary-color-dark hover:text-black rounded"
-          @click="onActionItem"
-        >
-          {{ expense.id === '' ? 'Adicionar' : 'Editar' }}
-        </button>
-        <button
-          class="expense-item-cancel ml-4 max-w-fit h-8 px-2 bg-primary-color border-2 border-primary-color-dark hover:bg-secondary-color rounded"
+          class="expense-item-cancel max-w-fit h-8 px-2 bg-neutral-color-300 border-2 border-neutral-color-700 hover:bg-neutral-color-700 rounded"
           @click="emit('close')"
         >
           Cancelar
+        </button>
+        <button
+          class="expense-item-confirm max-w-fit h-8 px-2 bg-secondary-color-300 hover:bg-secondary-color-700 rounded"
+          @click="onActionItem"
+        >
+          {{ getActionName() }}
         </button>
       </div>
     </div>
@@ -121,6 +119,10 @@ watch(
   }
 );
 
+const getActionName = () => {
+  return expense.id === '' ? 'Adicionar' : 'Editar';
+};
+
 const selectCategory = (option: any) => {
   selectedCategory.value = option;
   expense.category = option;
@@ -147,12 +149,4 @@ const closeSelector = () => {
 window.addEventListener('click', closeSelector);
 </script>
 
-<style lang="scss" scoped>
-.income-type {
-  background-color: #b2ecc7;
-}
-
-.outcome-type {
-  background-color: #ffbdbd;
-}
-</style>
+<style lang="scss" scoped></style>
