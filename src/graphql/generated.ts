@@ -8797,7 +8797,7 @@ export const GetExpensesDocument = gql`
     expenses(
       first: 100
       orderBy: date_DESC
-      where: { date_lte: $startDate, date_gte: $endDate }
+      where: { date_gte: $startDate, date_lte: $endDate }
     ) {
       id
       amount
