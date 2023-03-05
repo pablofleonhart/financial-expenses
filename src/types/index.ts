@@ -30,3 +30,13 @@ export type RevenueStatus = {
   id: number;
   name: string;
 };
+
+export enum WISH_STATUS {
+  OPEN = 0,
+  DONE = 1,
+}
+
+export type WishStatus = {
+  id: number;
+  name: string;
+};

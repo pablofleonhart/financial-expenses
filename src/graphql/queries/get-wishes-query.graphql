@@ -1,0 +1,10 @@
+query GetWishes {
+  wishes(first: 100, orderBy: amount_DESC) {
+    id
+    amount
+    deleted
+    description
+    currency
+    itemStatus
+  }
+}

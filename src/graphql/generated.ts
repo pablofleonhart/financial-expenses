@@ -3024,6 +3024,8 @@ export type Mutation = {
   createRevenue?: Maybe<Revenue>;
   /** Create one scheduledRelease */
   createScheduledRelease?: Maybe<ScheduledRelease>;
+  /** Create one wish */
+  createWish?: Maybe<Wish>;
   /** Delete one account from _all_ existing stages. Returns deleted document. */
   deleteAccount?: Maybe<Account>;
   /** Delete one asset from _all_ existing stages. Returns deleted document. */
@@ -3076,12 +3078,21 @@ export type Mutation = {
   deleteManyRevenues: BatchPayload;
   /** Delete many Revenue documents, return deleted documents */
   deleteManyRevenuesConnection: RevenueConnection;
+  /**
+   * Delete many Wish documents
+   * @deprecated Please use the new paginated many mutation (deleteManyWishesConnection)
+   */
+  deleteManyWishes: BatchPayload;
+  /** Delete many Wish documents, return deleted documents */
+  deleteManyWishesConnection: WishConnection;
   /** Delete one revenue from _all_ existing stages. Returns deleted document. */
   deleteRevenue?: Maybe<Revenue>;
   /** Delete and return scheduled operation */
   deleteScheduledOperation?: Maybe<ScheduledOperation>;
   /** Delete one scheduledRelease from _all_ existing stages. Returns deleted document. */
   deleteScheduledRelease?: Maybe<ScheduledRelease>;
+  /** Delete one wish from _all_ existing stages. Returns deleted document. */
+  deleteWish?: Maybe<Wish>;
   /** Publish one account */
   publishAccount?: Maybe<Account>;
   /** Publish one asset */
@@ -3134,8 +3145,17 @@ export type Mutation = {
   publishManyRevenues: BatchPayload;
   /** Publish many Revenue documents */
   publishManyRevenuesConnection: RevenueConnection;
+  /**
+   * Publish many Wish documents
+   * @deprecated Please use the new paginated many mutation (publishManyWishesConnection)
+   */
+  publishManyWishes: BatchPayload;
+  /** Publish many Wish documents */
+  publishManyWishesConnection: WishConnection;
   /** Publish one revenue */
   publishRevenue?: Maybe<Revenue>;
+  /** Publish one wish */
+  publishWish?: Maybe<Wish>;
   /** Schedule to publish one account */
   schedulePublishAccount?: Maybe<Account>;
   /** Schedule to publish one asset */
@@ -3148,6 +3168,8 @@ export type Mutation = {
   schedulePublishInvestment?: Maybe<Investment>;
   /** Schedule to publish one revenue */
   schedulePublishRevenue?: Maybe<Revenue>;
+  /** Schedule to publish one wish */
+  schedulePublishWish?: Maybe<Wish>;
   /** Unpublish one account from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishAccount?: Maybe<Account>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -3160,6 +3182,8 @@ export type Mutation = {
   scheduleUnpublishInvestment?: Maybe<Investment>;
   /** Unpublish one revenue from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishRevenue?: Maybe<Revenue>;
+  /** Unpublish one wish from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishWish?: Maybe<Wish>;
   /** Unpublish one account from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishAccount?: Maybe<Account>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -3212,8 +3236,17 @@ export type Mutation = {
   unpublishManyRevenues: BatchPayload;
   /** Find many Revenue documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyRevenuesConnection: RevenueConnection;
+  /**
+   * Unpublish many Wish documents
+   * @deprecated Please use the new paginated many mutation (unpublishManyWishesConnection)
+   */
+  unpublishManyWishes: BatchPayload;
+  /** Find many Wish documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyWishesConnection: WishConnection;
   /** Unpublish one revenue from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishRevenue?: Maybe<Revenue>;
+  /** Unpublish one wish from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishWish?: Maybe<Wish>;
   /** Update one account */
   updateAccount?: Maybe<Account>;
   /** Update one asset */
@@ -3266,10 +3299,19 @@ export type Mutation = {
   updateManyRevenues: BatchPayload;
   /** Update many Revenue documents */
   updateManyRevenuesConnection: RevenueConnection;
+  /**
+   * Update many wishes
+   * @deprecated Please use the new paginated many mutation (updateManyWishesConnection)
+   */
+  updateManyWishes: BatchPayload;
+  /** Update many Wish documents */
+  updateManyWishesConnection: WishConnection;
   /** Update one revenue */
   updateRevenue?: Maybe<Revenue>;
   /** Update one scheduledRelease */
   updateScheduledRelease?: Maybe<ScheduledRelease>;
+  /** Update one wish */
+  updateWish?: Maybe<Wish>;
   /** Upsert one account */
   upsertAccount?: Maybe<Account>;
   /** Upsert one asset */
@@ -3282,6 +3324,8 @@ export type Mutation = {
   upsertInvestment?: Maybe<Investment>;
   /** Upsert one revenue */
   upsertRevenue?: Maybe<Revenue>;
+  /** Upsert one wish */
+  upsertWish?: Maybe<Wish>;
 };
 
 export type MutationCreateAccountArgs = {
@@ -3310,6 +3354,10 @@ export type MutationCreateRevenueArgs = {
 
 export type MutationCreateScheduledReleaseArgs = {
   data: ScheduledReleaseCreateInput;
+};
+
+export type MutationCreateWishArgs = {
+  data: WishCreateInput;
 };
 
 export type MutationDeleteAccountArgs = {
@@ -3410,6 +3458,19 @@ export type MutationDeleteManyRevenuesConnectionArgs = {
   where?: InputMaybe<RevenueManyWhereInput>;
 };
 
+export type MutationDeleteManyWishesArgs = {
+  where?: InputMaybe<WishManyWhereInput>;
+};
+
+export type MutationDeleteManyWishesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<WishManyWhereInput>;
+};
+
 export type MutationDeleteRevenueArgs = {
   where: RevenueWhereUniqueInput;
 };
@@ -3420,6 +3481,10 @@ export type MutationDeleteScheduledOperationArgs = {
 
 export type MutationDeleteScheduledReleaseArgs = {
   where: ScheduledReleaseWhereUniqueInput;
+};
+
+export type MutationDeleteWishArgs = {
+  where: WishWhereUniqueInput;
 };
 
 export type MutationPublishAccountArgs = {
@@ -3552,9 +3617,30 @@ export type MutationPublishManyRevenuesConnectionArgs = {
   where?: InputMaybe<RevenueManyWhereInput>;
 };
 
+export type MutationPublishManyWishesArgs = {
+  to?: Array<Stage>;
+  where?: InputMaybe<WishManyWhereInput>;
+};
+
+export type MutationPublishManyWishesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<WishManyWhereInput>;
+};
+
 export type MutationPublishRevenueArgs = {
   to?: Array<Stage>;
   where: RevenueWhereUniqueInput;
+};
+
+export type MutationPublishWishArgs = {
+  to?: Array<Stage>;
+  where: WishWhereUniqueInput;
 };
 
 export type MutationSchedulePublishAccountArgs = {
@@ -3602,6 +3688,13 @@ export type MutationSchedulePublishRevenueArgs = {
   where: RevenueWhereUniqueInput;
 };
 
+export type MutationSchedulePublishWishArgs = {
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  to?: Array<Stage>;
+  where: WishWhereUniqueInput;
+};
+
 export type MutationScheduleUnpublishAccountArgs = {
   from?: Array<Stage>;
   releaseAt?: InputMaybe<Scalars['DateTime']>;
@@ -3644,6 +3737,13 @@ export type MutationScheduleUnpublishRevenueArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']>;
   releaseId?: InputMaybe<Scalars['String']>;
   where: RevenueWhereUniqueInput;
+};
+
+export type MutationScheduleUnpublishWishArgs = {
+  from?: Array<Stage>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  where: WishWhereUniqueInput;
 };
 
 export type MutationUnpublishAccountArgs = {
@@ -3773,9 +3873,30 @@ export type MutationUnpublishManyRevenuesConnectionArgs = {
   where?: InputMaybe<RevenueManyWhereInput>;
 };
 
+export type MutationUnpublishManyWishesArgs = {
+  from?: Array<Stage>;
+  where?: InputMaybe<WishManyWhereInput>;
+};
+
+export type MutationUnpublishManyWishesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: InputMaybe<Stage>;
+  where?: InputMaybe<WishManyWhereInput>;
+};
+
 export type MutationUnpublishRevenueArgs = {
   from?: Array<Stage>;
   where: RevenueWhereUniqueInput;
+};
+
+export type MutationUnpublishWishArgs = {
+  from?: Array<Stage>;
+  where: WishWhereUniqueInput;
 };
 
 export type MutationUpdateAccountArgs = {
@@ -3893,6 +4014,21 @@ export type MutationUpdateManyRevenuesConnectionArgs = {
   where?: InputMaybe<RevenueManyWhereInput>;
 };
 
+export type MutationUpdateManyWishesArgs = {
+  data: WishUpdateManyInput;
+  where?: InputMaybe<WishManyWhereInput>;
+};
+
+export type MutationUpdateManyWishesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  data: WishUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<WishManyWhereInput>;
+};
+
 export type MutationUpdateRevenueArgs = {
   data: RevenueUpdateInput;
   where: RevenueWhereUniqueInput;
@@ -3901,6 +4037,11 @@ export type MutationUpdateRevenueArgs = {
 export type MutationUpdateScheduledReleaseArgs = {
   data: ScheduledReleaseUpdateInput;
   where: ScheduledReleaseWhereUniqueInput;
+};
+
+export type MutationUpdateWishArgs = {
+  data: WishUpdateInput;
+  where: WishWhereUniqueInput;
 };
 
 export type MutationUpsertAccountArgs = {
@@ -3931,6 +4072,11 @@ export type MutationUpsertInvestmentArgs = {
 export type MutationUpsertRevenueArgs = {
   upsert: RevenueUpsertInput;
   where: RevenueWhereUniqueInput;
+};
+
+export type MutationUpsertWishArgs = {
+  upsert: WishUpsertInput;
+  where: WishWhereUniqueInput;
 };
 
 /** An object with an ID */
@@ -4033,6 +4179,14 @@ export type Query = {
   users: Array<User>;
   /** Retrieve multiple users using the Relay connection interface */
   usersConnection: UserConnection;
+  /** Retrieve a single wish */
+  wish?: Maybe<Wish>;
+  /** Retrieve document version */
+  wishVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple wishes */
+  wishes: Array<Wish>;
+  /** Retrieve multiple wishes using the Relay connection interface */
+  wishesConnection: WishConnection;
 };
 
 export type QueryAccountArgs = {
@@ -4333,6 +4487,40 @@ export type QueryUsersConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: Stage;
   where?: InputMaybe<UserWhereInput>;
+};
+
+export type QueryWishArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: WishWhereUniqueInput;
+};
+
+export type QueryWishVersionArgs = {
+  where: VersionWhereInput;
+};
+
+export type QueryWishesArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<WishOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<WishWhereInput>;
+};
+
+export type QueryWishesConnectionArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<WishOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<WishWhereInput>;
 };
 
 /** Representing a RGBA color value: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb()_and_rgba() */
@@ -5130,7 +5318,8 @@ export type ScheduledOperationAffectedDocument =
   | Category
   | Expense
   | Investment
-  | Revenue;
+  | Revenue
+  | Wish;
 
 export type ScheduledOperationConnectInput = {
   /** Allow to specify document position in list of connected documents, will default to appending at end of list */
@@ -6483,6 +6672,558 @@ export type VersionWhereInput = {
   stage: Stage;
 };
 
+export type Wish = Node & {
+  __typename?: 'Wish';
+  amount?: Maybe<Scalars['Float']>;
+  /** The time the document was created */
+  createdAt: Scalars['DateTime'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  currency?: Maybe<Scalars['String']>;
+  deleted?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
+  /** Get the document in other stages */
+  documentInStages: Array<Wish>;
+  /** List of Wish versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID'];
+  itemStatus?: Maybe<Scalars['Int']>;
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  /** System stage field */
+  stage: Stage;
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+export type WishCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type WishDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  inheritLocale?: Scalars['Boolean'];
+  stages?: Array<Stage>;
+};
+
+export type WishHistoryArgs = {
+  limit?: Scalars['Int'];
+  skip?: Scalars['Int'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+export type WishPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type WishScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+export type WishUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type WishConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: WishWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type WishConnection = {
+  __typename?: 'WishConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<WishEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type WishCreateInput = {
+  amount?: InputMaybe<Scalars['Float']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  currency?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  itemStatus?: InputMaybe<Scalars['Int']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type WishCreateManyInlineInput = {
+  /** Connect multiple existing Wish documents */
+  connect?: InputMaybe<Array<WishWhereUniqueInput>>;
+  /** Create and connect multiple existing Wish documents */
+  create?: InputMaybe<Array<WishCreateInput>>;
+};
+
+export type WishCreateOneInlineInput = {
+  /** Connect one existing Wish document */
+  connect?: InputMaybe<WishWhereUniqueInput>;
+  /** Create and connect one Wish document */
+  create?: InputMaybe<WishCreateInput>;
+};
+
+/** An edge in a connection. */
+export type WishEdge = {
+  __typename?: 'WishEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: Wish;
+};
+
+/** Identifies documents */
+export type WishManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<WishWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<WishWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<WishWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  amount?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  amount_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  amount_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  amount_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  /** All values less than the given value. */
+  amount_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  amount_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  amount_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  currency?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  currency_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  currency_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  currency_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  currency_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  currency_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  currency_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  currency_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  currency_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  currency_starts_with?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  deleted_not?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  description_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  description_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  description_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  description_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  description_starts_with?: InputMaybe<Scalars['String']>;
+  documentInStages_every?: InputMaybe<WishWhereStageInput>;
+  documentInStages_none?: InputMaybe<WishWhereStageInput>;
+  documentInStages_some?: InputMaybe<WishWhereStageInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  itemStatus?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  itemStatus_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  itemStatus_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  itemStatus_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  /** All values less than the given value. */
+  itemStatus_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  itemStatus_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  itemStatus_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  itemStatus_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export enum WishOrderByInput {
+  AmountAsc = 'amount_ASC',
+  AmountDesc = 'amount_DESC',
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  CurrencyAsc = 'currency_ASC',
+  CurrencyDesc = 'currency_DESC',
+  DeletedAsc = 'deleted_ASC',
+  DeletedDesc = 'deleted_DESC',
+  DescriptionAsc = 'description_ASC',
+  DescriptionDesc = 'description_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  ItemStatusAsc = 'itemStatus_ASC',
+  ItemStatusDesc = 'itemStatus_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC',
+}
+
+export type WishUpdateInput = {
+  amount?: InputMaybe<Scalars['Float']>;
+  currency?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  itemStatus?: InputMaybe<Scalars['Int']>;
+};
+
+export type WishUpdateManyInlineInput = {
+  /** Connect multiple existing Wish documents */
+  connect?: InputMaybe<Array<WishConnectInput>>;
+  /** Create and connect multiple Wish documents */
+  create?: InputMaybe<Array<WishCreateInput>>;
+  /** Delete multiple Wish documents */
+  delete?: InputMaybe<Array<WishWhereUniqueInput>>;
+  /** Disconnect multiple Wish documents */
+  disconnect?: InputMaybe<Array<WishWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing Wish documents */
+  set?: InputMaybe<Array<WishWhereUniqueInput>>;
+  /** Update multiple Wish documents */
+  update?: InputMaybe<Array<WishUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple Wish documents */
+  upsert?: InputMaybe<Array<WishUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type WishUpdateManyInput = {
+  amount?: InputMaybe<Scalars['Float']>;
+  currency?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  itemStatus?: InputMaybe<Scalars['Int']>;
+};
+
+export type WishUpdateManyWithNestedWhereInput = {
+  /** Update many input */
+  data: WishUpdateManyInput;
+  /** Document search */
+  where: WishWhereInput;
+};
+
+export type WishUpdateOneInlineInput = {
+  /** Connect existing Wish document */
+  connect?: InputMaybe<WishWhereUniqueInput>;
+  /** Create and connect one Wish document */
+  create?: InputMaybe<WishCreateInput>;
+  /** Delete currently connected Wish document */
+  delete?: InputMaybe<Scalars['Boolean']>;
+  /** Disconnect currently connected Wish document */
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  /** Update single Wish document */
+  update?: InputMaybe<WishUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single Wish document */
+  upsert?: InputMaybe<WishUpsertWithNestedWhereUniqueInput>;
+};
+
+export type WishUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: WishUpdateInput;
+  /** Unique document search */
+  where: WishWhereUniqueInput;
+};
+
+export type WishUpsertInput = {
+  /** Create document if it didn't exist */
+  create: WishCreateInput;
+  /** Update document if it exists */
+  update: WishUpdateInput;
+};
+
+export type WishUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: WishUpsertInput;
+  /** Unique document search */
+  where: WishWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type WishWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Identifies documents */
+export type WishWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<WishWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<WishWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<WishWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  amount?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  amount_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  amount_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  amount_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  /** All values less than the given value. */
+  amount_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  amount_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  amount_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  currency?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  currency_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  currency_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  currency_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  currency_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  currency_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  currency_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  currency_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  currency_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  currency_starts_with?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  deleted_not?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  description_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  description_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  description_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  description_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  description_starts_with?: InputMaybe<Scalars['String']>;
+  documentInStages_every?: InputMaybe<WishWhereStageInput>;
+  documentInStages_none?: InputMaybe<WishWhereStageInput>;
+  documentInStages_some?: InputMaybe<WishWhereStageInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  itemStatus?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  itemStatus_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  itemStatus_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  itemStatus_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  /** All values less than the given value. */
+  itemStatus_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  itemStatus_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  itemStatus_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  itemStatus_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type WishWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<WishWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<WishWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<WishWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<WishWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References Wish record uniquely */
+export type WishWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
 export enum _FilterKind {
   And = 'AND',
   Not = 'NOT',
@@ -6617,6 +7358,18 @@ export type AddRevenueMutation = {
   createRevenue?: { __typename?: 'Revenue'; id: string } | null;
 };
 
+export type AddWishMutationVariables = Exact<{
+  amount: Scalars['Float'];
+  description: Scalars['String'];
+  currency: Scalars['String'];
+  itemStatus: Scalars['Int'];
+}>;
+
+export type AddWishMutation = {
+  __typename?: 'Mutation';
+  createWish?: { __typename?: 'Wish'; id: string } | null;
+};
+
 export type PublishAccountMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -6686,6 +7439,22 @@ export type PublishRevenueMutation = {
     type: string;
     currency: string;
     itemStatus: number;
+  } | null;
+};
+
+export type PublishWishMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type PublishWishMutation = {
+  __typename?: 'Mutation';
+  publishWish?: {
+    __typename?: 'Wish';
+    amount?: number | null;
+    description?: string | null;
+    deleted?: boolean | null;
+    currency?: string | null;
+    itemStatus?: number | null;
   } | null;
 };
 
@@ -6788,6 +7557,28 @@ export type UpdateRevenueMutation = {
   } | null;
 };
 
+export type UpdateWishMutationVariables = Exact<{
+  id: Scalars['ID'];
+  amount: Scalars['Float'];
+  deleted: Scalars['Boolean'];
+  description: Scalars['String'];
+  currency: Scalars['String'];
+  itemStatus: Scalars['Int'];
+}>;
+
+export type UpdateWishMutation = {
+  __typename?: 'Mutation';
+  updateWish?: {
+    __typename?: 'Wish';
+    id: string;
+    amount?: number | null;
+    deleted?: boolean | null;
+    description?: string | null;
+    currency?: string | null;
+    itemStatus?: number | null;
+  } | null;
+};
+
 export type GetAccountByEmailQueryVariables = Exact<{
   email: Scalars['String'];
 }>;
@@ -6872,6 +7663,21 @@ export type GetRevenuesQuery = {
     type: string;
     currency: string;
     itemStatus: number;
+  }>;
+};
+
+export type GetWishesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetWishesQuery = {
+  __typename?: 'Query';
+  wishes: Array<{
+    __typename?: 'Wish';
+    id: string;
+    amount?: number | null;
+    deleted?: boolean | null;
+    description?: string | null;
+    currency?: string | null;
+    itemStatus?: number | null;
   }>;
 };
 
@@ -7134,6 +7940,69 @@ export type AddRevenueMutationCompositionFunctionResult =
     AddRevenueMutation,
     AddRevenueMutationVariables
   >;
+export const AddWishDocument = gql`
+  mutation addWish(
+    $amount: Float!
+    $description: String!
+    $currency: String!
+    $itemStatus: Int!
+  ) {
+    createWish(
+      data: {
+        amount: $amount
+        description: $description
+        currency: $currency
+        itemStatus: $itemStatus
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+/**
+ * __useAddWishMutation__
+ *
+ * To run a mutation, you first call `useAddWishMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useAddWishMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useAddWishMutation({
+ *   variables: {
+ *     amount: // value for 'amount'
+ *     description: // value for 'description'
+ *     currency: // value for 'currency'
+ *     itemStatus: // value for 'itemStatus'
+ *   },
+ * });
+ */
+export function useAddWishMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        AddWishMutation,
+        AddWishMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          AddWishMutation,
+          AddWishMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    AddWishMutation,
+    AddWishMutationVariables
+  >(AddWishDocument, options);
+}
+export type AddWishMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    AddWishMutation,
+    AddWishMutationVariables
+  >;
 export const PublishAccountDocument = gql`
   mutation publishAccount($id: ID!) {
     publishAccount(where: { id: $id }, to: PUBLISHED) {
@@ -7348,6 +8217,58 @@ export type PublishRevenueMutationCompositionFunctionResult =
   VueApolloComposable.UseMutationReturn<
     PublishRevenueMutation,
     PublishRevenueMutationVariables
+  >;
+export const PublishWishDocument = gql`
+  mutation publishWish($id: ID!) {
+    publishWish(where: { id: $id }, to: PUBLISHED) {
+      amount
+      description
+      deleted
+      currency
+      itemStatus
+    }
+  }
+`;
+
+/**
+ * __usePublishWishMutation__
+ *
+ * To run a mutation, you first call `usePublishWishMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `usePublishWishMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = usePublishWishMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePublishWishMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        PublishWishMutation,
+        PublishWishMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          PublishWishMutation,
+          PublishWishMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    PublishWishMutation,
+    PublishWishMutationVariables
+  >(PublishWishDocument, options);
+}
+export type PublishWishMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    PublishWishMutation,
+    PublishWishMutationVariables
   >;
 export const UpdateAccountDocument = gql`
   mutation updateAccount(
@@ -7657,6 +8578,80 @@ export type UpdateRevenueMutationCompositionFunctionResult =
     UpdateRevenueMutation,
     UpdateRevenueMutationVariables
   >;
+export const UpdateWishDocument = gql`
+  mutation updateWish(
+    $id: ID!
+    $amount: Float!
+    $deleted: Boolean!
+    $description: String!
+    $currency: String!
+    $itemStatus: Int!
+  ) {
+    updateWish(
+      data: {
+        amount: $amount
+        deleted: $deleted
+        description: $description
+        currency: $currency
+        itemStatus: $itemStatus
+      }
+      where: { id: $id }
+    ) {
+      id
+      amount
+      deleted
+      description
+      currency
+      itemStatus
+    }
+  }
+`;
+
+/**
+ * __useUpdateWishMutation__
+ *
+ * To run a mutation, you first call `useUpdateWishMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateWishMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateWishMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *     amount: // value for 'amount'
+ *     deleted: // value for 'deleted'
+ *     description: // value for 'description'
+ *     currency: // value for 'currency'
+ *     itemStatus: // value for 'itemStatus'
+ *   },
+ * });
+ */
+export function useUpdateWishMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        UpdateWishMutation,
+        UpdateWishMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          UpdateWishMutation,
+          UpdateWishMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    UpdateWishMutation,
+    UpdateWishMutationVariables
+  >(UpdateWishDocument, options);
+}
+export type UpdateWishMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    UpdateWishMutation,
+    UpdateWishMutationVariables
+  >;
 export const GetAccountByEmailDocument = gql`
   query GetAccountByEmail($email: String!) {
     account(where: { email: $email }) {
@@ -7801,7 +8796,7 @@ export const GetExpensesDocument = gql`
     expenses(
       first: 100
       orderBy: date_DESC
-      where: { date_gte: $startDate, date_lte: $endDate }
+      where: { date_lte: $startDate, date_gte: $endDate }
     ) {
       id
       amount
@@ -8020,3 +9015,67 @@ export type GetRevenuesQueryCompositionFunctionResult =
     GetRevenuesQuery,
     GetRevenuesQueryVariables
   >;
+export const GetWishesDocument = gql`
+  query GetWishes {
+    wishes(first: 100, orderBy: amount_DESC) {
+      id
+      amount
+      deleted
+      description
+      currency
+      itemStatus
+    }
+  }
+`;
+
+/**
+ * __useGetWishesQuery__
+ *
+ * To run a query within a Vue component, call `useGetWishesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWishesQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetWishesQuery();
+ */
+export function useGetWishesQuery(
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        GetWishesQuery,
+        GetWishesQueryVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          GetWishesQuery,
+          GetWishesQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useQuery<GetWishesQuery, GetWishesQueryVariables>(
+    GetWishesDocument,
+    {},
+    options
+  );
+}
+export function useGetWishesLazyQuery(
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        GetWishesQuery,
+        GetWishesQueryVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          GetWishesQuery,
+          GetWishesQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useLazyQuery<
+    GetWishesQuery,
+    GetWishesQueryVariables
+  >(GetWishesDocument, {}, options);
+}
+export type GetWishesQueryCompositionFunctionResult =
+  VueApolloComposable.UseQueryReturn<GetWishesQuery, GetWishesQueryVariables>;

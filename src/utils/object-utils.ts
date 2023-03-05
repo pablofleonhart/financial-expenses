@@ -2,6 +2,7 @@ import { Category } from '../components/categories/Category';
 import { Expense } from '../components/expenses/Expense';
 import { Investment } from '../components/investments/Investment';
 import { Revenue } from '../components/revenues/Revenue';
+import { Wish } from '../components/wishes/Wish';
 import { dateToString } from './date-utils';
 
 const copyCategory = (target: Category, source: Category) => {
@@ -24,10 +25,12 @@ export const copyRevenue = (target: Revenue, source: Revenue) => {
   target.id = source.id;
   target.amount = source.amount;
   target.bank = source.bank;
+  target.currency = source.currency;
   target.date = source.date;
   target.deleted = source.deleted;
   target.description = source.description;
   target.type = source.type;
+  target.itemStatus = source.itemStatus;
 };
 
 export const copyInvestment = (target: Investment, source: Investment) => {
@@ -37,6 +40,15 @@ export const copyInvestment = (target: Investment, source: Investment) => {
   target.currency = source.currency;
   target.deleted = source.deleted;
   target.holder = source.holder;
+};
+
+export const copyWish = (target: Wish, source: Wish) => {
+  target.id = source.id;
+  target.amount = source.amount;
+  target.currency = source.currency;
+  target.deleted = source.deleted;
+  target.description = source.description;
+  target.itemStatus = source.itemStatus;
 };
 
 const getValues = (

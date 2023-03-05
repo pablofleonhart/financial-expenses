@@ -9,6 +9,7 @@ import {
   isRootAuthenticated,
   registerMiddlewares,
 } from './middlewares';
+import Wishes from '../components/wishes/Wishes.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +42,12 @@ const router = createRouter({
       name: 'investments',
       component: Investments,
       meta: { middlewares: [isAuthenticated], title: 'Investimentos' },
+    },
+    {
+      path: '/wishes',
+      name: 'wishes',
+      component: Wishes,
+      meta: { middlewares: [isAuthenticated], title: 'Desejos' },
     },
   ] as RouteRecordRaw[],
 });

@@ -1,0 +1,18 @@
+mutation addWish(
+  $amount: Float!,
+  $description: String!,
+  $currency: String!,
+  $itemStatus: Int!
+)
+{
+  createWish(
+    data: {
+      amount: $amount,
+      description: $description,
+      currency: $currency,
+      itemStatus: $itemStatus
+    }
+  ) {
+    id
+  }
+}

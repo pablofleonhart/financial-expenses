@@ -1,0 +1,9 @@
+mutation publishWish($id: ID!) {
+  publishWish(where: { id: $id}, to: PUBLISHED) {
+    amount
+    description
+    deleted
+    currency
+    itemStatus
+  }
+}

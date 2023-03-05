@@ -3,7 +3,7 @@
     class="sidebar min-h-screen h-full pt-1 w-40 flex flex-col bg-primary-color-300 border-r border-primary-color-700"
     :class="{ 'sidebar-collapsed': collapsedMenu }"
   >
-    <div class="flex ml-1 items-center text-secondary-color-700">
+    <div class="flex ml-1 mt-1 items-center text-secondary-color-700">
       <ph-currency-circle-dollar class="flex rotate-[-20deg]" size="40" />
       <span v-if="!collapsedMenu" class="font-serif font-bold text-lg"
         >Meus Pila</span
@@ -68,6 +68,12 @@ const sidebarItems: Array<ISidebarItem> = [
     name: 'Investimentos',
     icon: 'ph-currency-btc',
     route: 'investments',
+  },
+  {
+    id: 4,
+    name: 'Desejos',
+    icon: 'ph-lightbulb',
+    route: 'wishes',
   },
 ];
 
