@@ -1,5 +1,5 @@
 <template>
-  <div class="revenue-header flex justify-center h-22 font-bold">
+  <div class="wish-header flex justify-center h-22 font-bold">
     <div class="balance mb-4 grid grid-rows-2 items-center">
       <span class="flex justify-center">Total previsto</span>
       <div class="flex justify-center items-center">

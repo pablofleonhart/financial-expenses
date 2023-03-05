@@ -9,7 +9,7 @@ export class Wish {
   public itemStatus: number;
 
   constructor(
-    objRevenue: Wish = {
+    objWish: Wish = {
       id: '',
       amount: 0,
       deleted: false,
@@ -18,11 +18,11 @@ export class Wish {
       itemStatus: WISH_STATUS.OPEN,
     }
   ) {
-    this.id = objRevenue.id;
-    this.amount = objRevenue.amount;
-    this.deleted = objRevenue.deleted;
-    this.description = objRevenue.description;
-    this.currency = objRevenue.currency;
-    this.itemStatus = objRevenue.itemStatus;
+    this.id = objWish.id;
+    this.amount = objWish.amount;
+    this.deleted = objWish.deleted;
+    this.description = objWish.description;
+    this.currency = objWish.currency;
+    this.itemStatus = objWish.itemStatus;
   }
 }

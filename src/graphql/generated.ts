@@ -7951,6 +7951,7 @@ export const AddWishDocument = gql`
       data: {
         amount: $amount
         description: $description
+        deleted: false
         currency: $currency
         itemStatus: $itemStatus
       }

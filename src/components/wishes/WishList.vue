@@ -1,10 +1,10 @@
 <template>
-  <div class="revenue-list">
+  <div class="wish-list">
     <table class="w-full overflow-hidden bg-neutral-color-500">
-      <thead class="revenue-list-head flex w-full">
+      <thead class="wish-list-head flex w-full">
         <tr class="flex w-full h-12 bg-neutral-color-700">
           <th
-            v-for="column in revenueColumns"
+            v-for="column in wishColumns"
             :key="column.key"
             class="flex items-center p-2 h-full w-1/3 cursor-pointer hover:bg-secondary-color-300"
             :class="column.class"
@@ -22,7 +22,7 @@
           </th>
         </tr>
       </thead>
-      <tbody class="revenue-list-body flex flex-col w-full">
+      <tbody class="wish-list-body flex flex-col w-full">
         <tr
           class="flex w-full items-center h-12 even:bg-neutral-color-700"
           v-for="(item, index) in wishList"
@@ -71,11 +71,11 @@ import {
   reopenWish,
   wishSettings,
   showWishActions,
-  sortRevenues,
+  sortWishes,
 } from '../../services';
 import { Wish } from './Wish';
 
-const revenueColumns = [
+const wishColumns = [
   {
     key: 'amount',
     name: 'Valor',
@@ -109,7 +109,7 @@ const orderList = (column: any) => {
   if (column.static) {
     return;
   }
-  sortRevenues(column.key);
+  sortWishes(column.key);
 };
 
 const onCompleteWish = (index: number) => {

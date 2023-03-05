@@ -50,7 +50,7 @@ const initializeData = () => {
 
 export const wishesSum = computed<number>(() => {
   let result = 0;
-  allWishItems.forEach((item) => {
+  filteredWishItems.forEach((item) => {
     result += item.amount;
   });
   return result;
@@ -89,6 +89,7 @@ export const loadWishes = async () => {
 
   return wishesPromise.then(() => {
     filterWishes();
+    sortWishes();
   });
 };
 

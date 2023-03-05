@@ -1,5 +1,5 @@
 <template>
-  <ul class="revenue-filter-tabs flex h-8 w-full border-b border-neutral-color">
+  <ul class="wish-filter-tabs flex h-8 w-full border-b border-neutral-color">
     <li v-for="tab in tabItems" :key="tab.name">
       <button
         :key="tab.id"
