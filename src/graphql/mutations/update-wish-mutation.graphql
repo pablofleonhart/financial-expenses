@@ -1,0 +1,26 @@
+mutation updateWish(
+  $id: ID!,
+  $amount: Float!,
+  $deleted: Boolean!,
+  $description: String!,
+  $currency: String!,
+  $itemStatus: Int!)
+{
+  updateWish(
+    data: {
+      amount: $amount,
+      deleted: $deleted,
+      description: $description,
+      currency: $currency,
+      itemStatus: $itemStatus
+    }
+    where: { id: $id }
+  ){
+    id
+    amount
+    deleted
+    description
+    currency
+    itemStatus
+  }
+}
