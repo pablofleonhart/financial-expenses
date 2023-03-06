@@ -71,7 +71,7 @@ const sidebarItems: Array<ISidebarItem> = [
   },
   {
     id: 4,
-    name: 'Desejos',
+    name: 'Planejamentos',
     icon: 'ph-lightbulb',
     route: 'wishes',
   },

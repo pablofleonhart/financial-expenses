@@ -15,7 +15,7 @@ export const wishSettings: Record<string, any> = reactive({});
 
 export const selectedWishStatus: WishStatus = reactive({
   id: WISH_STATUS.OPEN,
-  name: 'Aberto',
+  name: 'Abertos',
 });
 
 export const showWishActions = computed(

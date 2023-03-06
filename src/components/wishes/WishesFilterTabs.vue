@@ -5,7 +5,7 @@
         :key="tab.id"
         class="filter-tab"
         :class="{
-          'filter-tab-selected': tab.name === selectedTab,
+          'filter-tab-selected': tab.id === selectedTab,
         }"
         @click="filterItems(tab)"
       >
@@ -20,10 +20,10 @@ import { computed } from 'vue';
 import { filterWishes, selectedWishStatus } from '../../services';
 
 const tabItems = [
-  { id: 0, name: 'Em aberto' },
-  { id: 1, name: 'Histórico' },
+  { id: 0, name: 'Abertos' },
+  { id: 1, name: 'Concluídos' },
 ];
-const selectedTab = computed(() => selectedWishStatus.name);
+const selectedTab = computed(() => selectedWishStatus.id);
 
 const filterItems = (tab: any) => {
   filterWishes(tab);

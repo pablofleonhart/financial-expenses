@@ -7,7 +7,7 @@
       class="wish-item-container flex flex-col bg-neutral-color-300 h-92 w-[350px] p-4 rounded-lg"
     >
       <span class="flex justify-center font-bold text-lg w-full">
-        {{ `${getActionName()} desejo` }}
+        {{ `${getActionName()} plano` }}
       </span>
       <div class="wish-fields flex flex-col gap-3 my-5">
         <div class="currency-select" @click.stop>
