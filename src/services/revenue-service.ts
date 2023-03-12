@@ -85,45 +85,49 @@ export const monthlyOutcomes = computed(() => {
   return outcomes;
 });
 
-// export const expectedSumBRL = computed<number>(() => {
-//   let result = 0;
-//   allRevenueItems.forEach((item) => {
-//     if (item.currency === 'real') {
-//       result += getAmount(item);
-//     }
-//   });
-//   return result;
-// });
+const getAmount = (revenue: Revenue) => {
+  return revenue.type === 'income' ? revenue.amount : revenue.amount * -1;
+};
 
-// export const currentSumBRL = computed<number>(() => {
-//   let result = 0;
-//   allRevenueItems.forEach((item) => {
-//     if (item.itemStatus === REVENUE_STATUS.DONE && item.currency === 'real') {
-//       result += getAmount(item);
-//     }
-//   });
-//   return result;
-// });
+export const expectedSumBRL = computed<number>(() => {
+  let result = 0;
+  allRevenueItems.forEach((item) => {
+    if (item.currency === 'real') {
+      result += getAmount(item);
+    }
+  });
+  return result;
+});
 
-// export const expectedSumEUR = computed<number>(() => {
-//   let result = 0;
-//   allRevenueItems.forEach((item) => {
-//     if (item.currency === 'euro') {
-//       result += getAmount(item);
-//     }
-//   });
-//   return result;
-// });
+export const currentSumBRL = computed<number>(() => {
+  let result = 0;
+  allRevenueItems.forEach((item) => {
+    if (item.itemStatus === REVENUE_STATUS.DONE && item.currency === 'real') {
+      result += getAmount(item);
+    }
+  });
+  return result;
+});
 
-// export const currentSumEUR = computed<number>(() => {
-//   let result = 0;
-//   allRevenueItems.forEach((item) => {
-//     if (item.itemStatus === REVENUE_STATUS.DONE && item.currency === 'euro') {
-//       result += getAmount(item);
-//     }
-//   });
-//   return result;
-// });
+export const expectedSumEUR = computed<number>(() => {
+  let result = 0;
+  allRevenueItems.forEach((item) => {
+    if (item.currency === 'euro') {
+      result += getAmount(item);
+    }
+  });
+  return result;
+});
+
+export const currentSumEUR = computed<number>(() => {
+  let result = 0;
+  allRevenueItems.forEach((item) => {
+    if (item.itemStatus === REVENUE_STATUS.DONE && item.currency === 'euro') {
+      result += getAmount(item);
+    }
+  });
+  return result;
+});
 
 const getRevenueByID = (id: string): Revenue | null => {
   if (!id) {

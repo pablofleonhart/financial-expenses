@@ -29,6 +29,7 @@ export const expensesSum = computed(() => {
   return result;
 });
 
+const sortedCategories: any[] = reactive([]);
 export let expenseCategoriesLabels: string[] = [];
 export let expenseCategoriesValues: number[] = [];
 export let expenseCategoriesColorValues: string[] = [];
@@ -220,7 +221,7 @@ export const sortExpenses = (column?: string) => {
   localStorage.setItem(EXPENSE_LIST_KEY, JSON.stringify(expenseSettings));
 };
 
-const getTopCategories = () => {
+const loadExpenseCategories = () => {
   const categories: Record<
     string,
     { color: string; name: string; value: number }
@@ -237,7 +238,11 @@ const getTopCategories = () => {
     categories[expense.category.type].value += expense.amount;
   });
 
-  const sortedCategories = sortList(Object.values(categories), 'value', false);
+  sortedCategories.splice(0);
+  Object.assign(
+    sortedCategories,
+    sortList(Object.values(categories), 'value', false)
+  );
 
   expenseCategoriesLabels = Object.values(sortedCategories).map(
     (item) => item.name
@@ -251,6 +256,10 @@ const getTopCategories = () => {
   reloadCharts.value = !reloadCharts.value;
 };
 
+export const topFiveCategories = computed(() => {
+  return sortedCategories.slice(0, 5);
+});
+
 export const filterExpenses = (period: MonthPeriod = selectedExpensePeriod) => {
   const result = allExpenseItems.filter((item) => {
     return isDateInPeriod(item.date, period);
@@ -260,7 +269,7 @@ export const filterExpenses = (period: MonthPeriod = selectedExpensePeriod) => {
   sortExpenses();
   Object.assign(selectedExpensePeriod, period);
   localStorage.setItem(EXPENSE_PERIOD, JSON.stringify(selectedExpensePeriod));
-  getTopCategories();
+  loadExpenseCategories();
 };
 
 initializeService();

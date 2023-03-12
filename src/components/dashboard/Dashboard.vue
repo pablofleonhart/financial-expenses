@@ -46,12 +46,20 @@
       </div>
     </div>
     <div
-      class="flex flex-col row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-neutral-color-700 hover:bg-secondary-color-300"
+      class="flex flex-col gap-2 row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-neutral-color-700 hover:bg-secondary-color-300"
       @click="$router.push('/expenses')"
     >
-      <span class="font-bold text-xl">Gastos variáveis do mês</span>
-      <span>R$ -200,00</span>
-      <span>4050.00 E</span>
+      <span class="font-bold text-xl">Despesas variáveis do mês</span>
+      <div class="text-2xl">Total: {{ formatCurrency(expensesSum) }}</div>
+      <div class="flex flex-col gap-1 h-full justify-center">
+        <span
+          v-for="(item, index) in currentExpenseCategories"
+          :key="index"
+          class="text-xl"
+        >
+          {{ item.name }}: {{ formatCurrency(item.value) }}
+        </span>
+      </div>
     </div>
     <div
       class="flex flex-col row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-neutral-color-700 hover:bg-secondary-color-300"
@@ -76,10 +84,13 @@
 import { computed, onMounted } from 'vue';
 import {
   balanceSum,
+  expensesSum,
+  loadExpenses,
   loadInvestments,
   loadRevenues,
   monthlyIncomes,
   monthlyOutcomes,
+  topFiveCategories,
 } from '../../services';
 import { formatCurrency } from '../../utils';
 
@@ -95,8 +106,13 @@ const currentOutcomes = computed(() => {
   return monthlyOutcomes.value;
 });
 
-onMounted(() => {
-  loadRevenues();
-  loadInvestments();
+const currentExpenseCategories = computed(() => {
+  return topFiveCategories.value;
+});
+
+onMounted(async () => {
+  await loadRevenues();
+  await loadExpenses();
+  await loadInvestments();
 });
 </script>
