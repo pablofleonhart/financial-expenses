@@ -5,13 +5,6 @@
     @click.stop
   >
     <button
-      class="sync-button flex w-full p-2 h-10 m-2 hover:bg-primary-color-700"
-      @click="syncAllData"
-    >
-      <ph-cloud-arrow-down class="h-6 w-6 mr-2" />
-      <span>Sincronizar</span>
-    </button>
-    <button
       class="logout-button flex w-full p-2 h-10 mb-2 hover:bg-primary-color-700"
       @click="logout"
     >
@@ -22,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { logout, syncAllData } from '../../services';
+import { logout } from '../../services';
 
 defineProps({
   showProfileMenu: { type: Boolean, default: false },

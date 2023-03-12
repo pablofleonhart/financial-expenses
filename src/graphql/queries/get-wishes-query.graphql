@@ -6,5 +6,10 @@ query GetWishes {
     description
     currency
     itemStatus
+    category {
+      id
+      name
+      type
+    }
   }
 }

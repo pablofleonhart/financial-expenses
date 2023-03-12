@@ -7388,6 +7388,7 @@ export type AddWishMutationVariables = Exact<{
   description: Scalars['String'];
   currency: Scalars['String'];
   itemStatus: Scalars['Int'];
+  categoryID: Scalars['ID'];
 }>;
 
 export type AddWishMutation = {
@@ -7481,6 +7482,12 @@ export type PublishWishMutation = {
     deleted?: boolean | null;
     currency?: string | null;
     itemStatus?: number | null;
+    category?: {
+      __typename?: 'Category';
+      id: string;
+      name: string;
+      type: string;
+    } | null;
   } | null;
 };
 
@@ -7592,18 +7599,23 @@ export type UpdateWishMutationVariables = Exact<{
   description: Scalars['String'];
   currency: Scalars['String'];
   itemStatus: Scalars['Int'];
+  categoryID: Scalars['ID'];
 }>;
 
 export type UpdateWishMutation = {
   __typename?: 'Mutation';
   updateWish?: {
-    __typename?: 'Wish';
-    id: string;
     amount?: number | null;
     deleted?: boolean | null;
     description?: string | null;
     currency?: string | null;
     itemStatus?: number | null;
+    category?: {
+      __typename?: 'Category';
+      id: string;
+      name: string;
+      type: string;
+    } | null;
   } | null;
 };
 
@@ -7628,7 +7640,6 @@ export type GetCategoriesQueryVariables = Exact<{ [key: string]: never }>;
 export type GetCategoriesQuery = {
   __typename?: 'Query';
   categories: Array<{
-    __typename?: 'Category';
     id: string;
     name: string;
     type: string;
@@ -7707,6 +7718,12 @@ export type GetWishesQuery = {
     description?: string | null;
     currency?: string | null;
     itemStatus?: number | null;
+    category?: {
+      __typename?: 'Category';
+      id: string;
+      name: string;
+      type: string;
+    } | null;
   }>;
 };
 
@@ -7978,6 +7995,7 @@ export const AddWishDocument = gql`
     $description: String!
     $currency: String!
     $itemStatus: Int!
+    $categoryID: ID!
   ) {
     createWish(
       data: {
@@ -7986,6 +8004,7 @@ export const AddWishDocument = gql`
         deleted: false
         currency: $currency
         itemStatus: $itemStatus
+        category: { connect: { id: $categoryID } }
       }
     ) {
       id
@@ -8010,6 +8029,7 @@ export const AddWishDocument = gql`
  *     description: // value for 'description'
  *     currency: // value for 'currency'
  *     itemStatus: // value for 'itemStatus'
+ *     categoryID: // value for 'categoryID'
  *   },
  * });
  */
@@ -8260,6 +8280,11 @@ export const PublishWishDocument = gql`
       deleted
       currency
       itemStatus
+      category {
+        id
+        name
+        type
+      }
     }
   }
 `;
@@ -8624,6 +8649,7 @@ export const UpdateWishDocument = gql`
     $description: String!
     $currency: String!
     $itemStatus: Int!
+    $categoryID: ID!
   ) {
     updateWish(
       data: {
@@ -8632,6 +8658,7 @@ export const UpdateWishDocument = gql`
         description: $description
         currency: $currency
         itemStatus: $itemStatus
+        category: { connect: { id: $categoryID } }
       }
       where: { id: $id }
     ) {
@@ -8641,6 +8668,11 @@ export const UpdateWishDocument = gql`
       description
       currency
       itemStatus
+      category {
+        id
+        name
+        type
+      }
     }
   }
 `;
@@ -8664,6 +8696,7 @@ export const UpdateWishDocument = gql`
  *     description: // value for 'description'
  *     currency: // value for 'currency'
  *     itemStatus: // value for 'itemStatus'
+ *     categoryID: // value for 'categoryID'
  *   },
  * });
  */
@@ -9063,6 +9096,11 @@ export const GetWishesDocument = gql`
       description
       currency
       itemStatus
+      category {
+        id
+        name
+        type
+      }
     }
   }
 `;

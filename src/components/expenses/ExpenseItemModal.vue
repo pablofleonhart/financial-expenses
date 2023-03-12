@@ -21,7 +21,7 @@
           type="number"
           min="0"
           required
-          placeholder="Valor a receber/pagar"
+          placeholder="Valor pago"
         />
         <div class="category-select" @click.stop>
           <div
@@ -38,7 +38,7 @@
             </span>
           </div>
           <ul
-            class="period-items absolute bg-neutral-color-700 w-52 h-80 overflow-scroll"
+            class="period-items absolute bg-neutral-color-700 w-52 h-80 overflow-scroll z-10"
             :class="{ hidden: !categorySelectorOpen }"
           >
             <li

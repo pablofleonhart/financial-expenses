@@ -1,4 +1,5 @@
 import { WISH_STATUS } from '../../types';
+import { Category } from '../categories/Category';
 
 export class Wish {
   public id: string;
@@ -7,6 +8,7 @@ export class Wish {
   public description: string;
   public currency: string;
   public itemStatus: number;
+  public category: Category;
 
   constructor(
     objWish: Wish = {
@@ -16,6 +18,7 @@ export class Wish {
       description: '',
       currency: 'euro',
       itemStatus: WISH_STATUS.OPEN,
+      category: new Category(),
     }
   ) {
     this.id = objWish.id;
@@ -24,5 +27,6 @@ export class Wish {
     this.description = objWish.description;
     this.currency = objWish.currency;
     this.itemStatus = objWish.itemStatus;
+    this.category = objWish.category;
   }
 }

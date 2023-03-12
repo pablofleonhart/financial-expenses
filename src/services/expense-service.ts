@@ -6,7 +6,6 @@ import {
   usePublishExpenseMutation,
   useUpdateExpenseMutation,
 } from '../graphql/generated';
-import { loadCategories } from './category-service';
 import {
   copyExpense,
   getMonthYear,
@@ -16,6 +15,7 @@ import {
   isDateInPeriod,
   sortList,
   getMonths,
+  overrideExpense,
 } from '../utils';
 import { MonthPeriod } from '../types';
 
@@ -110,7 +110,9 @@ export const loadExpenses = async (): Promise<void> => {
   const periodsPromise = new Promise((resolve) => {
     expensePeriods.forEach(async (period: MonthPeriod, index, array) => {
       const monthsItems = await loadMonthExpenses(period);
-      allExpenseItems = [...allExpenseItems, ...monthsItems];
+      monthsItems.forEach((item: Expense) => {
+        allExpenseItems.push(copyExpense(item));
+      });
       if (index === array.length - 1) {
         resolve(true);
       }
@@ -119,7 +121,6 @@ export const loadExpenses = async (): Promise<void> => {
 
   return periodsPromise.then(() => {
     filterExpenses();
-    loadCategories();
   });
 };
 
@@ -166,7 +167,7 @@ export const editExpense = (expense: Expense) => {
     // update expense on local storage
     const oldExpense = getExpenseByID(expense.id);
     if (oldExpense) {
-      copyExpense(
+      overrideExpense(
         allExpenseItems[allExpenseItems.indexOf(oldExpense)],
         expense
       );

@@ -5,5 +5,10 @@ mutation publishWish($id: ID!) {
     deleted
     currency
     itemStatus
+    category {
+      id
+      name
+      type
+    }
   }
 }

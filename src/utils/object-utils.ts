@@ -1,3 +1,4 @@
+import { Author } from '../components/accounts/Author';
 import { Category } from '../components/categories/Category';
 import { Expense } from '../components/expenses/Expense';
 import { Investment } from '../components/investments/Investment';
@@ -5,20 +6,46 @@ import { Revenue } from '../components/revenues/Revenue';
 import { Wish } from '../components/wishes/Wish';
 import { dateToString } from './date-utils';
 
-const copyCategory = (target: Category, source: Category) => {
+const copyCategory = (source: any) => {
+  if (!source) {
+    console.warn('Unable to copy null Category');
+    return new Category();
+  }
+  return new Category({
+    id: source.id,
+    name: source.name,
+    type: source.type,
+  });
+};
+
+const overrideCategory = (target: Category, source: Category) => {
   target.id = source.id;
   target.name = source.name;
   target.type = source.type;
 };
 
-export const copyExpense = (target: Expense, source: Expense) => {
+export const copyExpense = (source: Expense) => {
+  return new Expense({
+    id: source.id,
+    amount: source.amount,
+    card: source.card,
+    currency: source.currency,
+    date: source.date,
+    deleted: source.deleted,
+    note: source.note,
+    category: copyCategory(source.category),
+    author: new Author(),
+  });
+};
+
+export const overrideExpense = (target: Expense, source: Expense) => {
   target.id = source.id;
   target.amount = source.amount;
   target.card = source.card;
   target.date = source.date;
   target.deleted = source.deleted;
   target.note = source.note;
-  copyCategory(target.category, source.category);
+  overrideCategory(target.category, source.category);
 };
 
 export const copyRevenue = (source: any) => {
@@ -69,13 +96,26 @@ export const overrideInvestment = (source: Investment, target: Investment) => {
   target.available = source.available;
 };
 
-export const copyWish = (target: Wish, source: Wish) => {
+export const copyWish = (source: any) => {
+  return new Wish({
+    id: source.id,
+    amount: source.amount,
+    currency: source.currency,
+    deleted: source.deleted,
+    description: source.description,
+    itemStatus: source.itemStatus,
+    category: copyCategory(source.category),
+  });
+};
+
+export const overrideWish = (target: Wish, source: Wish) => {
   target.id = source.id;
   target.amount = source.amount;
   target.currency = source.currency;
   target.deleted = source.deleted;
   target.description = source.description;
   target.itemStatus = source.itemStatus;
+  overrideCategory(target.category, source.category);
 };
 
 const getValues = (

@@ -1,8 +1,71 @@
 <template>
+  <!-- <table class="table-auto">
+    <thead>
+      <tr>
+        <th class="px-4 py-2"></th>
+        <th class="px-4 py-2">Name</th>
+        <th class="px-4 py-2">Age</th>
+        <th class="px-4 py-2">City</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="group bg-gray-200 cursor-pointer">
+        <td class="px-4 py-2 font-bold" colspan="4">
+          <span class="group-toggle pr-2">&#x25B6;</span>Group 1
+        </td>
+      </tr>
+      <tr class="group-content hover:bg-gray-100 transition-all duration-500 ease-in-out collapse opacity-0">
+        <td colspan="4">
+          <table class="w-full h-auto">
+            <tbody>
+              <tr>
+                <td class="border px-4 py-2">1</td>
+                <td class="border px-4 py-2">John</td>
+                <td class="border px-4 py-2">30</td>
+                <td class="border px-4 py-2">New York</td>
+              </tr>
+              <tr>
+                <td class="border px-4 py-2">2</td>
+                <td class="border px-4 py-2">Mary</td>
+                <td class="border px-4 py-2">25</td>
+                <td class="border px-4 py-2">Los Angeles</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr class="group bg-gray-200 cursor-pointer">
+        <td class="px-4 py-2 font-bold" colspan="4">
+          <span class="group-toggle pr-2">&#x25B6;</span>Group 2
+        </td>
+      </tr>
+      <tr class="group-content hover:bg-gray-100 transition-all duration-500 ease-in-out collapse opacity-0">
+        <td colspan="4">
+          <table class="w-full">
+            <tbody>
+              <tr>
+                <td class="border px-4 py-2">3</td>
+                <td class="border px-4 py-2">David</td>
+                <td class="border px-4 py-2">40</td>
+                <td class="border px-4 py-2">Chicago</td>
+              </tr>
+              <tr>
+                <td class="border px-4 py-2">4</td>
+                <td class="border px-4 py-2">Sarah</td>
+                <td class="border px-4 py-2">35</td>
+                <td class="border px-4 py-2">Miami</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table> -->
+
   <div class="wish-list">
     <table class="w-full overflow-hidden bg-neutral-color-500">
       <thead class="wish-list-head flex w-full">
-        <tr class="flex w-full h-12 bg-neutral-color-700">
+        <tr class="flex w-full h-10 bg-neutral-color-700">
           <th
             v-for="column in wishColumns"
             :key="column.key"
@@ -22,37 +85,55 @@
           </th>
         </tr>
       </thead>
-      <tbody class="wish-list-body flex flex-col w-full">
+      <tbody
+        v-for="(obj, pairIndex) in wishItemCategories"
+        :key="pairIndex"
+        class="wish-list-body flex flex-col w-full"
+      >
         <tr
-          class="flex w-full items-center h-12 even:bg-neutral-color-700"
-          v-for="(item, index) in wishList"
-          :key="item.id"
+          class="flex w-full items-center h-10 bg-primary-color-300"
+          @click="toggleCategory"
+        >
+          <td
+            class="flex justify-center items-center h-full font-bold text-lg gap-4 pl-4 col-span-4"
+          >
+            <component :is="getCategoryIcon(obj.category)" size="26" />
+            {{ getCategoryName(obj.category) }}
+            <span>{{
+              obj.wishes.reduce((partialSum, a) => partialSum + a.amount, 0)
+            }}</span>
+          </td>
+        </tr>
+        <tr
+          v-for="(wish, index) in obj.wishes"
+          :key="index"
+          class="category-group flex w-full items-center h-10 odd:bg-neutral-color-700"
         >
           <td class="flex justify-center items-center p-2 h-full w-1/3">
-            {{ formatCurrency(item.amount, item.currency) }}
+            {{ formatCurrency(wish.amount, wish.currency) }}
           </td>
           <td class="flex justify-center items-center p-2 h-full w-1/3">
-            {{ item.description }}
+            {{ wish.description }}
           </td>
           <td class="flex items-center p-2 h-full w-1/3">
             <div class="flex w-full justify-evenly">
-              <ph-check-circle
+              <!-- <ph-check-circle
                 v-if="showWishActions"
                 class="button-action hover:bg-green-500"
-                @click="onCompleteWish(index)"
+                @click="completeWish(wish)"
               />
               <ph-arrow-counter-clockwise
                 v-else
                 class="button-action hover:bg-yellow-500"
-                @click="onReopenWish(index)"
-              />
+                @click="reopenWish(wish)"
+              /> -->
               <ph-pencil
                 class="button-action hover:bg-blue-500"
-                @click="onEditWish(index)"
+                @click="emit('onEditWish', wish)"
               />
               <ph-trash
                 class="button-action hover:bg-red-500"
-                @click="onDeleteWish(index)"
+                @click="emit('onDeleteWish', wish)"
               />
             </div>
           </td>
@@ -63,17 +144,15 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-import { formatCurrency, getOrderIcon } from '../../utils';
+import { computed, ref } from 'vue';
+import { formatCurrency, getCategoryIcon, getOrderIcon } from '../../utils';
 import {
-  completeWish,
-  filteredWishItems,
-  reopenWish,
   wishSettings,
-  showWishActions,
   sortWishes,
+  wishCategoryItems,
+  CategoryWish,
 } from '../../services';
-import { Wish } from './Wish';
+import { categoryName } from '../../types';
 
 const wishColumns = [
   {
@@ -94,9 +173,44 @@ const wishColumns = [
   },
 ];
 
+const getCategoryName = (type: string) => {
+  // @ts-ignore
+  return categoryName[type];
+};
+
+// watch(wishCategoryItems, () => {
+//   const groupToggles = document.querySelectorAll('.category-group');
+//   groupToggles.forEach((toggle) => {
+//     toggle.addEventListener('click', () => {
+//       toggle
+//         ?.closest('.group')
+//         ?.nextElementSibling?.classList.toggle('opacity-0');
+//       toggle?.closest('.group')?.nextElementSibling?.classList.toggle('h-full');
+//       toggle
+//         ?.closest('.group')
+//         ?.nextElementSibling?.classList.toggle('collapse');
+//       toggle.innerHTML =
+//         toggle.innerHTML === '&#x25B6;' ? '&#x25BC;' : '&#x25B6;';
+//     });
+//   });
+// });
+
+const toggleCategory = (event: any) => {
+  // console.log(event);
+};
+
+const tableVisibility = ref(true);
+
+const toggleTable = () => {
+  tableVisibility.value = !tableVisibility.value;
+};
+
 const emit = defineEmits(['onCompleteWish', 'onEditWish', 'onDeleteWish']);
 
-const wishList = computed<Array<Wish>>(() => filteredWishItems);
+const wishItemCategories = computed<Array<CategoryWish>>(
+  () => wishCategoryItems
+);
+
 const orderColumn = computed(() => {
   return wishSettings.column;
 });
@@ -110,21 +224,5 @@ const orderList = (column: any) => {
     return;
   }
   sortWishes(column.key);
-};
-
-const onCompleteWish = (index: number) => {
-  completeWish(wishList.value[index]);
-};
-
-const onReopenWish = (index: number) => {
-  reopenWish(wishList.value[index]);
-};
-
-const onEditWish = (index: number) => {
-  emit('onEditWish', wishList.value[index]);
-};
-
-const onDeleteWish = (index: number) => {
-  emit('onDeleteWish', wishList.value[index]);
 };
 </script>
