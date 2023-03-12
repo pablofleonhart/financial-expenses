@@ -4,7 +4,8 @@ mutation updateInvestment(
   $broker: String!,
   $currency: String!,
   $deleted: Boolean!,
-  $holder: String!)
+  $holder: String!,
+  $available: Boolean!)
 {
   updateInvestment(
     data: {
@@ -12,7 +13,8 @@ mutation updateInvestment(
       broker: $broker,
       currency: $currency,
       deleted: $deleted,
-      holder: $holder
+      holder: $holder,
+      available: $available
     }
     where: { id: $id }
   ){
@@ -22,5 +24,6 @@ mutation updateInvestment(
     currency
     deleted
     holder
+    available
   }
 }

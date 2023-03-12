@@ -64,7 +64,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { formatCurrency, getOrderIcon } from '../../utils';
+import { copyInvestment, formatCurrency, getOrderIcon } from '../../utils';
 import {
   allInvestmentItems,
   investmentSettings,
@@ -115,10 +115,10 @@ const orderList = (column: any) => {
 };
 
 const onEditInvestment = (index: number) => {
-  emit('onEditInvestment', investmentList.value[index]);
+  emit('onEditInvestment', copyInvestment(investmentList.value[index]));
 };
 
 const onDeleteInvestment = (index: number) => {
-  emit('onDeleteInvestment', investmentList.value[index]);
+  emit('onDeleteInvestment', copyInvestment(investmentList.value[index]));
 };
 </script>

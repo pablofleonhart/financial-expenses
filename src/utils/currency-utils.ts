@@ -19,10 +19,18 @@ const toUSD = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 2,
 });
 
+const toGBP = new Intl.NumberFormat('en-GB', {
+  style: 'currency',
+  currency: 'GBP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 const converters: Record<string, any> = {
   dollar: toUSD,
   euro: toEUR,
   real: toBRL,
+  libra: toGBP,
 };
 
 export const formatCurrency = (

@@ -3,6 +3,7 @@ mutation addInvestment(
   $broker: String!,
   $currency: String!,
   $holder: String!,
+  $available: Boolean!
 )
 {
   createInvestment(
@@ -12,6 +13,7 @@ mutation addInvestment(
       currency: $currency,
       deleted: false,
       holder: $holder,
+      available: $available
     }
   ) {
     id

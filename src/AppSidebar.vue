@@ -69,7 +69,7 @@ const sidebarItems: Array<ISidebarItem> = [
   {
     id: 2,
     name: 'Gastos',
-    icon: 'ph-currency-circle-dollar',
+    icon: 'ph-coins',
     route: 'expenses',
   },
   {

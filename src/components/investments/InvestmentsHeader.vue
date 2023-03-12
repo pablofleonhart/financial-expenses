@@ -1,18 +1,26 @@
 <template>
   <div class="revenue-header flex justify-evenly h-22 font-bold">
     <div class="balance mb-4 grid grid-rows-2 items-center">
-      <span class="flex justify-center">Saldos</span>
-      <div class="flex items-center">
-        <div class="balance-value">
-          {{ totalBRLFormatted }}
+      <span class="flex justify-center">Saldo disponível</span>
+      <div class="flex items-center gap-4">
+        <div
+          v-for="(value, key) in totalAvailable"
+          :key="key"
+          class="balance-value"
+        >
+          {{ formatCurrency(value, key) }}
         </div>
-        <span class="text-center w-8">|</span>
-        <div class="balance-value">
-          {{ totalUSDFormatted }}
-        </div>
-        <span class="text-center w-8">|</span>
-        <div class="balance-value">
-          {{ totalEURFormatted }}
+      </div>
+    </div>
+    <div class="balance mb-4 grid grid-rows-2 items-center">
+      <span class="flex justify-center">Total investido</span>
+      <div class="flex items-center gap-4">
+        <div
+          v-for="(value, key) in totalInvestments"
+          :key="key"
+          class="balance-value"
+        >
+          {{ formatCurrency(value, key) }}
         </div>
       </div>
     </div>
@@ -22,22 +30,14 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { formatCurrency } from '../../utils';
-import {
-  investmentSumBRL,
-  investmentSumEUR,
-  investmentSumUSD,
-} from '../../services';
+import { balanceSum, investmentsSum } from '../../services';
 
-const totalBRLFormatted = computed(() => {
-  return formatCurrency(investmentSumBRL.value, 'real');
+const totalAvailable = computed(() => {
+  return balanceSum.value;
 });
 
-const totalUSDFormatted = computed(() => {
-  return formatCurrency(investmentSumUSD.value, 'dollar');
-});
-
-const totalEURFormatted = computed(() => {
-  return formatCurrency(investmentSumEUR.value);
+const totalInvestments = computed(() => {
+  return investmentsSum.value;
 });
 </script>
 

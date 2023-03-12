@@ -33,13 +33,26 @@ export const copyRevenue = (target: Revenue, source: Revenue) => {
   target.itemStatus = source.itemStatus;
 };
 
-export const copyInvestment = (target: Investment, source: Investment) => {
+export const copyInvestment = (source: any) => {
+  return new Investment({
+    id: source.id,
+    amount: source.amount,
+    broker: source.broker,
+    currency: source.currency,
+    deleted: source.deleted,
+    holder: source.holder,
+    available: source.available,
+  });
+};
+
+export const overrideInvestment = (source: Investment, target: Investment) => {
   target.id = source.id;
   target.amount = source.amount;
   target.broker = source.broker;
   target.currency = source.currency;
   target.deleted = source.deleted;
   target.holder = source.holder;
+  target.available = source.available;
 };
 
 export const copyWish = (target: Wish, source: Wish) => {

@@ -6,5 +6,6 @@ query GetInvestments {
     deleted
     currency
     holder
+    available
   }
 }
