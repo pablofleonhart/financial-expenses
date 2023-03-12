@@ -6,7 +6,12 @@ import {
 } from '../graphql/generated';
 import { computed, reactive } from 'vue';
 import { Revenue } from '../components/revenues/Revenue';
-import { copyRevenue, sortList } from '../utils';
+import {
+  copyRevenue,
+  isDateInCurrentMonth,
+  overrideRevenue,
+  sortList,
+} from '../utils';
 import { REVENUE_STATUS, RevenueStatus } from '../types';
 
 export const allRevenueItems: Array<Revenue> = reactive([]);
@@ -48,53 +53,77 @@ const initializeData = () => {
   loadSortSettings();
 };
 
-const getAmount = (revenue: Revenue) => {
-  return revenue.type === 'income' ? revenue.amount : revenue.amount * -1;
-};
-
-export const expectedSumBRL = computed<number>(() => {
-  let result = 0;
+export const monthlyIncomes = computed(() => {
+  const incomes: Record<string, any> = {};
   allRevenueItems.forEach((item) => {
-    if (item.currency === 'real') {
-      result += getAmount(item);
+    if (item.type !== 'income' || !isDateInCurrentMonth(item.date)) {
+      return;
     }
+    const key = item.currency;
+    if (!(key in incomes)) {
+      incomes[key] = 0;
+    }
+    incomes[key] += item.amount;
   });
-  return result;
+
+  return incomes;
 });
 
-export const currentSumBRL = computed<number>(() => {
-  let result = 0;
+export const monthlyOutcomes = computed(() => {
+  const outcomes: Record<string, any> = {};
   allRevenueItems.forEach((item) => {
-    if (item.itemStatus === REVENUE_STATUS.DONE && item.currency === 'real') {
-      result += getAmount(item);
+    if (item.type !== 'outcome' || !isDateInCurrentMonth(item.date)) {
+      return;
     }
+    const key = item.currency;
+    if (!(key in outcomes)) {
+      outcomes[key] = 0;
+    }
+    outcomes[key] += item.amount;
   });
-  return result;
+
+  return outcomes;
 });
 
-export const expectedSumEUR = computed<number>(() => {
-  let result = 0;
-  allRevenueItems.forEach((item) => {
-    if (item.currency === 'euro') {
-      result += getAmount(item);
-    }
-  });
-  return result;
-});
+// export const expectedSumBRL = computed<number>(() => {
+//   let result = 0;
+//   allRevenueItems.forEach((item) => {
+//     if (item.currency === 'real') {
+//       result += getAmount(item);
+//     }
+//   });
+//   return result;
+// });
 
-export const currentSumEUR = computed<number>(() => {
-  let result = 0;
-  allRevenueItems.forEach((item) => {
-    if (item.itemStatus === REVENUE_STATUS.DONE && item.currency === 'euro') {
-      result += getAmount(item);
-    }
-  });
-  return result;
-});
+// export const currentSumBRL = computed<number>(() => {
+//   let result = 0;
+//   allRevenueItems.forEach((item) => {
+//     if (item.itemStatus === REVENUE_STATUS.DONE && item.currency === 'real') {
+//       result += getAmount(item);
+//     }
+//   });
+//   return result;
+// });
 
-const updateLocalStorage = () => {
-  localStorage.setItem('revenueItems', JSON.stringify(allRevenueItems));
-};
+// export const expectedSumEUR = computed<number>(() => {
+//   let result = 0;
+//   allRevenueItems.forEach((item) => {
+//     if (item.currency === 'euro') {
+//       result += getAmount(item);
+//     }
+//   });
+//   return result;
+// });
+
+// export const currentSumEUR = computed<number>(() => {
+//   let result = 0;
+//   allRevenueItems.forEach((item) => {
+//     if (item.itemStatus === REVENUE_STATUS.DONE && item.currency === 'euro') {
+//       result += getAmount(item);
+//     }
+//   });
+//   return result;
+// });
 
 const getRevenueByID = (id: string): Revenue | null => {
   if (!id) {
@@ -111,23 +140,31 @@ const publishRevenue = (id: string | undefined): void => {
   publishRevenueMutate({ id });
 };
 
-export const loadRevenues = () => {
-  const localItems = localStorage.getItem('revenueItems');
-  if (localItems) {
-    Object.assign(allRevenueItems, JSON.parse(localItems));
-    filterRevenues();
-  } else {
+export const loadRevenues = async () => {
+  const revenuesPromise = new Promise((resolve) => {
     const { onResult } = useGetRevenuesQuery();
-    // TODO catch errors
-    return onResult((result) => {
+    onResult((result) => {
       const items = result.data.revenues;
-      const itemsNoDeleted = items.filter((item) => item.deleted === false);
-      Object.assign(allRevenueItems, itemsNoDeleted);
+      allRevenueItems.splice(0);
+      items.forEach((item) => {
+        if (item.deleted) {
+          return;
+        }
+        allRevenueItems.push(copyRevenue(item));
+      });
+
       filterRevenues();
-      updateLocalStorage();
+      resolve(true);
     });
-  }
-  sortList(allRevenueItems, revenueSettings.column, revenueSettings.ascending);
+  });
+
+  return revenuesPromise.then(() => {
+    sortList(
+      allRevenueItems,
+      revenueSettings.column,
+      revenueSettings.ascending
+    );
+  });
 };
 
 export const addRevenue = async (revenue: Revenue) => {
@@ -146,7 +183,6 @@ export const addRevenue = async (revenue: Revenue) => {
     const revenueID = result.data?.createRevenue?.id;
     revenue.id = revenueID || '';
     allRevenueItems.push(revenue);
-    updateLocalStorage();
     publishRevenue(revenueID);
     filterRevenues();
   });
@@ -175,11 +211,10 @@ export const editRevenue = async (revenue: Revenue) => {
     // update revenue on local storage
     const oldRevenue = getRevenueByID(revenue.id);
     if (oldRevenue) {
-      copyRevenue(
+      overrideRevenue(
         allRevenueItems[allRevenueItems.indexOf(oldRevenue)],
         revenue
       );
-      updateLocalStorage();
     }
     publishRevenue(revenue.id);
     filterRevenues();
@@ -208,17 +243,10 @@ export const deleteRevenue = (revenue: Revenue) => {
   });
 
   return onDone(() => {
-    // remove from local storage
     allRevenueItems.splice(allRevenueItems.indexOf(revenue), 1);
-    updateLocalStorage();
     publishRevenue(revenue.id);
     filterRevenues();
   });
-};
-
-export const syncRevenues = () => {
-  localStorage.removeItem('revenueItems');
-  loadRevenues();
 };
 
 export const sortRevenues = (column?: string) => {

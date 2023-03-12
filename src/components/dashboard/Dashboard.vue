@@ -1,7 +1,7 @@
 <template>
-  <div class="grid grid-cols-2 grid-rows-5 p-6 gap-6 bg-neutral-color-500">
+  <div class="grid grid-cols-2 grid-rows-5 p-6 gap-6 bg-neutral-color-300">
     <div
-      class="flex col-span-2 h-full w-full items-center justify-center gap-16 rounded-xl p-4 cursor-pointer bg-secondary-color-300 hover:bg-secondary-color-700"
+      class="flex col-span-2 h-full w-full items-center justify-center gap-16 rounded-xl p-4 cursor-pointer bg-neutral-color-700 hover:bg-secondary-color-300"
       @click="$router.push('/investments')"
     >
       <span class="font-bold text-xl">Saldos atuais</span>
@@ -16,15 +16,37 @@
       </div>
     </div>
     <div
-      class="flex flex-col row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-secondary-color-300 hover:bg-secondary-color-700"
+      class="flex flex-col row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-neutral-color-700 hover:bg-secondary-color-300"
       @click="$router.push('/revenues')"
     >
-      <span class="font-bold text-xl">Entradas/saídas fixas do mês</span>
-      <span>R$ -200,00</span>
-      <span>4050.00 E</span>
+      <span class="font-bold text-xl">Rendas e depesas previstas no mês</span>
+      <div class="flex flex-col justify-around items-center h-full">
+        <div class="flex gap-4">
+          <ph-trend-up class="text-positive-color" weight="bold" />
+          <span
+            v-for="(value, key) in currentIncomes"
+            :key="key"
+            class="text-2xl"
+          >
+            {{ formatCurrency(value, key) }}
+          </span>
+        </div>
+      </div>
+      <div class="flex flex-col justify-around items-center h-full">
+        <div class="flex gap-4">
+          <ph-trend-down class="text-negative-color" weight="bold" />
+          <span
+            v-for="(value, key) in currentOutcomes"
+            :key="key"
+            class="text-2xl"
+          >
+            {{ formatCurrency(value, key) }}
+          </span>
+        </div>
+      </div>
     </div>
     <div
-      class="flex flex-col row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-secondary-color-300 hover:bg-secondary-color-700"
+      class="flex flex-col row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-neutral-color-700 hover:bg-secondary-color-300"
       @click="$router.push('/expenses')"
     >
       <span class="font-bold text-xl">Gastos variáveis do mês</span>
@@ -32,7 +54,7 @@
       <span>4050.00 E</span>
     </div>
     <div
-      class="flex flex-col row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-secondary-color-300 hover:bg-secondary-color-700"
+      class="flex flex-col row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-neutral-color-700 hover:bg-secondary-color-300"
       @click="$router.push('/investments')"
     >
       <span class="font-bold text-xl">Investimentos</span>
@@ -40,7 +62,7 @@
       <span>4050.00 E</span>
     </div>
     <div
-      class="flex flex-col row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-secondary-color-300 hover:bg-secondary-color-700"
+      class="flex flex-col row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-neutral-color-700 hover:bg-secondary-color-300"
       @click="$router.push('/wishes')"
     >
       <span class="font-bold text-xl">Planejamentos</span>
@@ -51,13 +73,30 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-import { balanceSum, loadInvestments } from '../../services';
+import { computed, onMounted } from 'vue';
+import {
+  balanceSum,
+  loadInvestments,
+  loadRevenues,
+  monthlyIncomes,
+  monthlyOutcomes,
+} from '../../services';
 import { formatCurrency } from '../../utils';
 
 const balanceAvailable = computed(() => {
   return balanceSum.value;
 });
 
-loadInvestments();
+const currentIncomes = computed(() => {
+  return monthlyIncomes.value;
+});
+
+const currentOutcomes = computed(() => {
+  return monthlyOutcomes.value;
+});
+
+onMounted(() => {
+  loadRevenues();
+  loadInvestments();
+});
 </script>

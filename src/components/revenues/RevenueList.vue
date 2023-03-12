@@ -82,6 +82,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import {
+  copyRevenue,
   formatCurrency,
   formatDate,
   getOrderIcon,
@@ -162,10 +163,10 @@ const onReopenRevenue = (index: number) => {
 };
 
 const onEditRevenue = (index: number) => {
-  emit('onEditRevenue', revenueList.value[index]);
+  emit('onEditRevenue', copyRevenue(revenueList.value[index]));
 };
 
 const onDeleteRevenue = (index: number) => {
-  emit('onDeleteRevenue', revenueList.value[index]);
+  emit('onDeleteRevenue', copyRevenue(revenueList.value[index]));
 };
 </script>

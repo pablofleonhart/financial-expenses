@@ -55,3 +55,10 @@ export const getMonths = (): MonthPeriod[] => {
 
   return result;
 };
+
+export const isDateInCurrentMonth = (date: Date): boolean => {
+  const firstDay = dayjs().startOf('month').toDate();
+  const lastDay = dayjs().endOf('month').toDate();
+  const targetDay = new Date(date);
+  return firstDay <= targetDay && targetDay <= lastDay;
+};

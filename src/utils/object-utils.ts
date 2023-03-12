@@ -21,7 +21,21 @@ export const copyExpense = (target: Expense, source: Expense) => {
   copyCategory(target.category, source.category);
 };
 
-export const copyRevenue = (target: Revenue, source: Revenue) => {
+export const copyRevenue = (source: any) => {
+  return new Revenue({
+    id: source.id,
+    amount: source.amount,
+    bank: source.bank,
+    currency: source.currency,
+    date: source.date,
+    deleted: source.deleted,
+    description: source.description,
+    type: source.type,
+    itemStatus: source.itemStatus,
+  });
+};
+
+export const overrideRevenue = (target: Revenue, source: Revenue) => {
   target.id = source.id;
   target.amount = source.amount;
   target.bank = source.bank;

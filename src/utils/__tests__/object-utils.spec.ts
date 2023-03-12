@@ -59,8 +59,7 @@ describe('sortList function', () => {
     } as Revenue;
 
     // Get a copy
-    const target = new Revenue();
-    copyRevenue(target, source);
+    const target = copyRevenue(source);
 
     // Test copy matches source
     expect(target.amount).toBe(source.amount);

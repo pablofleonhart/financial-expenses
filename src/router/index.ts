@@ -36,7 +36,10 @@ const router = createRouter({
       path: '/revenues',
       name: 'revenues',
       component: Revenues,
-      meta: { middlewares: [isAuthenticated], title: 'Despesas previstas' },
+      meta: {
+        middlewares: [isAuthenticated],
+        title: 'Rendas e despesas previstas',
+      },
     },
     {
       path: '/investments',
