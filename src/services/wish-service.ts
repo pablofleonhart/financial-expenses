@@ -193,6 +193,10 @@ export const filterWishes = (status: WishStatus = selectedWishStatus) => {
   localStorage.setItem(WISH_STATUS_KEY, JSON.stringify(selectedWishStatus));
 };
 
+export const topFiveWishCategories = computed(() => {
+  return [];
+});
+
 export const completeWish = (wish: Wish) => {
   if (!wish) {
     return;

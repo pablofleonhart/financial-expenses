@@ -256,7 +256,7 @@ const loadExpenseCategories = () => {
   reloadCharts.value = !reloadCharts.value;
 };
 
-export const topFiveCategories = computed(() => {
+export const topFiveExpenseCategories = computed(() => {
   return sortedCategories.slice(0, 5);
 });
 
