@@ -15,6 +15,6 @@
 </template>
 
 <script lang="ts" setup>
-const tabItems = [{ id: 0, name: 'Todos' }];
+const tabItems = [{ id: 0, name: 'Tudo' }];
 const selectedTab = tabItems[0];
 </script>

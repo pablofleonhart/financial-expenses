@@ -27,9 +27,11 @@
           >
             <li
               class="item flex cursor-pointer p-2 h-10 w-full"
-              :class="{ 'item-selected': category.id === selectedCurrency?.id }"
+              :class="{
+                'item-selected': category.type === selectedCurrency?.type,
+              }"
               v-for="category in currencies"
-              :key="category.id"
+              :key="category.type"
               @click="selectCurrency(category)"
             >
               <component :is="category.icon" size="24" />
@@ -58,6 +60,14 @@
           type="text"
           placeholder="Titular da conta"
         />
+        <div class="flex items-center text-lg gap-2">
+          <input
+            id="availability_check"
+            type="checkbox"
+            v-model="investment.available"
+          />
+          <label for="availability_check" class="text-base">Disponível</label>
+        </div>
       </div>
       <div class="expense-item-actions flex justify-end gap-4">
         <button
@@ -85,22 +95,24 @@ import { Investment } from './Investment';
 let investment = reactive(new Investment());
 const currencies = [
   {
-    id: 1,
+    type: 'real',
     name: 'Real',
     icon: 'ph-coins',
-    type: 'real',
   },
   {
-    id: 2,
+    type: 'dollar',
     name: 'Dolar',
     icon: 'ph-currency-dollar',
-    type: 'dollar',
   },
   {
-    id: 3,
+    type: 'euro',
     name: 'Euro',
     icon: 'ph-currency-eur',
-    type: 'euro',
+  },
+  {
+    type: 'libra',
+    name: 'Libra',
+    icon: 'ph-currency-gbp',
   },
 ];
 const selectedCurrency = ref(currencies[0]);
@@ -117,6 +129,9 @@ watch(
   () => {
     if (props.opened) {
       investment = props.investment;
+      selectedCurrency.value = currencies.filter(
+        (item) => item.type === investment.currency
+      )[0];
     }
   }
 );

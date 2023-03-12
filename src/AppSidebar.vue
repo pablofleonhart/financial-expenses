@@ -3,7 +3,10 @@
     class="sidebar min-h-screen h-full pt-1 w-40 flex flex-col bg-primary-color-300 border-r border-primary-color-700"
     :class="{ 'sidebar-collapsed': collapsedMenu }"
   >
-    <div class="flex ml-1 mt-1 items-center text-secondary-color-700">
+    <div
+      class="flex ml-1 mt-1 items-center text-secondary-color-700 cursor-pointer"
+      @click="$router.push(sidebarItems[0])"
+    >
       <ph-currency-circle-dollar class="flex rotate-[-20deg]" size="40" />
       <span v-if="!collapsedMenu" class="font-serif font-bold text-lg"
         >Meus Pila</span
@@ -52,6 +55,12 @@ interface ISidebarItem {
 
 const sidebarItems: Array<ISidebarItem> = [
   {
+    id: 0,
+    name: 'Dashboard',
+    icon: 'ph-presentation-chart',
+    route: '/',
+  },
+  {
     id: 1,
     name: 'Faturas',
     icon: 'ph-receipt',
@@ -60,7 +69,7 @@ const sidebarItems: Array<ISidebarItem> = [
   {
     id: 2,
     name: 'Gastos',
-    icon: 'ph-currency-circle-dollar',
+    icon: 'ph-coins',
     route: 'expenses',
   },
   {

@@ -1271,7 +1271,7 @@ export type Category = Node & {
   scheduledIn: Array<ScheduledOperation>;
   /** System stage field */
   stage: Stage;
-  type?: Maybe<Scalars['String']>;
+  type: Scalars['String'];
   /** The time the document was updated */
   updatedAt: Scalars['DateTime'];
   /** User that last updated this document */
@@ -1335,9 +1335,10 @@ export type CategoryConnection = {
 
 export type CategoryCreateInput = {
   clapu9t6d5lss01ujhpn5687u?: InputMaybe<ExpenseCreateManyInlineInput>;
+  clezrxfau1c1n01ugcncb60gf?: InputMaybe<WishCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   name: Scalars['String'];
-  type?: InputMaybe<Scalars['String']>;
+  type: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -1504,6 +1505,7 @@ export enum CategoryOrderByInput {
 
 export type CategoryUpdateInput = {
   clapu9t6d5lss01ujhpn5687u?: InputMaybe<ExpenseUpdateManyInlineInput>;
+  clezrxfau1c1n01ugcncb60gf?: InputMaybe<WishUpdateManyInlineInput>;
   name?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
 };
@@ -2423,6 +2425,7 @@ export type ImageTransformationInput = {
 export type Investment = Node & {
   __typename?: 'Investment';
   amount: Scalars['Float'];
+  available: Scalars['Boolean'];
   broker?: Maybe<Scalars['String']>;
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
@@ -2507,6 +2510,7 @@ export type InvestmentConnection = {
 
 export type InvestmentCreateInput = {
   amount: Scalars['Float'];
+  available: Scalars['Boolean'];
   broker?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   currency?: InputMaybe<Scalars['String']>;
@@ -2563,6 +2567,9 @@ export type InvestmentManyWhereInput = {
   amount_not?: InputMaybe<Scalars['Float']>;
   /** All values that are not contained in given list. */
   amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  available?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  available_not?: InputMaybe<Scalars['Boolean']>;
   broker?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   broker_contains?: InputMaybe<Scalars['String']>;
@@ -2701,6 +2708,8 @@ export type InvestmentManyWhereInput = {
 export enum InvestmentOrderByInput {
   AmountAsc = 'amount_ASC',
   AmountDesc = 'amount_DESC',
+  AvailableAsc = 'available_ASC',
+  AvailableDesc = 'available_DESC',
   BrokerAsc = 'broker_ASC',
   BrokerDesc = 'broker_DESC',
   CreatedAtAsc = 'createdAt_ASC',
@@ -2721,6 +2730,7 @@ export enum InvestmentOrderByInput {
 
 export type InvestmentUpdateInput = {
   amount?: InputMaybe<Scalars['Float']>;
+  available?: InputMaybe<Scalars['Boolean']>;
   broker?: InputMaybe<Scalars['String']>;
   currency?: InputMaybe<Scalars['String']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
@@ -2746,6 +2756,7 @@ export type InvestmentUpdateManyInlineInput = {
 
 export type InvestmentUpdateManyInput = {
   amount?: InputMaybe<Scalars['Float']>;
+  available?: InputMaybe<Scalars['Boolean']>;
   broker?: InputMaybe<Scalars['String']>;
   currency?: InputMaybe<Scalars['String']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
@@ -2826,6 +2837,9 @@ export type InvestmentWhereInput = {
   amount_not?: InputMaybe<Scalars['Float']>;
   /** All values that are not contained in given list. */
   amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  available?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  available_not?: InputMaybe<Scalars['Boolean']>;
   broker?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   broker_contains?: InputMaybe<Scalars['String']>;
@@ -6675,6 +6689,7 @@ export type VersionWhereInput = {
 export type Wish = Node & {
   __typename?: 'Wish';
   amount?: Maybe<Scalars['Float']>;
+  category?: Maybe<Category>;
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
   /** User that created this document */
@@ -6700,6 +6715,11 @@ export type Wish = Node & {
   updatedAt: Scalars['DateTime'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
+};
+
+export type WishCategoryArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
 };
 
 export type WishCreatedByArgs = {
@@ -6759,6 +6779,7 @@ export type WishConnection = {
 
 export type WishCreateInput = {
   amount?: InputMaybe<Scalars['Float']>;
+  category?: InputMaybe<CategoryCreateOneInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   currency?: InputMaybe<Scalars['String']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
@@ -6815,6 +6836,7 @@ export type WishManyWhereInput = {
   amount_not?: InputMaybe<Scalars['Float']>;
   /** All values that are not contained in given list. */
   amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  category?: InputMaybe<CategoryWhereInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   createdAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -6969,6 +6991,7 @@ export enum WishOrderByInput {
 
 export type WishUpdateInput = {
   amount?: InputMaybe<Scalars['Float']>;
+  category?: InputMaybe<CategoryUpdateOneInlineInput>;
   currency?: InputMaybe<Scalars['String']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   description?: InputMaybe<Scalars['String']>;
@@ -7074,6 +7097,7 @@ export type WishWhereInput = {
   amount_not?: InputMaybe<Scalars['Float']>;
   /** All values that are not contained in given list. */
   amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  category?: InputMaybe<CategoryWhereInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   createdAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -7336,6 +7360,7 @@ export type AddInvestmentMutationVariables = Exact<{
   broker: Scalars['String'];
   currency: Scalars['String'];
   holder: Scalars['String'];
+  available: Scalars['Boolean'];
 }>;
 
 export type AddInvestmentMutation = {
@@ -7402,7 +7427,7 @@ export type PublishExpenseMutation = {
       __typename?: 'Category';
       id: string;
       name: string;
-      type?: string | null;
+      type: string;
     } | null;
   } | null;
 };
@@ -7420,6 +7445,7 @@ export type PublishInvestmentMutation = {
     currency?: string | null;
     deleted?: boolean | null;
     holder: string;
+    available: boolean;
   } | null;
 };
 
@@ -7502,7 +7528,7 @@ export type UpdateExpenseMutation = {
       __typename?: 'Category';
       id: string;
       name: string;
-      type?: string | null;
+      type: string;
     } | null;
   } | null;
 };
@@ -7514,6 +7540,7 @@ export type UpdateInvestmentMutationVariables = Exact<{
   currency: Scalars['String'];
   deleted: Scalars['Boolean'];
   holder: Scalars['String'];
+  available: Scalars['Boolean'];
 }>;
 
 export type UpdateInvestmentMutation = {
@@ -7526,6 +7553,7 @@ export type UpdateInvestmentMutation = {
     currency?: string | null;
     deleted?: boolean | null;
     holder: string;
+    available: boolean;
   } | null;
 };
 
@@ -7603,7 +7631,7 @@ export type GetCategoriesQuery = {
     __typename?: 'Category';
     id: string;
     name: string;
-    type?: string | null;
+    type: string;
   }>;
 };
 
@@ -7627,7 +7655,7 @@ export type GetExpensesQuery = {
       __typename?: 'Category';
       id: string;
       name: string;
-      type?: string | null;
+      type: string;
     } | null;
     account?: { __typename?: 'Account'; name: string } | null;
   }>;
@@ -7645,6 +7673,7 @@ export type GetInvestmentsQuery = {
     deleted?: boolean | null;
     currency?: string | null;
     holder: string;
+    available: boolean;
   }>;
 };
 
@@ -7809,6 +7838,7 @@ export const AddInvestmentDocument = gql`
     $broker: String!
     $currency: String!
     $holder: String!
+    $available: Boolean!
   ) {
     createInvestment(
       data: {
@@ -7817,6 +7847,7 @@ export const AddInvestmentDocument = gql`
         currency: $currency
         deleted: false
         holder: $holder
+        available: $available
       }
     ) {
       id
@@ -7841,6 +7872,7 @@ export const AddInvestmentDocument = gql`
  *     broker: // value for 'broker'
  *     currency: // value for 'currency'
  *     holder: // value for 'holder'
+ *     available: // value for 'available'
  *   },
  * });
  */
@@ -8120,6 +8152,7 @@ export const PublishInvestmentDocument = gql`
       currency
       deleted
       holder
+      available
     }
   }
 `;
@@ -8427,6 +8460,7 @@ export const UpdateInvestmentDocument = gql`
     $currency: String!
     $deleted: Boolean!
     $holder: String!
+    $available: Boolean!
   ) {
     updateInvestment(
       data: {
@@ -8435,6 +8469,7 @@ export const UpdateInvestmentDocument = gql`
         currency: $currency
         deleted: $deleted
         holder: $holder
+        available: $available
       }
       where: { id: $id }
     ) {
@@ -8444,6 +8479,7 @@ export const UpdateInvestmentDocument = gql`
       currency
       deleted
       holder
+      available
     }
   }
 `;
@@ -8467,6 +8503,7 @@ export const UpdateInvestmentDocument = gql`
  *     currency: // value for 'currency'
  *     deleted: // value for 'deleted'
  *     holder: // value for 'holder'
+ *     available: // value for 'available'
  *   },
  * });
  */
@@ -8890,6 +8927,7 @@ export const GetInvestmentsDocument = gql`
       deleted
       currency
       holder
+      available
     }
   }
 `;
