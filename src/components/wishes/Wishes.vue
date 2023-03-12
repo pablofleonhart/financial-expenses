@@ -36,6 +36,7 @@ import WishList from './WishList.vue';
 import { onMounted, ref } from 'vue';
 import { deleteWish, loadWishes } from '../../services';
 import { Wish } from './Wish';
+import { copyWish } from '../../utils';
 
 const showWishItemModal = ref(false);
 const showConfirmationModal = ref(false);
@@ -53,7 +54,7 @@ const onAddWish = () => {
 };
 
 const onEditWish = (wish: Wish) => {
-  objWish.value = new Wish(wish);
+  objWish.value = copyWish(wish);
   showWishItemModal.value = true;
 };
 

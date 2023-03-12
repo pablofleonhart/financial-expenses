@@ -6,10 +6,17 @@ import {
 } from '../graphql/generated';
 import { computed, reactive } from 'vue';
 import { Wish } from '../components/wishes/Wish';
-import { copyWish, sortList } from '../utils';
-import { WISH_STATUS, WishStatus } from '../types';
+import { copyWish, overrideWish, sortList } from '../utils';
+import { categoryName, WISH_STATUS, WishStatus } from '../types';
 
-export let allWishItems: Array<Wish> = reactive([]);
+export type CategoryWish = {
+  category: string;
+  wishes: Array<any>;
+};
+
+export const allWishItems: Array<Wish> = reactive([]);
+let wishCategories: Set<string> = new Set();
+export const wishCategoryItems: Array<CategoryWish> = reactive([]);
 export const filteredWishItems: Array<Wish> = reactive([]);
 export const wishSettings: Record<string, any> = reactive({});
 
@@ -75,21 +82,46 @@ const publishWish = (id: string | undefined): void => {
   publishWishMutate({ id });
 };
 
+const loadWishCategories = () => {
+  const localItems: Array<CategoryWish> = [];
+  wishCategories = new Set();
+
+  filteredWishItems.forEach((item) => {
+    if (item.category) {
+      wishCategories.add(item.category.type);
+    }
+  });
+
+  wishCategories.forEach((category: string) => {
+    localItems.push({
+      category,
+      wishes: filteredWishItems.filter(
+        (item) => item.category.type === category
+      ),
+    });
+  });
+  wishCategoryItems.splice(0);
+  Object.assign(wishCategoryItems, localItems);
+};
+
 export const loadWishes = async () => {
-  allWishItems = [];
   const wishesPromise = new Promise((resolve) => {
     const { onResult } = useGetWishesQuery();
     onResult((result) => {
       const items = result.data.wishes;
-      const itemsNoDeleted = items.filter((item) => item.deleted === false);
-      Object.assign(allWishItems, itemsNoDeleted);
+      allWishItems.splice(0);
+      items.forEach((item) => {
+        if (item.deleted) {
+          return;
+        }
+        allWishItems.push(copyWish(item));
+      });
       resolve(true);
     });
   });
 
   return wishesPromise.then(() => {
-    filterWishes();
-    sortWishes();
+    keepListUpdated();
   });
 };
 
@@ -100,6 +132,7 @@ export const addWish = async (wish: Wish) => {
     description: wish.description,
     currency: wish.currency,
     itemStatus: wish.itemStatus,
+    categoryID: wish.category.id,
   });
 
   return onDone((result) => {
@@ -108,7 +141,7 @@ export const addWish = async (wish: Wish) => {
     allWishItems.push(wish);
     updateLocalStorage();
     publishWish(wishID);
-    filterWishes();
+    keepListUpdated();
   });
 };
 
@@ -126,17 +159,18 @@ export const editWish = async (wish: Wish) => {
     description: wish.description,
     currency: wish.currency,
     itemStatus: wish.itemStatus,
+    categoryID: wish.category.id,
   });
 
   return onDone(() => {
     // update wish on local storage
     const oldWish = getWishID(wish.id);
     if (oldWish) {
-      copyWish(allWishItems[allWishItems.indexOf(oldWish)], wish);
+      overrideWish(allWishItems[allWishItems.indexOf(oldWish)], wish);
       updateLocalStorage();
     }
     publishWish(wish.id);
-    filterWishes();
+    keepListUpdated();
   });
 };
 
@@ -145,24 +179,26 @@ export const deleteWish = (wish: Wish) => {
     throw new Error('Wish does not exist');
   }
 
-  wish.deleted = true;
+  const wishToDelete = { ...wish };
+  wishToDelete.deleted = true;
 
   const { mutate: updateWish, onDone } = useUpdateWishMutation({});
   updateWish({
-    id: wish.id,
-    amount: wish.amount,
-    deleted: wish.deleted,
-    description: wish.description,
-    currency: wish.currency,
-    itemStatus: wish.itemStatus,
+    id: wishToDelete.id,
+    amount: wishToDelete.amount,
+    deleted: wishToDelete.deleted,
+    description: wishToDelete.description,
+    currency: wishToDelete.currency,
+    itemStatus: wishToDelete.itemStatus,
+    categoryID: wishToDelete.category.id,
   });
 
-  return onDone(() => {
+  onDone(() => {
     // remove from local storage
     allWishItems.splice(allWishItems.indexOf(wish), 1);
     updateLocalStorage();
     publishWish(wish.id);
-    filterWishes();
+    keepListUpdated();
   });
 };
 
@@ -178,7 +214,10 @@ export const sortWishes = (column?: string) => {
     }
   }
 
-  sortList(filteredWishItems, wishSettings.column, wishSettings.ascending);
+  wishCategoryItems.forEach((wishCategory: CategoryWish) => {
+    sortList(wishCategory.wishes, wishSettings.column, wishSettings.ascending);
+  });
+
   localStorage.setItem(WISH_LIST_KEY, JSON.stringify(wishSettings));
 };
 
@@ -188,13 +227,22 @@ export const filterWishes = (status: WishStatus = selectedWishStatus) => {
   });
   filteredWishItems.splice(0);
   Object.assign(filteredWishItems, result);
-  sortWishes();
+  // sortWishes();
   Object.assign(selectedWishStatus, status);
   localStorage.setItem(WISH_STATUS_KEY, JSON.stringify(selectedWishStatus));
 };
 
 export const topFiveWishCategories = computed(() => {
-  return [];
+  const wishCategories: any = [];
+
+  wishCategoryItems.forEach((item) => {
+    wishCategories.push({
+      // @ts-ignore
+      name: categoryName[item.category],
+      value: item.wishes.reduce((partialSum, a) => partialSum + a.amount, 0),
+    });
+  });
+  return wishCategories.slice(0, 5);
 });
 
 export const completeWish = (wish: Wish) => {
@@ -203,7 +251,7 @@ export const completeWish = (wish: Wish) => {
   }
   wish.itemStatus = WISH_STATUS.DONE;
   editWish(wish);
-  filterWishes();
+  keepListUpdated();
 };
 
 export const reopenWish = (wish: Wish) => {
@@ -212,7 +260,13 @@ export const reopenWish = (wish: Wish) => {
   }
   wish.itemStatus = WISH_STATUS.OPEN;
   editWish(wish);
+  keepListUpdated();
+};
+
+const keepListUpdated = () => {
   filterWishes();
+  loadWishCategories();
+  sortWishes();
 };
 
 initializeData();

@@ -83,7 +83,7 @@
             :key="index"
             class="text-xl"
           >
-            <!-- {{ item.name }}: {{ formatCurrency(item.value) }} -->
+            {{ item.name }}: {{ formatCurrency(item.value) }}
           </span>
         </div>
       </div>

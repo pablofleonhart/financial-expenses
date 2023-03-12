@@ -2,7 +2,8 @@ mutation addWish(
   $amount: Float!,
   $description: String!,
   $currency: String!,
-  $itemStatus: Int!
+  $itemStatus: Int!,
+  $categoryID: ID!
 )
 {
   createWish(
@@ -11,7 +12,12 @@ mutation addWish(
       description: $description,
       deleted: false,
       currency: $currency,
-      itemStatus: $itemStatus
+      itemStatus: $itemStatus,
+      category: {
+        connect: {
+          id: $categoryID
+        }
+      },
     }
   ) {
     id

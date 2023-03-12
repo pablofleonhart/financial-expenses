@@ -4,7 +4,9 @@ mutation updateWish(
   $deleted: Boolean!,
   $description: String!,
   $currency: String!,
-  $itemStatus: Int!)
+  $itemStatus: Int!,
+  $categoryID: ID!
+)
 {
   updateWish(
     data: {
@@ -12,7 +14,12 @@ mutation updateWish(
       deleted: $deleted,
       description: $description,
       currency: $currency,
-      itemStatus: $itemStatus
+      itemStatus: $itemStatus,
+      category: {
+        connect: {
+          id: $categoryID
+        }
+      }
     }
     where: { id: $id }
   ){
@@ -22,5 +29,10 @@ mutation updateWish(
     description
     currency
     itemStatus
+    category {
+      id
+      name
+      type
+    }
   }
 }

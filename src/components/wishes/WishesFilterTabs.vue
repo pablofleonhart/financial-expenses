@@ -19,10 +19,7 @@
 import { computed } from 'vue';
 import { filterWishes, selectedWishStatus } from '../../services';
 
-const tabItems = [
-  { id: 0, name: 'Abertos' },
-  { id: 1, name: 'Concluídos' },
-];
+const tabItems = [{ id: 0, name: 'Abertos' }];
 const selectedTab = computed(() => selectedWishStatus.id);
 
 const filterItems = (tab: any) => {

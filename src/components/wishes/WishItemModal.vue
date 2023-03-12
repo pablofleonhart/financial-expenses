@@ -7,7 +7,7 @@
       class="wish-item-container flex flex-col bg-neutral-color-300 h-92 w-[350px] p-4 rounded-lg"
     >
       <span class="flex justify-center font-bold text-lg w-full">
-        {{ `${getActionName()} plano` }}
+        {{ `${getActionName()} planejamento` }}
       </span>
       <div class="wish-fields flex flex-col gap-3 my-5">
         <div class="currency-select" @click.stop>
@@ -18,7 +18,7 @@
           >
             <component :is="selectedCurrency?.icon" class="h-6 w-6" />
             <span class="selected-option-name ml-2">
-              {{ selectedCurrency?.name || 'Categoria' }}
+              {{ selectedCurrency.name }}
             </span>
           </div>
           <ul
@@ -45,8 +45,40 @@
           type="number"
           min="0"
           required
-          placeholder="Valor a receber/pagar"
+          placeholder="Valor previsto"
         />
+        <div class="category-select" @click.stop>
+          <div
+            class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
+            :class="{ open: categorySelectorOpen }"
+            @click="categorySelectorOpen = !categorySelectorOpen"
+          >
+            <component
+              :is="getCategoryIcon(selectedCategory?.type)"
+              class="h-6 w-6"
+            />
+            <span class="selected-option-name ml-2">
+              {{ selectedCategory?.name || 'Categoria' }}
+            </span>
+          </div>
+          <ul
+            class="period-items absolute bg-neutral-color-700 w-52 h-80 overflow-scroll"
+            :class="{ hidden: !categorySelectorOpen }"
+          >
+            <li
+              class="item flex cursor-pointer p-2 h-10 w-full"
+              :class="{ 'item-selected': category.id === selectedCategory?.id }"
+              v-for="category in categories"
+              :key="category.id"
+              @click="selectCategory(category)"
+            >
+              <component :is="getCategoryIcon(category.type)" class="h-6 w-6" />
+              <span class="item-name ml-2">
+                {{ category.name }}
+              </span>
+            </li>
+          </ul>
+        </div>
         <textarea
           v-model="wish.description"
           class="flex col-span-3 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-32"
@@ -72,8 +104,10 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, reactive, ref, watch } from 'vue';
-import { addWish, editWish } from '../../services';
+import { computed, PropType, reactive, ref, shallowRef, watch } from 'vue';
+import { addWish, categoryItems, editWish } from '../../services';
+import { getCategoryIcon } from '../../utils';
+import { Category } from '../categories/Category';
 import { Wish } from './Wish';
 
 let wish = reactive(new Wish());
@@ -99,6 +133,10 @@ const currencies = [
 ];
 const selectedCurrency = ref(currencies[2]);
 const currencySelectorOpen = ref(false);
+const categories = computed<Array<Category>>(() => categoryItems);
+const selectedCategory = shallowRef(new Category());
+const categorySelectorOpen = ref(false);
+
 const emit = defineEmits(['addWish', 'close']);
 
 const props = defineProps({
@@ -111,12 +149,19 @@ watch(
   () => {
     if (props.opened) {
       wish = props.wish;
+      selectedCategory.value = props.wish.category;
     }
   }
 );
 
 const getActionName = () => {
   return wish.id === '' ? 'Adicionar' : 'Editar';
+};
+
+const selectCategory = (option: any) => {
+  selectedCategory.value = option;
+  wish.category = option;
+  categorySelectorOpen.value = false;
 };
 
 const selectCurrency = (option: any) => {
