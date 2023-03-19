@@ -37,23 +37,34 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, shallowRef } from 'vue';
+import { computed, ref, shallowRef, watch } from 'vue';
 import { availableInvestments } from '../../services';
 import { getCurrencyIcon } from '../../utils';
 import { Investment } from '../investments/Investment';
 
+const props = defineProps({
+  initialValue: { type: Investment, default: new Investment() },
+});
+
 const emit = defineEmits(['select']);
 
 const balances = computed<Array<Investment>>(() => availableInvestments);
-const selectedBalance = shallowRef(new Investment());
+const selectedBalance = shallowRef(props.initialValue);
 const balanceSelectorOpen = ref(false);
+
+watch(
+  () => props.initialValue,
+  () => {
+    selectedBalance.value = props.initialValue;
+  }
+);
 
 const getBalanceName = (balance: Investment): string => {
   if (!balance.id) {
     return 'Forma de pagamento';
   }
   const holder = balance.holder ? `- ${balance.holder}` : '';
-  return `${balance.broker}${holder}`;
+  return `${balance.broker} ${holder}`;
 };
 
 const selectBalance = (balance: Investment) => {

@@ -47,6 +47,7 @@ export const overrideExpense = (target: Expense, source: Expense) => {
   target.deleted = source.deleted;
   target.note = source.note;
   overrideCategory(target.category, source.category);
+  overrideInvestment(target.payment, source.payment);
 };
 
 export const copyRevenue = (source: any) => {

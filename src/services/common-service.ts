@@ -5,8 +5,10 @@ import { loadInvestments } from './investment-service';
 
 const initializeServices = () => {
   provideApolloClient(apolloClient);
-  loadCategories();
-  loadInvestments();
+  setTimeout(() => {
+    loadCategories();
+    loadInvestments();
+  }, 2000);
 };
 
 initializeServices();

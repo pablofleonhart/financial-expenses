@@ -4,9 +4,10 @@ import {
   useAddInvestmentMutation,
   useGetInvestmentsQuery,
   usePublishInvestmentMutation,
+  usePublishManyInvestmentsMutation,
   useUpdateInvestmentMutation,
 } from '../graphql/generated';
-import { copyInvestment, overrideInvestment, sortList } from '../utils';
+import { copyInvestment, sortList } from '../utils';
 
 export const allInvestmentItems: Array<Investment> = reactive([]);
 export const filteredInvestmentItems: Array<Investment> = reactive([]);
@@ -76,6 +77,11 @@ const publishInvestment = (id: string | undefined): void => {
   publishInvestmentMutate({ id });
 };
 
+export const publishManyInvestments = (ids: string[]): void => {
+  const { mutate: publishMany } = usePublishManyInvestmentsMutation({});
+  publishMany({ ids });
+};
+
 export const loadInvestments = async () => {
   const investmentsPromise = new Promise((resolve) => {
     const { onResult } = useGetInvestmentsQuery();
@@ -124,31 +130,41 @@ export const addInvestment = async (investment: Investment) => {
   });
 };
 
-export const editInvestment = async (investment: Investment) => {
+export const editInvestment = async (
+  investment: Investment,
+  publish = true
+) => {
   if (!investment) {
     throw new Error('Investment does not exist');
   }
 
-  const { mutate: updateInvestment, onDone } = useUpdateInvestmentMutation({});
-  updateInvestment({
-    id: investment.id,
-    amount: investment.amount,
-    broker: investment.broker,
-    currency: investment.currency,
-    deleted: investment.deleted,
-    holder: investment.holder,
-    available: investment.available,
-  });
+  return new Promise((resolve) => {
+    const { mutate: updateInvestment, onDone } = useUpdateInvestmentMutation(
+      {}
+    );
+    updateInvestment({
+      id: investment.id,
+      amount: investment.amount,
+      broker: investment.broker,
+      currency: investment.currency,
+      deleted: investment.deleted,
+      holder: investment.holder,
+      available: investment.available,
+    });
 
-  return onDone(() => {
-    const oldInvestment = getInvestmentByID(investment.id);
-    if (oldInvestment) {
-      overrideInvestment(
-        allInvestmentItems[allInvestmentItems.indexOf(oldInvestment)],
-        investment
-      );
-    }
-    publishInvestment(investment.id);
+    onDone(() => {
+      const oldInvestment = getInvestmentByID(investment.id);
+      if (oldInvestment) {
+        const index = allInvestmentItems.indexOf(oldInvestment);
+        allInvestmentItems.splice(index, 1);
+        allInvestmentItems.push(investment);
+        sortInvestments();
+      }
+      if (publish) {
+        publishInvestment(investment.id);
+      }
+      resolve(true);
+    });
   });
 };
 

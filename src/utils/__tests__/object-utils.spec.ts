@@ -90,7 +90,7 @@ describe('sortList function', () => {
         type: 'Spending',
       },
       author: new Author(),
-      payment: new Investment()
+      payment: new Investment(),
     };
     const target = copyExpense(source);
     expect(target.amount).toBe(1000);

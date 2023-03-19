@@ -35,6 +35,7 @@ import { deleteExpense, loadExpenses } from '../../services';
 import { Expense } from './Expense';
 import ConfirmationModal from '../common/ConfirmationModal.vue';
 import ExpenseItemModal from './ExpenseItemModal.vue';
+import { copyExpense } from '../../utils';
 
 const showExpenseItemModal = ref(false);
 const showDeleteConfirmationModal = ref(false);
@@ -51,7 +52,7 @@ const onAddExpense = () => {
 };
 
 const onEditExpense = (expense: Expense) => {
-  objExpense.value = new Expense(expense);
+  objExpense.value = copyExpense(expense);
   showExpenseItemModal.value = true;
 };
 
@@ -60,8 +61,8 @@ const onDeleteExpense = (expense: Expense) => {
   expenseToDelete = expense;
 };
 
-const onAcceptDelete = () => {
+const onAcceptDelete = async () => {
   showDeleteConfirmationModal.value = false;
-  deleteExpense(expenseToDelete);
+  await deleteExpense(expenseToDelete);
 };
 </script>

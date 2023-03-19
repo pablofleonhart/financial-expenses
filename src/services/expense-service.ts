@@ -15,9 +15,9 @@ import {
   isDateInPeriod,
   sortList,
   getMonths,
-  overrideExpense,
 } from '../utils';
 import { MonthPeriod } from '../types';
+import { editInvestment, publishManyInvestments } from './investment-service';
 
 export let allExpenseItems: Array<Expense> = [];
 export const filteredExpenseItems: Array<Expense> = reactive([]);
@@ -107,7 +107,7 @@ const loadMonthExpenses = (month: MonthPeriod): Promise<any> => {
 
 export const loadExpenses = async (): Promise<void> => {
   allExpenseItems = [];
-  const periodsPromise = new Promise((resolve) => {
+  const loadExpensesPromise = new Promise((resolve) => {
     expensePeriods.forEach(async (period: MonthPeriod, index, array) => {
       const monthsItems = await loadMonthExpenses(period);
       monthsItems.forEach((item: Expense) => {
@@ -119,7 +119,7 @@ export const loadExpenses = async (): Promise<void> => {
     });
   });
 
-  return periodsPromise.then(() => {
+  return loadExpensesPromise.then(() => {
     filterExpenses();
   });
 };
@@ -143,68 +143,75 @@ export const addExpense = (expense: Expense) => {
     allExpenseItems.push(new Expense(expense));
     filterExpenses();
     publishExpense(expenseID);
+    expenseAdded(expense);
   });
 };
 
-export const editExpense = (expense: Expense) => {
+export const editExpense = async (expense: Expense) => {
+  if (!expense) {
+    throw new Error('Expense does not exist');
+  }
+  await expenseEdited(expense);
+
+  return new Promise((resolve) => {
+    const { mutate: updateExpense, onDone } = useUpdateExpenseMutation({});
+    updateExpense({
+      id: expense.id,
+      amount: expense.amount,
+      card: expense.card,
+      date: expense.date,
+      deleted: expense.deleted,
+      note: expense.note,
+      categoryID: expense.category.id,
+      currency: expense.currency,
+      paymentID: expense.payment.id,
+    });
+
+    onDone(() => {
+      // update expense on local storage
+      const oldExpense = getExpenseByID(expense.id);
+      if (oldExpense) {
+        const index = allExpenseItems.indexOf(oldExpense);
+        allExpenseItems.splice(index, 1);
+        allExpenseItems.push(expense);
+        sortExpenses();
+      }
+      filterExpenses();
+      publishExpense(expense.id);
+      resolve(true);
+    });
+  });
+};
+
+export const deleteExpense = async (expense: Expense) => {
   if (!expense) {
     throw new Error('Expense does not exist');
   }
 
-  // update on graph cms
-  const { mutate: updateExpense, onDone } = useUpdateExpenseMutation({});
-  updateExpense({
-    id: expense.id,
-    amount: expense.amount,
-    card: expense.card,
-    date: expense.date,
-    deleted: expense.deleted,
-    note: expense.note,
-    categoryID: expense.category.id,
-    currency: expense.currency,
-    paymentID: expense.payment.id,
-  });
+  return new Promise((resolve) => {
+    expense.deleted = true;
 
-  onDone(() => {
-    // update expense on local storage
-    const oldExpense = getExpenseByID(expense.id);
-    if (oldExpense) {
-      overrideExpense(
-        allExpenseItems[allExpenseItems.indexOf(oldExpense)],
-        expense
-      );
-    }
-    filterExpenses();
-    publishExpense(expense.id);
-  });
-};
+    const { mutate: updateExpense, onDone } = useUpdateExpenseMutation({});
+    updateExpense({
+      id: expense.id,
+      amount: expense.amount,
+      card: expense.card,
+      date: expense.date,
+      deleted: expense.deleted,
+      note: expense.note,
+      categoryID: expense.category.id,
+      currency: expense.currency,
+      paymentID: expense.payment.id,
+    });
 
-export const deleteExpense = (expense: Expense) => {
-  if (!expense) {
-    throw new Error('Expense does not exist');
-  }
-
-  // update on graph cms
-  expense.deleted = true;
-
-  const { mutate: updateExpense, onDone } = useUpdateExpenseMutation({});
-  updateExpense({
-    id: expense.id,
-    amount: expense.amount,
-    card: expense.card,
-    date: expense.date,
-    deleted: expense.deleted,
-    note: expense.note,
-    categoryID: expense.category.id,
-    currency: expense.currency,
-    paymentID: expense.payment.id,
-  });
-
-  onDone(() => {
-    // remove from local storage
-    allExpenseItems.splice(allExpenseItems.indexOf(expense), 1);
-    filterExpenses();
-    publishExpense(expense.id);
+    onDone(() => {
+      // remove from local storage
+      allExpenseItems.splice(allExpenseItems.indexOf(expense), 1);
+      filterExpenses();
+      publishExpense(expense.id);
+      expenseDeleted(expense);
+      resolve(true);
+    });
   });
 };
 
@@ -274,6 +281,45 @@ export const filterExpenses = (period: MonthPeriod = selectedExpensePeriod) => {
   Object.assign(selectedExpensePeriod, period);
   localStorage.setItem(EXPENSE_PERIOD, JSON.stringify(selectedExpensePeriod));
   loadExpenseCategories();
+};
+
+const expenseAdded = async (expense: Expense) => {
+  if (!expense || !expense.payment) {
+    return;
+  }
+  expense.payment.amount -= expense.amount;
+  await editInvestment(expense.payment);
+};
+
+const expenseEdited = async (expense: Expense) => {
+  if (!expense || !expense.payment) {
+    return;
+  }
+
+  const oldExpense = getExpenseByID(expense.id);
+  console.log(oldExpense);
+
+  if (!oldExpense) {
+    return;
+  }
+
+  if (oldExpense?.payment.id === expense.payment.id) {
+    expense.payment.amount += oldExpense?.amount - expense.amount;
+  } else {
+    oldExpense.payment.amount += oldExpense.amount;
+    expense.payment.amount -= expense.amount;
+    await editInvestment(oldExpense.payment, false);
+    await editInvestment(expense.payment, false);
+    publishManyInvestments([oldExpense.payment.id, expense.payment.id]);
+  }
+};
+
+const expenseDeleted = async (expense: Expense) => {
+  if (!expense || !expense.payment) {
+    return;
+  }
+  expense.payment.amount += expense.amount;
+  await editInvestment(expense.payment);
 };
 
 initializeService();
