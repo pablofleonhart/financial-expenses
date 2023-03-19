@@ -117,12 +117,11 @@
           </td>
           <td class="flex items-center p-2 h-full w-1/3">
             <div class="flex w-full justify-evenly">
-              <!-- <ph-check-circle
-                v-if="showWishActions"
+              <ph-check-circle
                 class="button-action hover:bg-green-500"
-                @click="completeWish(wish)"
+                @click="emit('onCompletePlan', wish)"
               />
-              <ph-arrow-counter-clockwise
+              <!-- <ph-arrow-counter-clockwise
                 v-else
                 class="button-action hover:bg-yellow-500"
                 @click="reopenWish(wish)"
@@ -147,6 +146,7 @@
 import { computed, ref } from 'vue';
 import { formatCurrency, getCategoryIcon, getOrderIcon } from '../../utils';
 import {
+  completePlan,
   wishSettings,
   sortWishes,
   wishCategoryItems,
@@ -205,7 +205,7 @@ const toggleTable = () => {
   tableVisibility.value = !tableVisibility.value;
 };
 
-const emit = defineEmits(['onCompleteWish', 'onEditWish', 'onDeleteWish']);
+const emit = defineEmits(['onCompletePlan', 'onEditWish', 'onDeleteWish']);
 
 const wishItemCategories = computed<Array<CategoryWish>>(
   () => wishCategoryItems

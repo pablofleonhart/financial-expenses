@@ -147,6 +147,7 @@ const setDate = (value: Date) => {
 const onActionItem = () => {
   if (expense.value.id === '') {
     addExpense(expense.value);
+    emit('addExpense');
   } else {
     editExpense(expense.value);
   }

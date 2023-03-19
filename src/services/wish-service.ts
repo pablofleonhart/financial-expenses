@@ -245,7 +245,7 @@ export const topFiveWishCategories = computed(() => {
   return wishCategories.slice(0, 5);
 });
 
-export const completeWish = (wish: Wish) => {
+export const completePlan = (wish: Wish) => {
   if (!wish) {
     return;
   }
