@@ -10,15 +10,6 @@
         {{ `${getActionName()} gasto` }}
       </span>
       <div class="expense-fields flex flex-col gap-3 my-5">
-        <div class="flex justify-center items-center text-lg">
-          <input class="mr-2" type="checkbox" v-model="expense.card" />
-          <component :is="getPaymentIcon(true)" size="24" />
-          <label class="ml-2">Cartão</label>
-        </div>
-        <balance-selector
-          :initial-value="selectedPayment"
-          @select="selectBalance"
-        />
         <input
           v-model="expense.amount"
           class="outline-0 rounded p-2 h-10 bg-neutral-color-700"
@@ -26,6 +17,11 @@
           min="0"
           required
           placeholder="Valor pago"
+        />
+        <balance-selector
+          :initial-value="selectedPayment"
+          empty-message="Forma de pagamento"
+          @select="selectBalance"
         />
         <div class="category-select" @click.stop>
           <div
@@ -100,7 +96,7 @@ import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/pr
 import { computed, PropType, ref, shallowRef, watch } from 'vue';
 import { Expense } from './Expense';
 import { Category } from '../categories/Category';
-import { getCategoryIcon, getPaymentIcon } from '../../utils';
+import { getCategoryIcon } from '../../utils';
 import { addExpense, categoryItems, editExpense } from '../../services';
 import BalanceSelector from '../common/BalanceSelector.vue';
 import { Investment } from '../investments/Investment';
@@ -163,5 +159,3 @@ const closeSelectors = () => {
 
 window.addEventListener('click', closeSelectors);
 </script>
-
-<style lang="scss" scoped></style>

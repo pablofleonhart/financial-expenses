@@ -44,6 +44,7 @@ import { Investment } from '../investments/Investment';
 
 const props = defineProps({
   initialValue: { type: Investment, default: new Investment() },
+  emptyMessage: { type: String, default: 'Selecione uma opçao'}
 });
 
 const emit = defineEmits(['select']);
@@ -61,7 +62,7 @@ watch(
 
 const getBalanceName = (balance: Investment): string => {
   if (!balance.id) {
-    return 'Forma de pagamento';
+    return props.emptyMessage;
   }
   const holder = balance.holder ? `- ${balance.holder}` : '';
   return `${balance.broker} ${holder}`;
