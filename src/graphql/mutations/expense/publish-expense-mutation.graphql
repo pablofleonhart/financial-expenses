@@ -11,5 +11,14 @@ mutation publishExpense($id: ID!) {
     deleted
     note
     currency
+    payment {
+      id
+      amount
+      broker
+      currency
+      holder
+      deleted
+      available
+    }
   }
 }

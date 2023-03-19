@@ -1832,6 +1832,7 @@ export type Expense = Node & {
   /** The unique identifier */
   id: Scalars['ID'];
   note?: Maybe<Scalars['String']>;
+  payment?: Maybe<Investment>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -1870,6 +1871,11 @@ export type ExpenseHistoryArgs = {
   limit?: Scalars['Int'];
   skip?: Scalars['Int'];
   stageOverride?: InputMaybe<Stage>;
+};
+
+export type ExpensePaymentArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
 };
 
 export type ExpensePublishedByArgs = {
@@ -1920,6 +1926,7 @@ export type ExpenseCreateInput = {
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   note?: InputMaybe<Scalars['String']>;
+  payment?: InputMaybe<InvestmentCreateOneInlineInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -2070,6 +2077,7 @@ export type ExpenseManyWhereInput = {
   note_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   note_starts_with?: InputMaybe<Scalars['String']>;
+  payment?: InputMaybe<InvestmentWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -2139,6 +2147,7 @@ export type ExpenseUpdateInput = {
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   note?: InputMaybe<Scalars['String']>;
+  payment?: InputMaybe<InvestmentUpdateOneInlineInput>;
 };
 
 export type ExpenseUpdateManyInlineInput = {
@@ -2340,6 +2349,7 @@ export type ExpenseWhereInput = {
   note_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   note_starts_with?: InputMaybe<Scalars['String']>;
+  payment?: InputMaybe<InvestmentWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -2512,6 +2522,7 @@ export type InvestmentCreateInput = {
   amount: Scalars['Float'];
   available: Scalars['Boolean'];
   broker?: InputMaybe<Scalars['String']>;
+  clffbd3v41moy01t61wibh5dc?: InputMaybe<ExpenseCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   currency?: InputMaybe<Scalars['String']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
@@ -2732,6 +2743,7 @@ export type InvestmentUpdateInput = {
   amount?: InputMaybe<Scalars['Float']>;
   available?: InputMaybe<Scalars['Boolean']>;
   broker?: InputMaybe<Scalars['String']>;
+  clffbd3v41moy01t61wibh5dc?: InputMaybe<ExpenseUpdateManyInlineInput>;
   currency?: InputMaybe<Scalars['String']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   holder?: InputMaybe<Scalars['String']>;
@@ -7340,62 +7352,6 @@ export type AddAccountMutation = {
   createAccount?: { __typename?: 'Account'; id: string } | null;
 };
 
-export type AddExpenseMutationVariables = Exact<{
-  amount: Scalars['Float'];
-  card: Scalars['Boolean'];
-  date: Scalars['Date'];
-  deleted: Scalars['Boolean'];
-  note: Scalars['String'];
-  categoryID: Scalars['ID'];
-  currency: Scalars['String'];
-}>;
-
-export type AddExpenseMutation = {
-  __typename?: 'Mutation';
-  createExpense?: { __typename?: 'Expense'; id: string } | null;
-};
-
-export type AddInvestmentMutationVariables = Exact<{
-  amount: Scalars['Float'];
-  broker: Scalars['String'];
-  currency: Scalars['String'];
-  holder: Scalars['String'];
-  available: Scalars['Boolean'];
-}>;
-
-export type AddInvestmentMutation = {
-  __typename?: 'Mutation';
-  createInvestment?: { __typename?: 'Investment'; id: string } | null;
-};
-
-export type AddRevenueMutationVariables = Exact<{
-  amount: Scalars['Float'];
-  bank: Scalars['String'];
-  date: Scalars['Date'];
-  description: Scalars['String'];
-  type: Scalars['String'];
-  currency: Scalars['String'];
-  itemStatus: Scalars['Int'];
-}>;
-
-export type AddRevenueMutation = {
-  __typename?: 'Mutation';
-  createRevenue?: { __typename?: 'Revenue'; id: string } | null;
-};
-
-export type AddWishMutationVariables = Exact<{
-  amount: Scalars['Float'];
-  description: Scalars['String'];
-  currency: Scalars['String'];
-  itemStatus: Scalars['Int'];
-  categoryID: Scalars['ID'];
-}>;
-
-export type AddWishMutation = {
-  __typename?: 'Mutation';
-  createWish?: { __typename?: 'Wish'; id: string } | null;
-};
-
 export type PublishAccountMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -7408,6 +7364,40 @@ export type PublishAccountMutation = {
     email: string;
     password: string;
   } | null;
+};
+
+export type UpdateAccountMutationVariables = Exact<{
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+export type UpdateAccountMutation = {
+  __typename?: 'Mutation';
+  updateAccount?: {
+    __typename?: 'Account';
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+  } | null;
+};
+
+export type AddExpenseMutationVariables = Exact<{
+  amount: Scalars['Float'];
+  card: Scalars['Boolean'];
+  date: Scalars['Date'];
+  deleted: Scalars['Boolean'];
+  note: Scalars['String'];
+  categoryID: Scalars['ID'];
+  currency: Scalars['String'];
+  paymentID: Scalars['ID'];
+}>;
+
+export type AddExpenseMutation = {
+  __typename?: 'Mutation';
+  createExpense?: { __typename?: 'Expense'; id: string } | null;
 };
 
 export type PublishExpenseMutationVariables = Exact<{
@@ -7430,82 +7420,16 @@ export type PublishExpenseMutation = {
       name: string;
       type: string;
     } | null;
-  } | null;
-};
-
-export type PublishInvestmentMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-export type PublishInvestmentMutation = {
-  __typename?: 'Mutation';
-  publishInvestment?: {
-    __typename?: 'Investment';
-    amount: number;
-    broker?: string | null;
-    currency?: string | null;
-    deleted?: boolean | null;
-    holder: string;
-    available: boolean;
-  } | null;
-};
-
-export type PublishRevenueMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-export type PublishRevenueMutation = {
-  __typename?: 'Mutation';
-  publishRevenue?: {
-    __typename?: 'Revenue';
-    amount: number;
-    bank: string;
-    date: any;
-    description: string;
-    deleted?: boolean | null;
-    type: string;
-    currency: string;
-    itemStatus: number;
-  } | null;
-};
-
-export type PublishWishMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-export type PublishWishMutation = {
-  __typename?: 'Mutation';
-  publishWish?: {
-    __typename?: 'Wish';
-    amount?: number | null;
-    description?: string | null;
-    deleted?: boolean | null;
-    currency?: string | null;
-    itemStatus?: number | null;
-    category?: {
-      __typename?: 'Category';
+    payment?: {
+      __typename?: 'Investment';
       id: string;
-      name: string;
-      type: string;
+      amount: number;
+      broker?: string | null;
+      currency?: string | null;
+      holder: string;
+      deleted?: boolean | null;
+      available: boolean;
     } | null;
-  } | null;
-};
-
-export type UpdateAccountMutationVariables = Exact<{
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  email: Scalars['String'];
-  password: Scalars['String'];
-}>;
-
-export type UpdateAccountMutation = {
-  __typename?: 'Mutation';
-  updateAccount?: {
-    __typename?: 'Account';
-    id: string;
-    name: string;
-    email: string;
-    password: string;
   } | null;
 };
 
@@ -7518,6 +7442,7 @@ export type UpdateExpenseMutationVariables = Exact<{
   note: Scalars['String'];
   categoryID: Scalars['ID'];
   currency: Scalars['String'];
+  paymentID: Scalars['ID'];
 }>;
 
 export type UpdateExpenseMutation = {
@@ -7537,6 +7462,46 @@ export type UpdateExpenseMutation = {
       name: string;
       type: string;
     } | null;
+    payment?: {
+      __typename?: 'Investment';
+      id: string;
+      amount: number;
+      broker?: string | null;
+      currency?: string | null;
+      holder: string;
+      deleted?: boolean | null;
+      available: boolean;
+    } | null;
+  } | null;
+};
+
+export type AddInvestmentMutationVariables = Exact<{
+  amount: Scalars['Float'];
+  broker: Scalars['String'];
+  currency: Scalars['String'];
+  holder: Scalars['String'];
+  available: Scalars['Boolean'];
+}>;
+
+export type AddInvestmentMutation = {
+  __typename?: 'Mutation';
+  createInvestment?: { __typename?: 'Investment'; id: string } | null;
+};
+
+export type PublishInvestmentMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type PublishInvestmentMutation = {
+  __typename?: 'Mutation';
+  publishInvestment?: {
+    __typename?: 'Investment';
+    amount: number;
+    broker?: string | null;
+    currency?: string | null;
+    deleted?: boolean | null;
+    holder: string;
+    available: boolean;
   } | null;
 };
 
@@ -7561,6 +7526,40 @@ export type UpdateInvestmentMutation = {
     deleted?: boolean | null;
     holder: string;
     available: boolean;
+  } | null;
+};
+
+export type AddRevenueMutationVariables = Exact<{
+  amount: Scalars['Float'];
+  bank: Scalars['String'];
+  date: Scalars['Date'];
+  description: Scalars['String'];
+  type: Scalars['String'];
+  currency: Scalars['String'];
+  itemStatus: Scalars['Int'];
+}>;
+
+export type AddRevenueMutation = {
+  __typename?: 'Mutation';
+  createRevenue?: { __typename?: 'Revenue'; id: string } | null;
+};
+
+export type PublishRevenueMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type PublishRevenueMutation = {
+  __typename?: 'Mutation';
+  publishRevenue?: {
+    __typename?: 'Revenue';
+    amount: number;
+    bank: string;
+    date: any;
+    description: string;
+    deleted?: boolean | null;
+    type: string;
+    currency: string;
+    itemStatus: number;
   } | null;
 };
 
@@ -7592,6 +7591,41 @@ export type UpdateRevenueMutation = {
   } | null;
 };
 
+export type AddWishMutationVariables = Exact<{
+  amount: Scalars['Float'];
+  description: Scalars['String'];
+  currency: Scalars['String'];
+  itemStatus: Scalars['Int'];
+  categoryID: Scalars['ID'];
+}>;
+
+export type AddWishMutation = {
+  __typename?: 'Mutation';
+  createWish?: { __typename?: 'Wish'; id: string } | null;
+};
+
+export type PublishWishMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type PublishWishMutation = {
+  __typename?: 'Mutation';
+  publishWish?: {
+    __typename?: 'Wish';
+    amount?: number | null;
+    description?: string | null;
+    deleted?: boolean | null;
+    currency?: string | null;
+    itemStatus?: number | null;
+    category?: {
+      __typename?: 'Category';
+      id: string;
+      name: string;
+      type: string;
+    } | null;
+  } | null;
+};
+
 export type UpdateWishMutationVariables = Exact<{
   id: Scalars['ID'];
   amount: Scalars['Float'];
@@ -7605,6 +7639,8 @@ export type UpdateWishMutationVariables = Exact<{
 export type UpdateWishMutation = {
   __typename?: 'Mutation';
   updateWish?: {
+    __typename?: 'Wish';
+    id: string;
     amount?: number | null;
     deleted?: boolean | null;
     description?: string | null;
@@ -7640,6 +7676,7 @@ export type GetCategoriesQueryVariables = Exact<{ [key: string]: never }>;
 export type GetCategoriesQuery = {
   __typename?: 'Query';
   categories: Array<{
+    __typename?: 'Category';
     id: string;
     name: string;
     type: string;
@@ -7669,6 +7706,15 @@ export type GetExpensesQuery = {
       type: string;
     } | null;
     account?: { __typename?: 'Account'; name: string } | null;
+    payment?: {
+      __typename?: 'Investment';
+      id: string;
+      amount: number;
+      broker?: string | null;
+      deleted?: boolean | null;
+      currency?: string | null;
+      holder: string;
+    } | null;
   }>;
 };
 
@@ -7777,6 +7823,118 @@ export type AddAccountMutationCompositionFunctionResult =
     AddAccountMutation,
     AddAccountMutationVariables
   >;
+export const PublishAccountDocument = gql`
+  mutation publishAccount($id: ID!) {
+    publishAccount(where: { id: $id }, to: PUBLISHED) {
+      name
+      email
+      password
+    }
+  }
+`;
+
+/**
+ * __usePublishAccountMutation__
+ *
+ * To run a mutation, you first call `usePublishAccountMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `usePublishAccountMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = usePublishAccountMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePublishAccountMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        PublishAccountMutation,
+        PublishAccountMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          PublishAccountMutation,
+          PublishAccountMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    PublishAccountMutation,
+    PublishAccountMutationVariables
+  >(PublishAccountDocument, options);
+}
+export type PublishAccountMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    PublishAccountMutation,
+    PublishAccountMutationVariables
+  >;
+export const UpdateAccountDocument = gql`
+  mutation updateAccount(
+    $id: ID!
+    $name: String!
+    $email: String!
+    $password: String!
+  ) {
+    updateAccount(
+      data: { name: $name, email: $email, password: $password }
+      where: { id: $id }
+    ) {
+      id
+      name
+      email
+      password
+    }
+  }
+`;
+
+/**
+ * __useUpdateAccountMutation__
+ *
+ * To run a mutation, you first call `useUpdateAccountMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAccountMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateAccountMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *     name: // value for 'name'
+ *     email: // value for 'email'
+ *     password: // value for 'password'
+ *   },
+ * });
+ */
+export function useUpdateAccountMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        UpdateAccountMutation,
+        UpdateAccountMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          UpdateAccountMutation,
+          UpdateAccountMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    UpdateAccountMutation,
+    UpdateAccountMutationVariables
+  >(UpdateAccountDocument, options);
+}
+export type UpdateAccountMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    UpdateAccountMutation,
+    UpdateAccountMutationVariables
+  >;
 export const AddExpenseDocument = gql`
   mutation addExpense(
     $amount: Float!
@@ -7786,6 +7944,7 @@ export const AddExpenseDocument = gql`
     $note: String!
     $categoryID: ID!
     $currency: String!
+    $paymentID: ID!
   ) {
     createExpense(
       data: {
@@ -7796,6 +7955,7 @@ export const AddExpenseDocument = gql`
         note: $note
         category: { connect: { id: $categoryID } }
         currency: $currency
+        payment: { connect: { id: $paymentID } }
       }
     ) {
       id
@@ -7823,6 +7983,7 @@ export const AddExpenseDocument = gql`
  *     note: // value for 'note'
  *     categoryID: // value for 'categoryID'
  *     currency: // value for 'currency'
+ *     paymentID: // value for 'paymentID'
  *   },
  * });
  */
@@ -7848,6 +8009,171 @@ export type AddExpenseMutationCompositionFunctionResult =
   VueApolloComposable.UseMutationReturn<
     AddExpenseMutation,
     AddExpenseMutationVariables
+  >;
+export const PublishExpenseDocument = gql`
+  mutation publishExpense($id: ID!) {
+    publishExpense(where: { id: $id }, to: PUBLISHED) {
+      amount
+      card
+      category {
+        id
+        name
+        type
+      }
+      date
+      deleted
+      note
+      currency
+      payment {
+        id
+        amount
+        broker
+        currency
+        holder
+        deleted
+        available
+      }
+    }
+  }
+`;
+
+/**
+ * __usePublishExpenseMutation__
+ *
+ * To run a mutation, you first call `usePublishExpenseMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `usePublishExpenseMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = usePublishExpenseMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePublishExpenseMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        PublishExpenseMutation,
+        PublishExpenseMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          PublishExpenseMutation,
+          PublishExpenseMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    PublishExpenseMutation,
+    PublishExpenseMutationVariables
+  >(PublishExpenseDocument, options);
+}
+export type PublishExpenseMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    PublishExpenseMutation,
+    PublishExpenseMutationVariables
+  >;
+export const UpdateExpenseDocument = gql`
+  mutation updateExpense(
+    $id: ID!
+    $amount: Float!
+    $card: Boolean!
+    $date: Date!
+    $deleted: Boolean!
+    $note: String!
+    $categoryID: ID!
+    $currency: String!
+    $paymentID: ID!
+  ) {
+    updateExpense(
+      data: {
+        amount: $amount
+        card: $card
+        date: $date
+        deleted: $deleted
+        note: $note
+        category: { connect: { id: $categoryID } }
+        currency: $currency
+        payment: { connect: { id: $paymentID } }
+      }
+      where: { id: $id }
+    ) {
+      id
+      amount
+      card
+      date
+      deleted
+      note
+      category {
+        id
+        name
+        type
+      }
+      currency
+      payment {
+        id
+        amount
+        broker
+        currency
+        holder
+        deleted
+        available
+      }
+    }
+  }
+`;
+
+/**
+ * __useUpdateExpenseMutation__
+ *
+ * To run a mutation, you first call `useUpdateExpenseMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateExpenseMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateExpenseMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *     amount: // value for 'amount'
+ *     card: // value for 'card'
+ *     date: // value for 'date'
+ *     deleted: // value for 'deleted'
+ *     note: // value for 'note'
+ *     categoryID: // value for 'categoryID'
+ *     currency: // value for 'currency'
+ *     paymentID: // value for 'paymentID'
+ *   },
+ * });
+ */
+export function useUpdateExpenseMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        UpdateExpenseMutation,
+        UpdateExpenseMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          UpdateExpenseMutation,
+          UpdateExpenseMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    UpdateExpenseMutation,
+    UpdateExpenseMutationVariables
+  >(UpdateExpenseDocument, options);
+}
+export type UpdateExpenseMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    UpdateExpenseMutation,
+    UpdateExpenseMutationVariables
   >;
 export const AddInvestmentDocument = gql`
   mutation addInvestment(
@@ -7916,254 +8242,6 @@ export type AddInvestmentMutationCompositionFunctionResult =
     AddInvestmentMutation,
     AddInvestmentMutationVariables
   >;
-export const AddRevenueDocument = gql`
-  mutation addRevenue(
-    $amount: Float!
-    $bank: String!
-    $date: Date!
-    $description: String!
-    $type: String!
-    $currency: String!
-    $itemStatus: Int!
-  ) {
-    createRevenue(
-      data: {
-        amount: $amount
-        bank: $bank
-        date: $date
-        deleted: false
-        description: $description
-        type: $type
-        currency: $currency
-        itemStatus: $itemStatus
-      }
-    ) {
-      id
-    }
-  }
-`;
-
-/**
- * __useAddRevenueMutation__
- *
- * To run a mutation, you first call `useAddRevenueMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useAddRevenueMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useAddRevenueMutation({
- *   variables: {
- *     amount: // value for 'amount'
- *     bank: // value for 'bank'
- *     date: // value for 'date'
- *     description: // value for 'description'
- *     type: // value for 'type'
- *     currency: // value for 'currency'
- *     itemStatus: // value for 'itemStatus'
- *   },
- * });
- */
-export function useAddRevenueMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        AddRevenueMutation,
-        AddRevenueMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          AddRevenueMutation,
-          AddRevenueMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    AddRevenueMutation,
-    AddRevenueMutationVariables
-  >(AddRevenueDocument, options);
-}
-export type AddRevenueMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    AddRevenueMutation,
-    AddRevenueMutationVariables
-  >;
-export const AddWishDocument = gql`
-  mutation addWish(
-    $amount: Float!
-    $description: String!
-    $currency: String!
-    $itemStatus: Int!
-    $categoryID: ID!
-  ) {
-    createWish(
-      data: {
-        amount: $amount
-        description: $description
-        deleted: false
-        currency: $currency
-        itemStatus: $itemStatus
-        category: { connect: { id: $categoryID } }
-      }
-    ) {
-      id
-    }
-  }
-`;
-
-/**
- * __useAddWishMutation__
- *
- * To run a mutation, you first call `useAddWishMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useAddWishMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useAddWishMutation({
- *   variables: {
- *     amount: // value for 'amount'
- *     description: // value for 'description'
- *     currency: // value for 'currency'
- *     itemStatus: // value for 'itemStatus'
- *     categoryID: // value for 'categoryID'
- *   },
- * });
- */
-export function useAddWishMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        AddWishMutation,
-        AddWishMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          AddWishMutation,
-          AddWishMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    AddWishMutation,
-    AddWishMutationVariables
-  >(AddWishDocument, options);
-}
-export type AddWishMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    AddWishMutation,
-    AddWishMutationVariables
-  >;
-export const PublishAccountDocument = gql`
-  mutation publishAccount($id: ID!) {
-    publishAccount(where: { id: $id }, to: PUBLISHED) {
-      name
-      email
-      password
-    }
-  }
-`;
-
-/**
- * __usePublishAccountMutation__
- *
- * To run a mutation, you first call `usePublishAccountMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `usePublishAccountMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = usePublishAccountMutation({
- *   variables: {
- *     id: // value for 'id'
- *   },
- * });
- */
-export function usePublishAccountMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        PublishAccountMutation,
-        PublishAccountMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          PublishAccountMutation,
-          PublishAccountMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    PublishAccountMutation,
-    PublishAccountMutationVariables
-  >(PublishAccountDocument, options);
-}
-export type PublishAccountMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    PublishAccountMutation,
-    PublishAccountMutationVariables
-  >;
-export const PublishExpenseDocument = gql`
-  mutation publishExpense($id: ID!) {
-    publishExpense(where: { id: $id }, to: PUBLISHED) {
-      amount
-      card
-      category {
-        id
-        name
-        type
-      }
-      date
-      deleted
-      note
-      currency
-    }
-  }
-`;
-
-/**
- * __usePublishExpenseMutation__
- *
- * To run a mutation, you first call `usePublishExpenseMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `usePublishExpenseMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = usePublishExpenseMutation({
- *   variables: {
- *     id: // value for 'id'
- *   },
- * });
- */
-export function usePublishExpenseMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        PublishExpenseMutation,
-        PublishExpenseMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          PublishExpenseMutation,
-          PublishExpenseMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    PublishExpenseMutation,
-    PublishExpenseMutationVariables
-  >(PublishExpenseDocument, options);
-}
-export type PublishExpenseMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    PublishExpenseMutation,
-    PublishExpenseMutationVariables
-  >;
 export const PublishInvestmentDocument = gql`
   mutation publishInvestment($id: ID!) {
     publishInvestment(where: { id: $id }, to: PUBLISHED) {
@@ -8216,266 +8294,6 @@ export type PublishInvestmentMutationCompositionFunctionResult =
   VueApolloComposable.UseMutationReturn<
     PublishInvestmentMutation,
     PublishInvestmentMutationVariables
-  >;
-export const PublishRevenueDocument = gql`
-  mutation publishRevenue($id: ID!) {
-    publishRevenue(where: { id: $id }, to: PUBLISHED) {
-      amount
-      bank
-      date
-      description
-      deleted
-      type
-      currency
-      itemStatus
-    }
-  }
-`;
-
-/**
- * __usePublishRevenueMutation__
- *
- * To run a mutation, you first call `usePublishRevenueMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `usePublishRevenueMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = usePublishRevenueMutation({
- *   variables: {
- *     id: // value for 'id'
- *   },
- * });
- */
-export function usePublishRevenueMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        PublishRevenueMutation,
-        PublishRevenueMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          PublishRevenueMutation,
-          PublishRevenueMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    PublishRevenueMutation,
-    PublishRevenueMutationVariables
-  >(PublishRevenueDocument, options);
-}
-export type PublishRevenueMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    PublishRevenueMutation,
-    PublishRevenueMutationVariables
-  >;
-export const PublishWishDocument = gql`
-  mutation publishWish($id: ID!) {
-    publishWish(where: { id: $id }, to: PUBLISHED) {
-      amount
-      description
-      deleted
-      currency
-      itemStatus
-      category {
-        id
-        name
-        type
-      }
-    }
-  }
-`;
-
-/**
- * __usePublishWishMutation__
- *
- * To run a mutation, you first call `usePublishWishMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `usePublishWishMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = usePublishWishMutation({
- *   variables: {
- *     id: // value for 'id'
- *   },
- * });
- */
-export function usePublishWishMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        PublishWishMutation,
-        PublishWishMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          PublishWishMutation,
-          PublishWishMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    PublishWishMutation,
-    PublishWishMutationVariables
-  >(PublishWishDocument, options);
-}
-export type PublishWishMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    PublishWishMutation,
-    PublishWishMutationVariables
-  >;
-export const UpdateAccountDocument = gql`
-  mutation updateAccount(
-    $id: ID!
-    $name: String!
-    $email: String!
-    $password: String!
-  ) {
-    updateAccount(
-      data: { name: $name, email: $email, password: $password }
-      where: { id: $id }
-    ) {
-      id
-      name
-      email
-      password
-    }
-  }
-`;
-
-/**
- * __useUpdateAccountMutation__
- *
- * To run a mutation, you first call `useUpdateAccountMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useUpdateAccountMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useUpdateAccountMutation({
- *   variables: {
- *     id: // value for 'id'
- *     name: // value for 'name'
- *     email: // value for 'email'
- *     password: // value for 'password'
- *   },
- * });
- */
-export function useUpdateAccountMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        UpdateAccountMutation,
-        UpdateAccountMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          UpdateAccountMutation,
-          UpdateAccountMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    UpdateAccountMutation,
-    UpdateAccountMutationVariables
-  >(UpdateAccountDocument, options);
-}
-export type UpdateAccountMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    UpdateAccountMutation,
-    UpdateAccountMutationVariables
-  >;
-export const UpdateExpenseDocument = gql`
-  mutation updateExpense(
-    $id: ID!
-    $amount: Float!
-    $card: Boolean!
-    $date: Date!
-    $deleted: Boolean!
-    $note: String!
-    $categoryID: ID!
-    $currency: String!
-  ) {
-    updateExpense(
-      data: {
-        amount: $amount
-        card: $card
-        date: $date
-        deleted: $deleted
-        note: $note
-        category: { connect: { id: $categoryID } }
-        currency: $currency
-      }
-      where: { id: $id }
-    ) {
-      id
-      amount
-      card
-      date
-      deleted
-      note
-      category {
-        id
-        name
-        type
-      }
-      currency
-    }
-  }
-`;
-
-/**
- * __useUpdateExpenseMutation__
- *
- * To run a mutation, you first call `useUpdateExpenseMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useUpdateExpenseMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useUpdateExpenseMutation({
- *   variables: {
- *     id: // value for 'id'
- *     amount: // value for 'amount'
- *     card: // value for 'card'
- *     date: // value for 'date'
- *     deleted: // value for 'deleted'
- *     note: // value for 'note'
- *     categoryID: // value for 'categoryID'
- *     currency: // value for 'currency'
- *   },
- * });
- */
-export function useUpdateExpenseMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        UpdateExpenseMutation,
-        UpdateExpenseMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          UpdateExpenseMutation,
-          UpdateExpenseMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    UpdateExpenseMutation,
-    UpdateExpenseMutationVariables
-  >(UpdateExpenseDocument, options);
-}
-export type UpdateExpenseMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    UpdateExpenseMutation,
-    UpdateExpenseMutationVariables
   >;
 export const UpdateInvestmentDocument = gql`
   mutation updateInvestment(
@@ -8554,6 +8372,134 @@ export type UpdateInvestmentMutationCompositionFunctionResult =
   VueApolloComposable.UseMutationReturn<
     UpdateInvestmentMutation,
     UpdateInvestmentMutationVariables
+  >;
+export const AddRevenueDocument = gql`
+  mutation addRevenue(
+    $amount: Float!
+    $bank: String!
+    $date: Date!
+    $description: String!
+    $type: String!
+    $currency: String!
+    $itemStatus: Int!
+  ) {
+    createRevenue(
+      data: {
+        amount: $amount
+        bank: $bank
+        date: $date
+        deleted: false
+        description: $description
+        type: $type
+        currency: $currency
+        itemStatus: $itemStatus
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+/**
+ * __useAddRevenueMutation__
+ *
+ * To run a mutation, you first call `useAddRevenueMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useAddRevenueMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useAddRevenueMutation({
+ *   variables: {
+ *     amount: // value for 'amount'
+ *     bank: // value for 'bank'
+ *     date: // value for 'date'
+ *     description: // value for 'description'
+ *     type: // value for 'type'
+ *     currency: // value for 'currency'
+ *     itemStatus: // value for 'itemStatus'
+ *   },
+ * });
+ */
+export function useAddRevenueMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        AddRevenueMutation,
+        AddRevenueMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          AddRevenueMutation,
+          AddRevenueMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    AddRevenueMutation,
+    AddRevenueMutationVariables
+  >(AddRevenueDocument, options);
+}
+export type AddRevenueMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    AddRevenueMutation,
+    AddRevenueMutationVariables
+  >;
+export const PublishRevenueDocument = gql`
+  mutation publishRevenue($id: ID!) {
+    publishRevenue(where: { id: $id }, to: PUBLISHED) {
+      amount
+      bank
+      date
+      description
+      deleted
+      type
+      currency
+      itemStatus
+    }
+  }
+`;
+
+/**
+ * __usePublishRevenueMutation__
+ *
+ * To run a mutation, you first call `usePublishRevenueMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `usePublishRevenueMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = usePublishRevenueMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePublishRevenueMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        PublishRevenueMutation,
+        PublishRevenueMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          PublishRevenueMutation,
+          PublishRevenueMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    PublishRevenueMutation,
+    PublishRevenueMutationVariables
+  >(PublishRevenueDocument, options);
+}
+export type PublishRevenueMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    PublishRevenueMutation,
+    PublishRevenueMutationVariables
   >;
 export const UpdateRevenueDocument = gql`
   mutation updateRevenue(
@@ -8640,6 +8586,130 @@ export type UpdateRevenueMutationCompositionFunctionResult =
   VueApolloComposable.UseMutationReturn<
     UpdateRevenueMutation,
     UpdateRevenueMutationVariables
+  >;
+export const AddWishDocument = gql`
+  mutation addWish(
+    $amount: Float!
+    $description: String!
+    $currency: String!
+    $itemStatus: Int!
+    $categoryID: ID!
+  ) {
+    createWish(
+      data: {
+        amount: $amount
+        description: $description
+        deleted: false
+        currency: $currency
+        itemStatus: $itemStatus
+        category: { connect: { id: $categoryID } }
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+/**
+ * __useAddWishMutation__
+ *
+ * To run a mutation, you first call `useAddWishMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useAddWishMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useAddWishMutation({
+ *   variables: {
+ *     amount: // value for 'amount'
+ *     description: // value for 'description'
+ *     currency: // value for 'currency'
+ *     itemStatus: // value for 'itemStatus'
+ *     categoryID: // value for 'categoryID'
+ *   },
+ * });
+ */
+export function useAddWishMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        AddWishMutation,
+        AddWishMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          AddWishMutation,
+          AddWishMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    AddWishMutation,
+    AddWishMutationVariables
+  >(AddWishDocument, options);
+}
+export type AddWishMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    AddWishMutation,
+    AddWishMutationVariables
+  >;
+export const PublishWishDocument = gql`
+  mutation publishWish($id: ID!) {
+    publishWish(where: { id: $id }, to: PUBLISHED) {
+      amount
+      description
+      deleted
+      currency
+      itemStatus
+      category {
+        id
+        name
+        type
+      }
+    }
+  }
+`;
+
+/**
+ * __usePublishWishMutation__
+ *
+ * To run a mutation, you first call `usePublishWishMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `usePublishWishMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = usePublishWishMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePublishWishMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        PublishWishMutation,
+        PublishWishMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          PublishWishMutation,
+          PublishWishMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    PublishWishMutation,
+    PublishWishMutationVariables
+  >(PublishWishDocument, options);
+}
+export type PublishWishMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    PublishWishMutation,
+    PublishWishMutationVariables
   >;
 export const UpdateWishDocument = gql`
   mutation updateWish(
@@ -8884,6 +8954,14 @@ export const GetExpensesDocument = gql`
         name
       }
       currency
+      payment {
+        id
+        amount
+        broker
+        deleted
+        currency
+        holder
+      }
     }
   }
 `;
