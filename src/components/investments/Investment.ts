@@ -11,7 +11,7 @@ export class Investment {
     objInvestment: Investment = {
       id: '',
       amount: 0,
-      currency: 'real',
+      currency: '',
       broker: '',
       deleted: false,
       holder: '',

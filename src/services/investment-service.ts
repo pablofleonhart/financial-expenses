@@ -10,6 +10,7 @@ import { copyInvestment, overrideInvestment, sortList } from '../utils';
 
 export const allInvestmentItems: Array<Investment> = reactive([]);
 export const filteredInvestmentItems: Array<Investment> = reactive([]);
+export const availableInvestments: Array<Investment> = reactive([]);
 export const investmentSettings: Record<string, any> = reactive({});
 
 const INVESTMENT_LIST_KEY = 'investment-list';
@@ -80,10 +81,14 @@ export const loadInvestments = async () => {
     const { onResult } = useGetInvestmentsQuery();
     onResult((result) => {
       const items = result.data.investments;
+      availableInvestments.splice(0);
       allInvestmentItems.splice(0);
       items.forEach((item) => {
         if (item.deleted) {
           return;
+        }
+        if (item.available) {
+          availableInvestments.push(copyInvestment(item));
         }
         allInvestmentItems.push(copyInvestment(item));
       });
