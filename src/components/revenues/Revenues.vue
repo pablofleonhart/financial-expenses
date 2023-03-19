@@ -34,6 +34,7 @@ import RevenueList from './RevenueList.vue';
 import { onMounted, ref } from 'vue';
 import { deleteRevenue, loadRevenues } from '../../services';
 import { Revenue } from './Revenue';
+import { copyRevenue } from '../../utils';
 
 const showRevenueItemModal = ref(false);
 const showConfirmationModal = ref(false);
@@ -51,7 +52,7 @@ const onAddRevenue = () => {
 };
 
 const onEditRevenue = (revenue: Revenue) => {
-  objRevenue.value = new Revenue(revenue);
+  objRevenue.value = copyRevenue(revenue);
   showRevenueItemModal.value = true;
 };
 

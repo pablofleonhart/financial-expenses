@@ -5,7 +5,8 @@ mutation addRevenue(
   $description: String!,
   $type: String!,
   $currency: String!,
-  $itemStatus: Int!
+  $itemStatus: Int!,
+  $paymentID: ID!
 )
 {
   createRevenue(
@@ -17,7 +18,12 @@ mutation addRevenue(
       description: $description,
       type: $type,
       currency: $currency,
-      itemStatus: $itemStatus
+      itemStatus: $itemStatus,
+      payment:  {
+        connect: {
+          id: $paymentID
+        }
+      },
     }
   ) {
     id

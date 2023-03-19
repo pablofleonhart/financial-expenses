@@ -9,5 +9,14 @@ query GetRevenues {
     type
     currency
     itemStatus
+    payment {
+      id
+      amount
+      broker
+      deleted
+      currency
+      holder
+      available
+    }
   }
 }

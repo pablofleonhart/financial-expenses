@@ -7,7 +7,8 @@ mutation updateRevenue(
   $description: String!,
   $type: String!,
   $currency: String!,
-  $itemStatus: Int!)
+  $itemStatus: Int!,
+  $paymentID: ID!)
 {
   updateRevenue(
     data: {
@@ -18,7 +19,12 @@ mutation updateRevenue(
       description: $description,
       type: $type,
       currency: $currency,
-      itemStatus: $itemStatus
+      itemStatus: $itemStatus,
+      payment:  {
+        connect: {
+          id: $paymentID
+        }
+      },
     }
     where: { id: $id }
   ){
@@ -31,5 +37,14 @@ mutation updateRevenue(
     type
     currency
     itemStatus
+    payment {
+      id
+      amount
+      broker
+      currency
+      holder
+      deleted
+      available
+    }
   }
 }

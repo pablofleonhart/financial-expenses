@@ -10,7 +10,7 @@
         class="h-6 w-6"
       />
       <span class="selected-option-name ml-2">
-        {{ getBalanceName(selectedBalance) }}
+        {{ balanceName(selectedBalance) }}
       </span>
     </div>
     <ul
@@ -29,7 +29,7 @@
       >
         <component :is="getCurrencyIcon(balance.currency)" class="h-6 w-6" />
         <span class="item-name ml-2">
-          {{ getBalanceName(balance) }}
+          {{ balanceName(balance) }}
         </span>
       </li>
     </ul>
@@ -40,11 +40,12 @@
 import { computed, ref, shallowRef, watch } from 'vue';
 import { availableInvestments } from '../../services';
 import { getCurrencyIcon } from '../../utils';
+import { getBalanceName } from '../../utils/string-utils';
 import { Investment } from '../investments/Investment';
 
 const props = defineProps({
   initialValue: { type: Investment, default: new Investment() },
-  emptyMessage: { type: String, default: 'Selecione uma opçao'}
+  emptyMessage: { type: String, default: 'Selecione uma opçao' },
 });
 
 const emit = defineEmits(['select']);
@@ -60,12 +61,11 @@ watch(
   }
 );
 
-const getBalanceName = (balance: Investment): string => {
+const balanceName = (balance: Investment): string => {
   if (!balance.id) {
     return props.emptyMessage;
   }
-  const holder = balance.holder ? `- ${balance.holder}` : '';
-  return `${balance.broker} ${holder}`;
+  return getBalanceName(balance);
 };
 
 const selectBalance = (balance: Investment) => {

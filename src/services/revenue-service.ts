@@ -181,6 +181,7 @@ export const addRevenue = async (revenue: Revenue) => {
     bank: revenue.bank,
     currency: revenue.currency,
     itemStatus: revenue.itemStatus,
+    paymentID: revenue.payment.id,
   });
 
   return onDone((result) => {
@@ -209,6 +210,7 @@ export const editRevenue = async (revenue: Revenue) => {
     type: revenue.type,
     currency: revenue.currency,
     itemStatus: revenue.itemStatus,
+    paymentID: revenue.payment.id,
   });
 
   return onDone(() => {
@@ -244,6 +246,7 @@ export const deleteRevenue = (revenue: Revenue) => {
     type: revenue.type,
     currency: revenue.currency,
     itemStatus: revenue.itemStatus,
+    paymentID: revenue.payment.id,
   });
 
   return onDone(() => {

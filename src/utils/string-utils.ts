@@ -1,3 +1,5 @@
+import { Investment } from '../components/investments/Investment';
+
 export const getInitials = (name: string): string => {
   return name
     .split(' ')
@@ -10,4 +12,12 @@ export const capitalizeFirstLetter = (sentence: string) => {
     return '';
   }
   return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+};
+
+export const getBalanceName = (balance: Investment): string => {
+  if (!balance) {
+    return 'N/D';
+  }
+  const holder = balance.holder ? `- ${balance.holder}` : '';
+  return `${balance.broker} ${holder}`;
 };

@@ -2,7 +2,7 @@
   <div class="revenue-list">
     <table class="w-full overflow-hidden bg-neutral-color-500">
       <thead class="revenue-list-head flex w-full">
-        <tr class="flex w-full h-12 bg-neutral-color-700">
+        <tr class="flex w-full h-10 bg-neutral-color-700">
           <th
             v-for="column in revenueColumns"
             :key="column.key"
@@ -24,7 +24,7 @@
       </thead>
       <tbody class="revenue-list-body flex flex-col w-full">
         <tr
-          class="flex w-full items-center h-12 even:bg-neutral-color-700"
+          class="flex w-full items-center h-10 even:bg-neutral-color-700"
           v-for="(item, index) in revenueList"
           :key="item.id"
         >
@@ -45,11 +45,13 @@
           <td class="flex items-center p-2 h-full w-1/6">
             {{ item.description }}
           </td>
-          <td class="flex items-center p-2 h-full w-1/6">
+          <td class="flex items-center justify-center p-2 h-full w-1/6">
             {{ formatDate(item.date) }}
           </td>
-          <td class="flex items-center p-2 h-full w-1/6">
-            {{ item.bank }}
+          <td class="flex items-center justify-center p-2 h-full w-1/6">
+            {{
+              item.payment.currency ? getBalanceName(item.payment) : item.bank
+            }}
           </td>
           <td class="flex items-center p-2 h-full w-1/6">
             <div class="flex w-full justify-evenly">
@@ -97,6 +99,7 @@ import {
   sortRevenues,
 } from '../../services';
 import { Revenue } from './Revenue';
+import { getBalanceName } from '../../utils/string-utils';
 
 const revenueColumns = [
   {
@@ -117,12 +120,12 @@ const revenueColumns = [
   {
     key: 'date',
     name: 'Data',
-    class: '',
+    class: 'justify-center',
   },
   {
     key: 'bank',
-    name: 'Banco',
-    class: '',
+    name: 'Banco/Conta',
+    class: 'justify-center',
   },
   {
     key: 'actions',

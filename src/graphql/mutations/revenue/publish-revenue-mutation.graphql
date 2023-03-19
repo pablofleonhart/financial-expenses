@@ -8,5 +8,14 @@ mutation publishRevenue($id: ID!) {
     type
     currency
     itemStatus
+    payment {
+      id
+      amount
+      broker
+      currency
+      holder
+      deleted
+      available
+    }
   }
 }

@@ -75,11 +75,10 @@
           required
           placeholder="Valor a receber/pagar"
         />
-        <input
-          v-model="revenue.bank"
-          class="outline-0 rounded p-2 h-10 bg-neutral-color-700"
-          type="text"
-          placeholder="Informe o banco vinculado"
+        <balance-selector
+          :initial-value="selectedPayment"
+          empty-message="Meio de pagamento"
+          @select="selectBalance"
         />
         <datepicker
           :model-value="revenue.date"
@@ -115,12 +114,14 @@
 </template>
 
 <script lang="ts" setup>
+import BalanceSelector from '../common/BalanceSelector.vue';
 import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/props/formatting/
-import { PropType, reactive, ref, watch } from 'vue';
+import { PropType, ref, shallowRef, watch } from 'vue';
 import { addRevenue, editRevenue } from '../../services';
+import { Investment } from '../investments/Investment';
 import { Revenue } from './Revenue';
 
-let revenue = reactive(new Revenue());
+const revenue = shallowRef(new Revenue());
 const currencies = [
   {
     id: 1,
@@ -145,6 +146,8 @@ const selectedCurrency = ref(currencies[0]);
 const currencySelectorOpen = ref(false);
 const emit = defineEmits(['addRevenue', 'close']);
 
+const selectedPayment = shallowRef(new Investment());
+
 const props = defineProps({
   opened: { type: Boolean, default: false },
   revenue: { type: Object as PropType<Revenue>, required: true },
@@ -154,30 +157,35 @@ watch(
   () => props.opened,
   () => {
     if (props.opened) {
-      revenue = props.revenue;
+      revenue.value = props.revenue;
+      selectedPayment.value = props.revenue.payment;
     }
   }
 );
 
 const getActionName = () => {
-  return revenue.id === '' ? 'Adicionar' : 'Editar';
+  return revenue.value.id === '' ? 'Adicionar' : 'Editar';
 };
 
 const selectCurrency = (option: any) => {
   selectedCurrency.value = option;
-  revenue.currency = option?.type;
+  revenue.value.currency = option?.type;
   currencySelectorOpen.value = false;
 };
 
+const selectBalance = (balance: Investment) => {
+  revenue.value.payment = balance;
+};
+
 const setDate = (value: Date) => {
-  revenue.date = value;
+  revenue.value.date = value;
 };
 
 const onActionItem = async () => {
-  if (revenue.id === '') {
-    await addRevenue(revenue);
+  if (revenue.value.id === '') {
+    await addRevenue(revenue.value);
   } else {
-    await editRevenue(revenue);
+    await editRevenue(revenue.value);
   }
   emit('close');
 };

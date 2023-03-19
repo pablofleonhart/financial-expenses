@@ -2523,6 +2523,7 @@ export type InvestmentCreateInput = {
   available: Scalars['Boolean'];
   broker?: InputMaybe<Scalars['String']>;
   clffbd3v41moy01t61wibh5dc?: InputMaybe<ExpenseCreateManyInlineInput>;
+  clffltrwe1stn01tefg9fa4uz?: InputMaybe<RevenueCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   currency?: InputMaybe<Scalars['String']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
@@ -2744,6 +2745,7 @@ export type InvestmentUpdateInput = {
   available?: InputMaybe<Scalars['Boolean']>;
   broker?: InputMaybe<Scalars['String']>;
   clffbd3v41moy01t61wibh5dc?: InputMaybe<ExpenseUpdateManyInlineInput>;
+  clffltrwe1stn01tefg9fa4uz?: InputMaybe<RevenueUpdateManyInlineInput>;
   currency?: InputMaybe<Scalars['String']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   holder?: InputMaybe<Scalars['String']>;
@@ -4586,6 +4588,7 @@ export type Revenue = Node & {
   /** The unique identifier */
   id: Scalars['ID'];
   itemStatus: Scalars['Int'];
+  payment?: Maybe<Investment>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -4618,6 +4621,12 @@ export type RevenueHistoryArgs = {
   limit?: Scalars['Int'];
   skip?: Scalars['Int'];
   stageOverride?: InputMaybe<Stage>;
+};
+
+/** Armazena dados de rendas e despesas */
+export type RevenuePaymentArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
 };
 
 /** Armazena dados de rendas e despesas */
@@ -4670,6 +4679,7 @@ export type RevenueCreateInput = {
   deleted?: InputMaybe<Scalars['Boolean']>;
   description: Scalars['String'];
   itemStatus: Scalars['Int'];
+  payment?: InputMaybe<InvestmentCreateOneInlineInput>;
   type: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
@@ -4850,6 +4860,7 @@ export type RevenueManyWhereInput = {
   itemStatus_not?: InputMaybe<Scalars['Int']>;
   /** All values that are not contained in given list. */
   itemStatus_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  payment?: InputMaybe<InvestmentWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -4941,6 +4952,7 @@ export type RevenueUpdateInput = {
   deleted?: InputMaybe<Scalars['Boolean']>;
   description?: InputMaybe<Scalars['String']>;
   itemStatus?: InputMaybe<Scalars['Int']>;
+  payment?: InputMaybe<InvestmentUpdateOneInlineInput>;
   type?: InputMaybe<Scalars['String']>;
 };
 
@@ -5174,6 +5186,7 @@ export type RevenueWhereInput = {
   itemStatus_not?: InputMaybe<Scalars['Int']>;
   /** All values that are not contained in given list. */
   itemStatus_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  payment?: InputMaybe<InvestmentWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -7546,6 +7559,7 @@ export type AddRevenueMutationVariables = Exact<{
   type: Scalars['String'];
   currency: Scalars['String'];
   itemStatus: Scalars['Int'];
+  paymentID: Scalars['ID'];
 }>;
 
 export type AddRevenueMutation = {
@@ -7569,6 +7583,16 @@ export type PublishRevenueMutation = {
     type: string;
     currency: string;
     itemStatus: number;
+    payment?: {
+      __typename?: 'Investment';
+      id: string;
+      amount: number;
+      broker?: string | null;
+      currency?: string | null;
+      holder: string;
+      deleted?: boolean | null;
+      available: boolean;
+    } | null;
   } | null;
 };
 
@@ -7582,6 +7606,7 @@ export type UpdateRevenueMutationVariables = Exact<{
   type: Scalars['String'];
   currency: Scalars['String'];
   itemStatus: Scalars['Int'];
+  paymentID: Scalars['ID'];
 }>;
 
 export type UpdateRevenueMutation = {
@@ -7597,6 +7622,16 @@ export type UpdateRevenueMutation = {
     type: string;
     currency: string;
     itemStatus: number;
+    payment?: {
+      __typename?: 'Investment';
+      id: string;
+      amount: number;
+      broker?: string | null;
+      currency?: string | null;
+      holder: string;
+      deleted?: boolean | null;
+      available: boolean;
+    } | null;
   } | null;
 };
 
@@ -7771,6 +7806,16 @@ export type GetRevenuesQuery = {
     type: string;
     currency: string;
     itemStatus: number;
+    payment?: {
+      __typename?: 'Investment';
+      id: string;
+      amount: number;
+      broker?: string | null;
+      deleted?: boolean | null;
+      currency?: string | null;
+      holder: string;
+      available: boolean;
+    } | null;
   }>;
 };
 
@@ -8452,6 +8497,7 @@ export const AddRevenueDocument = gql`
     $type: String!
     $currency: String!
     $itemStatus: Int!
+    $paymentID: ID!
   ) {
     createRevenue(
       data: {
@@ -8463,6 +8509,7 @@ export const AddRevenueDocument = gql`
         type: $type
         currency: $currency
         itemStatus: $itemStatus
+        payment: { connect: { id: $paymentID } }
       }
     ) {
       id
@@ -8490,6 +8537,7 @@ export const AddRevenueDocument = gql`
  *     type: // value for 'type'
  *     currency: // value for 'currency'
  *     itemStatus: // value for 'itemStatus'
+ *     paymentID: // value for 'paymentID'
  *   },
  * });
  */
@@ -8527,6 +8575,15 @@ export const PublishRevenueDocument = gql`
       type
       currency
       itemStatus
+      payment {
+        id
+        amount
+        broker
+        currency
+        holder
+        deleted
+        available
+      }
     }
   }
 `;
@@ -8582,6 +8639,7 @@ export const UpdateRevenueDocument = gql`
     $type: String!
     $currency: String!
     $itemStatus: Int!
+    $paymentID: ID!
   ) {
     updateRevenue(
       data: {
@@ -8593,6 +8651,7 @@ export const UpdateRevenueDocument = gql`
         type: $type
         currency: $currency
         itemStatus: $itemStatus
+        payment: { connect: { id: $paymentID } }
       }
       where: { id: $id }
     ) {
@@ -8605,6 +8664,15 @@ export const UpdateRevenueDocument = gql`
       type
       currency
       itemStatus
+      payment {
+        id
+        amount
+        broker
+        currency
+        holder
+        deleted
+        available
+      }
     }
   }
 `;
@@ -8631,6 +8699,7 @@ export const UpdateRevenueDocument = gql`
  *     type: // value for 'type'
  *     currency: // value for 'currency'
  *     itemStatus: // value for 'itemStatus'
+ *     paymentID: // value for 'paymentID'
  *   },
  * });
  */
@@ -9251,6 +9320,15 @@ export const GetRevenuesDocument = gql`
       type
       currency
       itemStatus
+      payment {
+        id
+        amount
+        broker
+        deleted
+        currency
+        holder
+        available
+      }
     }
   }
 `;

@@ -61,6 +61,7 @@ export const copyRevenue = (source: any) => {
     description: source.description,
     type: source.type,
     itemStatus: source.itemStatus,
+    payment: copyInvestment(source.payment),
   });
 };
 
