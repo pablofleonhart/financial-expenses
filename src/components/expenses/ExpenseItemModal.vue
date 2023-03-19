@@ -15,7 +15,7 @@
           <component :is="getPaymentIcon(true)" size="24" />
           <label class="ml-2">Cartão</label>
         </div>
-        <balance-selector />
+        <balance-selector @select="selectBalance" />
         <input
           v-model="expense.amount"
           class="outline-0 rounded p-2 h-10 bg-neutral-color-700"
@@ -100,13 +100,13 @@ import { Category } from '../categories/Category';
 import { getCategoryIcon, getPaymentIcon } from '../../utils';
 import { addExpense, categoryItems, editExpense } from '../../services';
 import BalanceSelector from '../common/BalanceSelector.vue';
+import { Investment } from '../investments/Investment';
 
 let expense = reactive(new Expense());
 const categories = computed<Array<Category>>(() => categoryItems);
 
 const selectedCategory = shallowRef(new Category());
 const categorySelectorOpen = ref(false);
-const balanceSelectorOpen = ref(false);
 
 const emit = defineEmits(['addExpense', 'close']);
 
@@ -127,6 +127,10 @@ watch(
 
 const getActionName = () => {
   return expense.id === '' ? 'Adicionar' : 'Editar';
+};
+
+const selectBalance = (balance: Investment) => {
+  expense.payment = balance;
 };
 
 const selectCategory = (option: any) => {

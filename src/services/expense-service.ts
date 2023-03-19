@@ -134,6 +134,7 @@ export const addExpense = (expense: Expense) => {
     note: expense.note,
     categoryID: expense.category.id,
     currency: expense.currency,
+    paymentID: expense.payment.id,
   });
 
   onDone((result) => {
@@ -161,6 +162,7 @@ export const editExpense = (expense: Expense) => {
     note: expense.note,
     categoryID: expense.category.id,
     currency: expense.currency,
+    paymentID: expense.payment.id,
   });
 
   onDone(() => {
@@ -195,6 +197,7 @@ export const deleteExpense = (expense: Expense) => {
     note: expense.note,
     categoryID: expense.category.id,
     currency: expense.currency,
+    paymentID: expense.payment.id,
   });
 
   onDone(() => {

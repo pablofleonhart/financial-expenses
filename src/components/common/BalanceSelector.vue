@@ -42,6 +42,8 @@ import { availableInvestments } from '../../services';
 import { getCurrencyIcon } from '../../utils';
 import { Investment } from '../investments/Investment';
 
+const emit = defineEmits(['select']);
+
 const balances = computed<Array<Investment>>(() => availableInvestments);
 const selectedBalance = shallowRef(new Investment());
 const balanceSelectorOpen = ref(false);
@@ -50,14 +52,14 @@ const getBalanceName = (balance: Investment): string => {
   if (!balance.id) {
     return 'Forma de pagamento';
   }
-
-  return `${balance.broker} - ${balance.holder}`;
+  const holder = balance.holder ? `- ${balance.holder}` : '';
+  return `${balance.broker}${holder}`;
 };
 
-const selectBalance = (option: any) => {
-  selectedBalance.value = option;
+const selectBalance = (balance: Investment) => {
+  selectedBalance.value = balance;
   balanceSelectorOpen.value = false;
-  // expense.category = option; -> emit event
+  emit('select', balance);
 };
 
 window.addEventListener('click', () => (balanceSelectorOpen.value = false));
