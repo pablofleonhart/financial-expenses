@@ -22,6 +22,7 @@ query GetExpenses($startDate: Date!, $endDate: Date!) {
       deleted
       currency
       holder
+      available
     }
   }
 }

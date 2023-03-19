@@ -7505,6 +7505,15 @@ export type PublishInvestmentMutation = {
   } | null;
 };
 
+export type PublishManyInvestmentsMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars['ID']>> | InputMaybe<Scalars['ID']>;
+}>;
+
+export type PublishManyInvestmentsMutation = {
+  __typename?: 'Mutation';
+  publishManyInvestments: { __typename?: 'BatchPayload'; count: any };
+};
+
 export type UpdateInvestmentMutationVariables = Exact<{
   id: Scalars['ID'];
   amount: Scalars['Float'];
@@ -7683,6 +7692,18 @@ export type GetCategoriesQuery = {
   }>;
 };
 
+export type GetExpenseByIdQueryVariables = Exact<{
+  expenseID: Scalars['ID'];
+}>;
+
+export type GetExpenseByIdQuery = {
+  __typename?: 'Query';
+  expense?: {
+    __typename?: 'Expense';
+    payment?: { __typename?: 'Investment'; id: string } | null;
+  } | null;
+};
+
 export type GetExpensesQueryVariables = Exact<{
   startDate: Scalars['Date'];
   endDate: Scalars['Date'];
@@ -7714,6 +7735,7 @@ export type GetExpensesQuery = {
       deleted?: boolean | null;
       currency?: string | null;
       holder: string;
+      available: boolean;
     } | null;
   }>;
 };
@@ -8294,6 +8316,54 @@ export type PublishInvestmentMutationCompositionFunctionResult =
   VueApolloComposable.UseMutationReturn<
     PublishInvestmentMutation,
     PublishInvestmentMutationVariables
+  >;
+export const PublishManyInvestmentsDocument = gql`
+  mutation publishManyInvestments($ids: [ID]!) {
+    publishManyInvestments(to: PUBLISHED, where: { id_in: $ids }) {
+      count
+    }
+  }
+`;
+
+/**
+ * __usePublishManyInvestmentsMutation__
+ *
+ * To run a mutation, you first call `usePublishManyInvestmentsMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `usePublishManyInvestmentsMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = usePublishManyInvestmentsMutation({
+ *   variables: {
+ *     ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function usePublishManyInvestmentsMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        PublishManyInvestmentsMutation,
+        PublishManyInvestmentsMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          PublishManyInvestmentsMutation,
+          PublishManyInvestmentsMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    PublishManyInvestmentsMutation,
+    PublishManyInvestmentsMutationVariables
+  >(PublishManyInvestmentsDocument, options);
+}
+export type PublishManyInvestmentsMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    PublishManyInvestmentsMutation,
+    PublishManyInvestmentsMutationVariables
   >;
 export const UpdateInvestmentDocument = gql`
   mutation updateInvestment(
@@ -8932,6 +9002,78 @@ export type GetCategoriesQueryCompositionFunctionResult =
     GetCategoriesQuery,
     GetCategoriesQueryVariables
   >;
+export const GetExpenseByIdDocument = gql`
+  query GetExpenseByID($expenseID: ID!) {
+    expense(where: { id: $expenseID }) {
+      payment {
+        id
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetExpenseByIdQuery__
+ *
+ * To run a query within a Vue component, call `useGetExpenseByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetExpenseByIdQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetExpenseByIdQuery({
+ *   expenseID: // value for 'expenseID'
+ * });
+ */
+export function useGetExpenseByIdQuery(
+  variables:
+    | GetExpenseByIdQueryVariables
+    | ReactiveFunction<GetExpenseByIdQueryVariables>,
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        GetExpenseByIdQuery,
+        GetExpenseByIdQueryVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          GetExpenseByIdQuery,
+          GetExpenseByIdQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useQuery<
+    GetExpenseByIdQuery,
+    GetExpenseByIdQueryVariables
+  >(GetExpenseByIdDocument, variables, options);
+}
+export function useGetExpenseByIdLazyQuery(
+  variables:
+    | GetExpenseByIdQueryVariables
+    | ReactiveFunction<GetExpenseByIdQueryVariables>,
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        GetExpenseByIdQuery,
+        GetExpenseByIdQueryVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          GetExpenseByIdQuery,
+          GetExpenseByIdQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useLazyQuery<
+    GetExpenseByIdQuery,
+    GetExpenseByIdQueryVariables
+  >(GetExpenseByIdDocument, variables, options);
+}
+export type GetExpenseByIdQueryCompositionFunctionResult =
+  VueApolloComposable.UseQueryReturn<
+    GetExpenseByIdQuery,
+    GetExpenseByIdQueryVariables
+  >;
 export const GetExpensesDocument = gql`
   query GetExpenses($startDate: Date!, $endDate: Date!) {
     expenses(
@@ -8961,6 +9103,7 @@ export const GetExpensesDocument = gql`
         deleted
         currency
         holder
+        available
       }
     }
   }
