@@ -2,7 +2,7 @@
   <div class="grid grid-cols-2 grid-rows-5 p-4 gap-4 bg-neutral-color-300">
     <div
       class="flex col-span-2 h-full w-full items-center justify-center gap-16 rounded-xl p-4 cursor-pointer bg-neutral-color-700 hover:bg-secondary-color-300"
-      @click="$router.push('/investments')"
+      @click="$router.push('/wallet')"
     >
       <span class="font-bold text-xl">Saldos atuais</span>
       <div class="flex flex-col justify-around items-center h-full">
@@ -72,7 +72,7 @@
       class="flex flex-col row-span-2 gap-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-neutral-color-700 hover:bg-secondary-color-300"
       @click="$router.push('/wishes')"
     >
-      <span class="font-bold text-xl">Planejamentos</span>
+      <span class="font-bold text-xl">Planos</span>
       <div class="text-2xl">Total: {{ formatCurrency(wishesSum) }}</div>
       <div class="flex gap-4 w-full justify-center">
         <span class="flex h-full items-center text-lg">Top</span>
@@ -90,12 +90,12 @@
     </div>
     <div
       class="flex flex-col row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-neutral-color-700 hover:bg-secondary-color-300"
-      @click="$router.push('/investments')"
+      @click="$router.push('/wallet')"
     >
       <span class="font-bold text-xl">Investimentos</span>
       <div class="flex flex-col justify-around items-center h-full">
         <span
-          v-for="(value, key) in currentInvestments"
+          v-for="(value, key) in currentWallets"
           :key="key"
           class="text-2xl"
         >
@@ -113,7 +113,7 @@ import {
   expensesSum,
   investmentsSum,
   loadExpenses,
-  loadInvestments,
+  loadWallets,
   loadRevenues,
   loadWishes,
   monthlyIncomes,
@@ -140,7 +140,7 @@ const currentExpenseCategories = computed(() => {
   return topFiveExpenseCategories.value;
 });
 
-const currentInvestments = computed(() => {
+const currentWallets = computed(() => {
   return investmentsSum.value;
 });
 
@@ -151,7 +151,7 @@ const wishCategories = computed(() => {
 onMounted(async () => {
   await loadRevenues();
   await loadExpenses();
-  await loadInvestments();
+  await loadWallets();
   await loadWishes();
 });
 </script>

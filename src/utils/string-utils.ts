@@ -1,4 +1,4 @@
-import { Investment } from '../components/investments/Investment';
+import { Wallet } from '../components/wallets/Wallet';
 
 export const getInitials = (name: string): string => {
   return name
@@ -14,7 +14,7 @@ export const capitalizeFirstLetter = (sentence: string) => {
   return sentence.charAt(0).toUpperCase() + sentence.slice(1);
 };
 
-export const getBalanceName = (balance: Investment): string => {
+export const getBalanceName = (balance: Wallet): string => {
   if (!balance) {
     return 'N/D';
   }

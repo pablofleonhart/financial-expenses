@@ -44,7 +44,7 @@ mutation updateRevenue(
       currency
       holder
       deleted
-      available
+      type
     }
   }
 }

@@ -3,7 +3,7 @@ import { copyExpense, copyRevenue, sortList } from '../object-utils';
 import { Revenue } from '../../components/revenues/Revenue';
 import { Expense } from '../../components/expenses/Expense';
 import { Author } from '../../components/accounts/Author';
-import { Investment } from '../../components/investments/Investment';
+import { Wallet } from '../../components/wallets/Wallet';
 
 describe('sortList function', () => {
   let list: any;
@@ -90,7 +90,7 @@ describe('sortList function', () => {
         type: 'Spending',
       },
       author: new Author(),
-      payment: new Investment(),
+      payment: new Wallet(),
     };
     const target = copyExpense(source);
     expect(target.amount).toBe(1000);

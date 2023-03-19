@@ -1,20 +1,20 @@
-mutation updateInvestment(
+mutation updateWallet(
   $id: ID!,
   $amount: Float!,
   $broker: String!,
   $currency: String!,
   $deleted: Boolean!,
   $holder: String!,
-  $available: Boolean!)
+  $type: Int!)
 {
-  updateInvestment(
+  updateWallet(
     data: {
       amount: $amount,
       broker: $broker,
       currency: $currency,
       deleted: $deleted,
       holder: $holder,
-      available: $available
+      type: $type
     }
     where: { id: $id }
   ){
@@ -24,6 +24,6 @@ mutation updateInvestment(
     currency
     deleted
     holder
-    available
+    type
   }
 }

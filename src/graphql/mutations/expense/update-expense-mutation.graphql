@@ -50,7 +50,7 @@ mutation updateExpense(
       currency
       holder
       deleted
-      available
+      type
     }
   }
 }

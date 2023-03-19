@@ -1,0 +1,10 @@
+mutation publishWallet($id: ID!) {
+  publishWallet(where: { id: $id}, to: PUBLISHED) {
+    amount
+    broker
+    currency
+    deleted
+    holder
+    type
+  }
+}

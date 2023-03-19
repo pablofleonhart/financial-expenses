@@ -1,0 +1,11 @@
+query GetWallets {
+  wallets(first: 100, orderBy: createdAt_DESC) {
+    id
+    amount
+    broker
+    deleted
+    currency
+    holder
+    type
+  }
+}

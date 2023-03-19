@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { REVENUE_STATUS } from '../../types';
-import { Investment } from '../investments/Investment';
+import { Wallet } from '../wallets/Wallet';
 import { Revenue } from '../revenues/Revenue';
 
 describe('Revenue', () => {
@@ -25,7 +25,7 @@ describe('Revenue', () => {
       type: 'expense',
       currency: 'dollar',
       itemStatus: 0,
-      payment: new Investment(),
+      payment: new Wallet(),
     };
     const revenue2 = new Revenue(objRevenue);
     expect(revenue2.id).toEqual('123');

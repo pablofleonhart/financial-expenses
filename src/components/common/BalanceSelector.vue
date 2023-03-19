@@ -38,19 +38,21 @@
 
 <script lang="ts" setup>
 import { computed, ref, shallowRef, watch } from 'vue';
-import { availableInvestments } from '../../services';
-import { getCurrencyIcon } from '../../utils';
+import { availableWallets } from '../../services';
+import { getCurrencyIcon, sortList } from '../../utils';
 import { getBalanceName } from '../../utils/string-utils';
-import { Investment } from '../investments/Investment';
+import { Wallet } from '../wallets/Wallet';
 
 const props = defineProps({
-  initialValue: { type: Investment, default: new Investment() },
+  initialValue: { type: Wallet, default: new Wallet() },
   emptyMessage: { type: String, default: 'Selecione uma opçao' },
 });
 
 const emit = defineEmits(['select']);
 
-const balances = computed<Array<Investment>>(() => availableInvestments);
+const balances = computed<Array<Wallet>>(() => {
+  return sortList(availableWallets, 'broker');
+});
 const selectedBalance = shallowRef(props.initialValue);
 const balanceSelectorOpen = ref(false);
 
@@ -61,14 +63,14 @@ watch(
   }
 );
 
-const balanceName = (balance: Investment): string => {
+const balanceName = (balance: Wallet): string => {
   if (!balance.id) {
     return props.emptyMessage;
   }
   return getBalanceName(balance);
 };
 
-const selectBalance = (balance: Investment) => {
+const selectBalance = (balance: Wallet) => {
   selectedBalance.value = balance;
   balanceSelectorOpen.value = false;
   emit('select', balance);

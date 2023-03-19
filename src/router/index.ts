@@ -2,7 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Expenses from '../components/expenses/Expenses.vue';
 import Login from '../components/auth/Login.vue';
 import Revenues from '../components/revenues/Revenues.vue';
-import Investments from '../components/investments/Investments.vue';
+import Wallets from '../components/wallets/Wallets.vue';
 import {
   isAuthenticated,
   isNotAuthenticated,
@@ -42,16 +42,16 @@ const router = createRouter({
       },
     },
     {
-      path: '/investments',
-      name: 'investments',
-      component: Investments,
-      meta: { middlewares: [isAuthenticated], title: 'Investimentos' },
+      path: '/wallet',
+      name: 'wallet',
+      component: Wallets,
+      meta: { middlewares: [isAuthenticated], title: 'Carteiras' },
     },
     {
       path: '/wishes',
       name: 'wishes',
       component: Wishes,
-      meta: { middlewares: [isAuthenticated], title: 'Planejamentos' },
+      meta: { middlewares: [isAuthenticated], title: 'Planos' },
     },
   ] as RouteRecordRaw[],
 });

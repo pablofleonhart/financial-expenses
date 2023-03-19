@@ -4,7 +4,7 @@
       <thead class="expense-list-head flex w-full">
         <tr class="flex w-full h-12 bg-neutral-color-700">
           <th
-            v-for="column in investmentColumns"
+            v-for="column in walletColumns"
             :key="column.key"
             class="flex items-center p-2 h-full w-1/4 cursor-pointer hover:bg-secondary-color-300"
             :class="column.class"
@@ -25,7 +25,7 @@
       <tbody class="expense-list-body flex flex-col w-full">
         <tr
           class="flex w-full items-center h-12 even:bg-neutral-color-700"
-          v-for="(item, index) in investmentList"
+          v-for="(item, index) in walletList"
           :key="item.id"
         >
           <td class="flex items-center p-2 h-full w-1/4 min-w-24 justify-end">
@@ -45,11 +45,11 @@
             <div class="flex w-full justify-evenly">
               <ph-pencil
                 class="button-action hover:bg-blue-500"
-                @click="onEditInvestment(index)"
+                @click="onEditWallet(index)"
               />
               <ph-trash
                 class="button-action hover:bg-red-500"
-                @click="onDeleteInvestment(index)"
+                @click="onDeleteWallet(index)"
               />
             </div>
           </td>
@@ -64,15 +64,15 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { copyInvestment, formatCurrency, getOrderIcon } from '../../utils';
+import { copyWallet, formatCurrency, getOrderIcon } from '../../utils';
 import {
-  allInvestmentItems,
-  investmentSettings,
-  sortInvestments,
+  filteredWalletItems,
+  walletSettings,
+  sortWallets,
 } from '../../services';
-import { Investment } from './Investment';
+import { Wallet } from './Wallet';
 
-const investmentColumns = [
+const walletColumns = [
   {
     key: 'amount',
     name: 'Valor',
@@ -96,29 +96,29 @@ const investmentColumns = [
   },
 ];
 
-const emit = defineEmits(['onEditInvestment', 'onDeleteInvestment']);
+const emit = defineEmits(['onEditWallet', 'onDeleteWallet']);
 
-const investmentList = computed<Array<Investment>>(() => allInvestmentItems);
+const walletList = computed<Array<Wallet>>(() => filteredWalletItems);
 const orderColumn = computed(() => {
-  return investmentSettings.column;
+  return walletSettings.column;
 });
 
 const orderDirection = computed(() => {
-  return investmentSettings.ascending;
+  return walletSettings.ascending;
 });
 
 const orderList = (column: any) => {
   if (column.static) {
     return;
   }
-  sortInvestments(column.key);
+  sortWallets(column.key);
 };
 
-const onEditInvestment = (index: number) => {
-  emit('onEditInvestment', copyInvestment(investmentList.value[index]));
+const onEditWallet = (index: number) => {
+  emit('onEditWallet', copyWallet(walletList.value[index]));
 };
 
-const onDeleteInvestment = (index: number) => {
-  emit('onDeleteInvestment', copyInvestment(investmentList.value[index]));
+const onDeleteWallet = (index: number) => {
+  emit('onDeleteWallet', copyWallet(walletList.value[index]));
 };
 </script>

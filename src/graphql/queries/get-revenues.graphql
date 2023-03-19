@@ -16,7 +16,7 @@ query GetRevenues {
       deleted
       currency
       holder
-      available
+      type
     }
   }
 }
