@@ -51,7 +51,19 @@
             <td
               class="flex items-center justify-center p-2 h-full w-1/6 min-w-16"
             >
-              <component :is="getPaymentIcon(item.card)" size="24" />
+              <div v-if="item.payment.currency" class="flex gap-1">
+                <ph-coin-vertical
+                  v-if="item.payment.broker === 'Dinheiro'"
+                  size="24"
+                />
+                <component
+                  v-else
+                  :is="getCurrencyIcon(item.payment.currency)"
+                  size="24"
+                />
+                <span> {{ item.payment.broker }} </span>
+              </div>
+              <component v-else :is="getPaymentIcon(item.card)" size="24" />
             </td>
             <td class="flex items-center p-2 h-full w-1/6 min-w-44">
               {{ item.note }}
@@ -84,6 +96,7 @@ import {
   formatCurrency,
   formatDate,
   getCategoryIcon,
+  getCurrencyIcon,
   getOrderIcon,
   getPaymentIcon,
 } from '../../utils';

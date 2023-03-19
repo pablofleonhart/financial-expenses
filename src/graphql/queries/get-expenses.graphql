@@ -15,5 +15,14 @@ query GetExpenses($startDate: Date!, $endDate: Date!) {
       name
     }
     currency
+    payment {
+      id
+      amount
+      broker
+      deleted
+      currency
+      holder
+      available
+    }
   }
 }

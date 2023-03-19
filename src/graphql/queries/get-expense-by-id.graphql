@@ -1,0 +1,7 @@
+query GetExpenseByID($expenseID: ID!) {
+  expense(where: {id: $expenseID}) {
+    payment {
+      id
+    }
+  }
+}

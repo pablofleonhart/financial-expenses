@@ -42,3 +42,18 @@ export const getRevenueTypeIcon = (type: string) => {
   }
   return 'ph-minus';
 };
+
+export const getCurrencyIcon = (currency: string): string => {
+  switch (currency) {
+    case 'real':
+      return 'ph-coins';
+    case 'dolar':
+      return 'ph-currency-dollar';
+    case 'libra':
+      return 'ph-currency-gbp';
+    case 'euro':
+      return 'ph-currency-eur';
+    default:
+      return 'ph-credit-card';
+  }
+};

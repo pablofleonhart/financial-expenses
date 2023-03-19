@@ -35,6 +35,7 @@ export const copyExpense = (source: Expense) => {
     note: source.note,
     category: copyCategory(source.category),
     author: new Author(),
+    payment: copyInvestment(source.payment),
   });
 };
 
@@ -46,6 +47,7 @@ export const overrideExpense = (target: Expense, source: Expense) => {
   target.deleted = source.deleted;
   target.note = source.note;
   overrideCategory(target.category, source.category);
+  overrideInvestment(target.payment, source.payment);
 };
 
 export const copyRevenue = (source: any) => {
@@ -75,6 +77,10 @@ export const overrideRevenue = (target: Revenue, source: Revenue) => {
 };
 
 export const copyInvestment = (source: any) => {
+  if (!source) {
+    console.warn('Unable to copy null Investment');
+    return new Investment();
+  }
   return new Investment({
     id: source.id,
     amount: source.amount,

@@ -52,3 +52,25 @@
     @apply p-1 cursor-pointer rounded-xl text-neutral-color;
   }
 }
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 15px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: var(--neutral-color-300);
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: var(--secondary-color-300);
+    border-radius: 100vh;
+    border: 1px solid var(--secondary-color-700);
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color-300);
+  }
+}

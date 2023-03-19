@@ -15,6 +15,10 @@
           <component :is="getPaymentIcon(true)" size="24" />
           <label class="ml-2">Cartão</label>
         </div>
+        <balance-selector
+          :initial-value="selectedPayment"
+          @select="selectBalance"
+        />
         <input
           v-model="expense.amount"
           class="outline-0 rounded p-2 h-10 bg-neutral-color-700"
@@ -38,12 +42,15 @@
             </span>
           </div>
           <ul
-            class="period-items absolute bg-neutral-color-700 w-52 h-80 overflow-scroll z-10"
+            class="period-items scrollbar overflow-y-scroll overflow-x-hidden absolute bg-neutral-color-500 rounded w-80 h-80 z-10"
             :class="{ hidden: !categorySelectorOpen }"
           >
             <li
-              class="item flex cursor-pointer p-2 h-10 w-full"
-              :class="{ 'item-selected': category.id === selectedCategory?.id }"
+              class="item flex cursor-pointer p-2 h-10 w-full hover:bg-neutral-color-700 hover:text-secondary-color-300"
+              :class="{
+                'bg-neutral-color-700 text-secondary-color-300':
+                  category.id === selectedCategory?.id,
+              }"
               v-for="category in categories"
               :key="category.id"
               @click="selectCategory(category)"
@@ -90,16 +97,19 @@
 
 <script lang="ts" setup>
 import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/props/formatting/
-import { computed, PropType, reactive, ref, shallowRef, watch } from 'vue';
+import { computed, PropType, ref, shallowRef, watch } from 'vue';
 import { Expense } from './Expense';
 import { Category } from '../categories/Category';
 import { getCategoryIcon, getPaymentIcon } from '../../utils';
 import { addExpense, categoryItems, editExpense } from '../../services';
+import BalanceSelector from '../common/BalanceSelector.vue';
+import { Investment } from '../investments/Investment';
 
-let expense = reactive(new Expense());
+const expense = shallowRef(new Expense());
 const categories = computed<Array<Category>>(() => categoryItems);
 
 const selectedCategory = shallowRef(new Category());
+const selectedPayment = shallowRef(new Investment());
 const categorySelectorOpen = ref(false);
 
 const emit = defineEmits(['addExpense', 'close']);
@@ -113,40 +123,45 @@ watch(
   () => props.opened,
   () => {
     if (props.opened) {
-      expense = props.expense;
+      expense.value = props.expense;
       selectedCategory.value = props.expense.category;
+      selectedPayment.value = props.expense.payment;
     }
   }
 );
 
 const getActionName = () => {
-  return expense.id === '' ? 'Adicionar' : 'Editar';
+  return expense.value.id === '' ? 'Adicionar' : 'Editar';
+};
+
+const selectBalance = (balance: Investment) => {
+  expense.value.payment = balance;
 };
 
 const selectCategory = (option: any) => {
   selectedCategory.value = option;
-  expense.category = option;
+  expense.value.category = option;
   categorySelectorOpen.value = false;
 };
 
 const setDate = (value: Date) => {
-  expense.date = value;
+  expense.value.date = value;
 };
 
 const onActionItem = () => {
-  if (expense.id === '') {
-    addExpense(expense);
+  if (expense.value.id === '') {
+    addExpense(expense.value);
   } else {
-    editExpense(expense);
+    editExpense(expense.value);
   }
   emit('close');
 };
 
-const closeSelector = () => {
+const closeSelectors = () => {
   categorySelectorOpen.value = false;
 };
 
-window.addEventListener('click', closeSelector);
+window.addEventListener('click', closeSelectors);
 </script>
 
 <style lang="scss" scoped></style>
