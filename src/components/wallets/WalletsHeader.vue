@@ -16,7 +16,7 @@
       <span class="flex justify-center">Total investido</span>
       <div class="flex items-center gap-4">
         <div
-          v-for="(value, key) in totalInvestments"
+          v-for="(value, key) in totalWallets"
           :key="key"
           class="balance-value"
         >
@@ -36,7 +36,7 @@ const totalAvailable = computed(() => {
   return balanceSum.value;
 });
 
-const totalInvestments = computed(() => {
+const totalWallets = computed(() => {
   return investmentsSum.value;
 });
 </script>

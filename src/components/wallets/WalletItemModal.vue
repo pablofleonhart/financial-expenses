@@ -1,15 +1,15 @@
 <template>
   <div
     v-show="opened"
-    class="investment-item-modal absolute flex justify-center items-center h-full w-full bg-black bg-opacity-50"
+    class="wallet-item-modal absolute flex justify-center items-center h-full w-full bg-black bg-opacity-50"
   >
     <div
-      class="investment-item-container flex flex-col bg-neutral-color-300 h-92 w-80 p-4 rounded-lg"
+      class="wallet-item-container flex flex-col bg-neutral-color-300 h-92 w-80 p-4 rounded-lg"
     >
       <span class="flex justify-center font-bold text-lg w-full">
-        {{ `${getActionName()} investimento` }}
+        {{ `${getActionName()} carteira` }}
       </span>
-      <div class="investment-fields flex flex-col gap-3 my-5">
+      <div class="wallet-fields flex flex-col gap-3 my-5">
         <div class="category-select" @click.stop>
           <div
             class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
@@ -42,32 +42,32 @@
           </ul>
         </div>
         <input
-          v-model="investment.amount"
+          v-model="wallet.amount"
           class="outline-0 rounded p-2 bg-neutral-color-700 h-10"
           type="number"
           min="0"
           required
         />
         <input
-          v-model="investment.broker"
+          v-model="wallet.broker"
           class="outline-0 rounded p-2 bg-neutral-color-700 h-10"
           type="text"
           placeholder="Banco ou corretora"
         />
         <input
-          v-model="investment.holder"
+          v-model="wallet.holder"
           class="outline-0 rounded p-2 bg-neutral-color-700 h-10"
           type="text"
           placeholder="Titular da conta"
         />
-        <div class="flex items-center text-lg gap-2">
+        <!-- <div class="flex items-center text-lg gap-2">
           <input
             id="availability_check"
             type="checkbox"
-            v-model="investment.available"
+            v-model="wallet.available"
           />
           <label for="availability_check" class="text-base">Disponível</label>
-        </div>
+        </div> -->
       </div>
       <div class="expense-item-actions flex justify-end gap-4">
         <button
@@ -89,10 +89,10 @@
 
 <script lang="ts" setup>
 import { PropType, reactive, ref, watch } from 'vue';
-import { addInvestment, editInvestment } from '../../services';
-import { Investment } from './Investment';
+import { addWallet, editWallet } from '../../services';
+import { Wallet } from './Wallet';
 
-let investment = reactive(new Investment());
+let wallet = reactive(new Wallet());
 const currencies = [
   {
     type: 'real',
@@ -117,40 +117,40 @@ const currencies = [
 ];
 const selectedCurrency = ref(currencies[0]);
 const currencySelectorOpen = ref(false);
-const emit = defineEmits(['addInvestment', 'close']);
+const emit = defineEmits(['addWallet', 'close']);
 
 const props = defineProps({
   opened: { type: Boolean, default: false },
-  investment: { type: Object as PropType<Investment>, required: true },
+  wallet: { type: Object as PropType<Wallet>, required: true },
 });
 
 watch(
   () => props.opened,
   () => {
     if (props.opened) {
-      investment = props.investment;
+      wallet = props.wallet;
       selectedCurrency.value = currencies.filter(
-        (item) => item.type === investment.currency
+        (item) => item.type === wallet.currency
       )[0];
     }
   }
 );
 
 const getActionName = () => {
-  return investment.id === '' ? 'Adicionar' : 'Editar';
+  return wallet.id === '' ? 'Adicionar' : 'Editar';
 };
 
 const selectCurrency = (option: any) => {
   selectedCurrency.value = option;
-  investment.currency = option?.type;
+  wallet.currency = option?.type;
   currencySelectorOpen.value = false;
 };
 
 const onActionItem = async () => {
-  if (investment.id === '') {
-    await addInvestment(investment);
+  if (wallet.id === '') {
+    await addWallet(wallet);
   } else {
-    await editInvestment(investment);
+    await editWallet(wallet);
   }
   emit('close');
 };

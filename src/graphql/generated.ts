@@ -1832,7 +1832,7 @@ export type Expense = Node & {
   /** The unique identifier */
   id: Scalars['ID'];
   note?: Maybe<Scalars['String']>;
-  payment?: Maybe<Investment>;
+  payment?: Maybe<Wallet>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -1926,7 +1926,7 @@ export type ExpenseCreateInput = {
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   note?: InputMaybe<Scalars['String']>;
-  payment?: InputMaybe<InvestmentCreateOneInlineInput>;
+  payment?: InputMaybe<WalletCreateOneInlineInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -2077,7 +2077,7 @@ export type ExpenseManyWhereInput = {
   note_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   note_starts_with?: InputMaybe<Scalars['String']>;
-  payment?: InputMaybe<InvestmentWhereInput>;
+  payment?: InputMaybe<WalletWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -2147,7 +2147,7 @@ export type ExpenseUpdateInput = {
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   note?: InputMaybe<Scalars['String']>;
-  payment?: InputMaybe<InvestmentUpdateOneInlineInput>;
+  payment?: InputMaybe<WalletUpdateOneInlineInput>;
 };
 
 export type ExpenseUpdateManyInlineInput = {
@@ -2349,7 +2349,7 @@ export type ExpenseWhereInput = {
   note_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   note_starts_with?: InputMaybe<Scalars['String']>;
-  payment?: InputMaybe<InvestmentWhereInput>;
+  payment?: InputMaybe<WalletWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -2432,582 +2432,6 @@ export type ImageTransformationInput = {
   resize?: InputMaybe<ImageResizeInput>;
 };
 
-export type Investment = Node & {
-  __typename?: 'Investment';
-  amount: Scalars['Float'];
-  available: Scalars['Boolean'];
-  broker?: Maybe<Scalars['String']>;
-  /** The time the document was created */
-  createdAt: Scalars['DateTime'];
-  /** User that created this document */
-  createdBy?: Maybe<User>;
-  currency?: Maybe<Scalars['String']>;
-  deleted?: Maybe<Scalars['Boolean']>;
-  /** Get the document in other stages */
-  documentInStages: Array<Investment>;
-  /** List of Investment versions */
-  history: Array<Version>;
-  holder: Scalars['String'];
-  /** The unique identifier */
-  id: Scalars['ID'];
-  /** The time the document was published. Null on documents in draft stage. */
-  publishedAt?: Maybe<Scalars['DateTime']>;
-  /** User that last published this document */
-  publishedBy?: Maybe<User>;
-  scheduledIn: Array<ScheduledOperation>;
-  /** System stage field */
-  stage: Stage;
-  /** The time the document was updated */
-  updatedAt: Scalars['DateTime'];
-  /** User that last updated this document */
-  updatedBy?: Maybe<User>;
-};
-
-export type InvestmentCreatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  locales?: InputMaybe<Array<Locale>>;
-};
-
-export type InvestmentDocumentInStagesArgs = {
-  includeCurrent?: Scalars['Boolean'];
-  inheritLocale?: Scalars['Boolean'];
-  stages?: Array<Stage>;
-};
-
-export type InvestmentHistoryArgs = {
-  limit?: Scalars['Int'];
-  skip?: Scalars['Int'];
-  stageOverride?: InputMaybe<Stage>;
-};
-
-export type InvestmentPublishedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  locales?: InputMaybe<Array<Locale>>;
-};
-
-export type InvestmentScheduledInArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
-  locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
-  where?: InputMaybe<ScheduledOperationWhereInput>;
-};
-
-export type InvestmentUpdatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  locales?: InputMaybe<Array<Locale>>;
-};
-
-export type InvestmentConnectInput = {
-  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
-  position?: InputMaybe<ConnectPositionInput>;
-  /** Document to connect */
-  where: InvestmentWhereUniqueInput;
-};
-
-/** A connection to a list of items. */
-export type InvestmentConnection = {
-  __typename?: 'InvestmentConnection';
-  aggregate: Aggregate;
-  /** A list of edges. */
-  edges: Array<InvestmentEdge>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-};
-
-export type InvestmentCreateInput = {
-  amount: Scalars['Float'];
-  available: Scalars['Boolean'];
-  broker?: InputMaybe<Scalars['String']>;
-  clffbd3v41moy01t61wibh5dc?: InputMaybe<ExpenseCreateManyInlineInput>;
-  clffltrwe1stn01tefg9fa4uz?: InputMaybe<RevenueCreateManyInlineInput>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  currency?: InputMaybe<Scalars['String']>;
-  deleted?: InputMaybe<Scalars['Boolean']>;
-  holder: Scalars['String'];
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type InvestmentCreateManyInlineInput = {
-  /** Connect multiple existing Investment documents */
-  connect?: InputMaybe<Array<InvestmentWhereUniqueInput>>;
-  /** Create and connect multiple existing Investment documents */
-  create?: InputMaybe<Array<InvestmentCreateInput>>;
-};
-
-export type InvestmentCreateOneInlineInput = {
-  /** Connect one existing Investment document */
-  connect?: InputMaybe<InvestmentWhereUniqueInput>;
-  /** Create and connect one Investment document */
-  create?: InputMaybe<InvestmentCreateInput>;
-};
-
-/** An edge in a connection. */
-export type InvestmentEdge = {
-  __typename?: 'InvestmentEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Investment;
-};
-
-/** Identifies documents */
-export type InvestmentManyWhereInput = {
-  /** Logical AND on all given filters. */
-  AND?: InputMaybe<Array<InvestmentWhereInput>>;
-  /** Logical NOT on all given filters combined by AND. */
-  NOT?: InputMaybe<Array<InvestmentWhereInput>>;
-  /** Logical OR on all given filters. */
-  OR?: InputMaybe<Array<InvestmentWhereInput>>;
-  /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  amount?: InputMaybe<Scalars['Float']>;
-  /** All values greater than the given value. */
-  amount_gt?: InputMaybe<Scalars['Float']>;
-  /** All values greater than or equal the given value. */
-  amount_gte?: InputMaybe<Scalars['Float']>;
-  /** All values that are contained in given list. */
-  amount_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
-  /** All values less than the given value. */
-  amount_lt?: InputMaybe<Scalars['Float']>;
-  /** All values less than or equal the given value. */
-  amount_lte?: InputMaybe<Scalars['Float']>;
-  /** All values that are not equal to given value. */
-  amount_not?: InputMaybe<Scalars['Float']>;
-  /** All values that are not contained in given list. */
-  amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
-  available?: InputMaybe<Scalars['Boolean']>;
-  /** All values that are not equal to given value. */
-  available_not?: InputMaybe<Scalars['Boolean']>;
-  broker?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  broker_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  broker_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  broker_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  broker_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  broker_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  broker_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  broker_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  broker_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  broker_starts_with?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
-  /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not equal to given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  createdBy?: InputMaybe<UserWhereInput>;
-  currency?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  currency_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  currency_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  currency_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  currency_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  currency_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  currency_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  currency_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  currency_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  currency_starts_with?: InputMaybe<Scalars['String']>;
-  deleted?: InputMaybe<Scalars['Boolean']>;
-  /** All values that are not equal to given value. */
-  deleted_not?: InputMaybe<Scalars['Boolean']>;
-  documentInStages_every?: InputMaybe<InvestmentWhereStageInput>;
-  documentInStages_none?: InputMaybe<InvestmentWhereStageInput>;
-  documentInStages_some?: InputMaybe<InvestmentWhereStageInput>;
-  holder?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  holder_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  holder_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  holder_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  holder_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  holder_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  holder_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  holder_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  holder_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  holder_starts_with?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
-  /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
-  /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
-  /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  /** All values that are not equal to given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
-  /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
-  /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
-  /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
-  /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
-  /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not equal to given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  publishedBy?: InputMaybe<UserWhereInput>;
-  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
-  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
-  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
-  /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not equal to given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  updatedBy?: InputMaybe<UserWhereInput>;
-};
-
-export enum InvestmentOrderByInput {
-  AmountAsc = 'amount_ASC',
-  AmountDesc = 'amount_DESC',
-  AvailableAsc = 'available_ASC',
-  AvailableDesc = 'available_DESC',
-  BrokerAsc = 'broker_ASC',
-  BrokerDesc = 'broker_DESC',
-  CreatedAtAsc = 'createdAt_ASC',
-  CreatedAtDesc = 'createdAt_DESC',
-  CurrencyAsc = 'currency_ASC',
-  CurrencyDesc = 'currency_DESC',
-  DeletedAsc = 'deleted_ASC',
-  DeletedDesc = 'deleted_DESC',
-  HolderAsc = 'holder_ASC',
-  HolderDesc = 'holder_DESC',
-  IdAsc = 'id_ASC',
-  IdDesc = 'id_DESC',
-  PublishedAtAsc = 'publishedAt_ASC',
-  PublishedAtDesc = 'publishedAt_DESC',
-  UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC',
-}
-
-export type InvestmentUpdateInput = {
-  amount?: InputMaybe<Scalars['Float']>;
-  available?: InputMaybe<Scalars['Boolean']>;
-  broker?: InputMaybe<Scalars['String']>;
-  clffbd3v41moy01t61wibh5dc?: InputMaybe<ExpenseUpdateManyInlineInput>;
-  clffltrwe1stn01tefg9fa4uz?: InputMaybe<RevenueUpdateManyInlineInput>;
-  currency?: InputMaybe<Scalars['String']>;
-  deleted?: InputMaybe<Scalars['Boolean']>;
-  holder?: InputMaybe<Scalars['String']>;
-};
-
-export type InvestmentUpdateManyInlineInput = {
-  /** Connect multiple existing Investment documents */
-  connect?: InputMaybe<Array<InvestmentConnectInput>>;
-  /** Create and connect multiple Investment documents */
-  create?: InputMaybe<Array<InvestmentCreateInput>>;
-  /** Delete multiple Investment documents */
-  delete?: InputMaybe<Array<InvestmentWhereUniqueInput>>;
-  /** Disconnect multiple Investment documents */
-  disconnect?: InputMaybe<Array<InvestmentWhereUniqueInput>>;
-  /** Override currently-connected documents with multiple existing Investment documents */
-  set?: InputMaybe<Array<InvestmentWhereUniqueInput>>;
-  /** Update multiple Investment documents */
-  update?: InputMaybe<Array<InvestmentUpdateWithNestedWhereUniqueInput>>;
-  /** Upsert multiple Investment documents */
-  upsert?: InputMaybe<Array<InvestmentUpsertWithNestedWhereUniqueInput>>;
-};
-
-export type InvestmentUpdateManyInput = {
-  amount?: InputMaybe<Scalars['Float']>;
-  available?: InputMaybe<Scalars['Boolean']>;
-  broker?: InputMaybe<Scalars['String']>;
-  currency?: InputMaybe<Scalars['String']>;
-  deleted?: InputMaybe<Scalars['Boolean']>;
-  holder?: InputMaybe<Scalars['String']>;
-};
-
-export type InvestmentUpdateManyWithNestedWhereInput = {
-  /** Update many input */
-  data: InvestmentUpdateManyInput;
-  /** Document search */
-  where: InvestmentWhereInput;
-};
-
-export type InvestmentUpdateOneInlineInput = {
-  /** Connect existing Investment document */
-  connect?: InputMaybe<InvestmentWhereUniqueInput>;
-  /** Create and connect one Investment document */
-  create?: InputMaybe<InvestmentCreateInput>;
-  /** Delete currently connected Investment document */
-  delete?: InputMaybe<Scalars['Boolean']>;
-  /** Disconnect currently connected Investment document */
-  disconnect?: InputMaybe<Scalars['Boolean']>;
-  /** Update single Investment document */
-  update?: InputMaybe<InvestmentUpdateWithNestedWhereUniqueInput>;
-  /** Upsert single Investment document */
-  upsert?: InputMaybe<InvestmentUpsertWithNestedWhereUniqueInput>;
-};
-
-export type InvestmentUpdateWithNestedWhereUniqueInput = {
-  /** Document to update */
-  data: InvestmentUpdateInput;
-  /** Unique document search */
-  where: InvestmentWhereUniqueInput;
-};
-
-export type InvestmentUpsertInput = {
-  /** Create document if it didn't exist */
-  create: InvestmentCreateInput;
-  /** Update document if it exists */
-  update: InvestmentUpdateInput;
-};
-
-export type InvestmentUpsertWithNestedWhereUniqueInput = {
-  /** Upsert data */
-  data: InvestmentUpsertInput;
-  /** Unique document search */
-  where: InvestmentWhereUniqueInput;
-};
-
-/** This contains a set of filters that can be used to compare values internally */
-export type InvestmentWhereComparatorInput = {
-  /** This field can be used to request to check if the entry is outdated by internal comparison */
-  outdated_to?: InputMaybe<Scalars['Boolean']>;
-};
-
-/** Identifies documents */
-export type InvestmentWhereInput = {
-  /** Logical AND on all given filters. */
-  AND?: InputMaybe<Array<InvestmentWhereInput>>;
-  /** Logical NOT on all given filters combined by AND. */
-  NOT?: InputMaybe<Array<InvestmentWhereInput>>;
-  /** Logical OR on all given filters. */
-  OR?: InputMaybe<Array<InvestmentWhereInput>>;
-  /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  amount?: InputMaybe<Scalars['Float']>;
-  /** All values greater than the given value. */
-  amount_gt?: InputMaybe<Scalars['Float']>;
-  /** All values greater than or equal the given value. */
-  amount_gte?: InputMaybe<Scalars['Float']>;
-  /** All values that are contained in given list. */
-  amount_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
-  /** All values less than the given value. */
-  amount_lt?: InputMaybe<Scalars['Float']>;
-  /** All values less than or equal the given value. */
-  amount_lte?: InputMaybe<Scalars['Float']>;
-  /** All values that are not equal to given value. */
-  amount_not?: InputMaybe<Scalars['Float']>;
-  /** All values that are not contained in given list. */
-  amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
-  available?: InputMaybe<Scalars['Boolean']>;
-  /** All values that are not equal to given value. */
-  available_not?: InputMaybe<Scalars['Boolean']>;
-  broker?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  broker_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  broker_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  broker_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  broker_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  broker_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  broker_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  broker_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  broker_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  broker_starts_with?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
-  /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not equal to given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  createdBy?: InputMaybe<UserWhereInput>;
-  currency?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  currency_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  currency_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  currency_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  currency_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  currency_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  currency_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  currency_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  currency_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  currency_starts_with?: InputMaybe<Scalars['String']>;
-  deleted?: InputMaybe<Scalars['Boolean']>;
-  /** All values that are not equal to given value. */
-  deleted_not?: InputMaybe<Scalars['Boolean']>;
-  documentInStages_every?: InputMaybe<InvestmentWhereStageInput>;
-  documentInStages_none?: InputMaybe<InvestmentWhereStageInput>;
-  documentInStages_some?: InputMaybe<InvestmentWhereStageInput>;
-  holder?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  holder_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  holder_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  holder_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  holder_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  holder_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  holder_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  holder_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  holder_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  holder_starts_with?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
-  /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
-  /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
-  /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  /** All values that are not equal to given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
-  /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
-  /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
-  /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
-  /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
-  /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not equal to given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  publishedBy?: InputMaybe<UserWhereInput>;
-  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
-  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
-  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
-  /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not equal to given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  updatedBy?: InputMaybe<UserWhereInput>;
-};
-
-/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
-export type InvestmentWhereStageInput = {
-  /** Logical AND on all given filters. */
-  AND?: InputMaybe<Array<InvestmentWhereStageInput>>;
-  /** Logical NOT on all given filters combined by AND. */
-  NOT?: InputMaybe<Array<InvestmentWhereStageInput>>;
-  /** Logical OR on all given filters. */
-  OR?: InputMaybe<Array<InvestmentWhereStageInput>>;
-  /** This field contains fields which can be set as true or false to specify an internal comparison */
-  compareWithParent?: InputMaybe<InvestmentWhereComparatorInput>;
-  /** Specify the stage to compare with */
-  stage?: InputMaybe<Stage>;
-};
-
-/** References Investment record uniquely */
-export type InvestmentWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
 /** Locale system enumeration */
 export enum Locale {
   /** System locale */
@@ -3046,12 +2470,12 @@ export type Mutation = {
   createCategory?: Maybe<Category>;
   /** Create one expense */
   createExpense?: Maybe<Expense>;
-  /** Create one investment */
-  createInvestment?: Maybe<Investment>;
   /** Create one revenue */
   createRevenue?: Maybe<Revenue>;
   /** Create one scheduledRelease */
   createScheduledRelease?: Maybe<ScheduledRelease>;
+  /** Create one wallet */
+  createWallet?: Maybe<Wallet>;
   /** Create one wish */
   createWish?: Maybe<Wish>;
   /** Delete one account from _all_ existing stages. Returns deleted document. */
@@ -3062,8 +2486,6 @@ export type Mutation = {
   deleteCategory?: Maybe<Category>;
   /** Delete one expense from _all_ existing stages. Returns deleted document. */
   deleteExpense?: Maybe<Expense>;
-  /** Delete one investment from _all_ existing stages. Returns deleted document. */
-  deleteInvestment?: Maybe<Investment>;
   /**
    * Delete many Account documents
    * @deprecated Please use the new paginated many mutation (deleteManyAccountsConnection)
@@ -3093,19 +2515,19 @@ export type Mutation = {
   /** Delete many Expense documents, return deleted documents */
   deleteManyExpensesConnection: ExpenseConnection;
   /**
-   * Delete many Investment documents
-   * @deprecated Please use the new paginated many mutation (deleteManyInvestmentsConnection)
-   */
-  deleteManyInvestments: BatchPayload;
-  /** Delete many Investment documents, return deleted documents */
-  deleteManyInvestmentsConnection: InvestmentConnection;
-  /**
    * Delete many Revenue documents
    * @deprecated Please use the new paginated many mutation (deleteManyRevenuesConnection)
    */
   deleteManyRevenues: BatchPayload;
   /** Delete many Revenue documents, return deleted documents */
   deleteManyRevenuesConnection: RevenueConnection;
+  /**
+   * Delete many Wallet documents
+   * @deprecated Please use the new paginated many mutation (deleteManyWalletsConnection)
+   */
+  deleteManyWallets: BatchPayload;
+  /** Delete many Wallet documents, return deleted documents */
+  deleteManyWalletsConnection: WalletConnection;
   /**
    * Delete many Wish documents
    * @deprecated Please use the new paginated many mutation (deleteManyWishesConnection)
@@ -3119,6 +2541,8 @@ export type Mutation = {
   deleteScheduledOperation?: Maybe<ScheduledOperation>;
   /** Delete one scheduledRelease from _all_ existing stages. Returns deleted document. */
   deleteScheduledRelease?: Maybe<ScheduledRelease>;
+  /** Delete one wallet from _all_ existing stages. Returns deleted document. */
+  deleteWallet?: Maybe<Wallet>;
   /** Delete one wish from _all_ existing stages. Returns deleted document. */
   deleteWish?: Maybe<Wish>;
   /** Publish one account */
@@ -3129,8 +2553,6 @@ export type Mutation = {
   publishCategory?: Maybe<Category>;
   /** Publish one expense */
   publishExpense?: Maybe<Expense>;
-  /** Publish one investment */
-  publishInvestment?: Maybe<Investment>;
   /**
    * Publish many Account documents
    * @deprecated Please use the new paginated many mutation (publishManyAccountsConnection)
@@ -3160,19 +2582,19 @@ export type Mutation = {
   /** Publish many Expense documents */
   publishManyExpensesConnection: ExpenseConnection;
   /**
-   * Publish many Investment documents
-   * @deprecated Please use the new paginated many mutation (publishManyInvestmentsConnection)
-   */
-  publishManyInvestments: BatchPayload;
-  /** Publish many Investment documents */
-  publishManyInvestmentsConnection: InvestmentConnection;
-  /**
    * Publish many Revenue documents
    * @deprecated Please use the new paginated many mutation (publishManyRevenuesConnection)
    */
   publishManyRevenues: BatchPayload;
   /** Publish many Revenue documents */
   publishManyRevenuesConnection: RevenueConnection;
+  /**
+   * Publish many Wallet documents
+   * @deprecated Please use the new paginated many mutation (publishManyWalletsConnection)
+   */
+  publishManyWallets: BatchPayload;
+  /** Publish many Wallet documents */
+  publishManyWalletsConnection: WalletConnection;
   /**
    * Publish many Wish documents
    * @deprecated Please use the new paginated many mutation (publishManyWishesConnection)
@@ -3182,6 +2604,8 @@ export type Mutation = {
   publishManyWishesConnection: WishConnection;
   /** Publish one revenue */
   publishRevenue?: Maybe<Revenue>;
+  /** Publish one wallet */
+  publishWallet?: Maybe<Wallet>;
   /** Publish one wish */
   publishWish?: Maybe<Wish>;
   /** Schedule to publish one account */
@@ -3192,10 +2616,10 @@ export type Mutation = {
   schedulePublishCategory?: Maybe<Category>;
   /** Schedule to publish one expense */
   schedulePublishExpense?: Maybe<Expense>;
-  /** Schedule to publish one investment */
-  schedulePublishInvestment?: Maybe<Investment>;
   /** Schedule to publish one revenue */
   schedulePublishRevenue?: Maybe<Revenue>;
+  /** Schedule to publish one wallet */
+  schedulePublishWallet?: Maybe<Wallet>;
   /** Schedule to publish one wish */
   schedulePublishWish?: Maybe<Wish>;
   /** Unpublish one account from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -3206,10 +2630,10 @@ export type Mutation = {
   scheduleUnpublishCategory?: Maybe<Category>;
   /** Unpublish one expense from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishExpense?: Maybe<Expense>;
-  /** Unpublish one investment from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
-  scheduleUnpublishInvestment?: Maybe<Investment>;
   /** Unpublish one revenue from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishRevenue?: Maybe<Revenue>;
+  /** Unpublish one wallet from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishWallet?: Maybe<Wallet>;
   /** Unpublish one wish from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishWish?: Maybe<Wish>;
   /** Unpublish one account from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -3220,8 +2644,6 @@ export type Mutation = {
   unpublishCategory?: Maybe<Category>;
   /** Unpublish one expense from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishExpense?: Maybe<Expense>;
-  /** Unpublish one investment from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
-  unpublishInvestment?: Maybe<Investment>;
   /**
    * Unpublish many Account documents
    * @deprecated Please use the new paginated many mutation (unpublishManyAccountsConnection)
@@ -3251,19 +2673,19 @@ export type Mutation = {
   /** Find many Expense documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyExpensesConnection: ExpenseConnection;
   /**
-   * Unpublish many Investment documents
-   * @deprecated Please use the new paginated many mutation (unpublishManyInvestmentsConnection)
-   */
-  unpublishManyInvestments: BatchPayload;
-  /** Find many Investment documents that match criteria in specified stage and unpublish from target stages */
-  unpublishManyInvestmentsConnection: InvestmentConnection;
-  /**
    * Unpublish many Revenue documents
    * @deprecated Please use the new paginated many mutation (unpublishManyRevenuesConnection)
    */
   unpublishManyRevenues: BatchPayload;
   /** Find many Revenue documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyRevenuesConnection: RevenueConnection;
+  /**
+   * Unpublish many Wallet documents
+   * @deprecated Please use the new paginated many mutation (unpublishManyWalletsConnection)
+   */
+  unpublishManyWallets: BatchPayload;
+  /** Find many Wallet documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyWalletsConnection: WalletConnection;
   /**
    * Unpublish many Wish documents
    * @deprecated Please use the new paginated many mutation (unpublishManyWishesConnection)
@@ -3273,6 +2695,8 @@ export type Mutation = {
   unpublishManyWishesConnection: WishConnection;
   /** Unpublish one revenue from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishRevenue?: Maybe<Revenue>;
+  /** Unpublish one wallet from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishWallet?: Maybe<Wallet>;
   /** Unpublish one wish from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishWish?: Maybe<Wish>;
   /** Update one account */
@@ -3283,8 +2707,6 @@ export type Mutation = {
   updateCategory?: Maybe<Category>;
   /** Update one expense */
   updateExpense?: Maybe<Expense>;
-  /** Update one investment */
-  updateInvestment?: Maybe<Investment>;
   /**
    * Update many accounts
    * @deprecated Please use the new paginated many mutation (updateManyAccountsConnection)
@@ -3314,19 +2736,19 @@ export type Mutation = {
   /** Update many Expense documents */
   updateManyExpensesConnection: ExpenseConnection;
   /**
-   * Update many investments
-   * @deprecated Please use the new paginated many mutation (updateManyInvestmentsConnection)
-   */
-  updateManyInvestments: BatchPayload;
-  /** Update many Investment documents */
-  updateManyInvestmentsConnection: InvestmentConnection;
-  /**
    * Update many revenues
    * @deprecated Please use the new paginated many mutation (updateManyRevenuesConnection)
    */
   updateManyRevenues: BatchPayload;
   /** Update many Revenue documents */
   updateManyRevenuesConnection: RevenueConnection;
+  /**
+   * Update many wallets
+   * @deprecated Please use the new paginated many mutation (updateManyWalletsConnection)
+   */
+  updateManyWallets: BatchPayload;
+  /** Update many Wallet documents */
+  updateManyWalletsConnection: WalletConnection;
   /**
    * Update many wishes
    * @deprecated Please use the new paginated many mutation (updateManyWishesConnection)
@@ -3338,6 +2760,8 @@ export type Mutation = {
   updateRevenue?: Maybe<Revenue>;
   /** Update one scheduledRelease */
   updateScheduledRelease?: Maybe<ScheduledRelease>;
+  /** Update one wallet */
+  updateWallet?: Maybe<Wallet>;
   /** Update one wish */
   updateWish?: Maybe<Wish>;
   /** Upsert one account */
@@ -3348,10 +2772,10 @@ export type Mutation = {
   upsertCategory?: Maybe<Category>;
   /** Upsert one expense */
   upsertExpense?: Maybe<Expense>;
-  /** Upsert one investment */
-  upsertInvestment?: Maybe<Investment>;
   /** Upsert one revenue */
   upsertRevenue?: Maybe<Revenue>;
+  /** Upsert one wallet */
+  upsertWallet?: Maybe<Wallet>;
   /** Upsert one wish */
   upsertWish?: Maybe<Wish>;
 };
@@ -3372,16 +2796,16 @@ export type MutationCreateExpenseArgs = {
   data: ExpenseCreateInput;
 };
 
-export type MutationCreateInvestmentArgs = {
-  data: InvestmentCreateInput;
-};
-
 export type MutationCreateRevenueArgs = {
   data: RevenueCreateInput;
 };
 
 export type MutationCreateScheduledReleaseArgs = {
   data: ScheduledReleaseCreateInput;
+};
+
+export type MutationCreateWalletArgs = {
+  data: WalletCreateInput;
 };
 
 export type MutationCreateWishArgs = {
@@ -3402,10 +2826,6 @@ export type MutationDeleteCategoryArgs = {
 
 export type MutationDeleteExpenseArgs = {
   where: ExpenseWhereUniqueInput;
-};
-
-export type MutationDeleteInvestmentArgs = {
-  where: InvestmentWhereUniqueInput;
 };
 
 export type MutationDeleteManyAccountsArgs = {
@@ -3460,19 +2880,6 @@ export type MutationDeleteManyExpensesConnectionArgs = {
   where?: InputMaybe<ExpenseManyWhereInput>;
 };
 
-export type MutationDeleteManyInvestmentsArgs = {
-  where?: InputMaybe<InvestmentManyWhereInput>;
-};
-
-export type MutationDeleteManyInvestmentsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
-  where?: InputMaybe<InvestmentManyWhereInput>;
-};
-
 export type MutationDeleteManyRevenuesArgs = {
   where?: InputMaybe<RevenueManyWhereInput>;
 };
@@ -3484,6 +2891,19 @@ export type MutationDeleteManyRevenuesConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<RevenueManyWhereInput>;
+};
+
+export type MutationDeleteManyWalletsArgs = {
+  where?: InputMaybe<WalletManyWhereInput>;
+};
+
+export type MutationDeleteManyWalletsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<WalletManyWhereInput>;
 };
 
 export type MutationDeleteManyWishesArgs = {
@@ -3511,6 +2931,10 @@ export type MutationDeleteScheduledReleaseArgs = {
   where: ScheduledReleaseWhereUniqueInput;
 };
 
+export type MutationDeleteWalletArgs = {
+  where: WalletWhereUniqueInput;
+};
+
 export type MutationDeleteWishArgs = {
   where: WishWhereUniqueInput;
 };
@@ -3536,11 +2960,6 @@ export type MutationPublishCategoryArgs = {
 export type MutationPublishExpenseArgs = {
   to?: Array<Stage>;
   where: ExpenseWhereUniqueInput;
-};
-
-export type MutationPublishInvestmentArgs = {
-  to?: Array<Stage>;
-  where: InvestmentWhereUniqueInput;
 };
 
 export type MutationPublishManyAccountsArgs = {
@@ -3613,22 +3032,6 @@ export type MutationPublishManyExpensesConnectionArgs = {
   where?: InputMaybe<ExpenseManyWhereInput>;
 };
 
-export type MutationPublishManyInvestmentsArgs = {
-  to?: Array<Stage>;
-  where?: InputMaybe<InvestmentManyWhereInput>;
-};
-
-export type MutationPublishManyInvestmentsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
-  from?: InputMaybe<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
-  to?: Array<Stage>;
-  where?: InputMaybe<InvestmentManyWhereInput>;
-};
-
 export type MutationPublishManyRevenuesArgs = {
   to?: Array<Stage>;
   where?: InputMaybe<RevenueManyWhereInput>;
@@ -3643,6 +3046,22 @@ export type MutationPublishManyRevenuesConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   to?: Array<Stage>;
   where?: InputMaybe<RevenueManyWhereInput>;
+};
+
+export type MutationPublishManyWalletsArgs = {
+  to?: Array<Stage>;
+  where?: InputMaybe<WalletManyWhereInput>;
+};
+
+export type MutationPublishManyWalletsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<WalletManyWhereInput>;
 };
 
 export type MutationPublishManyWishesArgs = {
@@ -3664,6 +3083,11 @@ export type MutationPublishManyWishesConnectionArgs = {
 export type MutationPublishRevenueArgs = {
   to?: Array<Stage>;
   where: RevenueWhereUniqueInput;
+};
+
+export type MutationPublishWalletArgs = {
+  to?: Array<Stage>;
+  where: WalletWhereUniqueInput;
 };
 
 export type MutationPublishWishArgs = {
@@ -3702,18 +3126,18 @@ export type MutationSchedulePublishExpenseArgs = {
   where: ExpenseWhereUniqueInput;
 };
 
-export type MutationSchedulePublishInvestmentArgs = {
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
-  to?: Array<Stage>;
-  where: InvestmentWhereUniqueInput;
-};
-
 export type MutationSchedulePublishRevenueArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']>;
   releaseId?: InputMaybe<Scalars['String']>;
   to?: Array<Stage>;
   where: RevenueWhereUniqueInput;
+};
+
+export type MutationSchedulePublishWalletArgs = {
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  to?: Array<Stage>;
+  where: WalletWhereUniqueInput;
 };
 
 export type MutationSchedulePublishWishArgs = {
@@ -3753,18 +3177,18 @@ export type MutationScheduleUnpublishExpenseArgs = {
   where: ExpenseWhereUniqueInput;
 };
 
-export type MutationScheduleUnpublishInvestmentArgs = {
-  from?: Array<Stage>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
-  where: InvestmentWhereUniqueInput;
-};
-
 export type MutationScheduleUnpublishRevenueArgs = {
   from?: Array<Stage>;
   releaseAt?: InputMaybe<Scalars['DateTime']>;
   releaseId?: InputMaybe<Scalars['String']>;
   where: RevenueWhereUniqueInput;
+};
+
+export type MutationScheduleUnpublishWalletArgs = {
+  from?: Array<Stage>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  where: WalletWhereUniqueInput;
 };
 
 export type MutationScheduleUnpublishWishArgs = {
@@ -3794,11 +3218,6 @@ export type MutationUnpublishCategoryArgs = {
 export type MutationUnpublishExpenseArgs = {
   from?: Array<Stage>;
   where: ExpenseWhereUniqueInput;
-};
-
-export type MutationUnpublishInvestmentArgs = {
-  from?: Array<Stage>;
-  where: InvestmentWhereUniqueInput;
 };
 
 export type MutationUnpublishManyAccountsArgs = {
@@ -3869,22 +3288,6 @@ export type MutationUnpublishManyExpensesConnectionArgs = {
   where?: InputMaybe<ExpenseManyWhereInput>;
 };
 
-export type MutationUnpublishManyInvestmentsArgs = {
-  from?: Array<Stage>;
-  where?: InputMaybe<InvestmentManyWhereInput>;
-};
-
-export type MutationUnpublishManyInvestmentsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
-  from?: Array<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
-  stage?: InputMaybe<Stage>;
-  where?: InputMaybe<InvestmentManyWhereInput>;
-};
-
 export type MutationUnpublishManyRevenuesArgs = {
   from?: Array<Stage>;
   where?: InputMaybe<RevenueManyWhereInput>;
@@ -3899,6 +3302,22 @@ export type MutationUnpublishManyRevenuesConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: InputMaybe<Stage>;
   where?: InputMaybe<RevenueManyWhereInput>;
+};
+
+export type MutationUnpublishManyWalletsArgs = {
+  from?: Array<Stage>;
+  where?: InputMaybe<WalletManyWhereInput>;
+};
+
+export type MutationUnpublishManyWalletsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: InputMaybe<Stage>;
+  where?: InputMaybe<WalletManyWhereInput>;
 };
 
 export type MutationUnpublishManyWishesArgs = {
@@ -3920,6 +3339,11 @@ export type MutationUnpublishManyWishesConnectionArgs = {
 export type MutationUnpublishRevenueArgs = {
   from?: Array<Stage>;
   where: RevenueWhereUniqueInput;
+};
+
+export type MutationUnpublishWalletArgs = {
+  from?: Array<Stage>;
+  where: WalletWhereUniqueInput;
 };
 
 export type MutationUnpublishWishArgs = {
@@ -3945,11 +3369,6 @@ export type MutationUpdateCategoryArgs = {
 export type MutationUpdateExpenseArgs = {
   data: ExpenseUpdateInput;
   where: ExpenseWhereUniqueInput;
-};
-
-export type MutationUpdateInvestmentArgs = {
-  data: InvestmentUpdateInput;
-  where: InvestmentWhereUniqueInput;
 };
 
 export type MutationUpdateManyAccountsArgs = {
@@ -4012,21 +3431,6 @@ export type MutationUpdateManyExpensesConnectionArgs = {
   where?: InputMaybe<ExpenseManyWhereInput>;
 };
 
-export type MutationUpdateManyInvestmentsArgs = {
-  data: InvestmentUpdateManyInput;
-  where?: InputMaybe<InvestmentManyWhereInput>;
-};
-
-export type MutationUpdateManyInvestmentsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  data: InvestmentUpdateManyInput;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
-  where?: InputMaybe<InvestmentManyWhereInput>;
-};
-
 export type MutationUpdateManyRevenuesArgs = {
   data: RevenueUpdateManyInput;
   where?: InputMaybe<RevenueManyWhereInput>;
@@ -4040,6 +3444,21 @@ export type MutationUpdateManyRevenuesConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<RevenueManyWhereInput>;
+};
+
+export type MutationUpdateManyWalletsArgs = {
+  data: WalletUpdateManyInput;
+  where?: InputMaybe<WalletManyWhereInput>;
+};
+
+export type MutationUpdateManyWalletsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  data: WalletUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<WalletManyWhereInput>;
 };
 
 export type MutationUpdateManyWishesArgs = {
@@ -4067,6 +3486,11 @@ export type MutationUpdateScheduledReleaseArgs = {
   where: ScheduledReleaseWhereUniqueInput;
 };
 
+export type MutationUpdateWalletArgs = {
+  data: WalletUpdateInput;
+  where: WalletWhereUniqueInput;
+};
+
 export type MutationUpdateWishArgs = {
   data: WishUpdateInput;
   where: WishWhereUniqueInput;
@@ -4092,14 +3516,14 @@ export type MutationUpsertExpenseArgs = {
   where: ExpenseWhereUniqueInput;
 };
 
-export type MutationUpsertInvestmentArgs = {
-  upsert: InvestmentUpsertInput;
-  where: InvestmentWhereUniqueInput;
-};
-
 export type MutationUpsertRevenueArgs = {
   upsert: RevenueUpsertInput;
   where: RevenueWhereUniqueInput;
+};
+
+export type MutationUpsertWalletArgs = {
+  upsert: WalletUpsertInput;
+  where: WalletWhereUniqueInput;
 };
 
 export type MutationUpsertWishArgs = {
@@ -4171,14 +3595,6 @@ export type Query = {
   expenses: Array<Expense>;
   /** Retrieve multiple expenses using the Relay connection interface */
   expensesConnection: ExpenseConnection;
-  /** Retrieve a single investment */
-  investment?: Maybe<Investment>;
-  /** Retrieve document version */
-  investmentVersion?: Maybe<DocumentVersion>;
-  /** Retrieve multiple investments */
-  investments: Array<Investment>;
-  /** Retrieve multiple investments using the Relay connection interface */
-  investmentsConnection: InvestmentConnection;
   /** Fetches an object given its ID */
   node?: Maybe<Node>;
   /** Retrieve a single revenue */
@@ -4207,6 +3623,14 @@ export type Query = {
   users: Array<User>;
   /** Retrieve multiple users using the Relay connection interface */
   usersConnection: UserConnection;
+  /** Retrieve a single wallet */
+  wallet?: Maybe<Wallet>;
+  /** Retrieve document version */
+  walletVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple wallets */
+  wallets: Array<Wallet>;
+  /** Retrieve multiple wallets using the Relay connection interface */
+  walletsConnection: WalletConnection;
   /** Retrieve a single wish */
   wish?: Maybe<Wish>;
   /** Retrieve document version */
@@ -4353,40 +3777,6 @@ export type QueryExpensesConnectionArgs = {
   where?: InputMaybe<ExpenseWhereInput>;
 };
 
-export type QueryInvestmentArgs = {
-  locales?: Array<Locale>;
-  stage?: Stage;
-  where: InvestmentWhereUniqueInput;
-};
-
-export type QueryInvestmentVersionArgs = {
-  where: VersionWhereInput;
-};
-
-export type QueryInvestmentsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  locales?: Array<Locale>;
-  orderBy?: InputMaybe<InvestmentOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
-  stage?: Stage;
-  where?: InputMaybe<InvestmentWhereInput>;
-};
-
-export type QueryInvestmentsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  locales?: Array<Locale>;
-  orderBy?: InputMaybe<InvestmentOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
-  stage?: Stage;
-  where?: InputMaybe<InvestmentWhereInput>;
-};
-
 export type QueryNodeArgs = {
   id: Scalars['ID'];
   locales?: Array<Locale>;
@@ -4517,6 +3907,40 @@ export type QueryUsersConnectionArgs = {
   where?: InputMaybe<UserWhereInput>;
 };
 
+export type QueryWalletArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: WalletWhereUniqueInput;
+};
+
+export type QueryWalletVersionArgs = {
+  where: VersionWhereInput;
+};
+
+export type QueryWalletsArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<WalletOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<WalletWhereInput>;
+};
+
+export type QueryWalletsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<WalletOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<WalletWhereInput>;
+};
+
 export type QueryWishArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
@@ -4572,7 +3996,7 @@ export type RgbaInput = {
 export type Revenue = Node & {
   __typename?: 'Revenue';
   amount: Scalars['Float'];
-  bank: Scalars['String'];
+  bank?: Maybe<Scalars['String']>;
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
   /** User that created this document */
@@ -4588,7 +4012,7 @@ export type Revenue = Node & {
   /** The unique identifier */
   id: Scalars['ID'];
   itemStatus: Scalars['Int'];
-  payment?: Maybe<Investment>;
+  payment?: Maybe<Wallet>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -4672,14 +4096,14 @@ export type RevenueConnection = {
 
 export type RevenueCreateInput = {
   amount: Scalars['Float'];
-  bank: Scalars['String'];
+  bank?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   currency: Scalars['String'];
   date: Scalars['Date'];
   deleted?: InputMaybe<Scalars['Boolean']>;
   description: Scalars['String'];
   itemStatus: Scalars['Int'];
-  payment?: InputMaybe<InvestmentCreateOneInlineInput>;
+  payment?: InputMaybe<WalletCreateOneInlineInput>;
   type: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
@@ -4860,7 +4284,7 @@ export type RevenueManyWhereInput = {
   itemStatus_not?: InputMaybe<Scalars['Int']>;
   /** All values that are not contained in given list. */
   itemStatus_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  payment?: InputMaybe<InvestmentWhereInput>;
+  payment?: InputMaybe<WalletWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -4952,7 +4376,7 @@ export type RevenueUpdateInput = {
   deleted?: InputMaybe<Scalars['Boolean']>;
   description?: InputMaybe<Scalars['String']>;
   itemStatus?: InputMaybe<Scalars['Int']>;
-  payment?: InputMaybe<InvestmentUpdateOneInlineInput>;
+  payment?: InputMaybe<WalletUpdateOneInlineInput>;
   type?: InputMaybe<Scalars['String']>;
 };
 
@@ -5186,7 +4610,7 @@ export type RevenueWhereInput = {
   itemStatus_not?: InputMaybe<Scalars['Int']>;
   /** All values that are not contained in given list. */
   itemStatus_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  payment?: InputMaybe<InvestmentWhereInput>;
+  payment?: InputMaybe<WalletWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -5356,8 +4780,8 @@ export type ScheduledOperationAffectedDocument =
   | Asset
   | Category
   | Expense
-  | Investment
   | Revenue
+  | Wallet
   | Wish;
 
 export type ScheduledOperationConnectInput = {
@@ -6711,6 +6135,606 @@ export type VersionWhereInput = {
   stage: Stage;
 };
 
+export type Wallet = Node & {
+  __typename?: 'Wallet';
+  amount: Scalars['Float'];
+  broker?: Maybe<Scalars['String']>;
+  /** The time the document was created */
+  createdAt: Scalars['DateTime'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  currency?: Maybe<Scalars['String']>;
+  deleted?: Maybe<Scalars['Boolean']>;
+  /** Get the document in other stages */
+  documentInStages: Array<Wallet>;
+  /** List of Wallet versions */
+  history: Array<Version>;
+  holder: Scalars['String'];
+  /** The unique identifier */
+  id: Scalars['ID'];
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  /** System stage field */
+  stage: Stage;
+  type: Scalars['Int'];
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+export type WalletCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type WalletDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  inheritLocale?: Scalars['Boolean'];
+  stages?: Array<Stage>;
+};
+
+export type WalletHistoryArgs = {
+  limit?: Scalars['Int'];
+  skip?: Scalars['Int'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+export type WalletPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type WalletScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+export type WalletUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type WalletConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: WalletWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type WalletConnection = {
+  __typename?: 'WalletConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<WalletEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type WalletCreateInput = {
+  amount: Scalars['Float'];
+  broker?: InputMaybe<Scalars['String']>;
+  clffbd3v41moy01t61wibh5dc?: InputMaybe<ExpenseCreateManyInlineInput>;
+  clffltrwe1stn01tefg9fa4uz?: InputMaybe<RevenueCreateManyInlineInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  currency?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  holder: Scalars['String'];
+  type: Scalars['Int'];
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type WalletCreateManyInlineInput = {
+  /** Connect multiple existing Wallet documents */
+  connect?: InputMaybe<Array<WalletWhereUniqueInput>>;
+  /** Create and connect multiple existing Wallet documents */
+  create?: InputMaybe<Array<WalletCreateInput>>;
+};
+
+export type WalletCreateOneInlineInput = {
+  /** Connect one existing Wallet document */
+  connect?: InputMaybe<WalletWhereUniqueInput>;
+  /** Create and connect one Wallet document */
+  create?: InputMaybe<WalletCreateInput>;
+};
+
+/** An edge in a connection. */
+export type WalletEdge = {
+  __typename?: 'WalletEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: Wallet;
+};
+
+/** Identifies documents */
+export type WalletManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<WalletWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<WalletWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<WalletWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  amount?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  amount_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  amount_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  amount_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  /** All values less than the given value. */
+  amount_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  amount_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  amount_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  broker?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  broker_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  broker_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  broker_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  broker_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  broker_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  broker_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  broker_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  broker_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  broker_starts_with?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  currency?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  currency_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  currency_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  currency_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  currency_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  currency_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  currency_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  currency_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  currency_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  currency_starts_with?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  deleted_not?: InputMaybe<Scalars['Boolean']>;
+  documentInStages_every?: InputMaybe<WalletWhereStageInput>;
+  documentInStages_none?: InputMaybe<WalletWhereStageInput>;
+  documentInStages_some?: InputMaybe<WalletWhereStageInput>;
+  holder?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  holder_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  holder_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  holder_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  holder_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  holder_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  holder_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  holder_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  holder_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  holder_starts_with?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  type?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  type_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  type_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  type_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  /** All values less than the given value. */
+  type_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  type_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  type_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  type_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export enum WalletOrderByInput {
+  AmountAsc = 'amount_ASC',
+  AmountDesc = 'amount_DESC',
+  BrokerAsc = 'broker_ASC',
+  BrokerDesc = 'broker_DESC',
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  CurrencyAsc = 'currency_ASC',
+  CurrencyDesc = 'currency_DESC',
+  DeletedAsc = 'deleted_ASC',
+  DeletedDesc = 'deleted_DESC',
+  HolderAsc = 'holder_ASC',
+  HolderDesc = 'holder_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  TypeAsc = 'type_ASC',
+  TypeDesc = 'type_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC',
+}
+
+export type WalletUpdateInput = {
+  amount?: InputMaybe<Scalars['Float']>;
+  broker?: InputMaybe<Scalars['String']>;
+  clffbd3v41moy01t61wibh5dc?: InputMaybe<ExpenseUpdateManyInlineInput>;
+  clffltrwe1stn01tefg9fa4uz?: InputMaybe<RevenueUpdateManyInlineInput>;
+  currency?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  holder?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['Int']>;
+};
+
+export type WalletUpdateManyInlineInput = {
+  /** Connect multiple existing Wallet documents */
+  connect?: InputMaybe<Array<WalletConnectInput>>;
+  /** Create and connect multiple Wallet documents */
+  create?: InputMaybe<Array<WalletCreateInput>>;
+  /** Delete multiple Wallet documents */
+  delete?: InputMaybe<Array<WalletWhereUniqueInput>>;
+  /** Disconnect multiple Wallet documents */
+  disconnect?: InputMaybe<Array<WalletWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing Wallet documents */
+  set?: InputMaybe<Array<WalletWhereUniqueInput>>;
+  /** Update multiple Wallet documents */
+  update?: InputMaybe<Array<WalletUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple Wallet documents */
+  upsert?: InputMaybe<Array<WalletUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type WalletUpdateManyInput = {
+  amount?: InputMaybe<Scalars['Float']>;
+  broker?: InputMaybe<Scalars['String']>;
+  currency?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  holder?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['Int']>;
+};
+
+export type WalletUpdateManyWithNestedWhereInput = {
+  /** Update many input */
+  data: WalletUpdateManyInput;
+  /** Document search */
+  where: WalletWhereInput;
+};
+
+export type WalletUpdateOneInlineInput = {
+  /** Connect existing Wallet document */
+  connect?: InputMaybe<WalletWhereUniqueInput>;
+  /** Create and connect one Wallet document */
+  create?: InputMaybe<WalletCreateInput>;
+  /** Delete currently connected Wallet document */
+  delete?: InputMaybe<Scalars['Boolean']>;
+  /** Disconnect currently connected Wallet document */
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  /** Update single Wallet document */
+  update?: InputMaybe<WalletUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single Wallet document */
+  upsert?: InputMaybe<WalletUpsertWithNestedWhereUniqueInput>;
+};
+
+export type WalletUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: WalletUpdateInput;
+  /** Unique document search */
+  where: WalletWhereUniqueInput;
+};
+
+export type WalletUpsertInput = {
+  /** Create document if it didn't exist */
+  create: WalletCreateInput;
+  /** Update document if it exists */
+  update: WalletUpdateInput;
+};
+
+export type WalletUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: WalletUpsertInput;
+  /** Unique document search */
+  where: WalletWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type WalletWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Identifies documents */
+export type WalletWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<WalletWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<WalletWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<WalletWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  amount?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  amount_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  amount_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  amount_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  /** All values less than the given value. */
+  amount_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  amount_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  amount_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  broker?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  broker_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  broker_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  broker_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  broker_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  broker_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  broker_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  broker_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  broker_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  broker_starts_with?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  currency?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  currency_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  currency_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  currency_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  currency_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  currency_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  currency_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  currency_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  currency_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  currency_starts_with?: InputMaybe<Scalars['String']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  deleted_not?: InputMaybe<Scalars['Boolean']>;
+  documentInStages_every?: InputMaybe<WalletWhereStageInput>;
+  documentInStages_none?: InputMaybe<WalletWhereStageInput>;
+  documentInStages_some?: InputMaybe<WalletWhereStageInput>;
+  holder?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  holder_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  holder_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  holder_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  holder_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  holder_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  holder_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  holder_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  holder_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  holder_starts_with?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  type?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  type_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  type_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  type_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  /** All values less than the given value. */
+  type_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  type_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  type_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  type_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type WalletWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<WalletWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<WalletWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<WalletWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<WalletWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References Wallet record uniquely */
+export type WalletWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
 export type Wish = Node & {
   __typename?: 'Wish';
   amount?: Maybe<Scalars['Float']>;
@@ -7434,14 +7458,14 @@ export type PublishExpenseMutation = {
       type: string;
     } | null;
     payment?: {
-      __typename?: 'Investment';
+      __typename?: 'Wallet';
       id: string;
       amount: number;
       broker?: string | null;
       currency?: string | null;
       holder: string;
       deleted?: boolean | null;
-      available: boolean;
+      type: number;
     } | null;
   } | null;
 };
@@ -7476,78 +7500,15 @@ export type UpdateExpenseMutation = {
       type: string;
     } | null;
     payment?: {
-      __typename?: 'Investment';
+      __typename?: 'Wallet';
       id: string;
       amount: number;
       broker?: string | null;
       currency?: string | null;
       holder: string;
       deleted?: boolean | null;
-      available: boolean;
+      type: number;
     } | null;
-  } | null;
-};
-
-export type AddInvestmentMutationVariables = Exact<{
-  amount: Scalars['Float'];
-  broker: Scalars['String'];
-  currency: Scalars['String'];
-  holder: Scalars['String'];
-  available: Scalars['Boolean'];
-}>;
-
-export type AddInvestmentMutation = {
-  __typename?: 'Mutation';
-  createInvestment?: { __typename?: 'Investment'; id: string } | null;
-};
-
-export type PublishInvestmentMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-export type PublishInvestmentMutation = {
-  __typename?: 'Mutation';
-  publishInvestment?: {
-    __typename?: 'Investment';
-    amount: number;
-    broker?: string | null;
-    currency?: string | null;
-    deleted?: boolean | null;
-    holder: string;
-    available: boolean;
-  } | null;
-};
-
-export type PublishManyInvestmentsMutationVariables = Exact<{
-  ids: Array<InputMaybe<Scalars['ID']>> | InputMaybe<Scalars['ID']>;
-}>;
-
-export type PublishManyInvestmentsMutation = {
-  __typename?: 'Mutation';
-  publishManyInvestments: { __typename?: 'BatchPayload'; count: any };
-};
-
-export type UpdateInvestmentMutationVariables = Exact<{
-  id: Scalars['ID'];
-  amount: Scalars['Float'];
-  broker: Scalars['String'];
-  currency: Scalars['String'];
-  deleted: Scalars['Boolean'];
-  holder: Scalars['String'];
-  available: Scalars['Boolean'];
-}>;
-
-export type UpdateInvestmentMutation = {
-  __typename?: 'Mutation';
-  updateInvestment?: {
-    __typename?: 'Investment';
-    id: string;
-    amount: number;
-    broker?: string | null;
-    currency?: string | null;
-    deleted?: boolean | null;
-    holder: string;
-    available: boolean;
   } | null;
 };
 
@@ -7576,7 +7537,7 @@ export type PublishRevenueMutation = {
   publishRevenue?: {
     __typename?: 'Revenue';
     amount: number;
-    bank: string;
+    bank?: string | null;
     date: any;
     description: string;
     deleted?: boolean | null;
@@ -7584,14 +7545,14 @@ export type PublishRevenueMutation = {
     currency: string;
     itemStatus: number;
     payment?: {
-      __typename?: 'Investment';
+      __typename?: 'Wallet';
       id: string;
       amount: number;
       broker?: string | null;
       currency?: string | null;
       holder: string;
       deleted?: boolean | null;
-      available: boolean;
+      type: number;
     } | null;
   } | null;
 };
@@ -7615,7 +7576,7 @@ export type UpdateRevenueMutation = {
     __typename?: 'Revenue';
     id: string;
     amount: number;
-    bank: string;
+    bank?: string | null;
     date: any;
     deleted?: boolean | null;
     description: string;
@@ -7623,15 +7584,78 @@ export type UpdateRevenueMutation = {
     currency: string;
     itemStatus: number;
     payment?: {
-      __typename?: 'Investment';
+      __typename?: 'Wallet';
       id: string;
       amount: number;
       broker?: string | null;
       currency?: string | null;
       holder: string;
       deleted?: boolean | null;
-      available: boolean;
+      type: number;
     } | null;
+  } | null;
+};
+
+export type AddWalletMutationVariables = Exact<{
+  amount: Scalars['Float'];
+  broker: Scalars['String'];
+  currency: Scalars['String'];
+  holder: Scalars['String'];
+  type: Scalars['Int'];
+}>;
+
+export type AddWalletMutation = {
+  __typename?: 'Mutation';
+  createWallet?: { __typename?: 'Wallet'; id: string } | null;
+};
+
+export type PublishManyWalletsMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars['ID']>> | InputMaybe<Scalars['ID']>;
+}>;
+
+export type PublishManyWalletsMutation = {
+  __typename?: 'Mutation';
+  publishManyWallets: { __typename?: 'BatchPayload'; count: any };
+};
+
+export type PublishWalletMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type PublishWalletMutation = {
+  __typename?: 'Mutation';
+  publishWallet?: {
+    __typename?: 'Wallet';
+    amount: number;
+    broker?: string | null;
+    currency?: string | null;
+    deleted?: boolean | null;
+    holder: string;
+    type: number;
+  } | null;
+};
+
+export type UpdateWalletMutationVariables = Exact<{
+  id: Scalars['ID'];
+  amount: Scalars['Float'];
+  broker: Scalars['String'];
+  currency: Scalars['String'];
+  deleted: Scalars['Boolean'];
+  holder: Scalars['String'];
+  type: Scalars['Int'];
+}>;
+
+export type UpdateWalletMutation = {
+  __typename?: 'Mutation';
+  updateWallet?: {
+    __typename?: 'Wallet';
+    id: string;
+    amount: number;
+    broker?: string | null;
+    currency?: string | null;
+    deleted?: boolean | null;
+    holder: string;
+    type: number;
   } | null;
 };
 
@@ -7735,7 +7759,7 @@ export type GetExpenseByIdQuery = {
   __typename?: 'Query';
   expense?: {
     __typename?: 'Expense';
-    payment?: { __typename?: 'Investment'; id: string } | null;
+    payment?: { __typename?: 'Wallet'; id: string } | null;
   } | null;
 };
 
@@ -7763,31 +7787,15 @@ export type GetExpensesQuery = {
     } | null;
     account?: { __typename?: 'Account'; name: string } | null;
     payment?: {
-      __typename?: 'Investment';
+      __typename?: 'Wallet';
       id: string;
       amount: number;
       broker?: string | null;
       deleted?: boolean | null;
       currency?: string | null;
       holder: string;
-      available: boolean;
+      type: number;
     } | null;
-  }>;
-};
-
-export type GetInvestmentsQueryVariables = Exact<{ [key: string]: never }>;
-
-export type GetInvestmentsQuery = {
-  __typename?: 'Query';
-  investments: Array<{
-    __typename?: 'Investment';
-    id: string;
-    amount: number;
-    broker?: string | null;
-    deleted?: boolean | null;
-    currency?: string | null;
-    holder: string;
-    available: boolean;
   }>;
 };
 
@@ -7799,7 +7807,7 @@ export type GetRevenuesQuery = {
     __typename?: 'Revenue';
     id: string;
     amount: number;
-    bank: string;
+    bank?: string | null;
     date: any;
     deleted?: boolean | null;
     description: string;
@@ -7807,15 +7815,31 @@ export type GetRevenuesQuery = {
     currency: string;
     itemStatus: number;
     payment?: {
-      __typename?: 'Investment';
+      __typename?: 'Wallet';
       id: string;
       amount: number;
       broker?: string | null;
       deleted?: boolean | null;
       currency?: string | null;
       holder: string;
-      available: boolean;
+      type: number;
     } | null;
+  }>;
+};
+
+export type GetWalletsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetWalletsQuery = {
+  __typename?: 'Query';
+  wallets: Array<{
+    __typename?: 'Wallet';
+    id: string;
+    amount: number;
+    broker?: string | null;
+    deleted?: boolean | null;
+    currency?: string | null;
+    holder: string;
+    type: number;
   }>;
 };
 
@@ -8098,7 +8122,7 @@ export const PublishExpenseDocument = gql`
         currency
         holder
         deleted
-        available
+        type
       }
     }
   }
@@ -8188,7 +8212,7 @@ export const UpdateExpenseDocument = gql`
         currency
         holder
         deleted
-        available
+        type
       }
     }
   }
@@ -8241,252 +8265,6 @@ export type UpdateExpenseMutationCompositionFunctionResult =
   VueApolloComposable.UseMutationReturn<
     UpdateExpenseMutation,
     UpdateExpenseMutationVariables
-  >;
-export const AddInvestmentDocument = gql`
-  mutation addInvestment(
-    $amount: Float!
-    $broker: String!
-    $currency: String!
-    $holder: String!
-    $available: Boolean!
-  ) {
-    createInvestment(
-      data: {
-        amount: $amount
-        broker: $broker
-        currency: $currency
-        deleted: false
-        holder: $holder
-        available: $available
-      }
-    ) {
-      id
-    }
-  }
-`;
-
-/**
- * __useAddInvestmentMutation__
- *
- * To run a mutation, you first call `useAddInvestmentMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useAddInvestmentMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useAddInvestmentMutation({
- *   variables: {
- *     amount: // value for 'amount'
- *     broker: // value for 'broker'
- *     currency: // value for 'currency'
- *     holder: // value for 'holder'
- *     available: // value for 'available'
- *   },
- * });
- */
-export function useAddInvestmentMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        AddInvestmentMutation,
-        AddInvestmentMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          AddInvestmentMutation,
-          AddInvestmentMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    AddInvestmentMutation,
-    AddInvestmentMutationVariables
-  >(AddInvestmentDocument, options);
-}
-export type AddInvestmentMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    AddInvestmentMutation,
-    AddInvestmentMutationVariables
-  >;
-export const PublishInvestmentDocument = gql`
-  mutation publishInvestment($id: ID!) {
-    publishInvestment(where: { id: $id }, to: PUBLISHED) {
-      amount
-      broker
-      currency
-      deleted
-      holder
-      available
-    }
-  }
-`;
-
-/**
- * __usePublishInvestmentMutation__
- *
- * To run a mutation, you first call `usePublishInvestmentMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `usePublishInvestmentMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = usePublishInvestmentMutation({
- *   variables: {
- *     id: // value for 'id'
- *   },
- * });
- */
-export function usePublishInvestmentMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        PublishInvestmentMutation,
-        PublishInvestmentMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          PublishInvestmentMutation,
-          PublishInvestmentMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    PublishInvestmentMutation,
-    PublishInvestmentMutationVariables
-  >(PublishInvestmentDocument, options);
-}
-export type PublishInvestmentMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    PublishInvestmentMutation,
-    PublishInvestmentMutationVariables
-  >;
-export const PublishManyInvestmentsDocument = gql`
-  mutation publishManyInvestments($ids: [ID]!) {
-    publishManyInvestments(to: PUBLISHED, where: { id_in: $ids }) {
-      count
-    }
-  }
-`;
-
-/**
- * __usePublishManyInvestmentsMutation__
- *
- * To run a mutation, you first call `usePublishManyInvestmentsMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `usePublishManyInvestmentsMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = usePublishManyInvestmentsMutation({
- *   variables: {
- *     ids: // value for 'ids'
- *   },
- * });
- */
-export function usePublishManyInvestmentsMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        PublishManyInvestmentsMutation,
-        PublishManyInvestmentsMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          PublishManyInvestmentsMutation,
-          PublishManyInvestmentsMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    PublishManyInvestmentsMutation,
-    PublishManyInvestmentsMutationVariables
-  >(PublishManyInvestmentsDocument, options);
-}
-export type PublishManyInvestmentsMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    PublishManyInvestmentsMutation,
-    PublishManyInvestmentsMutationVariables
-  >;
-export const UpdateInvestmentDocument = gql`
-  mutation updateInvestment(
-    $id: ID!
-    $amount: Float!
-    $broker: String!
-    $currency: String!
-    $deleted: Boolean!
-    $holder: String!
-    $available: Boolean!
-  ) {
-    updateInvestment(
-      data: {
-        amount: $amount
-        broker: $broker
-        currency: $currency
-        deleted: $deleted
-        holder: $holder
-        available: $available
-      }
-      where: { id: $id }
-    ) {
-      id
-      amount
-      broker
-      currency
-      deleted
-      holder
-      available
-    }
-  }
-`;
-
-/**
- * __useUpdateInvestmentMutation__
- *
- * To run a mutation, you first call `useUpdateInvestmentMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useUpdateInvestmentMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useUpdateInvestmentMutation({
- *   variables: {
- *     id: // value for 'id'
- *     amount: // value for 'amount'
- *     broker: // value for 'broker'
- *     currency: // value for 'currency'
- *     deleted: // value for 'deleted'
- *     holder: // value for 'holder'
- *     available: // value for 'available'
- *   },
- * });
- */
-export function useUpdateInvestmentMutation(
-  options:
-    | VueApolloComposable.UseMutationOptions<
-        UpdateInvestmentMutation,
-        UpdateInvestmentMutationVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseMutationOptions<
-          UpdateInvestmentMutation,
-          UpdateInvestmentMutationVariables
-        >
-      >
-) {
-  return VueApolloComposable.useMutation<
-    UpdateInvestmentMutation,
-    UpdateInvestmentMutationVariables
-  >(UpdateInvestmentDocument, options);
-}
-export type UpdateInvestmentMutationCompositionFunctionResult =
-  VueApolloComposable.UseMutationReturn<
-    UpdateInvestmentMutation,
-    UpdateInvestmentMutationVariables
   >;
 export const AddRevenueDocument = gql`
   mutation addRevenue(
@@ -8582,7 +8360,7 @@ export const PublishRevenueDocument = gql`
         currency
         holder
         deleted
-        available
+        type
       }
     }
   }
@@ -8671,7 +8449,7 @@ export const UpdateRevenueDocument = gql`
         currency
         holder
         deleted
-        available
+        type
       }
     }
   }
@@ -8725,6 +8503,252 @@ export type UpdateRevenueMutationCompositionFunctionResult =
   VueApolloComposable.UseMutationReturn<
     UpdateRevenueMutation,
     UpdateRevenueMutationVariables
+  >;
+export const AddWalletDocument = gql`
+  mutation addWallet(
+    $amount: Float!
+    $broker: String!
+    $currency: String!
+    $holder: String!
+    $type: Int!
+  ) {
+    createWallet(
+      data: {
+        amount: $amount
+        broker: $broker
+        currency: $currency
+        deleted: false
+        holder: $holder
+        type: $type
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+/**
+ * __useAddWalletMutation__
+ *
+ * To run a mutation, you first call `useAddWalletMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useAddWalletMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useAddWalletMutation({
+ *   variables: {
+ *     amount: // value for 'amount'
+ *     broker: // value for 'broker'
+ *     currency: // value for 'currency'
+ *     holder: // value for 'holder'
+ *     type: // value for 'type'
+ *   },
+ * });
+ */
+export function useAddWalletMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        AddWalletMutation,
+        AddWalletMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          AddWalletMutation,
+          AddWalletMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    AddWalletMutation,
+    AddWalletMutationVariables
+  >(AddWalletDocument, options);
+}
+export type AddWalletMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    AddWalletMutation,
+    AddWalletMutationVariables
+  >;
+export const PublishManyWalletsDocument = gql`
+  mutation publishManyWallets($ids: [ID]!) {
+    publishManyWallets(to: PUBLISHED, where: { id_in: $ids }) {
+      count
+    }
+  }
+`;
+
+/**
+ * __usePublishManyWalletsMutation__
+ *
+ * To run a mutation, you first call `usePublishManyWalletsMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `usePublishManyWalletsMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = usePublishManyWalletsMutation({
+ *   variables: {
+ *     ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function usePublishManyWalletsMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        PublishManyWalletsMutation,
+        PublishManyWalletsMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          PublishManyWalletsMutation,
+          PublishManyWalletsMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    PublishManyWalletsMutation,
+    PublishManyWalletsMutationVariables
+  >(PublishManyWalletsDocument, options);
+}
+export type PublishManyWalletsMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    PublishManyWalletsMutation,
+    PublishManyWalletsMutationVariables
+  >;
+export const PublishWalletDocument = gql`
+  mutation publishWallet($id: ID!) {
+    publishWallet(where: { id: $id }, to: PUBLISHED) {
+      amount
+      broker
+      currency
+      deleted
+      holder
+      type
+    }
+  }
+`;
+
+/**
+ * __usePublishWalletMutation__
+ *
+ * To run a mutation, you first call `usePublishWalletMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `usePublishWalletMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = usePublishWalletMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePublishWalletMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        PublishWalletMutation,
+        PublishWalletMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          PublishWalletMutation,
+          PublishWalletMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    PublishWalletMutation,
+    PublishWalletMutationVariables
+  >(PublishWalletDocument, options);
+}
+export type PublishWalletMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    PublishWalletMutation,
+    PublishWalletMutationVariables
+  >;
+export const UpdateWalletDocument = gql`
+  mutation updateWallet(
+    $id: ID!
+    $amount: Float!
+    $broker: String!
+    $currency: String!
+    $deleted: Boolean!
+    $holder: String!
+    $type: Int!
+  ) {
+    updateWallet(
+      data: {
+        amount: $amount
+        broker: $broker
+        currency: $currency
+        deleted: $deleted
+        holder: $holder
+        type: $type
+      }
+      where: { id: $id }
+    ) {
+      id
+      amount
+      broker
+      currency
+      deleted
+      holder
+      type
+    }
+  }
+`;
+
+/**
+ * __useUpdateWalletMutation__
+ *
+ * To run a mutation, you first call `useUpdateWalletMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateWalletMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateWalletMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *     amount: // value for 'amount'
+ *     broker: // value for 'broker'
+ *     currency: // value for 'currency'
+ *     deleted: // value for 'deleted'
+ *     holder: // value for 'holder'
+ *     type: // value for 'type'
+ *   },
+ * });
+ */
+export function useUpdateWalletMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        UpdateWalletMutation,
+        UpdateWalletMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          UpdateWalletMutation,
+          UpdateWalletMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    UpdateWalletMutation,
+    UpdateWalletMutationVariables
+  >(UpdateWalletDocument, options);
+}
+export type UpdateWalletMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    UpdateWalletMutation,
+    UpdateWalletMutationVariables
   >;
 export const AddWishDocument = gql`
   mutation addWish(
@@ -9172,7 +9196,7 @@ export const GetExpensesDocument = gql`
         deleted
         currency
         holder
-        available
+        type
       }
     }
   }
@@ -9241,73 +9265,6 @@ export type GetExpensesQueryCompositionFunctionResult =
     GetExpensesQuery,
     GetExpensesQueryVariables
   >;
-export const GetInvestmentsDocument = gql`
-  query GetInvestments {
-    investments(first: 100, orderBy: createdAt_DESC) {
-      id
-      amount
-      broker
-      deleted
-      currency
-      holder
-      available
-    }
-  }
-`;
-
-/**
- * __useGetInvestmentsQuery__
- *
- * To run a query within a Vue component, call `useGetInvestmentsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetInvestmentsQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useGetInvestmentsQuery();
- */
-export function useGetInvestmentsQuery(
-  options:
-    | VueApolloComposable.UseQueryOptions<
-        GetInvestmentsQuery,
-        GetInvestmentsQueryVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseQueryOptions<
-          GetInvestmentsQuery,
-          GetInvestmentsQueryVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useQuery<
-    GetInvestmentsQuery,
-    GetInvestmentsQueryVariables
-  >(GetInvestmentsDocument, {}, options);
-}
-export function useGetInvestmentsLazyQuery(
-  options:
-    | VueApolloComposable.UseQueryOptions<
-        GetInvestmentsQuery,
-        GetInvestmentsQueryVariables
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseQueryOptions<
-          GetInvestmentsQuery,
-          GetInvestmentsQueryVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useLazyQuery<
-    GetInvestmentsQuery,
-    GetInvestmentsQueryVariables
-  >(GetInvestmentsDocument, {}, options);
-}
-export type GetInvestmentsQueryCompositionFunctionResult =
-  VueApolloComposable.UseQueryReturn<
-    GetInvestmentsQuery,
-    GetInvestmentsQueryVariables
-  >;
 export const GetRevenuesDocument = gql`
   query GetRevenues {
     revenues(first: 100, orderBy: date_DESC) {
@@ -9327,7 +9284,7 @@ export const GetRevenuesDocument = gql`
         deleted
         currency
         holder
-        available
+        type
       }
     }
   }
@@ -9386,6 +9343,70 @@ export type GetRevenuesQueryCompositionFunctionResult =
     GetRevenuesQuery,
     GetRevenuesQueryVariables
   >;
+export const GetWalletsDocument = gql`
+  query GetWallets {
+    wallets(first: 100, orderBy: createdAt_DESC) {
+      id
+      amount
+      broker
+      deleted
+      currency
+      holder
+      type
+    }
+  }
+`;
+
+/**
+ * __useGetWalletsQuery__
+ *
+ * To run a query within a Vue component, call `useGetWalletsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWalletsQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetWalletsQuery();
+ */
+export function useGetWalletsQuery(
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        GetWalletsQuery,
+        GetWalletsQueryVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          GetWalletsQuery,
+          GetWalletsQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useQuery<
+    GetWalletsQuery,
+    GetWalletsQueryVariables
+  >(GetWalletsDocument, {}, options);
+}
+export function useGetWalletsLazyQuery(
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        GetWalletsQuery,
+        GetWalletsQueryVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          GetWalletsQuery,
+          GetWalletsQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useLazyQuery<
+    GetWalletsQuery,
+    GetWalletsQueryVariables
+  >(GetWalletsDocument, {}, options);
+}
+export type GetWalletsQueryCompositionFunctionResult =
+  VueApolloComposable.UseQueryReturn<GetWalletsQuery, GetWalletsQueryVariables>;
 export const GetWishesDocument = gql`
   query GetWishes {
     wishes(first: 100, orderBy: amount_DESC) {

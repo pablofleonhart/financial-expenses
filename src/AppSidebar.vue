@@ -74,13 +74,13 @@ const sidebarItems: Array<ISidebarItem> = [
   },
   {
     id: 3,
-    name: 'Investimentos',
-    icon: 'ph-currency-btc',
-    route: 'investments',
+    name: 'Carteiras',
+    icon: 'ph-wallet',
+    route: 'wallet',
   },
   {
     id: 4,
-    name: 'Planejamentos',
+    name: 'Planos',
     icon: 'ph-lightbulb',
     route: 'wishes',
   },

@@ -59,3 +59,13 @@ export type WishStatus = {
   id: number;
   name: string;
 };
+
+export enum WALLET_TYPE {
+  BALANCE = 0,
+  INVESTMENT = 1,
+}
+
+export type WalletType = {
+  id: number;
+  name: string;
+};

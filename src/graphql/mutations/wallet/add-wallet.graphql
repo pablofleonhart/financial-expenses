@@ -1,19 +1,19 @@
-mutation addInvestment(
+mutation addWallet(
   $amount: Float!,
   $broker: String!,
   $currency: String!,
   $holder: String!,
-  $available: Boolean!
+  $type: Int!
 )
 {
-  createInvestment(
+  createWallet(
     data: {
       amount: $amount,
       broker: $broker
       currency: $currency,
       deleted: false,
       holder: $holder,
-      available: $available
+      type: $type
     }
   ) {
     id

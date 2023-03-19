@@ -1,7 +1,7 @@
 import { Author } from '../components/accounts/Author';
 import { Category } from '../components/categories/Category';
 import { Expense } from '../components/expenses/Expense';
-import { Investment } from '../components/investments/Investment';
+import { Wallet } from '../components/wallets/Wallet';
 import { Revenue } from '../components/revenues/Revenue';
 import { Wish } from '../components/wishes/Wish';
 import { dateToString } from './date-utils';
@@ -35,7 +35,7 @@ export const copyExpense = (source: Expense) => {
     note: source.note,
     category: copyCategory(source.category),
     author: new Author(),
-    payment: copyInvestment(source.payment),
+    payment: copyWallet(source.payment),
   });
 };
 
@@ -47,7 +47,7 @@ export const overrideExpense = (target: Expense, source: Expense) => {
   target.deleted = source.deleted;
   target.note = source.note;
   overrideCategory(target.category, source.category);
-  overrideInvestment(target.payment, source.payment);
+  overrideWallet(target.payment, source.payment);
 };
 
 export const copyRevenue = (source: any) => {
@@ -61,7 +61,7 @@ export const copyRevenue = (source: any) => {
     description: source.description,
     type: source.type,
     itemStatus: source.itemStatus,
-    payment: copyInvestment(source.payment),
+    payment: copyWallet(source.payment),
   });
 };
 
@@ -77,30 +77,30 @@ export const overrideRevenue = (target: Revenue, source: Revenue) => {
   target.itemStatus = source.itemStatus;
 };
 
-export const copyInvestment = (source: any) => {
+export const copyWallet = (source: any) => {
   if (!source) {
-    console.warn('Unable to copy null Investment');
-    return new Investment();
+    console.warn('Unable to copy null Wallet');
+    return new Wallet();
   }
-  return new Investment({
+  return new Wallet({
     id: source.id,
     amount: source.amount,
     broker: source.broker,
     currency: source.currency,
     deleted: source.deleted,
     holder: source.holder,
-    available: source.available,
+    type: source.type,
   });
 };
 
-export const overrideInvestment = (source: Investment, target: Investment) => {
+export const overrideWallet = (source: Wallet, target: Wallet) => {
   target.id = source.id;
   target.amount = source.amount;
   target.broker = source.broker;
   target.currency = source.currency;
   target.deleted = source.deleted;
   target.holder = source.holder;
-  target.available = source.available;
+  target.type = source.type;
 };
 
 export const copyWish = (source: any) => {

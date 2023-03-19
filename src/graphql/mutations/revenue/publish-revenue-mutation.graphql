@@ -15,7 +15,7 @@ mutation publishRevenue($id: ID!) {
       currency
       holder
       deleted
-      available
+      type
     }
   }
 }

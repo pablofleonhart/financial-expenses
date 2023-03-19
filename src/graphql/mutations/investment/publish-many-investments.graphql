@@ -1,8 +1,0 @@
-mutation publishManyInvestments($ids: [ID]!) {
-  publishManyInvestments(
-    to: PUBLISHED
-    where: {id_in: $ids}
-  ) {
-    count
-  }
-}

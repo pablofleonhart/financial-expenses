@@ -118,7 +118,7 @@ import BalanceSelector from '../common/BalanceSelector.vue';
 import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/props/formatting/
 import { PropType, ref, shallowRef, watch } from 'vue';
 import { addRevenue, editRevenue } from '../../services';
-import { Investment } from '../investments/Investment';
+import { Wallet } from '../wallets/Wallet';
 import { Revenue } from './Revenue';
 
 const revenue = shallowRef(new Revenue());
@@ -146,7 +146,7 @@ const selectedCurrency = ref(currencies[0]);
 const currencySelectorOpen = ref(false);
 const emit = defineEmits(['addRevenue', 'close']);
 
-const selectedPayment = shallowRef(new Investment());
+const selectedPayment = shallowRef(new Wallet());
 
 const props = defineProps({
   opened: { type: Boolean, default: false },
@@ -173,7 +173,7 @@ const selectCurrency = (option: any) => {
   currencySelectorOpen.value = false;
 };
 
-const selectBalance = (balance: Investment) => {
+const selectBalance = (balance: Wallet) => {
   revenue.value.payment = balance;
 };
 

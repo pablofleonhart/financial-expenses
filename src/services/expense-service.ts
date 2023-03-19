@@ -17,7 +17,7 @@ import {
   getMonths,
 } from '../utils';
 import { MonthPeriod } from '../types';
-import { editInvestment, publishManyInvestments } from './investment-service';
+import { editWallet, publishManyWallets } from './wallet-service';
 
 export let allExpenseItems: Array<Expense> = [];
 export const filteredExpenseItems: Array<Expense> = reactive([]);
@@ -288,7 +288,7 @@ const expenseAdded = async (expense: Expense) => {
     return;
   }
   expense.payment.amount -= expense.amount;
-  await editInvestment(expense.payment);
+  await editWallet(expense.payment);
 };
 
 const expenseEdited = async (expense: Expense) => {
@@ -308,9 +308,9 @@ const expenseEdited = async (expense: Expense) => {
   } else {
     oldExpense.payment.amount += oldExpense.amount;
     expense.payment.amount -= expense.amount;
-    await editInvestment(oldExpense.payment, false);
-    await editInvestment(expense.payment, false);
-    publishManyInvestments([oldExpense.payment.id, expense.payment.id]);
+    await editWallet(oldExpense.payment, false);
+    await editWallet(expense.payment, false);
+    publishManyWallets([oldExpense.payment.id, expense.payment.id]);
   }
 };
 
@@ -319,7 +319,7 @@ const expenseDeleted = async (expense: Expense) => {
     return;
   }
   expense.payment.amount += expense.amount;
-  await editInvestment(expense.payment);
+  await editWallet(expense.payment);
 };
 
 initializeService();

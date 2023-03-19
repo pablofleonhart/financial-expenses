@@ -99,13 +99,13 @@ import { Category } from '../categories/Category';
 import { getCategoryIcon } from '../../utils';
 import { addExpense, categoryItems, editExpense } from '../../services';
 import BalanceSelector from '../common/BalanceSelector.vue';
-import { Investment } from '../investments/Investment';
+import { Wallet } from '../wallets/Wallet';
 
 const expense = shallowRef(new Expense());
 const categories = computed<Array<Category>>(() => categoryItems);
 
 const selectedCategory = shallowRef(new Category());
-const selectedPayment = shallowRef(new Investment());
+const selectedPayment = shallowRef(new Wallet());
 const categorySelectorOpen = ref(false);
 
 const emit = defineEmits(['addExpense', 'close']);
@@ -130,7 +130,7 @@ const getActionName = () => {
   return expense.value.id === '' ? 'Adicionar' : 'Editar';
 };
 
-const selectBalance = (balance: Investment) => {
+const selectBalance = (balance: Wallet) => {
   expense.value.payment = balance;
 };
 

@@ -5,8 +5,9 @@
         :key="tab.id"
         class="filter-tab"
         :class="{
-          'filter-tab-selected': tab.name === selectedTab.name,
+          'filter-tab-selected': tab.name === selectedTab,
         }"
+        @click="filterWallets(tab)"
       >
         {{ tab.name }}
       </button>
@@ -15,6 +16,12 @@
 </template>
 
 <script lang="ts" setup>
-const tabItems = [{ id: 0, name: 'Tudo' }];
-const selectedTab = tabItems[0];
+import { computed } from 'vue';
+import { filterWallets, selectedWalletType } from '../../services';
+
+const tabItems = [
+  { id: 0, name: 'Saldos' },
+  { id: 1, name: 'Investimentos' },
+];
+const selectedTab = computed(() => selectedWalletType.name);
 </script>

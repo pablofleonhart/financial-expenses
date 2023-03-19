@@ -1,0 +1,8 @@
+mutation publishManyWallets($ids: [ID]!) {
+  publishManyWallets(
+    to: PUBLISHED
+    where: {id_in: $ids}
+  ) {
+    count
+  }
+}
