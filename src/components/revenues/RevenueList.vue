@@ -157,12 +157,12 @@ const orderList = (column: any) => {
   sortRevenues(column.key);
 };
 
-const onCompleteRevenue = (index: number) => {
-  completeRevenue(revenueList.value[index]);
+const onCompleteRevenue = async (index: number) => {
+  await completeRevenue(revenueList.value[index]);
 };
 
-const onReopenRevenue = (index: number) => {
-  reopenRevenue(revenueList.value[index]);
+const onReopenRevenue = async (index: number) => {
+  await reopenRevenue(revenueList.value[index]);
 };
 
 const onEditRevenue = (index: number) => {

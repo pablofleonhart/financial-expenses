@@ -125,25 +125,28 @@ export const loadExpenses = async (): Promise<void> => {
 };
 
 export const addExpense = (expense: Expense) => {
-  const { mutate: createExpense, onDone } = useAddExpenseMutation({});
-  createExpense({
-    amount: expense.amount,
-    card: expense.card,
-    date: expense.date,
-    deleted: expense.deleted,
-    note: expense.note,
-    categoryID: expense.category.id,
-    currency: expense.currency,
-    paymentID: expense.payment.id,
-  });
+  return new Promise((resolve) => {
+    const { mutate: createExpense, onDone } = useAddExpenseMutation({});
+    createExpense({
+      amount: expense.amount,
+      card: expense.card,
+      date: expense.date,
+      deleted: expense.deleted,
+      note: expense.note,
+      categoryID: expense.category.id,
+      currency: expense.currency,
+      paymentID: expense.payment.id,
+    });
 
-  onDone((result) => {
-    const expenseID = result.data?.createExpense?.id;
-    expense.id = expenseID || '';
-    allExpenseItems.push(new Expense(expense));
-    filterExpenses();
-    publishExpense(expenseID);
-    expenseAdded(expense);
+    onDone(async (result) => {
+      const expenseID = result.data?.createExpense?.id;
+      expense.id = expenseID || '';
+      allExpenseItems.push(new Expense(expense));
+      filterExpenses();
+      publishExpense(expenseID);
+      await expenseAdded(expense);
+      resolve(true);
+    });
   });
 };
 
@@ -305,6 +308,7 @@ const expenseEdited = async (expense: Expense) => {
 
   if (oldExpense?.payment.id === expense.payment.id) {
     expense.payment.amount += oldExpense?.amount - expense.amount;
+    await editWallet(expense.payment);
   } else {
     oldExpense.payment.amount += oldExpense.amount;
     expense.payment.amount -= expense.amount;

@@ -77,7 +77,7 @@
         />
         <balance-selector
           :initial-value="selectedPayment"
-          empty-message="Meio de pagamento"
+          empty-message="Meio de pagamento ou recebimento"
           @select="selectBalance"
         />
         <datepicker

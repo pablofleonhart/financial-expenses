@@ -57,7 +57,8 @@ const onEditRevenue = (revenue: Revenue) => {
 };
 
 const onDeleteRevenue = (revenue: Revenue) => {
-  modalMessage.value = 'Deseja realmente excluir essa renda/despesa?';
+  const action = revenue.type === 'income' ? 'receita' : 'despesa';
+  modalMessage.value = `Deseja realmente excluir essa ${action}?`;
   showConfirmationModal.value = true;
   revenueToDelete = revenue;
 };

@@ -2,7 +2,7 @@
   <div class="expense-list">
     <table class="table-auto w-full overflow-hidden bg-neutral-color-500">
       <thead class="expense-list-head flex w-full">
-        <tr class="flex w-full h-12 bg-neutral-color-700">
+        <tr class="flex w-full h-10 bg-neutral-color-700">
           <th
             v-for="column in expenseColumns"
             :key="column.key"
@@ -25,7 +25,7 @@
       <tbody class="expense-list-body flex flex-col w-full">
         <div v-if="expensesList.length">
           <tr
-            class="flex w-full items-center h-12 even:bg-neutral-color-700"
+            class="flex w-full items-center h-10 even:bg-neutral-color-700"
             v-for="(item, index) in expensesList"
             :key="item.id"
           >
@@ -66,7 +66,9 @@
               <component v-else :is="getPaymentIcon(item.card)" size="24" />
             </td>
             <td class="flex items-center p-2 h-full w-1/6 min-w-44">
-              {{ item.note }}
+              <span class="w-full truncate" :title="item.note">
+                {{ item.note }}
+              </span>
             </td>
             <td class="flex items-center p-2 h-full w-1/6 min-w-24">
               <div class="flex w-full justify-evenly">
@@ -124,8 +126,8 @@ const expenseColumns = [
     class: 'min-w-36 justify-center',
   },
   {
-    key: 'card',
-    name: 'Método',
+    key: 'payment.broker',
+    name: 'Pago com',
     class: 'min-w-16 justify-center',
   },
   {

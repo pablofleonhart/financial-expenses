@@ -13,6 +13,7 @@ import {
   sortList,
 } from '../utils';
 import { REVENUE_STATUS, RevenueStatus } from '../types';
+import { editWallet, publishManyWallets } from './wallet-service';
 
 export const allRevenueItems: Array<Revenue> = reactive([]);
 export const filteredRevenueItems: Array<Revenue> = reactive([]);
@@ -172,87 +173,98 @@ export const loadRevenues = async () => {
 };
 
 export const addRevenue = async (revenue: Revenue) => {
-  const { mutate: createRevenue, onDone } = useAddRevenueMutation({});
-  createRevenue({
-    amount: revenue.amount,
-    date: revenue.date,
-    description: revenue.description,
-    type: revenue.type,
-    bank: revenue.bank,
-    currency: revenue.currency,
-    itemStatus: revenue.itemStatus,
-    paymentID: revenue.payment.id,
-  });
+  return new Promise((resolve) => {
+    const { mutate: createRevenue, onDone } = useAddRevenueMutation({});
+    createRevenue({
+      amount: revenue.amount,
+      date: revenue.date,
+      description: revenue.description,
+      type: revenue.type,
+      bank: revenue.bank,
+      currency: revenue.currency,
+      itemStatus: revenue.itemStatus,
+      paymentID: revenue.payment.id,
+    });
 
-  return onDone((result) => {
-    const revenueID = result.data?.createRevenue?.id;
-    revenue.id = revenueID || '';
-    allRevenueItems.push(revenue);
-    publishRevenue(revenueID);
-    filterRevenues();
+    onDone(async (result) => {
+      const revenueID = result.data?.createRevenue?.id;
+      revenue.id = revenueID || '';
+      allRevenueItems.push(revenue);
+      publishRevenue(revenueID);
+      filterRevenues();
+      resolve(true);
+    });
   });
 };
 
-export const editRevenue = async (revenue: Revenue) => {
+export const editRevenue = async (revenue: Revenue, updateBalance = true) => {
   if (!revenue) {
     throw new Error('Revenue does not exist');
   }
 
-  // update on graph cms
-  const { mutate: updateRevenue, onDone } = useUpdateRevenueMutation({});
-  updateRevenue({
-    id: revenue.id,
-    bank: revenue.bank,
-    amount: revenue.amount,
-    date: revenue.date,
-    deleted: revenue.deleted,
-    description: revenue.description,
-    type: revenue.type,
-    currency: revenue.currency,
-    itemStatus: revenue.itemStatus,
-    paymentID: revenue.payment.id,
-  });
+  if (updateBalance) {
+    await revenueEdited(revenue);
+  }
+  return new Promise((resolve) => {
+    const { mutate: updateRevenue, onDone } = useUpdateRevenueMutation({});
+    updateRevenue({
+      id: revenue.id,
+      bank: revenue.bank,
+      amount: revenue.amount,
+      date: revenue.date,
+      deleted: revenue.deleted,
+      description: revenue.description,
+      type: revenue.type,
+      currency: revenue.currency,
+      itemStatus: revenue.itemStatus,
+      paymentID: revenue.payment.id,
+    });
 
-  return onDone(() => {
-    // update revenue on local storage
-    const oldRevenue = getRevenueByID(revenue.id);
-    if (oldRevenue) {
-      overrideRevenue(
-        allRevenueItems[allRevenueItems.indexOf(oldRevenue)],
-        revenue
-      );
-    }
-    publishRevenue(revenue.id);
-    filterRevenues();
+    onDone(async () => {
+      // update revenue on local storage
+      const oldRevenue = getRevenueByID(revenue.id);
+      if (oldRevenue) {
+        overrideRevenue(
+          allRevenueItems[allRevenueItems.indexOf(oldRevenue)],
+          revenue
+        );
+      }
+      publishRevenue(revenue.id);
+      filterRevenues();
+      resolve(true);
+    });
   });
 };
 
-export const deleteRevenue = (revenue: Revenue) => {
+export const deleteRevenue = async (revenue: Revenue) => {
   if (!revenue) {
     throw new Error('Revenue does not exist');
   }
 
-  // update on graph cms
-  revenue.deleted = true;
+  return new Promise((resolve) => {
+    revenue.deleted = true;
 
-  const { mutate: updateRevenue, onDone } = useUpdateRevenueMutation({});
-  updateRevenue({
-    id: revenue.id,
-    bank: revenue.bank,
-    amount: revenue.amount,
-    date: revenue.date,
-    deleted: revenue.deleted,
-    description: revenue.description,
-    type: revenue.type,
-    currency: revenue.currency,
-    itemStatus: revenue.itemStatus,
-    paymentID: revenue.payment.id,
-  });
+    const { mutate: updateRevenue, onDone } = useUpdateRevenueMutation({});
+    updateRevenue({
+      id: revenue.id,
+      bank: revenue.bank,
+      amount: revenue.amount,
+      date: revenue.date,
+      deleted: revenue.deleted,
+      description: revenue.description,
+      type: revenue.type,
+      currency: revenue.currency,
+      itemStatus: revenue.itemStatus,
+      paymentID: revenue.payment.id,
+    });
 
-  return onDone(() => {
-    allRevenueItems.splice(allRevenueItems.indexOf(revenue), 1);
-    publishRevenue(revenue.id);
-    filterRevenues();
+    onDone(async () => {
+      allRevenueItems.splice(allRevenueItems.indexOf(revenue), 1);
+      publishRevenue(revenue.id);
+      filterRevenues();
+      await revenueDeleted(revenue);
+      resolve(true);
+    });
   });
 };
 
@@ -292,22 +304,76 @@ export const filterRevenues = (
   );
 };
 
-export const completeRevenue = (revenue: Revenue) => {
+export const completeRevenue = async (revenue: Revenue) => {
   if (!revenue) {
     return;
   }
   revenue.itemStatus = REVENUE_STATUS.DONE;
-  editRevenue(revenue);
+  await editRevenue(revenue, false);
   filterRevenues();
+  await revenueAdded(revenue);
 };
 
-export const reopenRevenue = (revenue: Revenue) => {
+export const reopenRevenue = async (revenue: Revenue) => {
   if (!revenue) {
     return;
   }
   revenue.itemStatus = REVENUE_STATUS.OPEN;
-  editRevenue(revenue);
+  await editRevenue(revenue, false);
   filterRevenues();
+  await revenueDeleted(revenue);
+};
+
+const revenueAdded = async (revenue: Revenue) => {
+  if (!revenue || !revenue.payment) {
+    return;
+  }
+  let value = revenue.amount;
+  if (revenue.type === 'outcome') {
+    value *= -1;
+  }
+  revenue.payment.amount += value;
+  await editWallet(revenue.payment);
+};
+
+const revenueEdited = async (revenue: Revenue) => {
+  if (!revenue || !revenue.payment) {
+    return;
+  }
+
+  const oldRevenue = getRevenueByID(revenue.id);
+  console.log(oldRevenue);
+
+  if (!oldRevenue) {
+    return;
+  }
+
+  if (oldRevenue?.payment.id === revenue.payment.id) {
+    let diffValue = oldRevenue?.amount - revenue.amount;
+    if (revenue.type === 'income') {
+      diffValue *= -1;
+    }
+    revenue.payment.amount += diffValue;
+    await editWallet(revenue.payment);
+  } else {
+    oldRevenue.payment.amount += oldRevenue.amount;
+    revenue.payment.amount -= revenue.amount;
+    await editWallet(oldRevenue.payment, false);
+    await editWallet(revenue.payment, false);
+    publishManyWallets([oldRevenue.payment.id, revenue.payment.id]);
+  }
+};
+
+const revenueDeleted = async (revenue: Revenue) => {
+  if (!revenue || !revenue.payment) {
+    return;
+  }
+  let value = revenue.amount;
+  if (revenue.type === 'income') {
+    value *= -1;
+  }
+  revenue.payment.amount += value;
+  await editWallet(revenue.payment);
 };
 
 initializeData();
