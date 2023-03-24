@@ -62,9 +62,9 @@
     </tbody>
   </table> -->
 
-  <div class="wish-list">
-    <table class="w-full overflow-hidden bg-neutral-color-500">
-      <thead class="wish-list-head flex w-full">
+  <div class="wish-list h-[83%] overflow-auto scrollbar">
+    <table class="table-auto h-fit w-full bg-neutral-color-500">
+      <thead class="wish-list-head w-screen sticky top-0">
         <tr class="flex w-full h-10 bg-neutral-color-700">
           <th
             v-for="column in wishColumns"

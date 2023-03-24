@@ -1,5 +1,5 @@
 <template>
-  <div class="m-3">
+  <div class="wallets-container m-3 h-[90vh]">
     <wallets-header />
     <div class="flex flex-row">
       <wallets-filter-tabs />

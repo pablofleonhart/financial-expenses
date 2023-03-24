@@ -56,12 +56,13 @@
 @layer utilities {
   .scrollbar::-webkit-scrollbar {
     width: 10px;
-    height: 15px;
+    height: 10px;
   }
 
   .scrollbar::-webkit-scrollbar-track {
     border-radius: 100vh;
     background: var(--neutral-color-300);
+    border: 1px solid var(--secondary-color-700);
   }
 
   .scrollbar::-webkit-scrollbar-thumb {
