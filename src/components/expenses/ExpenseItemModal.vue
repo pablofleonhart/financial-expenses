@@ -1,7 +1,7 @@
 <template>
   <div
     v-show="opened"
-    class="expense-item-modal absolute flex justify-center items-center h-full w-full overflow-hidden bg-black bg-opacity-50"
+    class="expense-item-modal absolute flex justify-center items-center scroll h-screen w-full overflow-hidden bg-black bg-opacity-50"
   >
     <div
       class="expense-item-container flex flex-col bg-neutral-color-300 h-92 w-[350px] p-4 rounded-lg"
@@ -11,14 +11,17 @@
       </span>
       <div class="expense-fields flex flex-col gap-3 my-5">
         <input
+          tabindex="0"
           v-model="expense.amount"
-          class="outline-0 rounded p-2 h-10 bg-neutral-color-700"
+          class="outline-0 rounded p-2 h-10 bg-neutral-color-700 focus:ring focus:ring-secondary-color-300"
+          :class="{'border border-red-500': amountError }"
           type="number"
           min="0"
           required
           placeholder="Valor pago"
         />
         <balance-selector
+          tabindex="0"
           :initial-value="selectedPayment"
           empty-message="Forma de pagamento"
           @select="selectBalance"
@@ -108,6 +111,31 @@ const selectedCategory = shallowRef(new Category());
 const selectedPayment = shallowRef(new Wallet());
 const categorySelectorOpen = ref(false);
 
+const amountError = ref(false)
+// const currencies = ['USD', 'EUR', 'GBP', 'JPY']
+// const selectedCurrency = ref('USD')
+// const value = ref('')
+// const error = ref('')
+
+// const formatValue = () => {
+//   let formattedValue = '';
+//   if (selectedCurrency.value === 'JPY') {
+//     formattedValue = Math.round(value.value).toLocaleString();
+//   } else {
+//     formattedValue = parseFloat(value.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+//   }
+//   value.value = formattedValue;
+// }
+    
+// const validateValue = () => {
+//       const pattern = /^\d+(\.\d{1,2})?$/;
+//       if (!pattern.test(value.value)) {
+//         error.value = 'Please enter a valid number';
+//       } else {
+//         error.value = '';
+//       }
+//     }
+
 const emit = defineEmits(['addExpense', 'close']);
 
 const props = defineProps({
@@ -144,7 +172,22 @@ const setDate = (value: Date) => {
   expense.value.date = value;
 };
 
-const onActionItem = () => {
+const isValidForm = (): boolean => {
+  let validForm = true
+  amountError.value = false
+  if(expense.value.amount <= 0){
+    amountError.value = true
+    validForm = false
+  }
+
+  return validForm
+}
+
+const onActionItem = (event: Event) => {
+  if(!isValidForm()){
+    event?.preventDefault()
+    return
+  }
   if (expense.value.id === '') {
     addExpense(expense.value);
     emit('addExpense');

@@ -1,5 +1,5 @@
 <template>
-  <div class="m-3">
+  <div class="revenues-container m-3 h-[90vh]">
     <div class="flex flex-row">
       <revenues-filter-tabs />
       <div class="flex justify-end">

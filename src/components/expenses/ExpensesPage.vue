@@ -21,7 +21,7 @@
   </div>
   <expenses-list
     v-if="selectedTab === 'list'"
-    class="flex mt-8"
+    class="flex my-4"
     @on-edit-expense="onEditExpense"
     @on-delete-expense="onDeleteExpense"
   />

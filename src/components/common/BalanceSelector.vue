@@ -1,5 +1,8 @@
 <template>
-  <div class="balance-select" @click.stop>
+  <div
+    class="balance-select rounded outline-0 focus:ring focus:ring-secondary-color-300"
+    @click.stop
+  >
     <div
       class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
       :class="{ open: balanceSelectorOpen }"
@@ -37,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, shallowRef, watch } from 'vue';
+import { computed, onMounted, ref, shallowRef, watch } from 'vue';
 import { availableWallets } from '../../services';
 import { getCurrencyIcon, sortList } from '../../utils';
 import { getBalanceName } from '../../utils/string-utils';
@@ -75,6 +78,18 @@ const selectBalance = (balance: Wallet) => {
   balanceSelectorOpen.value = false;
   emit('select', balance);
 };
+
+onMounted(() => {
+  const mySelect = document.querySelector('.balance-select');
+  
+  if(mySelect){
+    mySelect.addEventListener('keydown', (event: any) => {
+      if (event.keyCode === 32) {
+        balanceSelectorOpen.value = !balanceSelectorOpen.value
+      }
+    })
+  }
+})
 
 window.addEventListener('click', () => (balanceSelectorOpen.value = false));
 </script>

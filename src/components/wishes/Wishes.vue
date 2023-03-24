@@ -1,5 +1,5 @@
 <template>
-  <div class="m-3">
+  <div class="wishes-container m-3 h-[90vh]">
     <wishes-header />
     <div class="flex flex-row">
       <wishes-filter-tabs />

@@ -1,7 +1,7 @@
 <template>
-  <div class="revenue-list">
-    <table class="w-full overflow-hidden bg-neutral-color-500">
-      <thead class="revenue-list-head flex w-full">
+  <div class="revenue-list h-[91%] overflow-auto scrollbar">
+    <table class="table-auto h-fit w-full bg-neutral-color-500">
+      <thead class="revenue-list-head w-screen sticky top-0">
         <tr class="flex w-full h-10 bg-neutral-color-700">
           <th
             v-for="column in revenueColumns"

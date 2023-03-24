@@ -1,5 +1,5 @@
 <template>
-  <div class="expenses-page m-3">
+  <div class="expenses-container m-3 h-[90vh]">
     <div class="flex flex-row">
       <expenses-filter-tabs />
       <div class="flex justify-end">
