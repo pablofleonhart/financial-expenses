@@ -5,6 +5,7 @@ const categoryTypes: Record<string, any> = {
   [EXPENSE_CATEGORY.CLOTHES]: 'ph-t-shirt',
   [EXPENSE_CATEGORY.ELECTRONIC]: 'ph-desktop-tower',
   [EXPENSE_CATEGORY.FOOD]: 'ph-pizza',
+  [EXPENSE_CATEGORY.GYM]: 'ph-barbell',
   [EXPENSE_CATEGORY.HOUSE]: 'ph-armchair',
   [EXPENSE_CATEGORY.HOUSING]: 'ph-house-line',
   [EXPENSE_CATEGORY.MARKET]: 'ph-shopping-cart',

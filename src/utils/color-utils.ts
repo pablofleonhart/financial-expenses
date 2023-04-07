@@ -5,6 +5,7 @@ const expenseCategoryColors: Record<string, any> = {
   [EXPENSE_CATEGORY.CLOTHES]: '#3761ab',
   [EXPENSE_CATEGORY.ELECTRONIC]: '#f4777f',
   [EXPENSE_CATEGORY.FOOD]: '#f46d43',
+  [EXPENSE_CATEGORY.GYM]: '#ace14c',
   [EXPENSE_CATEGORY.HOUSE]: '#de77ae',
   [EXPENSE_CATEGORY.HOUSING]: '#444444',
   [EXPENSE_CATEGORY.MARKET]: '#93003a',
@@ -15,7 +16,7 @@ const expenseCategoryColors: Record<string, any> = {
   [EXPENSE_CATEGORY.SUBSCRIPTION]: '#be214d',
   [EXPENSE_CATEGORY.TRANSPORT]: '#bf812d',
   [EXPENSE_CATEGORY.TRAVEL]: '#07c9b8',
-  [EXPENSE_CATEGORY.VAPE]: '#b8e186',
+  [EXPENSE_CATEGORY.VAPE]: '#366003',
 };
 
 export const getExpenseCategoryColor = (categoryType: string) => {
