@@ -5,6 +5,7 @@ import { Wallet } from '../components/wallets/Wallet';
 import { Revenue } from '../components/revenues/Revenue';
 import { Wish } from '../components/wishes/Wish';
 import { dateToString } from './date-utils';
+import { Transaction } from '../components/transactions/Transaction';
 
 const copyCategory = (source: any) => {
   if (!source) {
@@ -123,6 +124,31 @@ export const overrideWish = (target: Wish, source: Wish) => {
   target.description = source.description;
   target.itemStatus = source.itemStatus;
   overrideCategory(target.category, source.category);
+};
+
+export const copyTransaction = (transaction: any) => {
+  return new Transaction({
+    id: transaction.id,
+    amountSent: transaction.amountSent,
+    amountReceived: transaction.amountReceived,
+    date: transaction.date,
+    description: transaction.description,
+    source: copyWallet(transaction.source),
+    target: copyWallet(transaction.target),
+  });
+};
+
+export const overrideTransaction = (
+  targetTransaction: Transaction,
+  sourceTransaction: Transaction
+) => {
+  targetTransaction.id = sourceTransaction.id;
+  targetTransaction.amountSent = sourceTransaction.amountSent;
+  targetTransaction.amountReceived = sourceTransaction.amountReceived;
+  targetTransaction.date = sourceTransaction.date;
+  targetTransaction.description = sourceTransaction.description;
+  overrideWallet(targetTransaction.source, sourceTransaction.source);
+  overrideWallet(targetTransaction.target, sourceTransaction.target);
 };
 
 const getValues = (

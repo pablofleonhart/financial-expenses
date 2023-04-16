@@ -1,0 +1,15 @@
+mutation updateWalletAmount(
+  $id: ID!,
+  $amount: Float!
+)
+{
+  updateWallet(
+    data: {
+      amount: $amount
+    }
+    where: { id: $id }
+  ){
+    id
+    amount
+  }
+}

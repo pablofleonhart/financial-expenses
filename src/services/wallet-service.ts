@@ -6,6 +6,7 @@ import {
   usePublishWalletMutation,
   usePublishManyWalletsMutation,
   useUpdateWalletMutation,
+  useUpdateWalletAmountMutation,
 } from '../graphql/generated';
 import { WalletType, WALLET_TYPE } from '../types';
 import { copyWallet, sortList } from '../utils';
@@ -32,10 +33,11 @@ const initializeData = () => {
   loadSortSettings();
 };
 
-const WALLET_TYPE_KEY = 'wallet-type';
+const WALLET_TYPE_KEY = 'wallet-tab';
 
-export const selectedWalletType: WalletType = reactive({
+export const selectedWalletTab: WalletType = reactive({
   id: WALLET_TYPE.BALANCE,
+  key: 'balance',
   name: 'Saldos',
 });
 
@@ -43,7 +45,7 @@ const loadSelectedType = () => {
   const localSettings = localStorage.getItem(WALLET_TYPE_KEY);
 
   if (localSettings) {
-    Object.assign(selectedWalletType, JSON.parse(localSettings));
+    Object.assign(selectedWalletTab, JSON.parse(localSettings));
   }
 };
 
@@ -224,17 +226,42 @@ export const sortWallets = (column?: string) => {
   localStorage.setItem(WALLET_LIST_KEY, JSON.stringify(walletSettings));
 };
 
-export const filterWallets = (
-  selectedType: WalletType = selectedWalletType
-) => {
+export const filterWallets = (selectedType: WalletType = selectedWalletTab) => {
   const result = allWalletItems.filter((item) => {
     return item.type === selectedType.id;
   });
   filteredWalletItems.splice(0);
   Object.assign(filteredWalletItems, result);
   sortWallets();
-  Object.assign(selectedWalletType, selectedType);
-  localStorage.setItem(WALLET_TYPE_KEY, JSON.stringify(selectedWalletType));
+  Object.assign(selectedWalletTab, selectedType);
+  localStorage.setItem(WALLET_TYPE_KEY, JSON.stringify(selectedWalletTab));
+};
+
+export const updateWalletAmount = async (wallet: Wallet) => {
+  if (!wallet) {
+    throw new Error('Wallet does not exist');
+  }
+
+  return new Promise((resolve) => {
+    const { mutate: updateWallet, onDone } = useUpdateWalletAmountMutation({});
+    updateWallet({
+      id: wallet.id,
+      amount: wallet.amount,
+    });
+
+    onDone(() => {
+      const oldWallet = getWalletByID(wallet.id);
+      if (oldWallet) {
+        const index = allWalletItems.indexOf(oldWallet);
+        allWalletItems.splice(index, 1);
+        allWalletItems.push(wallet);
+        sortWallets();
+      }
+      publishWallet(wallet.id);
+      filterWallets();
+      resolve(true);
+    });
+  });
 };
 
 initializeData();

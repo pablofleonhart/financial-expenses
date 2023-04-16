@@ -7,9 +7,11 @@ query GetTransactions {
     description
     source {
       id
+      broker
     }
     target {
       id
+      broker
     }
   }
 }

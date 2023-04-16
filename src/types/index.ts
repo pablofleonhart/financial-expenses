@@ -69,5 +69,6 @@ export enum WALLET_TYPE {
 
 export type WalletType = {
   id: number;
+  key: string;
   name: string;
 };

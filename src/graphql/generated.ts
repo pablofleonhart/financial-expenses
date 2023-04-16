@@ -8479,6 +8479,16 @@ export type PublishWalletMutation = {
   } | null;
 };
 
+export type UpdateWalletAmountMutationVariables = Exact<{
+  id: Scalars['ID'];
+  amount: Scalars['Float'];
+}>;
+
+export type UpdateWalletAmountMutation = {
+  __typename?: 'Mutation';
+  updateWallet?: { __typename?: 'Wallet'; id: string; amount: number } | null;
+};
+
 export type UpdateWalletMutationVariables = Exact<{
   id: Scalars['ID'];
   amount: Scalars['Float'];
@@ -8682,8 +8692,16 @@ export type GetTransactionsQuery = {
     amountReceived: number;
     date: any;
     description?: string | null;
-    source?: { __typename?: 'Wallet'; id: string } | null;
-    target?: { __typename?: 'Wallet'; id: string } | null;
+    source?: {
+      __typename?: 'Wallet';
+      id: string;
+      broker?: string | null;
+    } | null;
+    target?: {
+      __typename?: 'Wallet';
+      id: string;
+      broker?: string | null;
+    } | null;
   }>;
 };
 
@@ -9740,6 +9758,56 @@ export type PublishWalletMutationCompositionFunctionResult =
     PublishWalletMutation,
     PublishWalletMutationVariables
   >;
+export const UpdateWalletAmountDocument = gql`
+  mutation updateWalletAmount($id: ID!, $amount: Float!) {
+    updateWallet(data: { amount: $amount }, where: { id: $id }) {
+      id
+      amount
+    }
+  }
+`;
+
+/**
+ * __useUpdateWalletAmountMutation__
+ *
+ * To run a mutation, you first call `useUpdateWalletAmountMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateWalletAmountMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateWalletAmountMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *     amount: // value for 'amount'
+ *   },
+ * });
+ */
+export function useUpdateWalletAmountMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        UpdateWalletAmountMutation,
+        UpdateWalletAmountMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          UpdateWalletAmountMutation,
+          UpdateWalletAmountMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    UpdateWalletAmountMutation,
+    UpdateWalletAmountMutationVariables
+  >(UpdateWalletAmountDocument, options);
+}
+export type UpdateWalletAmountMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    UpdateWalletAmountMutation,
+    UpdateWalletAmountMutationVariables
+  >;
 export const UpdateWalletDocument = gql`
   mutation updateWallet(
     $id: ID!
@@ -10487,9 +10555,11 @@ export const GetTransactionsDocument = gql`
       description
       source {
         id
+        broker
       }
       target {
         id
+        broker
       }
     }
   }

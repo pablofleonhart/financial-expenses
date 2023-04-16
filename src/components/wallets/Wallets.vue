@@ -4,19 +4,30 @@
     <div class="flex flex-row">
       <wallets-filter-tabs />
       <div class="flex justify-end">
-        <add-button @click="onAddWallet"></add-button>
+        <add-button @click="onAddWalletOrTransaction"></add-button>
       </div>
     </div>
     <wallets-list
+      v-if="selectedTab.key !== 'transactions'"
       class="flex mt-8"
       @on-edit-wallet="onEditWallet"
       @on-delete-wallet="onDeleteWallet"
+    />
+    <transactions-list
+      v-else
+      class="flex mt-8"
+      @on-edit-transaction="onEditTransaction"
     />
   </div>
   <wallet-item-modal
     :opened="showWalletModal"
     :wallet="objWallet"
     @close="showWalletModal = false"
+  />
+  <transaction-item-modal
+    :opened="showTransactionModal"
+    :transaction="objTransaction"
+    @close="showTransactionModal = false"
   />
   <confirmation-modal
     :message="modalMessage"
@@ -27,30 +38,41 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import AddButton from '../common/AddButton.vue';
-import { deleteWallet, loadWallets } from '../../services';
+import { deleteWallet, loadWallets, selectedWalletTab } from '../../services';
 import { Wallet } from './Wallet';
 import ConfirmationModal from '../common/ConfirmationModal.vue';
 import WalletsFilterTabs from './WalletsFilterTabs.vue';
 import WalletsHeader from './WalletsHeader.vue';
 import WalletItemModal from './WalletItemModal.vue';
 import WalletsList from './WalletsList.vue';
-import { copyWallet } from '../../utils';
+import { copyTransaction, copyWallet } from '../../utils';
+import TransactionItemModal from '../transactions/TransactionItemModal.vue';
+import TransactionsList from '../transactions/TransactionsList.vue';
+import { Transaction } from '../transactions/Transaction';
 
 const showWalletModal = ref(false);
 const showConfirmationModal = ref(false);
+const showTransactionModal = ref(false);
 const modalMessage = ref('');
 const objWallet = ref(new Wallet());
+const objTransaction = ref(new Transaction());
 let walletToDelete: Wallet = new Wallet();
+const selectedTab = computed(() => selectedWalletTab);
 
 onMounted(() => {
   loadWallets();
 });
 
-const onAddWallet = () => {
-  objWallet.value = new Wallet();
-  showWalletModal.value = true;
+const onAddWalletOrTransaction = () => {
+  if (selectedTab.value.key === 'transactions') {
+    objTransaction.value = new Transaction();
+    showTransactionModal.value = true;
+  } else {
+    objWallet.value = new Wallet();
+    showWalletModal.value = true;
+  }
 };
 
 const onEditWallet = (wallet: Wallet) => {
@@ -62,6 +84,11 @@ const onDeleteWallet = (wallet: Wallet) => {
   modalMessage.value = 'Deseja realmente excluir essa carteira?';
   showConfirmationModal.value = true;
   walletToDelete = wallet;
+};
+
+const onEditTransaction = (transaction: Transaction) => {
+  objTransaction.value = copyTransaction(transaction);
+  showTransactionModal.value = true;
 };
 
 const onAcceptDelete = () => {

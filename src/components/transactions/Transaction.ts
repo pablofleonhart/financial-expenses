@@ -2,8 +2,8 @@ import { Wallet } from '../wallets/Wallet';
 
 export class Transaction {
   public id: string;
-  public amounSent: number;
-  public amounReceived: number;
+  public amountSent: number;
+  public amountReceived: number;
   public date: Date | string;
   public description: string;
   public source: Wallet;
@@ -12,8 +12,8 @@ export class Transaction {
   constructor(
     objTransaction: Transaction = {
       id: '',
-      amounSent: 0,
-      amounReceived: 0,
+      amountSent: 0,
+      amountReceived: 0,
       date: new Date(),
       description: '',
       source: new Wallet(),
@@ -21,8 +21,8 @@ export class Transaction {
     }
   ) {
     this.id = objTransaction.id;
-    this.amounSent = objTransaction.amounSent;
-    this.amounReceived = objTransaction.amounReceived;
+    this.amountSent = objTransaction.amountSent;
+    this.amountReceived = objTransaction.amountReceived;
     this.date = objTransaction.date;
     this.description = objTransaction.description;
     this.source = objTransaction.source;
