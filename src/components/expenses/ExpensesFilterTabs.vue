@@ -1,5 +1,5 @@
 <template>
-  <ul class="tabs flex h-8 w-full border-b border-neutral-color">
+  <ul class="tabs flex gap-4 h-8 w-full border-b border-neutral-color">
     <li v-for="tab in tabItems" :key="tab.name">
       <button
         class="filter-tab"

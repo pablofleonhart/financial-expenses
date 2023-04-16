@@ -1,5 +1,7 @@
 <template>
-  <ul class="revenue-filter-tabs flex h-8 w-full border-b border-neutral-color">
+  <ul
+    class="revenue-filter-tabs flex gap-6 h-8 w-full border-b border-neutral-color"
+  >
     <li v-for="tab in tabItems" :key="tab.name">
       <button
         :key="tab.id"

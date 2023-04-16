@@ -34,7 +34,7 @@
           <td
             class="flex items-center justify-center p-2 h-full w-1/6 min-w-24"
           >
-            {{ item.source.broker }}
+            {{ getBalanceName(item.source) }}
           </td>
           <td class="flex items-center justify-end p-2 h-full w-1/6 min-w-44">
             {{ formatCurrency(item.amountReceived, item.target.currency) }}
@@ -42,7 +42,7 @@
           <td
             class="flex items-center justify-center p-2 h-full w-1/6 min-w-44"
           >
-            {{ item.target.broker }}
+            {{ getBalanceName(item.target) }}
           </td>
           <td
             class="flex items-center justify-center p-2 h-full w-1/6 min-w-44"
@@ -79,6 +79,7 @@ import {
 import { sortTransactions, transactionSettings } from '../../services';
 import { Transaction } from './Transaction';
 import { allTransactionsItems } from '../../services/transaction-service';
+import { getBalanceName } from '../../utils/string-utils';
 
 const transactionCollumns = [
   {

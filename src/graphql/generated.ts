@@ -8696,11 +8696,13 @@ export type GetTransactionsQuery = {
       __typename?: 'Wallet';
       id: string;
       broker?: string | null;
+      holder: string;
     } | null;
     target?: {
       __typename?: 'Wallet';
       id: string;
       broker?: string | null;
+      holder: string;
     } | null;
   }>;
 };
@@ -10184,7 +10186,7 @@ export type GetAccountByEmailQueryCompositionFunctionResult =
   >;
 export const GetCategoriesDocument = gql`
   query GetCategories {
-    categories(first: 15, orderBy: name_ASC) {
+    categories(first: 100, orderBy: name_ASC) {
       id
       name
       type
@@ -10556,10 +10558,12 @@ export const GetTransactionsDocument = gql`
       source {
         id
         broker
+        holder
       }
       target {
         id
         broker
+        holder
       }
     }
   }

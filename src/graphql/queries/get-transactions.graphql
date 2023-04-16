@@ -8,10 +8,12 @@ query GetTransactions {
     source {
       id
       broker
+      holder
     }
     target {
       id
       broker
+      holder
     }
   }
 }

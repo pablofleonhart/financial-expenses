@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs flex h-8 w-full border-b border-neutral-color">
+  <div class="tabs flex gap-6 h-8 w-full border-b border-neutral-color">
     <button
       class="filter-tab"
       :class="{

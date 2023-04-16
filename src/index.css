@@ -40,12 +40,12 @@
 
 @layer components {
   .filter-tab {
-    @apply flex items-center h-full px-2 text-neutral-color-off border-x border-t border-neutral-color-700
-    hover:bg-primary-color-300 hover:border-primary-color-700 hover:text-neutral-color;
+    @apply border-b-2 border-b-transparent flex text-lg items-center h-full px-2 rounded-md text-neutral-color-off 
+    hover:bg-primary-color-300 hover:border-b-neutral-color hover:border-primary-color-700 hover:text-neutral-color;
   }
 
   .filter-tab-selected {
-    @apply bg-primary-color-700 font-bold border-primary-color-300 text-neutral-color;
+    @apply bg-primary-color-700 border-b-neutral-color text-neutral-color;
   }
 
   .button-action {

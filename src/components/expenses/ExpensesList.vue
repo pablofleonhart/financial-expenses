@@ -30,7 +30,7 @@
             :key="item.id"
           >
             <td class="flex items-center p-2 h-full w-1/6 min-w-24 justify-end">
-              {{ formatCurrency(item.amount, item.currency) }}
+              {{ formatCurrency(item.amount, item.payment.currency) }}
             </td>
             <td
               class="flex items-center p-2 h-full w-1/6 min-w-24 justify-center"
