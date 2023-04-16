@@ -1,0 +1,14 @@
+mutation publishTransaction($id: ID!) {
+  publishTransaction(where: { id: $id}, to: PUBLISHED) {
+    amountSent
+    amountReceived
+    date
+    description
+    source {
+      id
+    }
+    target {
+      id
+    }
+  }
+}

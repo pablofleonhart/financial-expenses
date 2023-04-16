@@ -2,12 +2,11 @@
   "name": "financial-expenses",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "codegen": "graphql-codegen",
+    "codegen": "graphql-codegen && node src/scripts/post-codegen.js",
     "lint": "eslint src --ext .ts,.vue --fix",
     "tdd": "vitest --config ./vitest.config.ts --watch=true",
     "test": "vitest --config ./vitest.config.ts",

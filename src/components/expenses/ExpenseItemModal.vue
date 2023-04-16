@@ -14,7 +14,7 @@
           tabindex="0"
           v-model="expense.amount"
           class="outline-0 rounded p-2 h-10 bg-neutral-color-700 focus:ring focus:ring-secondary-color-300"
-          :class="{'border border-red-500': amountError }"
+          :class="{ 'border border-red-500': amountError }"
           type="number"
           min="0"
           required
@@ -111,7 +111,7 @@ const selectedCategory = shallowRef(new Category());
 const selectedPayment = shallowRef(new Wallet());
 const categorySelectorOpen = ref(false);
 
-const amountError = ref(false)
+const amountError = ref(false);
 // const currencies = ['USD', 'EUR', 'GBP', 'JPY']
 // const selectedCurrency = ref('USD')
 // const value = ref('')
@@ -126,7 +126,7 @@ const amountError = ref(false)
 //   }
 //   value.value = formattedValue;
 // }
-    
+
 // const validateValue = () => {
 //       const pattern = /^\d+(\.\d{1,2})?$/;
 //       if (!pattern.test(value.value)) {
@@ -173,20 +173,20 @@ const setDate = (value: Date) => {
 };
 
 const isValidForm = (): boolean => {
-  let validForm = true
-  amountError.value = false
-  if(expense.value.amount <= 0){
-    amountError.value = true
-    validForm = false
+  let validForm = true;
+  amountError.value = false;
+  if (expense.value.amount <= 0) {
+    amountError.value = true;
+    validForm = false;
   }
 
-  return validForm
-}
+  return validForm;
+};
 
 const onActionItem = (event: Event) => {
-  if(!isValidForm()){
-    event?.preventDefault()
-    return
+  if (!isValidForm()) {
+    event?.preventDefault();
+    return;
   }
   if (expense.value.id === '') {
     addExpense(expense.value);

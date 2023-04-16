@@ -1,0 +1,30 @@
+mutation addTransaction(
+  $amountSent: Float!,
+  $amountReceived: Float!,
+  $date: Date!,
+  $description: String!,
+  $sourceID: ID!
+  $targetID: ID!
+)
+{
+  createTransaction(
+    data: {
+      amountSent: $amountSent,
+      amountReceived: $amountReceived,
+      date: $date,
+      description: $description,
+      source: {
+        connect: {
+          id: $sourceID
+        }
+      },
+      target: {
+        connect: {
+          id: $targetID
+        }
+      }
+    }
+  ) {
+    id
+  }
+}

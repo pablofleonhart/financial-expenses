@@ -1,0 +1,42 @@
+mutation updateTransaction(
+  $id: ID!,
+  $amountSent: Float!,
+  $amountReceived: Float!,
+  $date: Date!,
+  $description: String!,
+  $sourceID: ID!,
+  $targetID: ID!
+)
+{
+  updateTransaction(
+    data: {
+      amountSent: $amountSent,
+      amountReceived: $amountReceived,
+      description: $description,
+      date: $date,
+      source: {
+        connect: {
+          id: $sourceID
+        }
+      },
+      target: {
+        connect: {
+          id: $targetID
+        }
+      }
+    }
+    where: { id: $id }
+  ){
+    id
+    amountSent
+    amountReceived
+    description
+    date
+    source {
+      id
+    }
+    target {
+      id
+    }
+  }
+}

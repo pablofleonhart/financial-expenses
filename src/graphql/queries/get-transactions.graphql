@@ -1,0 +1,15 @@
+query GetTransactions {
+  transactions(first: 100, orderBy: createdAt_DESC) {
+    id
+    amountSent
+    amountReceived
+    date
+    description
+    source {
+      id
+    }
+    target {
+      id
+    }
+  }
+}

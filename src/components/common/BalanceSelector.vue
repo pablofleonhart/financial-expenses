@@ -81,15 +81,15 @@ const selectBalance = (balance: Wallet) => {
 
 onMounted(() => {
   const mySelect = document.querySelector('.balance-select');
-  
-  if(mySelect){
+
+  if (mySelect) {
     mySelect.addEventListener('keydown', (event: any) => {
       if (event.keyCode === 32) {
-        balanceSelectorOpen.value = !balanceSelectorOpen.value
+        balanceSelectorOpen.value = !balanceSelectorOpen.value;
       }
-    })
+    });
   }
-})
+});
 
 window.addEventListener('click', () => (balanceSelectorOpen.value = false));
 </script>
