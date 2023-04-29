@@ -36,6 +36,7 @@ export let expenseCategoriesColorValues: string[] = [];
 
 export const reloadCharts = ref(false);
 export const showVariablesExpense = ref(true);
+export const showTravelExpense = ref(false);
 
 const EXPENSE_LIST_KEY = 'expense-list';
 const EXPENSE_PERIOD = 'expense-period';
@@ -138,6 +139,7 @@ export const addExpense = (expense: Expense) => {
       currency: expense.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
+      travel: expense.travel,
     });
 
     onDone(async (result) => {
@@ -171,6 +173,7 @@ export const editExpense = async (expense: Expense) => {
       currency: expense.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
+      travel: expense.travel,
     });
 
     onDone(() => {
@@ -209,6 +212,7 @@ export const deleteExpense = async (expense: Expense) => {
       currency: expense.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
+      travel: expense.travel,
     });
 
     onDone(() => {
@@ -279,12 +283,20 @@ export const topFiveExpenseCategories = computed(() => {
 });
 
 export const filterExpenses = (period: MonthPeriod = selectedExpensePeriod) => {
-  let result = allExpenseItems.filter(
-    (item) => item.variable === showVariablesExpense.value
-  );
+  let result = [];
+
+  if (showTravelExpense.value) {
+    result = allExpenseItems.filter((item) => item.travel);
+  } else {
+    result = allExpenseItems.filter(
+      (item) => item.variable === showVariablesExpense.value && !item.travel
+    );
+  }
+
   result = result.filter((item) => {
     return isDateInPeriod(item.date, period);
   });
+
   filteredExpenseItems.splice(0);
   Object.assign(filteredExpenseItems, result);
   sortExpenses();
@@ -307,7 +319,6 @@ const expenseEdited = async (expense: Expense) => {
   }
 
   const oldExpense = getExpenseByID(expense.id);
-  console.log(oldExpense);
 
   if (!oldExpense) {
     return;

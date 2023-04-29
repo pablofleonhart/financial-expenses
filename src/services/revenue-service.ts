@@ -342,7 +342,6 @@ const revenueEdited = async (revenue: Revenue) => {
   }
 
   const oldRevenue = getRevenueByID(revenue.id);
-  console.log(oldRevenue);
 
   if (!oldRevenue) {
     return;

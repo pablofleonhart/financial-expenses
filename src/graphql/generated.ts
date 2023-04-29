@@ -1841,6 +1841,7 @@ export type Expense = Node & {
   scheduledIn: Array<ScheduledOperation>;
   /** System stage field */
   stage: Stage;
+  travel: Scalars['Boolean'];
   /** The time the document was updated */
   updatedAt: Scalars['DateTime'];
   /** User that last updated this document */
@@ -1929,6 +1930,7 @@ export type ExpenseCreateInput = {
   deleted?: InputMaybe<Scalars['Boolean']>;
   note?: InputMaybe<Scalars['String']>;
   payment?: InputMaybe<WalletCreateOneInlineInput>;
+  travel: Scalars['Boolean'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   variable: Scalars['Boolean'];
 };
@@ -2100,6 +2102,9 @@ export type ExpenseManyWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  travel?: InputMaybe<Scalars['Boolean']>;
+  /** Any other value that exists and is not equal to the given value. */
+  travel_not?: InputMaybe<Scalars['Boolean']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -2140,6 +2145,8 @@ export enum ExpenseOrderByInput {
   NoteDesc = 'note_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
+  TravelAsc = 'travel_ASC',
+  TravelDesc = 'travel_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
   UpdatedAtDesc = 'updatedAt_DESC',
   VariableAsc = 'variable_ASC',
@@ -2156,6 +2163,7 @@ export type ExpenseUpdateInput = {
   deleted?: InputMaybe<Scalars['Boolean']>;
   note?: InputMaybe<Scalars['String']>;
   payment?: InputMaybe<WalletUpdateOneInlineInput>;
+  travel?: InputMaybe<Scalars['Boolean']>;
   variable?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -2183,6 +2191,7 @@ export type ExpenseUpdateManyInput = {
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   note?: InputMaybe<Scalars['String']>;
+  travel?: InputMaybe<Scalars['Boolean']>;
   variable?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -2379,6 +2388,9 @@ export type ExpenseWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  travel?: InputMaybe<Scalars['Boolean']>;
+  /** Any other value that exists and is not equal to the given value. */
+  travel_not?: InputMaybe<Scalars['Boolean']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -8232,6 +8244,7 @@ export type AddExpenseMutationVariables = Exact<{
   currency: Scalars['String'];
   paymentID: Scalars['ID'];
   variable: Scalars['Boolean'];
+  travel: Scalars['Boolean'];
 }>;
 
 export type AddExpenseMutation = {
@@ -8254,6 +8267,7 @@ export type PublishExpenseMutation = {
     note?: string | null;
     currency: string;
     variable: boolean;
+    travel: boolean;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -8284,6 +8298,7 @@ export type UpdateExpenseMutationVariables = Exact<{
   currency: Scalars['String'];
   paymentID: Scalars['ID'];
   variable: Scalars['Boolean'];
+  travel: Scalars['Boolean'];
 }>;
 
 export type UpdateExpenseMutation = {
@@ -8298,6 +8313,7 @@ export type UpdateExpenseMutation = {
     note?: string | null;
     currency: string;
     variable: boolean;
+    travel: boolean;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -8650,6 +8666,7 @@ export type GetExpensesQuery = {
     note?: string | null;
     currency: string;
     variable: boolean;
+    travel: boolean;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -8934,6 +8951,7 @@ export const AddExpenseDocument = gql`
     $currency: String!
     $paymentID: ID!
     $variable: Boolean!
+    $travel: Boolean!
   ) {
     createExpense(
       data: {
@@ -8946,6 +8964,7 @@ export const AddExpenseDocument = gql`
         currency: $currency
         payment: { connect: { id: $paymentID } }
         variable: $variable
+        travel: $travel
       }
     ) {
       id
@@ -8975,6 +8994,7 @@ export const AddExpenseDocument = gql`
  *     currency: // value for 'currency'
  *     paymentID: // value for 'paymentID'
  *     variable: // value for 'variable'
+ *     travel: // value for 'travel'
  *   },
  * });
  */
@@ -9025,6 +9045,7 @@ export const PublishExpenseDocument = gql`
         type
       }
       variable
+      travel
     }
   }
 `;
@@ -9081,6 +9102,7 @@ export const UpdateExpenseDocument = gql`
     $currency: String!
     $paymentID: ID!
     $variable: Boolean!
+    $travel: Boolean!
   ) {
     updateExpense(
       data: {
@@ -9093,6 +9115,7 @@ export const UpdateExpenseDocument = gql`
         currency: $currency
         payment: { connect: { id: $paymentID } }
         variable: $variable
+        travel: $travel
       }
       where: { id: $id }
     ) {
@@ -9118,6 +9141,7 @@ export const UpdateExpenseDocument = gql`
         type
       }
       variable
+      travel
     }
   }
 `;
@@ -9145,6 +9169,7 @@ export const UpdateExpenseDocument = gql`
  *     currency: // value for 'currency'
  *     paymentID: // value for 'paymentID'
  *     variable: // value for 'variable'
+ *     travel: // value for 'travel'
  *   },
  * });
  */
@@ -10402,6 +10427,7 @@ export const GetExpensesDocument = gql`
         type
       }
       variable
+      travel
     }
   }
 `;

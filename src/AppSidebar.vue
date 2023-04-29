@@ -80,12 +80,18 @@ const sidebarItems: Array<ISidebarItem> = [
   },
   {
     id: 4,
+    name: 'Viagens',
+    icon: 'ph-airplane-tilt',
+    route: 'travels',
+  },
+  {
+    id: 5,
     name: 'Carteiras',
     icon: 'ph-wallet',
     route: 'wallet',
   },
   {
-    id: 5,
+    id: 6,
     name: 'Planos',
     icon: 'ph-lightbulb',
     route: 'wishes',

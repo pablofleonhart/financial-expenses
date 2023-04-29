@@ -70,20 +70,35 @@
           placeholder="Data da renda ou despesa"
           @update:model-value="setDate"
         />
-        <textarea
-          v-model="expense.note"
-          class="flex col-span-2 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-24"
-          placeholder="Descreva a renda ou despesa"
-        />
+        <div class="flex items-center text-lg gap-2">
+          <input
+            class="h-5 w-5"
+            id="travel_check"
+            type="checkbox"
+            v-model="expense.travel"
+          />
+          <label for="travel_check" class="text-base">Viagem</label>
+        </div>
         <div class="flex items-center text-lg gap-2">
           <input
             class="h-5 w-5"
             id="variable_check"
             type="checkbox"
             v-model="expense.variable"
+            :disabled="expense.travel"
           />
-          <label for="variable_check" class="text-base">Variável</label>
+          <label
+            for="variable_check"
+            class="text-base"
+            :class="{ 'text-neutral-color-off': expense.travel }"
+            >Variável</label
+          >
         </div>
+        <textarea
+          v-model="expense.note"
+          class="flex col-span-2 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-24"
+          placeholder="Descreva a renda ou despesa"
+        />
       </div>
       <div class="expense-item-actions flex justify-end gap-4">
         <button

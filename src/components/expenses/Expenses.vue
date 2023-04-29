@@ -36,6 +36,7 @@ import {
   deleteExpense,
   filterExpenses,
   loadExpenses,
+  showTravelExpense,
   showVariablesExpense,
 } from '../../services';
 import { Expense } from './Expense';
@@ -49,19 +50,28 @@ const objExpense = ref(new Expense());
 let expenseToDelete: Expense = new Expense();
 const $route = useRoute();
 
+const applyFilterExpenses = () => {
+  let variableExpense = true;
+  let travelExpense = false;
+
+  if ($route.fullPath === '/fixed-expenses') {
+    variableExpense = false;
+  } else if ($route.fullPath === '/travels') {
+    travelExpense = true;
+  }
+
+  showVariablesExpense.value = variableExpense;
+  showTravelExpense.value = travelExpense;
+  filterExpenses();
+};
+
 onMounted(async () => {
-  console.log($route);
   await loadExpenses();
+  applyFilterExpenses();
 });
 
 watch($route, () => {
-  console.log($route.fullPath);
-  let value = true;
-  if ($route.fullPath === '/fixed-expenses') {
-    value = false;
-  }
-  showVariablesExpense.value = value;
-  filterExpenses();
+  applyFilterExpenses();
 });
 
 const onAddExpense = () => {

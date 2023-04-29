@@ -38,6 +38,7 @@ export const copyExpense = (source: Expense) => {
     author: new Author(),
     payment: copyWallet(source.payment),
     variable: source.variable,
+    travel: source.travel,
   });
 };
 
@@ -51,6 +52,7 @@ export const overrideExpense = (target: Expense, source: Expense) => {
   overrideCategory(target.category, source.category);
   overrideWallet(target.payment, source.payment);
   target.variable = source.variable;
+  target.travel = source.travel;
 };
 
 export const copyRevenue = (source: any) => {

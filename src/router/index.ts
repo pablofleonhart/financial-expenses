@@ -59,6 +59,12 @@ const router = createRouter({
       component: Wishes,
       meta: { middlewares: [isAuthenticated], title: 'Planos' },
     },
+    {
+      path: '/travels',
+      name: 'travels',
+      component: Expenses,
+      meta: { middlewares: [isAuthenticated], title: 'Viagens' },
+    },
   ] as RouteRecordRaw[],
 });
 
