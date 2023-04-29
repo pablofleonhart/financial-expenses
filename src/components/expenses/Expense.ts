@@ -13,6 +13,7 @@ export class Expense {
   public author: Author;
   public currency: string;
   public payment: Wallet;
+  public variable: boolean;
 
   constructor(
     objExpense: Expense = {
@@ -26,6 +27,7 @@ export class Expense {
       author: new Author(),
       currency: 'euro',
       payment: new Wallet(),
+      variable: true,
     }
   ) {
     this.id = objExpense.id;
@@ -38,5 +40,6 @@ export class Expense {
     this.author = objExpense.author;
     this.currency = objExpense.currency;
     this.payment = objExpense.payment;
+    this.variable = objExpense.variable;
   }
 }

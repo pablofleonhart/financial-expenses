@@ -35,6 +35,7 @@ export let expenseCategoriesValues: number[] = [];
 export let expenseCategoriesColorValues: string[] = [];
 
 export const reloadCharts = ref(false);
+export const showVariablesExpense = ref(true);
 
 const EXPENSE_LIST_KEY = 'expense-list';
 const EXPENSE_PERIOD = 'expense-period';
@@ -136,6 +137,7 @@ export const addExpense = (expense: Expense) => {
       categoryID: expense.category.id,
       currency: expense.currency,
       paymentID: expense.payment.id,
+      variable: expense.variable,
     });
 
     onDone(async (result) => {
@@ -168,6 +170,7 @@ export const editExpense = async (expense: Expense) => {
       categoryID: expense.category.id,
       currency: expense.currency,
       paymentID: expense.payment.id,
+      variable: expense.variable,
     });
 
     onDone(() => {
@@ -205,6 +208,7 @@ export const deleteExpense = async (expense: Expense) => {
       categoryID: expense.category.id,
       currency: expense.currency,
       paymentID: expense.payment.id,
+      variable: expense.variable,
     });
 
     onDone(() => {
@@ -275,7 +279,10 @@ export const topFiveExpenseCategories = computed(() => {
 });
 
 export const filterExpenses = (period: MonthPeriod = selectedExpensePeriod) => {
-  const result = allExpenseItems.filter((item) => {
+  let result = allExpenseItems.filter(
+    (item) => item.variable === showVariablesExpense.value
+  );
+  result = result.filter((item) => {
     return isDateInPeriod(item.date, period);
   });
   filteredExpenseItems.splice(0);

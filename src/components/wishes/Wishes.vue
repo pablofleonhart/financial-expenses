@@ -101,6 +101,7 @@ const onCompletePlan = (wish: Wish) => {
     author: new Author(),
     currency: wish.currency,
     payment: new Wallet(),
+    variable: true,
   });
 };
 </script>

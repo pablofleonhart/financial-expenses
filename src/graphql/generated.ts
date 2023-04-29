@@ -1845,6 +1845,7 @@ export type Expense = Node & {
   updatedAt: Scalars['DateTime'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
+  variable: Scalars['Boolean'];
 };
 
 export type ExpenseAccountArgs = {
@@ -1929,6 +1930,7 @@ export type ExpenseCreateInput = {
   note?: InputMaybe<Scalars['String']>;
   payment?: InputMaybe<WalletCreateOneInlineInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
+  variable: Scalars['Boolean'];
 };
 
 export type ExpenseCreateManyInlineInput = {
@@ -2114,6 +2116,9 @@ export type ExpenseManyWhereInput = {
   /** All values that are not contained in given list. */
   updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
+  variable?: InputMaybe<Scalars['Boolean']>;
+  /** Any other value that exists and is not equal to the given value. */
+  variable_not?: InputMaybe<Scalars['Boolean']>;
 };
 
 export enum ExpenseOrderByInput {
@@ -2137,6 +2142,8 @@ export enum ExpenseOrderByInput {
   PublishedAtDesc = 'publishedAt_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
   UpdatedAtDesc = 'updatedAt_DESC',
+  VariableAsc = 'variable_ASC',
+  VariableDesc = 'variable_DESC',
 }
 
 export type ExpenseUpdateInput = {
@@ -2149,6 +2156,7 @@ export type ExpenseUpdateInput = {
   deleted?: InputMaybe<Scalars['Boolean']>;
   note?: InputMaybe<Scalars['String']>;
   payment?: InputMaybe<WalletUpdateOneInlineInput>;
+  variable?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ExpenseUpdateManyInlineInput = {
@@ -2175,6 +2183,7 @@ export type ExpenseUpdateManyInput = {
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   note?: InputMaybe<Scalars['String']>;
+  variable?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ExpenseUpdateManyWithNestedWhereInput = {
@@ -2386,6 +2395,9 @@ export type ExpenseWhereInput = {
   /** All values that are not contained in given list. */
   updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
+  variable?: InputMaybe<Scalars['Boolean']>;
+  /** Any other value that exists and is not equal to the given value. */
+  variable_not?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
@@ -8219,6 +8231,7 @@ export type AddExpenseMutationVariables = Exact<{
   categoryID: Scalars['ID'];
   currency: Scalars['String'];
   paymentID: Scalars['ID'];
+  variable: Scalars['Boolean'];
 }>;
 
 export type AddExpenseMutation = {
@@ -8240,6 +8253,7 @@ export type PublishExpenseMutation = {
     deleted?: boolean | null;
     note?: string | null;
     currency: string;
+    variable: boolean;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -8269,6 +8283,7 @@ export type UpdateExpenseMutationVariables = Exact<{
   categoryID: Scalars['ID'];
   currency: Scalars['String'];
   paymentID: Scalars['ID'];
+  variable: Scalars['Boolean'];
 }>;
 
 export type UpdateExpenseMutation = {
@@ -8282,6 +8297,7 @@ export type UpdateExpenseMutation = {
     deleted?: boolean | null;
     note?: string | null;
     currency: string;
+    variable: boolean;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -8633,6 +8649,7 @@ export type GetExpensesQuery = {
     deleted?: boolean | null;
     note?: string | null;
     currency: string;
+    variable: boolean;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -8916,6 +8933,7 @@ export const AddExpenseDocument = gql`
     $categoryID: ID!
     $currency: String!
     $paymentID: ID!
+    $variable: Boolean!
   ) {
     createExpense(
       data: {
@@ -8927,6 +8945,7 @@ export const AddExpenseDocument = gql`
         category: { connect: { id: $categoryID } }
         currency: $currency
         payment: { connect: { id: $paymentID } }
+        variable: $variable
       }
     ) {
       id
@@ -8955,6 +8974,7 @@ export const AddExpenseDocument = gql`
  *     categoryID: // value for 'categoryID'
  *     currency: // value for 'currency'
  *     paymentID: // value for 'paymentID'
+ *     variable: // value for 'variable'
  *   },
  * });
  */
@@ -9004,6 +9024,7 @@ export const PublishExpenseDocument = gql`
         deleted
         type
       }
+      variable
     }
   }
 `;
@@ -9059,6 +9080,7 @@ export const UpdateExpenseDocument = gql`
     $categoryID: ID!
     $currency: String!
     $paymentID: ID!
+    $variable: Boolean!
   ) {
     updateExpense(
       data: {
@@ -9070,6 +9092,7 @@ export const UpdateExpenseDocument = gql`
         category: { connect: { id: $categoryID } }
         currency: $currency
         payment: { connect: { id: $paymentID } }
+        variable: $variable
       }
       where: { id: $id }
     ) {
@@ -9094,6 +9117,7 @@ export const UpdateExpenseDocument = gql`
         deleted
         type
       }
+      variable
     }
   }
 `;
@@ -9120,6 +9144,7 @@ export const UpdateExpenseDocument = gql`
  *     categoryID: // value for 'categoryID'
  *     currency: // value for 'currency'
  *     paymentID: // value for 'paymentID'
+ *     variable: // value for 'variable'
  *   },
  * });
  */
@@ -10376,6 +10401,7 @@ export const GetExpensesDocument = gql`
         holder
         type
       }
+      variable
     }
   }
 `;

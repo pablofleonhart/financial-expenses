@@ -75,6 +75,15 @@
           class="flex col-span-2 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-24"
           placeholder="Descreva a renda ou despesa"
         />
+        <div class="flex items-center text-lg gap-2">
+          <input
+            class="h-5 w-5"
+            id="variable_check"
+            type="checkbox"
+            v-model="expense.variable"
+          />
+          <label for="variable_check" class="text-base">Variável</label>
+        </div>
       </div>
       <div class="expense-item-actions flex justify-end gap-4">
         <button

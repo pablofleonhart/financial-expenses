@@ -20,5 +20,6 @@ mutation publishExpense($id: ID!) {
       deleted
       type
     }
+    variable
   }
 }

@@ -91,6 +91,7 @@ describe('sortList function', () => {
       },
       author: new Author(),
       payment: new Wallet(),
+      variable: true,
     };
     const target = copyExpense(source);
     expect(target.amount).toBe(1000);

@@ -26,12 +26,18 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import AddButton from '../common/AddButton.vue';
 import ExpensesFilterTabs from './ExpensesFilterTabs.vue';
 import ExpensesHeader from './ExpensesHeader.vue';
 import ExpensesPage from './ExpensesPage.vue';
-import { deleteExpense, loadExpenses } from '../../services';
+import {
+  deleteExpense,
+  filterExpenses,
+  loadExpenses,
+  showVariablesExpense,
+} from '../../services';
 import { Expense } from './Expense';
 import ConfirmationModal from '../common/ConfirmationModal.vue';
 import ExpenseItemModal from './ExpenseItemModal.vue';
@@ -41,9 +47,21 @@ const showExpenseItemModal = ref(false);
 const showDeleteConfirmationModal = ref(false);
 const objExpense = ref(new Expense());
 let expenseToDelete: Expense = new Expense();
+const $route = useRoute();
 
 onMounted(async () => {
+  console.log($route);
   await loadExpenses();
+});
+
+watch($route, () => {
+  console.log($route.fullPath);
+  let value = true;
+  if ($route.fullPath === '/fixed-expenses') {
+    value = false;
+  }
+  showVariablesExpense.value = value;
+  filterExpenses();
 });
 
 const onAddExpense = () => {

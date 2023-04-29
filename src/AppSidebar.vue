@@ -68,18 +68,24 @@ const sidebarItems: Array<ISidebarItem> = [
   },
   {
     id: 2,
-    name: 'Gastos',
-    icon: 'ph-coins',
-    route: 'expenses',
+    name: 'Fixos',
+    icon: 'ph-anchor',
+    route: 'fixed-expenses',
   },
   {
     id: 3,
+    name: 'Variáveis',
+    icon: 'ph-wave-triangle',
+    route: 'variable-expenses',
+  },
+  {
+    id: 4,
     name: 'Carteiras',
     icon: 'ph-wallet',
     route: 'wallet',
   },
   {
-    id: 4,
+    id: 5,
     name: 'Planos',
     icon: 'ph-lightbulb',
     route: 'wishes',

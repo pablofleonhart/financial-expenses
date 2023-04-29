@@ -27,10 +27,16 @@ const router = createRouter({
       meta: { middlewares: [isNotAuthenticated] },
     },
     {
-      path: '/expenses',
-      name: 'expenses',
+      path: '/variable-expenses',
+      name: 'variable-expenses',
       component: Expenses,
-      meta: { middlewares: [isAuthenticated], title: 'Despesas variáveis' },
+      meta: { middlewares: [isAuthenticated], title: 'Gastos variáveis' },
+    },
+    {
+      path: '/fixed-expenses',
+      name: 'fixed-expenses',
+      component: Expenses,
+      meta: { middlewares: [isAuthenticated], title: 'Gastos fixos' },
     },
     {
       path: '/revenues',
