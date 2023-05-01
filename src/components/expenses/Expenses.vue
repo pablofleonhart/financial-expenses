@@ -51,11 +51,13 @@ let expenseToDelete: Expense = new Expense();
 const $route = useRoute();
 
 const applyFilterExpenses = () => {
-  let variableExpense = true;
+  let variableExpense = null;
   let travelExpense = false;
 
   if ($route.fullPath === '/fixed-expenses') {
     variableExpense = false;
+  } else if ($route.fullPath === '/variable-expenses') {
+    variableExpense = true;
   } else if ($route.fullPath === '/travels') {
     travelExpense = true;
   }

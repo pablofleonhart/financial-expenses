@@ -25,7 +25,9 @@ export const expenseSettings: Record<string, any> = reactive({});
 
 export const expensesSum = computed(() => {
   let result = 0;
-  filteredExpenseItems.forEach((item) => (result += item.amount));
+  filteredExpenseItems.forEach((item) => {
+    result += item.amount;
+  });
   return result;
 });
 
@@ -35,7 +37,7 @@ export let expenseCategoriesValues: number[] = [];
 export let expenseCategoriesColorValues: string[] = [];
 
 export const reloadCharts = ref(false);
-export const showVariablesExpense = ref(true);
+export const showVariablesExpense = ref<boolean | null>(null);
 export const showTravelExpense = ref(false);
 
 const EXPENSE_LIST_KEY = 'expense-list';
@@ -288,9 +290,13 @@ export const filterExpenses = (period: MonthPeriod = selectedExpensePeriod) => {
   if (showTravelExpense.value) {
     result = allExpenseItems.filter((item) => item.travel);
   } else {
-    result = allExpenseItems.filter(
-      (item) => item.variable === showVariablesExpense.value && !item.travel
-    );
+    if (showVariablesExpense.value === null) {
+      result = allExpenseItems.filter((item) => !item.travel);
+    } else {
+      result = allExpenseItems.filter(
+        (item) => item.variable === showVariablesExpense.value && !item.travel
+      );
+    }
   }
 
   result = result.filter((item) => {

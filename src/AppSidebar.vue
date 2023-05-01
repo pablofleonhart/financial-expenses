@@ -7,7 +7,11 @@
       class="flex ml-1 mt-1 items-center text-secondary-color-700 cursor-pointer"
       @click="$router.push(sidebarItems[0])"
     >
-      <ph-currency-circle-dollar class="flex rotate-[-20deg]" size="40" />
+      <ph-currency-circle-dollar
+        class="flex rotate-[-20deg]"
+        size="40"
+        weight="fill"
+      />
       <span v-if="!collapsedMenu" class="font-serif font-bold text-lg"
         >Meus Pila</span
       >
@@ -29,14 +33,22 @@
     </button>
     <router-link
       v-for="item in sidebarItems"
-      class="sidebar-item flex flex-row cursor-pointer h-9 w-full mb-4 items-center hover:bg-primary-color-700"
+      class="sidebar-item flex flex-col cursor-pointer"
       :key="item.id"
       :to="item.route"
     >
-      <component :is="item.icon" class="sidebar-item-icon w-8 h-8 mx-2" />
-      <span v-if="!collapsedMenu">
-        {{ item.name }}
-      </span>
+      <div
+        class="flex items-center h-9 my-1 w-full hover:bg-primary-color-700"
+        :class="{
+          'pl-4': item.subItem && !collapsedMenu,
+          'pl-1': item.subItem && collapsedMenu,
+        }"
+      >
+        <component :is="item.icon" class="sidebar-item-icon w-8 h-8 mx-2" />
+        <span v-if="!collapsedMenu">
+          {{ item.name }}
+        </span>
+      </div>
     </router-link>
   </nav>
 </template>
@@ -51,6 +63,7 @@ interface ISidebarItem {
   name: string;
   icon: any;
   route: string;
+  subItem?: boolean;
 }
 
 const sidebarItems: Array<ISidebarItem> = [
@@ -68,30 +81,38 @@ const sidebarItems: Array<ISidebarItem> = [
   },
   {
     id: 2,
-    name: 'Fixos',
-    icon: 'ph-anchor',
-    route: 'fixed-expenses',
+    name: 'Gastos',
+    icon: 'ph-coins',
+    route: 'expenses',
   },
   {
     id: 3,
-    name: 'Variáveis',
-    icon: 'ph-wave-triangle',
-    route: 'variable-expenses',
+    name: 'Fixos',
+    icon: 'ph-anchor',
+    route: 'fixed-expenses',
+    subItem: true,
   },
   {
     id: 4,
+    name: 'Variáveis',
+    icon: 'ph-wave-triangle',
+    route: 'variable-expenses',
+    subItem: true,
+  },
+  {
+    id: 5,
     name: 'Viagens',
     icon: 'ph-airplane-tilt',
     route: 'travels',
   },
   {
-    id: 5,
+    id: 6,
     name: 'Carteiras',
     icon: 'ph-wallet',
     route: 'wallet',
   },
   {
-    id: 6,
+    id: 7,
     name: 'Planos',
     icon: 'ph-lightbulb',
     route: 'wishes',
@@ -122,7 +143,7 @@ const toggleMenu = () => {
   }
 }
 .sidebar-item {
-  &.router-link-active {
+  &.router-link-active > div {
     background-color: var(--primary-color-700);
   }
 }

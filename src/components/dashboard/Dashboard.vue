@@ -47,7 +47,7 @@
     </div>
     <div
       class="flex flex-col gap-2 row-span-2 h-full w-full items-center rounded-xl cursor-pointer p-4 bg-neutral-color-700 hover:bg-secondary-color-300"
-      @click="$router.push('/expenses')"
+      @click="$router.push('/variable-expenses')"
     >
       <span class="font-bold text-xl">Despesas variáveis do mês</span>
       <div class="text-2xl">Total: {{ formatCurrency(expensesSum) }}</div>
