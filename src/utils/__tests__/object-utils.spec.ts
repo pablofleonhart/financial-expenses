@@ -4,6 +4,7 @@ import { Revenue } from '../../components/revenues/Revenue';
 import { Expense } from '../../components/expenses/Expense';
 import { Author } from '../../components/accounts/Author';
 import { Wallet } from '../../components/wallets/Wallet';
+import { Travel } from '../../components/travels/Travel';
 
 describe('sortList function', () => {
   let list: any;
@@ -92,7 +93,7 @@ describe('sortList function', () => {
       author: new Author(),
       payment: new Wallet(),
       variable: true,
-      travel: false,
+      travel: new Travel(),
     };
     const target = copyExpense(source);
     expect(target.amount).toBe(1000);

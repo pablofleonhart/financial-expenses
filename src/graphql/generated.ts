@@ -1841,7 +1841,7 @@ export type Expense = Node & {
   scheduledIn: Array<ScheduledOperation>;
   /** System stage field */
   stage: Stage;
-  travel: Scalars['Boolean'];
+  travel?: Maybe<Travel>;
   /** The time the document was updated */
   updatedAt: Scalars['DateTime'];
   /** User that last updated this document */
@@ -1897,6 +1897,11 @@ export type ExpenseScheduledInArgs = {
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
+export type ExpenseTravelArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
 export type ExpenseUpdatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
@@ -1930,7 +1935,7 @@ export type ExpenseCreateInput = {
   deleted?: InputMaybe<Scalars['Boolean']>;
   note?: InputMaybe<Scalars['String']>;
   payment?: InputMaybe<WalletCreateOneInlineInput>;
-  travel: Scalars['Boolean'];
+  travel?: InputMaybe<TravelCreateOneInlineInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   variable: Scalars['Boolean'];
 };
@@ -2102,9 +2107,7 @@ export type ExpenseManyWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  travel?: InputMaybe<Scalars['Boolean']>;
-  /** Any other value that exists and is not equal to the given value. */
-  travel_not?: InputMaybe<Scalars['Boolean']>;
+  travel?: InputMaybe<TravelWhereInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -2145,8 +2148,6 @@ export enum ExpenseOrderByInput {
   NoteDesc = 'note_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
-  TravelAsc = 'travel_ASC',
-  TravelDesc = 'travel_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
   UpdatedAtDesc = 'updatedAt_DESC',
   VariableAsc = 'variable_ASC',
@@ -2163,7 +2164,7 @@ export type ExpenseUpdateInput = {
   deleted?: InputMaybe<Scalars['Boolean']>;
   note?: InputMaybe<Scalars['String']>;
   payment?: InputMaybe<WalletUpdateOneInlineInput>;
-  travel?: InputMaybe<Scalars['Boolean']>;
+  travel?: InputMaybe<TravelUpdateOneInlineInput>;
   variable?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -2191,7 +2192,6 @@ export type ExpenseUpdateManyInput = {
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   note?: InputMaybe<Scalars['String']>;
-  travel?: InputMaybe<Scalars['Boolean']>;
   variable?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -2388,9 +2388,7 @@ export type ExpenseWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  travel?: InputMaybe<Scalars['Boolean']>;
-  /** Any other value that exists and is not equal to the given value. */
-  travel_not?: InputMaybe<Scalars['Boolean']>;
+  travel?: InputMaybe<TravelWhereInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -2501,6 +2499,8 @@ export type Mutation = {
   createScheduledRelease?: Maybe<ScheduledRelease>;
   /** Create one transaction */
   createTransaction?: Maybe<Transaction>;
+  /** Create one travel */
+  createTravel?: Maybe<Travel>;
   /** Create one wallet */
   createWallet?: Maybe<Wallet>;
   /** Create one wish */
@@ -2556,6 +2556,13 @@ export type Mutation = {
   /** Delete many Transaction documents, return deleted documents */
   deleteManyTransactionsConnection: TransactionConnection;
   /**
+   * Delete many Travel documents
+   * @deprecated Please use the new paginated many mutation (deleteManyTravelsConnection)
+   */
+  deleteManyTravels: BatchPayload;
+  /** Delete many Travel documents, return deleted documents */
+  deleteManyTravelsConnection: TravelConnection;
+  /**
    * Delete many Wallet documents
    * @deprecated Please use the new paginated many mutation (deleteManyWalletsConnection)
    */
@@ -2577,6 +2584,8 @@ export type Mutation = {
   deleteScheduledRelease?: Maybe<ScheduledRelease>;
   /** Delete one transaction from _all_ existing stages. Returns deleted document. */
   deleteTransaction?: Maybe<Transaction>;
+  /** Delete one travel from _all_ existing stages. Returns deleted document. */
+  deleteTravel?: Maybe<Travel>;
   /** Delete one wallet from _all_ existing stages. Returns deleted document. */
   deleteWallet?: Maybe<Wallet>;
   /** Delete one wish from _all_ existing stages. Returns deleted document. */
@@ -2632,6 +2641,13 @@ export type Mutation = {
   /** Publish many Transaction documents */
   publishManyTransactionsConnection: TransactionConnection;
   /**
+   * Publish many Travel documents
+   * @deprecated Please use the new paginated many mutation (publishManyTravelsConnection)
+   */
+  publishManyTravels: BatchPayload;
+  /** Publish many Travel documents */
+  publishManyTravelsConnection: TravelConnection;
+  /**
    * Publish many Wallet documents
    * @deprecated Please use the new paginated many mutation (publishManyWalletsConnection)
    */
@@ -2649,6 +2665,8 @@ export type Mutation = {
   publishRevenue?: Maybe<Revenue>;
   /** Publish one transaction */
   publishTransaction?: Maybe<Transaction>;
+  /** Publish one travel */
+  publishTravel?: Maybe<Travel>;
   /** Publish one wallet */
   publishWallet?: Maybe<Wallet>;
   /** Publish one wish */
@@ -2665,6 +2683,8 @@ export type Mutation = {
   schedulePublishRevenue?: Maybe<Revenue>;
   /** Schedule to publish one transaction */
   schedulePublishTransaction?: Maybe<Transaction>;
+  /** Schedule to publish one travel */
+  schedulePublishTravel?: Maybe<Travel>;
   /** Schedule to publish one wallet */
   schedulePublishWallet?: Maybe<Wallet>;
   /** Schedule to publish one wish */
@@ -2681,6 +2701,8 @@ export type Mutation = {
   scheduleUnpublishRevenue?: Maybe<Revenue>;
   /** Unpublish one transaction from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishTransaction?: Maybe<Transaction>;
+  /** Unpublish one travel from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishTravel?: Maybe<Travel>;
   /** Unpublish one wallet from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishWallet?: Maybe<Wallet>;
   /** Unpublish one wish from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -2736,6 +2758,13 @@ export type Mutation = {
   /** Find many Transaction documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyTransactionsConnection: TransactionConnection;
   /**
+   * Unpublish many Travel documents
+   * @deprecated Please use the new paginated many mutation (unpublishManyTravelsConnection)
+   */
+  unpublishManyTravels: BatchPayload;
+  /** Find many Travel documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyTravelsConnection: TravelConnection;
+  /**
    * Unpublish many Wallet documents
    * @deprecated Please use the new paginated many mutation (unpublishManyWalletsConnection)
    */
@@ -2753,6 +2782,8 @@ export type Mutation = {
   unpublishRevenue?: Maybe<Revenue>;
   /** Unpublish one transaction from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishTransaction?: Maybe<Transaction>;
+  /** Unpublish one travel from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishTravel?: Maybe<Travel>;
   /** Unpublish one wallet from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishWallet?: Maybe<Wallet>;
   /** Unpublish one wish from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -2808,6 +2839,13 @@ export type Mutation = {
   /** Update many Transaction documents */
   updateManyTransactionsConnection: TransactionConnection;
   /**
+   * Update many travels
+   * @deprecated Please use the new paginated many mutation (updateManyTravelsConnection)
+   */
+  updateManyTravels: BatchPayload;
+  /** Update many Travel documents */
+  updateManyTravelsConnection: TravelConnection;
+  /**
    * Update many wallets
    * @deprecated Please use the new paginated many mutation (updateManyWalletsConnection)
    */
@@ -2827,6 +2865,8 @@ export type Mutation = {
   updateScheduledRelease?: Maybe<ScheduledRelease>;
   /** Update one transaction */
   updateTransaction?: Maybe<Transaction>;
+  /** Update one travel */
+  updateTravel?: Maybe<Travel>;
   /** Update one wallet */
   updateWallet?: Maybe<Wallet>;
   /** Update one wish */
@@ -2843,6 +2883,8 @@ export type Mutation = {
   upsertRevenue?: Maybe<Revenue>;
   /** Upsert one transaction */
   upsertTransaction?: Maybe<Transaction>;
+  /** Upsert one travel */
+  upsertTravel?: Maybe<Travel>;
   /** Upsert one wallet */
   upsertWallet?: Maybe<Wallet>;
   /** Upsert one wish */
@@ -2875,6 +2917,10 @@ export type MutationCreateScheduledReleaseArgs = {
 
 export type MutationCreateTransactionArgs = {
   data: TransactionCreateInput;
+};
+
+export type MutationCreateTravelArgs = {
+  data: TravelCreateInput;
 };
 
 export type MutationCreateWalletArgs = {
@@ -2979,6 +3025,19 @@ export type MutationDeleteManyTransactionsConnectionArgs = {
   where?: InputMaybe<TransactionManyWhereInput>;
 };
 
+export type MutationDeleteManyTravelsArgs = {
+  where?: InputMaybe<TravelManyWhereInput>;
+};
+
+export type MutationDeleteManyTravelsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<TravelManyWhereInput>;
+};
+
 export type MutationDeleteManyWalletsArgs = {
   where?: InputMaybe<WalletManyWhereInput>;
 };
@@ -3019,6 +3078,10 @@ export type MutationDeleteScheduledReleaseArgs = {
 
 export type MutationDeleteTransactionArgs = {
   where: TransactionWhereUniqueInput;
+};
+
+export type MutationDeleteTravelArgs = {
+  where: TravelWhereUniqueInput;
 };
 
 export type MutationDeleteWalletArgs = {
@@ -3154,6 +3217,22 @@ export type MutationPublishManyTransactionsConnectionArgs = {
   where?: InputMaybe<TransactionManyWhereInput>;
 };
 
+export type MutationPublishManyTravelsArgs = {
+  to?: Array<Stage>;
+  where?: InputMaybe<TravelManyWhereInput>;
+};
+
+export type MutationPublishManyTravelsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<TravelManyWhereInput>;
+};
+
 export type MutationPublishManyWalletsArgs = {
   to?: Array<Stage>;
   where?: InputMaybe<WalletManyWhereInput>;
@@ -3194,6 +3273,11 @@ export type MutationPublishRevenueArgs = {
 export type MutationPublishTransactionArgs = {
   to?: Array<Stage>;
   where: TransactionWhereUniqueInput;
+};
+
+export type MutationPublishTravelArgs = {
+  to?: Array<Stage>;
+  where: TravelWhereUniqueInput;
 };
 
 export type MutationPublishWalletArgs = {
@@ -3249,6 +3333,13 @@ export type MutationSchedulePublishTransactionArgs = {
   releaseId?: InputMaybe<Scalars['String']>;
   to?: Array<Stage>;
   where: TransactionWhereUniqueInput;
+};
+
+export type MutationSchedulePublishTravelArgs = {
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  to?: Array<Stage>;
+  where: TravelWhereUniqueInput;
 };
 
 export type MutationSchedulePublishWalletArgs = {
@@ -3307,6 +3398,13 @@ export type MutationScheduleUnpublishTransactionArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']>;
   releaseId?: InputMaybe<Scalars['String']>;
   where: TransactionWhereUniqueInput;
+};
+
+export type MutationScheduleUnpublishTravelArgs = {
+  from?: Array<Stage>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  where: TravelWhereUniqueInput;
 };
 
 export type MutationScheduleUnpublishWalletArgs = {
@@ -3445,6 +3543,22 @@ export type MutationUnpublishManyTransactionsConnectionArgs = {
   where?: InputMaybe<TransactionManyWhereInput>;
 };
 
+export type MutationUnpublishManyTravelsArgs = {
+  from?: Array<Stage>;
+  where?: InputMaybe<TravelManyWhereInput>;
+};
+
+export type MutationUnpublishManyTravelsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: InputMaybe<Stage>;
+  where?: InputMaybe<TravelManyWhereInput>;
+};
+
 export type MutationUnpublishManyWalletsArgs = {
   from?: Array<Stage>;
   where?: InputMaybe<WalletManyWhereInput>;
@@ -3485,6 +3599,11 @@ export type MutationUnpublishRevenueArgs = {
 export type MutationUnpublishTransactionArgs = {
   from?: Array<Stage>;
   where: TransactionWhereUniqueInput;
+};
+
+export type MutationUnpublishTravelArgs = {
+  from?: Array<Stage>;
+  where: TravelWhereUniqueInput;
 };
 
 export type MutationUnpublishWalletArgs = {
@@ -3607,6 +3726,21 @@ export type MutationUpdateManyTransactionsConnectionArgs = {
   where?: InputMaybe<TransactionManyWhereInput>;
 };
 
+export type MutationUpdateManyTravelsArgs = {
+  data: TravelUpdateManyInput;
+  where?: InputMaybe<TravelManyWhereInput>;
+};
+
+export type MutationUpdateManyTravelsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  data: TravelUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<TravelManyWhereInput>;
+};
+
 export type MutationUpdateManyWalletsArgs = {
   data: WalletUpdateManyInput;
   where?: InputMaybe<WalletManyWhereInput>;
@@ -3652,6 +3786,11 @@ export type MutationUpdateTransactionArgs = {
   where: TransactionWhereUniqueInput;
 };
 
+export type MutationUpdateTravelArgs = {
+  data: TravelUpdateInput;
+  where: TravelWhereUniqueInput;
+};
+
 export type MutationUpdateWalletArgs = {
   data: WalletUpdateInput;
   where: WalletWhereUniqueInput;
@@ -3690,6 +3829,11 @@ export type MutationUpsertRevenueArgs = {
 export type MutationUpsertTransactionArgs = {
   upsert: TransactionUpsertInput;
   where: TransactionWhereUniqueInput;
+};
+
+export type MutationUpsertTravelArgs = {
+  upsert: TravelUpsertInput;
+  where: TravelWhereUniqueInput;
 };
 
 export type MutationUpsertWalletArgs = {
@@ -3796,6 +3940,14 @@ export type Query = {
   transactions: Array<Transaction>;
   /** Retrieve multiple transactions using the Relay connection interface */
   transactionsConnection: TransactionConnection;
+  /** Retrieve a single travel */
+  travel?: Maybe<Travel>;
+  /** Retrieve document version */
+  travelVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple travels */
+  travels: Array<Travel>;
+  /** Retrieve multiple travels using the Relay connection interface */
+  travelsConnection: TravelConnection;
   /** Retrieve a single user */
   user?: Maybe<User>;
   /** Retrieve multiple users */
@@ -4088,6 +4240,40 @@ export type QueryTransactionsConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: Stage;
   where?: InputMaybe<TransactionWhereInput>;
+};
+
+export type QueryTravelArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: TravelWhereUniqueInput;
+};
+
+export type QueryTravelVersionArgs = {
+  where: VersionWhereInput;
+};
+
+export type QueryTravelsArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<TravelOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<TravelWhereInput>;
+};
+
+export type QueryTravelsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<TravelOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<TravelWhereInput>;
 };
 
 export type QueryUserArgs = {
@@ -4995,6 +5181,7 @@ export type ScheduledOperationAffectedDocument =
   | Expense
   | Revenue
   | Transaction
+  | Travel
   | Wallet
   | Wish;
 
@@ -6487,6 +6674,535 @@ export type TransactionWhereStageInput = {
 
 /** References Transaction record uniquely */
 export type TransactionWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+export type Travel = Node & {
+  __typename?: 'Travel';
+  city: Array<Scalars['String']>;
+  country: Array<Scalars['String']>;
+  /** The time the document was created */
+  createdAt: Scalars['DateTime'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  /** Get the document in other stages */
+  documentInStages: Array<Travel>;
+  endDate: Scalars['Date'];
+  expenses: Array<Expense>;
+  /** List of Travel versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID'];
+  place: Array<Location>;
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  /** System stage field */
+  stage: Stage;
+  startDate: Scalars['Date'];
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+export type TravelCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type TravelDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  inheritLocale?: Scalars['Boolean'];
+  stages?: Array<Stage>;
+};
+
+export type TravelExpensesArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<ExpenseOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ExpenseWhereInput>;
+};
+
+export type TravelHistoryArgs = {
+  limit?: Scalars['Int'];
+  skip?: Scalars['Int'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+export type TravelPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type TravelScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+export type TravelUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type TravelConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: TravelWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type TravelConnection = {
+  __typename?: 'TravelConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<TravelEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type TravelCreateInput = {
+  city?: InputMaybe<Array<Scalars['String']>>;
+  country?: InputMaybe<Array<Scalars['String']>>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  endDate: Scalars['Date'];
+  expenses?: InputMaybe<ExpenseCreateManyInlineInput>;
+  place?: InputMaybe<Array<LocationInput>>;
+  startDate: Scalars['Date'];
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type TravelCreateManyInlineInput = {
+  /** Connect multiple existing Travel documents */
+  connect?: InputMaybe<Array<TravelWhereUniqueInput>>;
+  /** Create and connect multiple existing Travel documents */
+  create?: InputMaybe<Array<TravelCreateInput>>;
+};
+
+export type TravelCreateOneInlineInput = {
+  /** Connect one existing Travel document */
+  connect?: InputMaybe<TravelWhereUniqueInput>;
+  /** Create and connect one Travel document */
+  create?: InputMaybe<TravelCreateInput>;
+};
+
+/** An edge in a connection. */
+export type TravelEdge = {
+  __typename?: 'TravelEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: Travel;
+};
+
+/** Identifies documents */
+export type TravelManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<TravelWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<TravelWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<TravelWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  /** Matches if the field array contains *all* items provided to the filter and order does match */
+  city?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array contains *all* items provided to the filter */
+  city_contains_all?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array does not contain any of the items provided to the filter */
+  city_contains_none?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array contains at least one item provided to the filter */
+  city_contains_some?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array does not contains *all* items provided to the filter or order does not match */
+  city_not?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array contains *all* items provided to the filter and order does match */
+  country?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array contains *all* items provided to the filter */
+  country_contains_all?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array does not contain any of the items provided to the filter */
+  country_contains_none?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array contains at least one item provided to the filter */
+  country_contains_some?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array does not contains *all* items provided to the filter or order does not match */
+  country_not?: InputMaybe<Array<Scalars['String']>>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<TravelWhereStageInput>;
+  documentInStages_none?: InputMaybe<TravelWhereStageInput>;
+  documentInStages_some?: InputMaybe<TravelWhereStageInput>;
+  endDate?: InputMaybe<Scalars['Date']>;
+  /** All values greater than the given value. */
+  endDate_gt?: InputMaybe<Scalars['Date']>;
+  /** All values greater than or equal the given value. */
+  endDate_gte?: InputMaybe<Scalars['Date']>;
+  /** All values that are contained in given list. */
+  endDate_in?: InputMaybe<Array<InputMaybe<Scalars['Date']>>>;
+  /** All values less than the given value. */
+  endDate_lt?: InputMaybe<Scalars['Date']>;
+  /** All values less than or equal the given value. */
+  endDate_lte?: InputMaybe<Scalars['Date']>;
+  /** Any other value that exists and is not equal to the given value. */
+  endDate_not?: InputMaybe<Scalars['Date']>;
+  /** All values that are not contained in given list. */
+  endDate_not_in?: InputMaybe<Array<InputMaybe<Scalars['Date']>>>;
+  expenses_every?: InputMaybe<ExpenseWhereInput>;
+  expenses_none?: InputMaybe<ExpenseWhereInput>;
+  expenses_some?: InputMaybe<ExpenseWhereInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  startDate?: InputMaybe<Scalars['Date']>;
+  /** All values greater than the given value. */
+  startDate_gt?: InputMaybe<Scalars['Date']>;
+  /** All values greater than or equal the given value. */
+  startDate_gte?: InputMaybe<Scalars['Date']>;
+  /** All values that are contained in given list. */
+  startDate_in?: InputMaybe<Array<InputMaybe<Scalars['Date']>>>;
+  /** All values less than the given value. */
+  startDate_lt?: InputMaybe<Scalars['Date']>;
+  /** All values less than or equal the given value. */
+  startDate_lte?: InputMaybe<Scalars['Date']>;
+  /** Any other value that exists and is not equal to the given value. */
+  startDate_not?: InputMaybe<Scalars['Date']>;
+  /** All values that are not contained in given list. */
+  startDate_not_in?: InputMaybe<Array<InputMaybe<Scalars['Date']>>>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export enum TravelOrderByInput {
+  CityAsc = 'city_ASC',
+  CityDesc = 'city_DESC',
+  CountryAsc = 'country_ASC',
+  CountryDesc = 'country_DESC',
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  EndDateAsc = 'endDate_ASC',
+  EndDateDesc = 'endDate_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  StartDateAsc = 'startDate_ASC',
+  StartDateDesc = 'startDate_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC',
+}
+
+export type TravelUpdateInput = {
+  city?: InputMaybe<Array<Scalars['String']>>;
+  country?: InputMaybe<Array<Scalars['String']>>;
+  endDate?: InputMaybe<Scalars['Date']>;
+  expenses?: InputMaybe<ExpenseUpdateManyInlineInput>;
+  place?: InputMaybe<Array<LocationInput>>;
+  startDate?: InputMaybe<Scalars['Date']>;
+};
+
+export type TravelUpdateManyInlineInput = {
+  /** Connect multiple existing Travel documents */
+  connect?: InputMaybe<Array<TravelConnectInput>>;
+  /** Create and connect multiple Travel documents */
+  create?: InputMaybe<Array<TravelCreateInput>>;
+  /** Delete multiple Travel documents */
+  delete?: InputMaybe<Array<TravelWhereUniqueInput>>;
+  /** Disconnect multiple Travel documents */
+  disconnect?: InputMaybe<Array<TravelWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing Travel documents */
+  set?: InputMaybe<Array<TravelWhereUniqueInput>>;
+  /** Update multiple Travel documents */
+  update?: InputMaybe<Array<TravelUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple Travel documents */
+  upsert?: InputMaybe<Array<TravelUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type TravelUpdateManyInput = {
+  city?: InputMaybe<Array<Scalars['String']>>;
+  country?: InputMaybe<Array<Scalars['String']>>;
+  endDate?: InputMaybe<Scalars['Date']>;
+  place?: InputMaybe<Array<LocationInput>>;
+  startDate?: InputMaybe<Scalars['Date']>;
+};
+
+export type TravelUpdateManyWithNestedWhereInput = {
+  /** Update many input */
+  data: TravelUpdateManyInput;
+  /** Document search */
+  where: TravelWhereInput;
+};
+
+export type TravelUpdateOneInlineInput = {
+  /** Connect existing Travel document */
+  connect?: InputMaybe<TravelWhereUniqueInput>;
+  /** Create and connect one Travel document */
+  create?: InputMaybe<TravelCreateInput>;
+  /** Delete currently connected Travel document */
+  delete?: InputMaybe<Scalars['Boolean']>;
+  /** Disconnect currently connected Travel document */
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  /** Update single Travel document */
+  update?: InputMaybe<TravelUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single Travel document */
+  upsert?: InputMaybe<TravelUpsertWithNestedWhereUniqueInput>;
+};
+
+export type TravelUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: TravelUpdateInput;
+  /** Unique document search */
+  where: TravelWhereUniqueInput;
+};
+
+export type TravelUpsertInput = {
+  /** Create document if it didn't exist */
+  create: TravelCreateInput;
+  /** Update document if it exists */
+  update: TravelUpdateInput;
+};
+
+export type TravelUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: TravelUpsertInput;
+  /** Unique document search */
+  where: TravelWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type TravelWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Identifies documents */
+export type TravelWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<TravelWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<TravelWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<TravelWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  /** Matches if the field array contains *all* items provided to the filter and order does match */
+  city?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array contains *all* items provided to the filter */
+  city_contains_all?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array does not contain any of the items provided to the filter */
+  city_contains_none?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array contains at least one item provided to the filter */
+  city_contains_some?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array does not contains *all* items provided to the filter or order does not match */
+  city_not?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array contains *all* items provided to the filter and order does match */
+  country?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array contains *all* items provided to the filter */
+  country_contains_all?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array does not contain any of the items provided to the filter */
+  country_contains_none?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array contains at least one item provided to the filter */
+  country_contains_some?: InputMaybe<Array<Scalars['String']>>;
+  /** Matches if the field array does not contains *all* items provided to the filter or order does not match */
+  country_not?: InputMaybe<Array<Scalars['String']>>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<TravelWhereStageInput>;
+  documentInStages_none?: InputMaybe<TravelWhereStageInput>;
+  documentInStages_some?: InputMaybe<TravelWhereStageInput>;
+  endDate?: InputMaybe<Scalars['Date']>;
+  /** All values greater than the given value. */
+  endDate_gt?: InputMaybe<Scalars['Date']>;
+  /** All values greater than or equal the given value. */
+  endDate_gte?: InputMaybe<Scalars['Date']>;
+  /** All values that are contained in given list. */
+  endDate_in?: InputMaybe<Array<InputMaybe<Scalars['Date']>>>;
+  /** All values less than the given value. */
+  endDate_lt?: InputMaybe<Scalars['Date']>;
+  /** All values less than or equal the given value. */
+  endDate_lte?: InputMaybe<Scalars['Date']>;
+  /** Any other value that exists and is not equal to the given value. */
+  endDate_not?: InputMaybe<Scalars['Date']>;
+  /** All values that are not contained in given list. */
+  endDate_not_in?: InputMaybe<Array<InputMaybe<Scalars['Date']>>>;
+  expenses_every?: InputMaybe<ExpenseWhereInput>;
+  expenses_none?: InputMaybe<ExpenseWhereInput>;
+  expenses_some?: InputMaybe<ExpenseWhereInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  startDate?: InputMaybe<Scalars['Date']>;
+  /** All values greater than the given value. */
+  startDate_gt?: InputMaybe<Scalars['Date']>;
+  /** All values greater than or equal the given value. */
+  startDate_gte?: InputMaybe<Scalars['Date']>;
+  /** All values that are contained in given list. */
+  startDate_in?: InputMaybe<Array<InputMaybe<Scalars['Date']>>>;
+  /** All values less than the given value. */
+  startDate_lt?: InputMaybe<Scalars['Date']>;
+  /** All values less than or equal the given value. */
+  startDate_lte?: InputMaybe<Scalars['Date']>;
+  /** Any other value that exists and is not equal to the given value. */
+  startDate_not?: InputMaybe<Scalars['Date']>;
+  /** All values that are not contained in given list. */
+  startDate_not_in?: InputMaybe<Array<InputMaybe<Scalars['Date']>>>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type TravelWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<TravelWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<TravelWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<TravelWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<TravelWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References Travel record uniquely */
+export type TravelWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
@@ -8244,7 +8960,7 @@ export type AddExpenseMutationVariables = Exact<{
   currency: Scalars['String'];
   paymentID: Scalars['ID'];
   variable: Scalars['Boolean'];
-  travel: Scalars['Boolean'];
+  travelID?: InputMaybe<Scalars['ID']>;
 }>;
 
 export type AddExpenseMutation = {
@@ -8267,7 +8983,6 @@ export type PublishExpenseMutation = {
     note?: string | null;
     currency: string;
     variable: boolean;
-    travel: boolean;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -8284,6 +8999,7 @@ export type PublishExpenseMutation = {
       deleted?: boolean | null;
       type: number;
     } | null;
+    travel?: { __typename?: 'Travel'; id: string } | null;
   } | null;
 };
 
@@ -8298,7 +9014,7 @@ export type UpdateExpenseMutationVariables = Exact<{
   currency: Scalars['String'];
   paymentID: Scalars['ID'];
   variable: Scalars['Boolean'];
-  travel: Scalars['Boolean'];
+  travelID?: InputMaybe<Scalars['ID']>;
 }>;
 
 export type UpdateExpenseMutation = {
@@ -8313,7 +9029,6 @@ export type UpdateExpenseMutation = {
     note?: string | null;
     currency: string;
     variable: boolean;
-    travel: boolean;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -8330,6 +9045,7 @@ export type UpdateExpenseMutation = {
       deleted?: boolean | null;
       type: number;
     } | null;
+    travel?: { __typename?: 'Travel'; id: string } | null;
   } | null;
 };
 
@@ -8469,6 +9185,65 @@ export type UpdateTransactionMutation = {
     date: any;
     source?: { __typename?: 'Wallet'; id: string } | null;
     target?: { __typename?: 'Wallet'; id: string } | null;
+  } | null;
+};
+
+export type AddTravelMutationVariables = Exact<{
+  startDate: Scalars['Date'];
+  endDate: Scalars['Date'];
+  city?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  country?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  place?: InputMaybe<Array<LocationInput> | LocationInput>;
+}>;
+
+export type AddTravelMutation = {
+  __typename?: 'Mutation';
+  createTravel?: { __typename?: 'Travel'; id: string } | null;
+};
+
+export type PublishTravelMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type PublishTravelMutation = {
+  __typename?: 'Mutation';
+  publishTravel?: {
+    __typename?: 'Travel';
+    startDate: any;
+    endDate: any;
+    city: Array<string>;
+    country: Array<string>;
+    place: Array<{
+      __typename?: 'Location';
+      latitude: number;
+      longitude: number;
+    }>;
+  } | null;
+};
+
+export type UpdateTravelMutationVariables = Exact<{
+  id: Scalars['ID'];
+  startDate: Scalars['Date'];
+  endDate: Scalars['Date'];
+  city?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  country?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  place?: InputMaybe<Array<LocationInput> | LocationInput>;
+}>;
+
+export type UpdateTravelMutation = {
+  __typename?: 'Mutation';
+  updateTravel?: {
+    __typename?: 'Travel';
+    id: string;
+    startDate: any;
+    endDate: any;
+    city: Array<string>;
+    country: Array<string>;
+    place: Array<{
+      __typename?: 'Location';
+      latitude: number;
+      longitude: number;
+    }>;
   } | null;
 };
 
@@ -8666,7 +9441,6 @@ export type GetExpensesQuery = {
     note?: string | null;
     currency: string;
     variable: boolean;
-    travel: boolean;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -8684,6 +9458,7 @@ export type GetExpensesQuery = {
       holder: string;
       type: number;
     } | null;
+    travel?: { __typename?: 'Travel'; id: string } | null;
   }>;
 };
 
@@ -8738,6 +9513,25 @@ export type GetTransactionsQuery = {
       broker?: string | null;
       holder: string;
     } | null;
+  }>;
+};
+
+export type GetTravelsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetTravelsQuery = {
+  __typename?: 'Query';
+  travels: Array<{
+    __typename?: 'Travel';
+    id: string;
+    startDate: any;
+    endDate: any;
+    city: Array<string>;
+    country: Array<string>;
+    place: Array<{
+      __typename?: 'Location';
+      latitude: number;
+      longitude: number;
+    }>;
   }>;
 };
 
@@ -8951,7 +9745,7 @@ export const AddExpenseDocument = gql`
     $currency: String!
     $paymentID: ID!
     $variable: Boolean!
-    $travel: Boolean!
+    $travelID: ID
   ) {
     createExpense(
       data: {
@@ -8964,7 +9758,7 @@ export const AddExpenseDocument = gql`
         currency: $currency
         payment: { connect: { id: $paymentID } }
         variable: $variable
-        travel: $travel
+        travel: { connect: { id: $travelID } }
       }
     ) {
       id
@@ -8994,7 +9788,7 @@ export const AddExpenseDocument = gql`
  *     currency: // value for 'currency'
  *     paymentID: // value for 'paymentID'
  *     variable: // value for 'variable'
- *     travel: // value for 'travel'
+ *     travelID: // value for 'travelID'
  *   },
  * });
  */
@@ -9045,7 +9839,9 @@ export const PublishExpenseDocument = gql`
         type
       }
       variable
-      travel
+      travel {
+        id
+      }
     }
   }
 `;
@@ -9102,7 +9898,7 @@ export const UpdateExpenseDocument = gql`
     $currency: String!
     $paymentID: ID!
     $variable: Boolean!
-    $travel: Boolean!
+    $travelID: ID
   ) {
     updateExpense(
       data: {
@@ -9115,7 +9911,7 @@ export const UpdateExpenseDocument = gql`
         currency: $currency
         payment: { connect: { id: $paymentID } }
         variable: $variable
-        travel: $travel
+        travel: { connect: { id: $travelID } }
       }
       where: { id: $id }
     ) {
@@ -9141,7 +9937,9 @@ export const UpdateExpenseDocument = gql`
         type
       }
       variable
-      travel
+      travel {
+        id
+      }
     }
   }
 `;
@@ -9169,7 +9967,7 @@ export const UpdateExpenseDocument = gql`
  *     currency: // value for 'currency'
  *     paymentID: // value for 'paymentID'
  *     variable: // value for 'variable'
- *     travel: // value for 'travel'
+ *     travelID: // value for 'travelID'
  *   },
  * });
  */
@@ -9641,6 +10439,204 @@ export type UpdateTransactionMutationCompositionFunctionResult =
   VueApolloComposable.UseMutationReturn<
     UpdateTransactionMutation,
     UpdateTransactionMutationVariables
+  >;
+export const AddTravelDocument = gql`
+  mutation addTravel(
+    $startDate: Date!
+    $endDate: Date!
+    $city: [String!]
+    $country: [String!]
+    $place: [LocationInput!]
+  ) {
+    createTravel(
+      data: {
+        startDate: $startDate
+        endDate: $endDate
+        city: $city
+        country: $country
+        place: $place
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+/**
+ * __useAddTravelMutation__
+ *
+ * To run a mutation, you first call `useAddTravelMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useAddTravelMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useAddTravelMutation({
+ *   variables: {
+ *     startDate: // value for 'startDate'
+ *     endDate: // value for 'endDate'
+ *     city: // value for 'city'
+ *     country: // value for 'country'
+ *     place: // value for 'place'
+ *   },
+ * });
+ */
+export function useAddTravelMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        AddTravelMutation,
+        AddTravelMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          AddTravelMutation,
+          AddTravelMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    AddTravelMutation,
+    AddTravelMutationVariables
+  >(AddTravelDocument, options);
+}
+export type AddTravelMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    AddTravelMutation,
+    AddTravelMutationVariables
+  >;
+export const PublishTravelDocument = gql`
+  mutation publishTravel($id: ID!) {
+    publishTravel(where: { id: $id }, to: PUBLISHED) {
+      startDate
+      endDate
+      city
+      country
+      place {
+        latitude
+        longitude
+      }
+    }
+  }
+`;
+
+/**
+ * __usePublishTravelMutation__
+ *
+ * To run a mutation, you first call `usePublishTravelMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `usePublishTravelMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = usePublishTravelMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePublishTravelMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        PublishTravelMutation,
+        PublishTravelMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          PublishTravelMutation,
+          PublishTravelMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    PublishTravelMutation,
+    PublishTravelMutationVariables
+  >(PublishTravelDocument, options);
+}
+export type PublishTravelMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    PublishTravelMutation,
+    PublishTravelMutationVariables
+  >;
+export const UpdateTravelDocument = gql`
+  mutation updateTravel(
+    $id: ID!
+    $startDate: Date!
+    $endDate: Date!
+    $city: [String!]
+    $country: [String!]
+    $place: [LocationInput!]
+  ) {
+    updateTravel(
+      data: {
+        startDate: $startDate
+        endDate: $endDate
+        city: $city
+        country: $country
+        place: $place
+      }
+      where: { id: $id }
+    ) {
+      id
+      startDate
+      endDate
+      city
+      country
+      place {
+        latitude
+        longitude
+      }
+    }
+  }
+`;
+
+/**
+ * __useUpdateTravelMutation__
+ *
+ * To run a mutation, you first call `useUpdateTravelMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTravelMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateTravelMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *     startDate: // value for 'startDate'
+ *     endDate: // value for 'endDate'
+ *     city: // value for 'city'
+ *     country: // value for 'country'
+ *     place: // value for 'place'
+ *   },
+ * });
+ */
+export function useUpdateTravelMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        UpdateTravelMutation,
+        UpdateTravelMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          UpdateTravelMutation,
+          UpdateTravelMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    UpdateTravelMutation,
+    UpdateTravelMutationVariables
+  >(UpdateTravelDocument, options);
+}
+export type UpdateTravelMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    UpdateTravelMutation,
+    UpdateTravelMutationVariables
   >;
 export const AddWalletDocument = gql`
   mutation addWallet(
@@ -10427,7 +11423,9 @@ export const GetExpensesDocument = gql`
         type
       }
       variable
-      travel
+      travel {
+        id
+      }
     }
   }
 `;
@@ -10686,6 +11684,84 @@ export type GetTransactionsQueryCompositionFunctionResult =
     GetTransactionsQuery,
     GetTransactionsQueryVariables
   >;
+export const GetTravelsDocument = gql`
+  query GetTravels {
+    travels(first: 100, orderBy: startDate_DESC) {
+      id
+      startDate
+      endDate
+      city
+      country
+      place {
+        latitude
+        longitude
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTravelsQuery__
+ *
+ * To run a query within a Vue component, call `useGetTravelsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTravelsQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetTravelsQuery();
+ */
+export function useGetTravelsQuery(
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        GetTravelsQuery,
+        GetTravelsQueryVariables
+      >
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<
+          GetTravelsQuery,
+          GetTravelsQueryVariables
+        >
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          GetTravelsQuery,
+          GetTravelsQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useQuery<
+    GetTravelsQuery,
+    GetTravelsQueryVariables
+  >(GetTravelsDocument, {}, options);
+}
+export function useGetTravelsLazyQuery(
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        GetTravelsQuery,
+        GetTravelsQueryVariables
+      >
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<
+          GetTravelsQuery,
+          GetTravelsQueryVariables
+        >
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          GetTravelsQuery,
+          GetTravelsQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useLazyQuery<
+    GetTravelsQuery,
+    GetTravelsQueryVariables
+  >(GetTravelsDocument, {}, options);
+}
+export type GetTravelsQueryCompositionFunctionResult =
+  VueApolloComposable.UseQueryReturn<GetTravelsQuery, GetTravelsQueryVariables>;
 export const GetWalletsDocument = gql`
   query GetWallets {
     wallets(first: 100, orderBy: createdAt_DESC) {

@@ -48,6 +48,7 @@ import { copyWish } from '../../utils';
 import { Expense } from '../expenses/Expense';
 import { Author } from '../accounts/Author';
 import { Wallet } from '../wallets/Wallet';
+import { Travel } from '../travels/Travel';
 
 const showWishItemModal = ref(false);
 const showConfirmationModal = ref(false);
@@ -102,7 +103,7 @@ const onCompletePlan = (wish: Wish) => {
     currency: wish.currency,
     payment: new Wallet(),
     variable: true,
-    travel: false,
+    travel: new Travel(),
   });
 };
 </script>

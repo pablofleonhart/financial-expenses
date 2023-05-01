@@ -74,3 +74,8 @@ export type WalletType = {
   key: string;
   name: string;
 };
+
+export type PlaceType = {
+  latitude: number;
+  longitude: number;
+};

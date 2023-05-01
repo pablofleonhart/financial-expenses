@@ -1,0 +1,12 @@
+mutation publishTravel($id: ID!) {
+  publishTravel(where: { id: $id}, to: PUBLISHED) {
+    startDate
+    endDate
+    city
+    country
+    place {
+      latitude
+      longitude
+    }
+  }
+}

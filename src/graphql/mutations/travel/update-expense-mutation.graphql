@@ -1,0 +1,30 @@
+mutation updateTravel(
+  $id: ID!,
+  $startDate: Date!,
+  $endDate: Date!,
+  $city: [String!],
+  $country: [String!],
+  $place: [LocationInput!]
+)
+{
+  updateTravel(
+    data: {
+      startDate: $startDate,
+      endDate: $endDate
+      city: $city,
+      country: $country,
+      place: $place,
+    }
+    where: { id: $id }
+  ){
+    id
+    startDate
+    endDate
+    city
+    country
+    place {
+      latitude
+      longitude
+    }
+  }
+}

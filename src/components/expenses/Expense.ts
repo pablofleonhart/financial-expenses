@@ -1,5 +1,6 @@
 import { Author } from '../accounts/Author';
 import { Category } from '../categories/Category';
+import { Travel } from '../travels/Travel';
 import { Wallet } from '../wallets/Wallet';
 
 export class Expense {
@@ -14,7 +15,7 @@ export class Expense {
   public currency: string;
   public payment: Wallet;
   public variable: boolean;
-  public travel: boolean;
+  public travel: Travel;
 
   constructor(
     objExpense: Expense = {
@@ -29,7 +30,7 @@ export class Expense {
       currency: 'euro',
       payment: new Wallet(),
       variable: true,
-      travel: false,
+      travel: new Travel(),
     }
   ) {
     this.id = objExpense.id;

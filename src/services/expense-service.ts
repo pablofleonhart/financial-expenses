@@ -141,7 +141,7 @@ export const addExpense = (expense: Expense) => {
       currency: expense.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
-      travel: expense.travel,
+      travelID: expense.travel ? expense.travel.id : null,
     });
 
     onDone(async (result) => {
@@ -175,7 +175,7 @@ export const editExpense = async (expense: Expense) => {
       currency: expense.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
-      travel: expense.travel,
+      travelID: expense.travel ? expense.travel.id : null,
     });
 
     onDone(() => {
@@ -214,7 +214,7 @@ export const deleteExpense = async (expense: Expense) => {
       currency: expense.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
-      travel: expense.travel,
+      travelID: expense.travel ? expense.travel.id : null,
     });
 
     onDone(() => {

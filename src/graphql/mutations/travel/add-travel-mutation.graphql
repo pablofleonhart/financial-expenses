@@ -1,0 +1,20 @@
+mutation addTravel(
+  $startDate: Date!,
+  $endDate: Date!,
+  $city: [String!],
+  $country: [String!],
+  $place: [LocationInput!]
+)
+{
+  createTravel(
+    data: {
+      startDate: $startDate,
+      endDate: $endDate
+      city: $city,
+      country: $country,
+      place: $place,
+    }
+  ) {
+    id
+  }
+}

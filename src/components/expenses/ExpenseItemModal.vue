@@ -70,7 +70,7 @@
           placeholder="Data da renda ou despesa"
           @update:model-value="setDate"
         />
-        <div class="flex items-center text-lg gap-2">
+        <!-- <div class="flex items-center text-lg gap-2">
           <input
             class="h-5 w-5"
             id="travel_check"
@@ -78,14 +78,14 @@
             v-model="expense.travel"
           />
           <label for="travel_check" class="text-base">Viagem</label>
-        </div>
+        </div> -->
         <div class="flex items-center text-lg gap-2">
           <input
             class="h-5 w-5"
             id="variable_check"
             type="checkbox"
             v-model="expense.variable"
-            :disabled="expense.travel"
+            :disabled="!!expense.travel"
           />
           <label
             for="variable_check"

@@ -9,7 +9,7 @@ mutation updateExpense(
   $currency: String!,
   $paymentID: ID!,
   $variable: Boolean!,
-  $travel: Boolean!
+  $travelID: ID
 )
 {
   updateExpense(
@@ -31,7 +31,11 @@ mutation updateExpense(
         }
       },
       variable: $variable,
-      travel: $travel
+      travel: {
+        connect: {
+          id: $travelID
+        }
+      }
     }
     where: { id: $id }
   ){
@@ -57,6 +61,8 @@ mutation updateExpense(
       type
     }
     variable
-    travel
+    travel {
+      id
+    }
   }
 }

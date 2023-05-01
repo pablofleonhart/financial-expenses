@@ -1,0 +1,13 @@
+query GetTravels {
+  travels(first: 100, orderBy: startDate_DESC) {
+    id
+    startDate
+    endDate
+    city
+    country
+    place {
+      latitude
+      longitude
+    }
+  }
+}
