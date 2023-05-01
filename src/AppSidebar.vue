@@ -87,7 +87,7 @@ const sidebarItems: Array<ISidebarItem> = [
   },
   {
     id: 3,
-    name: 'Fixos',
+    name: 'Previstos',
     icon: 'ph-anchor',
     route: 'fixed-expenses',
     subItem: true,

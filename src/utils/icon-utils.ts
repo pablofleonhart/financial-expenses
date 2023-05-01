@@ -3,6 +3,7 @@ import { EXPENSE_CATEGORY } from '../types';
 const categoryTypes: Record<string, any> = {
   [EXPENSE_CATEGORY.BARBER]: 'ph-scissors',
   [EXPENSE_CATEGORY.CLOTHES]: 'ph-t-shirt',
+  [EXPENSE_CATEGORY.EDUCATION]: 'ph-student',
   [EXPENSE_CATEGORY.ELECTRONIC]: 'ph-desktop-tower',
   [EXPENSE_CATEGORY.FOOD]: 'ph-pizza',
   [EXPENSE_CATEGORY.GYM]: 'ph-barbell',

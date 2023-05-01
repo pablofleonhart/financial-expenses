@@ -3,6 +3,7 @@ import { EXPENSE_CATEGORY } from '../types';
 const expenseCategoryColors: Record<string, any> = {
   [EXPENSE_CATEGORY.BARBER]: '#2166ac',
   [EXPENSE_CATEGORY.CLOTHES]: '#3761ab',
+  [EXPENSE_CATEGORY.EDUCATION]: '#62a6f2',
   [EXPENSE_CATEGORY.ELECTRONIC]: '#f4777f',
   [EXPENSE_CATEGORY.FOOD]: '#f46d43',
   [EXPENSE_CATEGORY.GYM]: '#ace14c',
