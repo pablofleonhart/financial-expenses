@@ -27,6 +27,7 @@
     "simple-crypto-js": "^3.0.1",
     "vue": "^3.2.41",
     "vue-chartjs": "^5.1.0",
+    "vue-country-flag-next": "^2.3.2",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {

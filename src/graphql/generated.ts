@@ -11686,7 +11686,7 @@ export type GetTransactionsQueryCompositionFunctionResult =
   >;
 export const GetTravelsDocument = gql`
   query GetTravels {
-    travels(first: 100, orderBy: startDate_DESC) {
+    travels(first: 100, orderBy: startDate_ASC) {
       id
       startDate
       endDate

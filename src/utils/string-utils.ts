@@ -1,4 +1,6 @@
+import { Travel } from '../components/travels/Travel';
 import { Wallet } from '../components/wallets/Wallet';
+import { formatDate } from './date-utils';
 
 export const getInitials = (name: string): string => {
   return name
@@ -20,4 +22,14 @@ export const getBalanceName = (balance: Wallet): string => {
   }
   const holder = balance.holder ? `- ${balance.holder}` : '';
   return `${balance.broker} ${holder}`;
+};
+
+export const getCitiesFromTravel = (travel: Travel): string => {
+  return travel.city.join(', ');
+};
+
+export const getTravelPeriod = (travel: Travel): string => {
+  const startDate = formatDate(travel.startDate);
+  const endDate = formatDate(travel.endDate);
+  return `De ${startDate} a ${endDate}`;
 };
