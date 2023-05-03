@@ -36,8 +36,9 @@ import {
   deleteExpense,
   filterExpenses,
   loadExpenses,
-  showTravelExpense,
+  showFixedExpense,
   showVariablesExpense,
+  travelExpense,
 } from '../../services';
 import { Expense } from './Expense';
 import ConfirmationModal from '../common/ConfirmationModal.vue';
@@ -51,19 +52,20 @@ let expenseToDelete: Expense = new Expense();
 const $route = useRoute();
 
 const applyFilterExpenses = () => {
-  let variableExpense = null;
-  let travelExpense = false;
+  let variableExpense = true;
+  let fixedExpense = true;
 
   if ($route.fullPath === '/fixed-expenses') {
+    fixedExpense = true;
     variableExpense = false;
   } else if ($route.fullPath === '/variable-expenses') {
+    fixedExpense = false;
     variableExpense = true;
-  } else if ($route.fullPath === '/travels') {
-    travelExpense = true;
   }
 
+  showFixedExpense.value = fixedExpense;
   showVariablesExpense.value = variableExpense;
-  showTravelExpense.value = travelExpense;
+  travelExpense.value = null;
   filterExpenses();
 };
 

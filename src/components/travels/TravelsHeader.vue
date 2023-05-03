@@ -16,8 +16,8 @@
             :key="index"
             :country="country"
             size="big"
-            rounded="true"
-            shadow="true"
+            :rounded="true"
+            :shadow="true"
           />
         </div>
         <span>{{ getCitiesFromTravel(travel) }}</span>

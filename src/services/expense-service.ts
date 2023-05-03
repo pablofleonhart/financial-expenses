@@ -18,6 +18,7 @@ import {
 } from '../utils';
 import { MonthPeriod } from '../types';
 import { editWallet, publishManyWallets } from './wallet-service';
+import { Travel } from '../components/travels/Travel';
 
 export let allExpenseItems: Array<Expense> = [];
 export const filteredExpenseItems: Array<Expense> = reactive([]);
@@ -37,8 +38,9 @@ export let expenseCategoriesValues: number[] = [];
 export let expenseCategoriesColorValues: string[] = [];
 
 export const reloadCharts = ref(false);
-export const showVariablesExpense = ref<boolean | null>(null);
-export const showTravelExpense = ref(false);
+export const showFixedExpense = ref<boolean>(false);
+export const showVariablesExpense = ref<boolean>(false);
+export const travelExpense = ref<Travel | null>(null);
 
 const EXPENSE_LIST_KEY = 'expense-list';
 const EXPENSE_PERIOD = 'expense-period';
@@ -284,29 +286,32 @@ export const topFiveExpenseCategories = computed(() => {
   return sortedCategories.slice(0, 5);
 });
 
-export const filterExpenses = (period: MonthPeriod = selectedExpensePeriod) => {
-  let result = [];
+export const filterExpenses = (
+  period: MonthPeriod | null = selectedExpensePeriod
+) => {
+  let result: Expense[] = [];
 
-  if (showTravelExpense.value) {
-    result = allExpenseItems.filter((item) => item.travel);
-  } else {
-    if (showVariablesExpense.value === null) {
-      result = allExpenseItems.filter((item) => !item.travel);
-    } else {
-      result = allExpenseItems.filter(
-        (item) => item.variable === showVariablesExpense.value && !item.travel
-      );
-    }
+  if (travelExpense.value) {
+    result = allExpenseItems.filter(
+      (item) => item.travel && item.travel.id === travelExpense.value?.id
+    );
+  } else if (showFixedExpense.value) {
+    result = allExpenseItems.filter((item) => !item.travel && !item.variable);
+  } else if (showVariablesExpense.value) {
+    result = allExpenseItems.filter((item) => !item.travel && item.variable);
   }
 
-  result = result.filter((item) => {
-    return isDateInPeriod(item.date, period);
-  });
+  if (period) {
+    result = result.filter((item) => {
+      return isDateInPeriod(item.date, period);
+    });
+    Object.assign(selectedExpensePeriod, period);
+  }
 
   filteredExpenseItems.splice(0);
   Object.assign(filteredExpenseItems, result);
   sortExpenses();
-  Object.assign(selectedExpensePeriod, period);
+
   localStorage.setItem(EXPENSE_PERIOD, JSON.stringify(selectedExpensePeriod));
   loadExpenseCategories();
 };

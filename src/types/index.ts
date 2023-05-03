@@ -79,3 +79,7 @@ export type PlaceType = {
   latitude: number;
   longitude: number;
 };
+
+export interface IExpenseFilter {
+  period?: MonthPeriod;
+}
