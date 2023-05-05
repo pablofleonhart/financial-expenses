@@ -1,5 +1,4 @@
-mutation updateExpense(
-  $id: ID!,
+mutation addExpenseWithTravel(
   $amount: Float!,
   $card: Boolean!,
   $date: Date!,
@@ -8,52 +7,36 @@ mutation updateExpense(
   $categoryID: ID!,
   $currency: String!,
   $paymentID: ID!,
-  $variable: Boolean!
+  $variable: Boolean!,
+  $travelID: ID
 )
 {
-  updateExpense(
+  createExpense(
     data: {
       amount: $amount,
-      card: $card,
+      card: $card
       date: $date,
       deleted: $deleted,
-      note: $note, 
+      note: $note,
       category: {
         connect: {
           id: $categoryID
         }
       },
-      currency: $currency,
-      payment: {
+      currency: $currency
+      payment:  {
         connect: {
           id: $paymentID
         }
       },
       variable: $variable
+      travel: {
+        connect: {
+          id: $travelID
+        }
+      }
     }
-    where: { id: $id }
-  ){
+  ) {
     id
-    amount
-    card
-    date
-    deleted
-    note
-    category {
-      id
-      name
-      type
-    }
-    currency
-    payment {
-      id
-      amount
-      broker
-      currency
-      holder
-      deleted
-      type
-    }
-    variable
   }
 }

@@ -143,7 +143,6 @@ export const addExpense = (expense: Expense) => {
       currency: expense.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
-      travelID: expense.travel ? expense.travel.id : null,
     });
 
     onDone(async (result) => {
@@ -177,7 +176,6 @@ export const editExpense = async (expense: Expense) => {
       currency: expense.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
-      travelID: expense.travel ? expense.travel.id : null,
     });
 
     onDone(() => {
@@ -216,7 +214,6 @@ export const deleteExpense = async (expense: Expense) => {
       currency: expense.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
-      travelID: expense.travel ? expense.travel.id : null,
     });
 
     onDone(() => {
@@ -295,6 +292,8 @@ export const filterExpenses = (
     result = allExpenseItems.filter(
       (item) => item.travel && item.travel.id === travelExpense.value?.id
     );
+  } else if (showFixedExpense.value && showVariablesExpense.value) {
+    result = allExpenseItems.filter((item) => !item.travel);
   } else if (showFixedExpense.value) {
     result = allExpenseItems.filter((item) => !item.travel && !item.variable);
   } else if (showVariablesExpense.value) {

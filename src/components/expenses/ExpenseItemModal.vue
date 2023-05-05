@@ -85,7 +85,6 @@
             id="variable_check"
             type="checkbox"
             v-model="expense.variable"
-            :disabled="!!expense.travel"
           />
           <label
             for="variable_check"

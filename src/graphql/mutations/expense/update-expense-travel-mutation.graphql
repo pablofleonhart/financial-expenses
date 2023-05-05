@@ -1,4 +1,4 @@
-mutation updateExpense(
+mutation updateExpenseWithTravel(
   $id: ID!,
   $amount: Float!,
   $card: Boolean!,
@@ -8,7 +8,8 @@ mutation updateExpense(
   $categoryID: ID!,
   $currency: String!,
   $paymentID: ID!,
-  $variable: Boolean!
+  $variable: Boolean!,
+  $travelID: ID
 )
 {
   updateExpense(
@@ -29,7 +30,12 @@ mutation updateExpense(
           id: $paymentID
         }
       },
-      variable: $variable
+      variable: $variable,
+      travel: {
+        connect: {
+          id: $travelID
+        }
+      }
     }
     where: { id: $id }
   ){
@@ -55,5 +61,8 @@ mutation updateExpense(
       type
     }
     variable
+    travel {
+      id
+    }
   }
 }
