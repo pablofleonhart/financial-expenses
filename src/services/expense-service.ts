@@ -293,11 +293,17 @@ export const filterExpenses = (
       (item) => item.travel && item.travel.id === travelExpense.value?.id
     );
   } else if (showFixedExpense.value && showVariablesExpense.value) {
-    result = allExpenseItems.filter((item) => !item.travel);
+    result = allExpenseItems.filter(
+      (item) => !item.travel || item.travel.id == ''
+    );
   } else if (showFixedExpense.value) {
-    result = allExpenseItems.filter((item) => !item.travel && !item.variable);
+    result = allExpenseItems.filter(
+      (item) => (!item.travel || item.travel.id == '') && !item.variable
+    );
   } else if (showVariablesExpense.value) {
-    result = allExpenseItems.filter((item) => !item.travel && item.variable);
+    result = allExpenseItems.filter(
+      (item) => (!item.travel || item.travel.id == '') && item.variable
+    );
   }
 
   if (period) {
