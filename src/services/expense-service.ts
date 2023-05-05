@@ -45,6 +45,21 @@ export const travelExpense = ref<Travel | null>(null);
 const EXPENSE_LIST_KEY = 'expense-list';
 const EXPENSE_PERIOD = 'expense-period';
 
+export const selectedTravelExpensesSum = computed(() => {
+  const expensesSum: Record<string, any> = {};
+  if (travelExpense.value) {
+    filteredExpenseItems.forEach((item) => {
+      const key = item.payment.currency;
+      if (!(key in expensesSum)) {
+        expensesSum[key] = 0;
+      }
+      expensesSum[key] += item.amount;
+    });
+  }
+
+  return expensesSum;
+});
+
 export const expensePeriods: Array<MonthPeriod> = reactive([]);
 
 export const selectedExpensePeriod: MonthPeriod = reactive({

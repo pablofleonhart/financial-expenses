@@ -38,6 +38,11 @@ const selectedTravel = ref<Travel | null>(null);
 
 onMounted(() => {
   loadTravels();
+  if (!allTravelItems.length) {
+    return;
+  }
+  selectedTravel.value = allTravelItems[0];
+  emit('select-travel', allTravelItems[0]);
 });
 
 const onSelectTravel = (travel: Travel) => {
