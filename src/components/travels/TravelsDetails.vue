@@ -3,7 +3,6 @@
     <div v-if="props.travel" class="flex flex-col items-center">
       <span>{{ getCitiesFromTravel(props.travel) }}</span>
       <span>{{ getTravelPeriod(props.travel) }}</span>
-      <!-- <span class="font-bold">{{ formatCurrency(selectedTravelExpensesSum) }}</span> -->
       <div class="balance mb-4 grid grid-rows-2 items-center font-bold">
         <span class="flex justify-center">Total gasto:</span>
         <div class="flex items-center gap-4">

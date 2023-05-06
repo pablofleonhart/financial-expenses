@@ -1,10 +1,12 @@
 <template>
   <div
-    class="expenses-header grid grid-cols-[1fr_max-content] h-12 w-full items-center justify-around"
+    class="expenses-header flex h-12 w-full items-center justify-center font-bold text-lg"
   >
-    <div class="flex justify-center font-bold text-lg">
-      <span class="mr-2">Total:</span>
-      {{ formatCurrency(expensesSum) }}
+    <span class="flex w-16">Total:</span>
+    <div class="flex justify-center items-center gap-4">
+      <div v-for="(value, key) in expensesSum" :key="key" class="balance-value">
+        {{ formatCurrency(value, key) }}
+      </div>
     </div>
   </div>
 </template>

@@ -37,5 +37,8 @@ export const formatCurrency = (
   value: number | null,
   currency = 'euro'
 ): string => {
+  if (currency == '') {
+    currency = 'euro';
+  }
   return converters[currency].format(value || 0);
 };

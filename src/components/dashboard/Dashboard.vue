@@ -50,7 +50,9 @@
       @click="$router.push('/variable-expenses')"
     >
       <span class="font-bold text-xl">Despesas variáveis do mês</span>
-      <div class="text-2xl">Total: {{ formatCurrency(expensesSum) }}</div>
+      <div class="text-2xl">
+        Total: {{ formatCurrency(expensesSum['euro']) }}
+      </div>
       <div class="flex gap-4 w-full justify-center">
         <span class="flex h-full items-center text-lg">Top</span>
         <ph-number-circle-five
