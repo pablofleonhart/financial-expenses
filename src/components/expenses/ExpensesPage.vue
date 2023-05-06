@@ -18,9 +18,24 @@
     >
       Gráficos
     </button>
+    <button
+      class="filter-tab"
+      :class="{
+        'filter-tab-selected': selectedTab === 'budget',
+      }"
+      @click="onClickTab('budget')"
+    >
+      Orçamentos
+    </button>
   </div>
   <expenses-list
     v-if="selectedTab === 'list'"
+    class="flex my-4"
+    @on-edit-expense="onEditExpense"
+    @on-delete-expense="onDeleteExpense"
+  />
+  <budgets-list
+    v-if="selectedTab === 'budget'"
     class="flex my-4"
     @on-edit-expense="onEditExpense"
     @on-delete-expense="onDeleteExpense"
@@ -30,6 +45,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
+import BudgetsList from './BudgetsList.vue';
 import ExpensesList from './ExpensesList.vue';
 import ExpensesAnalyzes from './ExpensesAnalyzes.vue';
 

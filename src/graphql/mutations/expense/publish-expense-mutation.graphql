@@ -21,6 +21,7 @@ mutation publishExpense($id: ID!) {
       type
     }
     variable
+    budget
     travel {
       id
     }

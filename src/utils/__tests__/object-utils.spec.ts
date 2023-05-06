@@ -93,6 +93,7 @@ describe('sortList function', () => {
       author: new Author(),
       payment: new Wallet(),
       variable: true,
+      budget: true,
       travel: new Travel(),
     };
     const target = copyExpense(source);

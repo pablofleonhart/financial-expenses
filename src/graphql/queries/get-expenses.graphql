@@ -25,6 +25,7 @@ query GetExpenses($startDate: Date!, $endDate: Date!) {
       type
     }
     variable
+    budget
     travel {
       id
     }

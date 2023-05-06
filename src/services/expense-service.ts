@@ -25,12 +25,6 @@ export const filteredExpenseItems: Array<Expense> = reactive([]);
 export const expenseSettings: Record<string, any> = reactive({});
 
 export const expensesSum = computed(() => {
-  // let result = 0;
-  // filteredExpenseItems.forEach((item) => {
-  //   result += item.amount;
-  // });
-  // return result;
-
   const expensesSum: Record<string, any> = {};
   filteredExpenseItems.forEach((item) => {
     const key = item.payment.currency;
@@ -41,6 +35,10 @@ export const expensesSum = computed(() => {
   });
 
   return expensesSum;
+});
+
+export const budgetExpenseItems = computed(() => {
+  return filteredExpenseItems.filter((item) => item.budget);
 });
 
 const sortedCategories: any[] = reactive([]);
@@ -170,6 +168,7 @@ export const addExpense = (expense: Expense) => {
       currency: expense.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
+      budget: expense.budget,
     });
 
     onDone(async (result) => {
@@ -203,6 +202,7 @@ export const editExpense = async (expense: Expense) => {
       currency: expense.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
+      budget: expense.budget,
     });
 
     onDone(() => {
@@ -241,6 +241,7 @@ export const deleteExpense = async (expense: Expense) => {
       currency: expense.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
+      budget: expense.budget,
     });
 
     onDone(() => {

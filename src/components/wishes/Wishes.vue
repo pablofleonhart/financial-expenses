@@ -104,6 +104,7 @@ const onCompletePlan = (wish: Wish) => {
     payment: new Wallet(),
     variable: true,
     travel: new Travel(),
+    budget: true,
   });
 };
 </script>

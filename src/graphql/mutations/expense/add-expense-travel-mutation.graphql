@@ -8,6 +8,7 @@ mutation addExpenseWithTravel(
   $currency: String!,
   $paymentID: ID!,
   $variable: Boolean!,
+  $budget: Boolean!,
   $travelID: ID
 )
 {
@@ -30,6 +31,7 @@ mutation addExpenseWithTravel(
         }
       },
       variable: $variable
+      budget: $budget
       travel: {
         connect: {
           id: $travelID

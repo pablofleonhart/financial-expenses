@@ -1817,6 +1817,7 @@ export type Expense = Node & {
   __typename?: 'Expense';
   account?: Maybe<Account>;
   amount: Scalars['Float'];
+  budget?: Maybe<Scalars['Boolean']>;
   card?: Maybe<Scalars['Boolean']>;
   category?: Maybe<Category>;
   /** The time the document was created */
@@ -1927,6 +1928,7 @@ export type ExpenseConnection = {
 export type ExpenseCreateInput = {
   account?: InputMaybe<AccountCreateOneInlineInput>;
   amount: Scalars['Float'];
+  budget?: InputMaybe<Scalars['Boolean']>;
   card?: InputMaybe<Scalars['Boolean']>;
   category?: InputMaybe<CategoryCreateOneInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
@@ -1989,6 +1991,9 @@ export type ExpenseManyWhereInput = {
   amount_not?: InputMaybe<Scalars['Float']>;
   /** All values that are not contained in given list. */
   amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  budget?: InputMaybe<Scalars['Boolean']>;
+  /** Any other value that exists and is not equal to the given value. */
+  budget_not?: InputMaybe<Scalars['Boolean']>;
   card?: InputMaybe<Scalars['Boolean']>;
   /** Any other value that exists and is not equal to the given value. */
   card_not?: InputMaybe<Scalars['Boolean']>;
@@ -2132,6 +2137,8 @@ export type ExpenseManyWhereInput = {
 export enum ExpenseOrderByInput {
   AmountAsc = 'amount_ASC',
   AmountDesc = 'amount_DESC',
+  BudgetAsc = 'budget_ASC',
+  BudgetDesc = 'budget_DESC',
   CardAsc = 'card_ASC',
   CardDesc = 'card_DESC',
   CreatedAtAsc = 'createdAt_ASC',
@@ -2157,6 +2164,7 @@ export enum ExpenseOrderByInput {
 export type ExpenseUpdateInput = {
   account?: InputMaybe<AccountUpdateOneInlineInput>;
   amount?: InputMaybe<Scalars['Float']>;
+  budget?: InputMaybe<Scalars['Boolean']>;
   card?: InputMaybe<Scalars['Boolean']>;
   category?: InputMaybe<CategoryUpdateOneInlineInput>;
   currency?: InputMaybe<Scalars['String']>;
@@ -2187,6 +2195,7 @@ export type ExpenseUpdateManyInlineInput = {
 
 export type ExpenseUpdateManyInput = {
   amount?: InputMaybe<Scalars['Float']>;
+  budget?: InputMaybe<Scalars['Boolean']>;
   card?: InputMaybe<Scalars['Boolean']>;
   currency?: InputMaybe<Scalars['String']>;
   date?: InputMaybe<Scalars['Date']>;
@@ -2270,6 +2279,9 @@ export type ExpenseWhereInput = {
   amount_not?: InputMaybe<Scalars['Float']>;
   /** All values that are not contained in given list. */
   amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  budget?: InputMaybe<Scalars['Boolean']>;
+  /** Any other value that exists and is not equal to the given value. */
+  budget_not?: InputMaybe<Scalars['Boolean']>;
   card?: InputMaybe<Scalars['Boolean']>;
   /** Any other value that exists and is not equal to the given value. */
   card_not?: InputMaybe<Scalars['Boolean']>;
@@ -8960,6 +8972,7 @@ export type AddExpenseMutationVariables = Exact<{
   currency: Scalars['String'];
   paymentID: Scalars['ID'];
   variable: Scalars['Boolean'];
+  budget: Scalars['Boolean'];
 }>;
 
 export type AddExpenseMutation = {
@@ -8977,6 +8990,7 @@ export type AddExpenseWithTravelMutationVariables = Exact<{
   currency: Scalars['String'];
   paymentID: Scalars['ID'];
   variable: Scalars['Boolean'];
+  budget: Scalars['Boolean'];
   travelID?: InputMaybe<Scalars['ID']>;
 }>;
 
@@ -9000,6 +9014,7 @@ export type PublishExpenseMutation = {
     note?: string | null;
     currency: string;
     variable: boolean;
+    budget?: boolean | null;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -9031,6 +9046,7 @@ export type UpdateExpenseMutationVariables = Exact<{
   currency: Scalars['String'];
   paymentID: Scalars['ID'];
   variable: Scalars['Boolean'];
+  budget: Scalars['Boolean'];
 }>;
 
 export type UpdateExpenseMutation = {
@@ -9045,6 +9061,7 @@ export type UpdateExpenseMutation = {
     note?: string | null;
     currency: string;
     variable: boolean;
+    budget?: boolean | null;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -9075,6 +9092,7 @@ export type UpdateExpenseWithTravelMutationVariables = Exact<{
   currency: Scalars['String'];
   paymentID: Scalars['ID'];
   variable: Scalars['Boolean'];
+  budget: Scalars['Boolean'];
   travelID?: InputMaybe<Scalars['ID']>;
 }>;
 
@@ -9090,6 +9108,7 @@ export type UpdateExpenseWithTravelMutation = {
     note?: string | null;
     currency: string;
     variable: boolean;
+    budget?: boolean | null;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -9502,6 +9521,7 @@ export type GetExpensesQuery = {
     note?: string | null;
     currency: string;
     variable: boolean;
+    budget?: boolean | null;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -9806,6 +9826,7 @@ export const AddExpenseDocument = gql`
     $currency: String!
     $paymentID: ID!
     $variable: Boolean!
+    $budget: Boolean!
   ) {
     createExpense(
       data: {
@@ -9818,6 +9839,7 @@ export const AddExpenseDocument = gql`
         currency: $currency
         payment: { connect: { id: $paymentID } }
         variable: $variable
+        budget: $budget
       }
     ) {
       id
@@ -9847,6 +9869,7 @@ export const AddExpenseDocument = gql`
  *     currency: // value for 'currency'
  *     paymentID: // value for 'paymentID'
  *     variable: // value for 'variable'
+ *     budget: // value for 'budget'
  *   },
  * });
  */
@@ -9884,6 +9907,7 @@ export const AddExpenseWithTravelDocument = gql`
     $currency: String!
     $paymentID: ID!
     $variable: Boolean!
+    $budget: Boolean!
     $travelID: ID
   ) {
     createExpense(
@@ -9897,6 +9921,7 @@ export const AddExpenseWithTravelDocument = gql`
         currency: $currency
         payment: { connect: { id: $paymentID } }
         variable: $variable
+        budget: $budget
         travel: { connect: { id: $travelID } }
       }
     ) {
@@ -9927,6 +9952,7 @@ export const AddExpenseWithTravelDocument = gql`
  *     currency: // value for 'currency'
  *     paymentID: // value for 'paymentID'
  *     variable: // value for 'variable'
+ *     budget: // value for 'budget'
  *     travelID: // value for 'travelID'
  *   },
  * });
@@ -9978,6 +10004,7 @@ export const PublishExpenseDocument = gql`
         type
       }
       variable
+      budget
       travel {
         id
       }
@@ -10037,6 +10064,7 @@ export const UpdateExpenseDocument = gql`
     $currency: String!
     $paymentID: ID!
     $variable: Boolean!
+    $budget: Boolean!
   ) {
     updateExpense(
       data: {
@@ -10049,6 +10077,7 @@ export const UpdateExpenseDocument = gql`
         currency: $currency
         payment: { connect: { id: $paymentID } }
         variable: $variable
+        budget: $budget
       }
       where: { id: $id }
     ) {
@@ -10074,6 +10103,7 @@ export const UpdateExpenseDocument = gql`
         type
       }
       variable
+      budget
     }
   }
 `;
@@ -10101,6 +10131,7 @@ export const UpdateExpenseDocument = gql`
  *     currency: // value for 'currency'
  *     paymentID: // value for 'paymentID'
  *     variable: // value for 'variable'
+ *     budget: // value for 'budget'
  *   },
  * });
  */
@@ -10139,6 +10170,7 @@ export const UpdateExpenseWithTravelDocument = gql`
     $currency: String!
     $paymentID: ID!
     $variable: Boolean!
+    $budget: Boolean!
     $travelID: ID
   ) {
     updateExpense(
@@ -10152,6 +10184,7 @@ export const UpdateExpenseWithTravelDocument = gql`
         currency: $currency
         payment: { connect: { id: $paymentID } }
         variable: $variable
+        budget: $budget
         travel: { connect: { id: $travelID } }
       }
       where: { id: $id }
@@ -10178,6 +10211,7 @@ export const UpdateExpenseWithTravelDocument = gql`
         type
       }
       variable
+      budget
       travel {
         id
       }
@@ -10208,6 +10242,7 @@ export const UpdateExpenseWithTravelDocument = gql`
  *     currency: // value for 'currency'
  *     paymentID: // value for 'paymentID'
  *     variable: // value for 'variable'
+ *     budget: // value for 'budget'
  *     travelID: // value for 'travelID'
  *   },
  * });
@@ -11664,6 +11699,7 @@ export const GetExpensesDocument = gql`
         type
       }
       variable
+      budget
       travel {
         id
       }

@@ -1,0 +1,140 @@
+<template>
+  <div class="expense-budget-list h-[83%] overflow-auto scrollbar">
+    <table class="table-auto h-fit w-full bg-neutral-color-500">
+      <thead class="expense-budget-list-head w-screen sticky top-0">
+        <tr class="flex w-full h-10 bg-neutral-color-700">
+          <th
+            v-for="column in expenseBudgetColumns"
+            :key="column.key"
+            class="flex items-center p-2 h-full w-1/4 cursor-pointer hover:bg-secondary-color-300"
+            :class="column.class"
+            @click="orderList(column)"
+          >
+            <component
+              v-if="!column.static && orderColumn === column.key"
+              :is="getOrderIcon(orderDirection)"
+              size="20"
+              class="mr-1"
+            />
+            <span>
+              {{ column.name }}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="expense-budget-list-body flex flex-col w-full">
+        <div v-if="expenseBudgets.length">
+          <tr
+            class="flex w-full items-center h-10 even:bg-neutral-color-700"
+            v-for="(item, index) in expenseBudgets"
+            :key="item.id"
+          >
+            <td class="flex items-center p-2 h-full w-1/6 min-w-24 justify-end">
+              {{
+                formatCurrency(item.amount, item.payment?.currency || 'euro')
+              }}
+            </td>
+            <td class="flex items-center p-2 h-full w-1/4 min-w-36">
+              <div class="flex w-full justify-center">
+                <component
+                  :is="getCategoryIcon(item.category.type)"
+                  class="h-6 w-6"
+                />
+                <span class="ml-2">
+                  {{ item.category.name }}
+                </span>
+              </div>
+            </td>
+            <td class="flex items-center p-2 h-full w-1/4 min-w-44">
+              <span class="w-full truncate" :title="item.note">
+                {{ item.note }}
+              </span>
+            </td>
+            <td class="flex items-center p-2 h-full w-1/4 min-w-24">
+              <div class="flex w-full justify-evenly">
+                <ph-pencil
+                  class="button-action hover:bg-blue-500"
+                  @click="onEditExpense(index)"
+                />
+                <ph-trash
+                  class="button-action hover:bg-red-500"
+                  @click="onDeleteExpense(index)"
+                />
+              </div>
+            </td>
+          </tr>
+        </div>
+        <div v-else class="font-bold flex justify-center mt-4">
+          Nenhum orçamento criado para este periodo
+        </div>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { computed } from 'vue';
+import {
+  formatCurrency,
+  getCategoryIcon,
+  getCurrencyIcon,
+  getOrderIcon,
+  getPaymentIcon,
+} from '../../utils';
+import {
+  budgetExpenseItems,
+  expenseSettings,
+  sortExpenses,
+} from '../../services';
+import { Expense } from './Expense';
+
+const expenseBudgetColumns = [
+  {
+    key: 'amount',
+    name: 'Valor',
+    class: 'min-w-24 justify-end',
+  },
+  {
+    key: 'category.name',
+    name: 'Categoria',
+    class: 'min-w-36 justify-center',
+  },
+  {
+    key: 'note',
+    name: 'Descrição',
+    class: 'min-w-44',
+  },
+  {
+    key: 'actions',
+    name: 'Ações',
+    class: 'min-w-24 justify-center cursor-default',
+    static: true,
+  },
+];
+
+const emit = defineEmits(['onEditExpense', 'onDeleteExpense']);
+
+const expenseBudgets = computed<Array<Expense>>(() => budgetExpenseItems.value);
+const orderColumn = computed(() => {
+  return expenseSettings.column;
+});
+
+const orderDirection = computed(() => {
+  return expenseSettings.ascending;
+});
+
+const orderList = (column: any) => {
+  if (column.static) {
+    return;
+  }
+  sortExpenses(column.key);
+};
+
+const onEditExpense = (index: number) => {
+  emit('onEditExpense', expenseBudgets.value[index]);
+};
+
+const onDeleteExpense = (index: number) => {
+  emit('onDeleteExpense', expenseBudgets.value[index]);
+};
+</script>
