@@ -92,8 +92,8 @@ import {
   getProgressWidth,
 } from '../../utils';
 import {
+  budgetExpenseItems,
   expenseBudgetSettings,
-  filteredExpenseBudgets,
   sortExpenseBudgets,
 } from '../../services';
 import { Expense } from './Expense';
@@ -129,7 +129,7 @@ const expenseBudgetColumns = [
 
 const emit = defineEmits(['onEditExpense', 'onDeleteExpense']);
 
-const expenseBudgets = computed<Array<Expense>>(() => filteredExpenseBudgets);
+const expenseBudgets = computed<Array<Expense>>(() => budgetExpenseItems.value);
 
 const orderColumn = computed(() => {
   return expenseBudgetSettings.column;

@@ -8992,21 +8992,17 @@ export type AddExpenseMutation = {
   createExpense?: { __typename?: 'Expense'; id: string } | null;
 };
 
-export type AddExpenseWithTravelMutationVariables = Exact<{
+export type AddTravelExpenseMutationVariables = Exact<{
   amount: Scalars['Float'];
-  card: Scalars['Boolean'];
-  date: Scalars['Date'];
-  deleted: Scalars['Boolean'];
-  note: Scalars['String'];
   categoryID: Scalars['ID'];
   currency: Scalars['String'];
+  date: Scalars['Date'];
+  note: Scalars['String'];
   paymentID: Scalars['ID'];
-  variable: Scalars['Boolean'];
-  budget: Scalars['Boolean'];
   travelID?: InputMaybe<Scalars['ID']>;
 }>;
 
-export type AddExpenseWithTravelMutation = {
+export type AddTravelExpenseMutation = {
   __typename?: 'Mutation';
   createExpense?: { __typename?: 'Expense'; id: string } | null;
 };
@@ -9120,34 +9116,26 @@ export type UpdateExpenseMutation = {
   } | null;
 };
 
-export type UpdateExpenseWithTravelMutationVariables = Exact<{
+export type UpdateTravelExpenseMutationVariables = Exact<{
   id: Scalars['ID'];
   amount: Scalars['Float'];
-  card: Scalars['Boolean'];
-  date: Scalars['Date'];
-  deleted: Scalars['Boolean'];
-  note: Scalars['String'];
   categoryID: Scalars['ID'];
   currency: Scalars['String'];
+  date: Scalars['Date'];
+  note: Scalars['String'];
   paymentID: Scalars['ID'];
-  variable: Scalars['Boolean'];
-  budget: Scalars['Boolean'];
   travelID?: InputMaybe<Scalars['ID']>;
 }>;
 
-export type UpdateExpenseWithTravelMutation = {
+export type UpdateTravelExpenseMutation = {
   __typename?: 'Mutation';
   updateExpense?: {
     __typename?: 'Expense';
     id: string;
     amount: number;
-    card?: boolean | null;
-    date?: any | null;
-    deleted?: boolean | null;
-    note?: string | null;
     currency: string;
-    variable: boolean;
-    budget?: boolean | null;
+    date?: any | null;
+    note?: string | null;
     category?: {
       __typename?: 'Category';
       id: string;
@@ -10001,32 +9989,27 @@ export type AddExpenseMutationCompositionFunctionResult =
     AddExpenseMutation,
     AddExpenseMutationVariables
   >;
-export const AddExpenseWithTravelDocument = gql`
-  mutation addExpenseWithTravel(
+export const AddTravelExpenseDocument = gql`
+  mutation addTravelExpense(
     $amount: Float!
-    $card: Boolean!
-    $date: Date!
-    $deleted: Boolean!
-    $note: String!
     $categoryID: ID!
     $currency: String!
+    $date: Date!
+    $note: String!
     $paymentID: ID!
-    $variable: Boolean!
-    $budget: Boolean!
     $travelID: ID
   ) {
     createExpense(
       data: {
         amount: $amount
-        card: $card
-        date: $date
-        deleted: $deleted
-        note: $note
+        budget: false
         category: { connect: { id: $categoryID } }
         currency: $currency
+        date: $date
+        deleted: false
+        note: $note
         payment: { connect: { id: $paymentID } }
-        variable: $variable
-        budget: $budget
+        variable: true
         travel: { connect: { id: $travelID } }
       }
     ) {
@@ -10036,54 +10019,50 @@ export const AddExpenseWithTravelDocument = gql`
 `;
 
 /**
- * __useAddExpenseWithTravelMutation__
+ * __useAddTravelExpenseMutation__
  *
- * To run a mutation, you first call `useAddExpenseWithTravelMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useAddExpenseWithTravelMutation` returns an object that includes:
+ * To run a mutation, you first call `useAddTravelExpenseMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useAddTravelExpenseMutation` returns an object that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
  *
  * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
  *
  * @example
- * const { mutate, loading, error, onDone } = useAddExpenseWithTravelMutation({
+ * const { mutate, loading, error, onDone } = useAddTravelExpenseMutation({
  *   variables: {
  *     amount: // value for 'amount'
- *     card: // value for 'card'
- *     date: // value for 'date'
- *     deleted: // value for 'deleted'
- *     note: // value for 'note'
  *     categoryID: // value for 'categoryID'
  *     currency: // value for 'currency'
+ *     date: // value for 'date'
+ *     note: // value for 'note'
  *     paymentID: // value for 'paymentID'
- *     variable: // value for 'variable'
- *     budget: // value for 'budget'
  *     travelID: // value for 'travelID'
  *   },
  * });
  */
-export function useAddExpenseWithTravelMutation(
+export function useAddTravelExpenseMutation(
   options:
     | VueApolloComposable.UseMutationOptions<
-        AddExpenseWithTravelMutation,
-        AddExpenseWithTravelMutationVariables
+        AddTravelExpenseMutation,
+        AddTravelExpenseMutationVariables
       >
     | ReactiveFunction<
         VueApolloComposable.UseMutationOptions<
-          AddExpenseWithTravelMutation,
-          AddExpenseWithTravelMutationVariables
+          AddTravelExpenseMutation,
+          AddTravelExpenseMutationVariables
         >
       >
 ) {
   return VueApolloComposable.useMutation<
-    AddExpenseWithTravelMutation,
-    AddExpenseWithTravelMutationVariables
-  >(AddExpenseWithTravelDocument, options);
+    AddTravelExpenseMutation,
+    AddTravelExpenseMutationVariables
+  >(AddTravelExpenseDocument, options);
 }
-export type AddExpenseWithTravelMutationCompositionFunctionResult =
+export type AddTravelExpenseMutationCompositionFunctionResult =
   VueApolloComposable.UseMutationReturn<
-    AddExpenseWithTravelMutation,
-    AddExpenseWithTravelMutationVariables
+    AddTravelExpenseMutation,
+    AddTravelExpenseMutationVariables
   >;
 export const PublishExpenseDocument = gql`
   mutation publishExpense($id: ID!) {
@@ -10341,49 +10320,39 @@ export type UpdateExpenseMutationCompositionFunctionResult =
     UpdateExpenseMutation,
     UpdateExpenseMutationVariables
   >;
-export const UpdateExpenseWithTravelDocument = gql`
-  mutation updateExpenseWithTravel(
+export const UpdateTravelExpenseDocument = gql`
+  mutation updateTravelExpense(
     $id: ID!
     $amount: Float!
-    $card: Boolean!
-    $date: Date!
-    $deleted: Boolean!
-    $note: String!
     $categoryID: ID!
     $currency: String!
+    $date: Date!
+    $note: String!
     $paymentID: ID!
-    $variable: Boolean!
-    $budget: Boolean!
     $travelID: ID
   ) {
     updateExpense(
       data: {
         amount: $amount
-        card: $card
-        date: $date
-        deleted: $deleted
-        note: $note
         category: { connect: { id: $categoryID } }
         currency: $currency
+        date: $date
+        note: $note
         payment: { connect: { id: $paymentID } }
-        variable: $variable
-        budget: $budget
         travel: { connect: { id: $travelID } }
       }
       where: { id: $id }
     ) {
       id
       amount
-      card
-      date
-      deleted
-      note
       category {
         id
         name
         type
       }
       currency
+      date
+      note
       payment {
         id
         amount
@@ -10393,8 +10362,6 @@ export const UpdateExpenseWithTravelDocument = gql`
         deleted
         type
       }
-      variable
-      budget
       travel {
         id
       }
@@ -10403,55 +10370,51 @@ export const UpdateExpenseWithTravelDocument = gql`
 `;
 
 /**
- * __useUpdateExpenseWithTravelMutation__
+ * __useUpdateTravelExpenseMutation__
  *
- * To run a mutation, you first call `useUpdateExpenseWithTravelMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useUpdateExpenseWithTravelMutation` returns an object that includes:
+ * To run a mutation, you first call `useUpdateTravelExpenseMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTravelExpenseMutation` returns an object that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
  *
  * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
  *
  * @example
- * const { mutate, loading, error, onDone } = useUpdateExpenseWithTravelMutation({
+ * const { mutate, loading, error, onDone } = useUpdateTravelExpenseMutation({
  *   variables: {
  *     id: // value for 'id'
  *     amount: // value for 'amount'
- *     card: // value for 'card'
- *     date: // value for 'date'
- *     deleted: // value for 'deleted'
- *     note: // value for 'note'
  *     categoryID: // value for 'categoryID'
  *     currency: // value for 'currency'
+ *     date: // value for 'date'
+ *     note: // value for 'note'
  *     paymentID: // value for 'paymentID'
- *     variable: // value for 'variable'
- *     budget: // value for 'budget'
  *     travelID: // value for 'travelID'
  *   },
  * });
  */
-export function useUpdateExpenseWithTravelMutation(
+export function useUpdateTravelExpenseMutation(
   options:
     | VueApolloComposable.UseMutationOptions<
-        UpdateExpenseWithTravelMutation,
-        UpdateExpenseWithTravelMutationVariables
+        UpdateTravelExpenseMutation,
+        UpdateTravelExpenseMutationVariables
       >
     | ReactiveFunction<
         VueApolloComposable.UseMutationOptions<
-          UpdateExpenseWithTravelMutation,
-          UpdateExpenseWithTravelMutationVariables
+          UpdateTravelExpenseMutation,
+          UpdateTravelExpenseMutationVariables
         >
       >
 ) {
   return VueApolloComposable.useMutation<
-    UpdateExpenseWithTravelMutation,
-    UpdateExpenseWithTravelMutationVariables
-  >(UpdateExpenseWithTravelDocument, options);
+    UpdateTravelExpenseMutation,
+    UpdateTravelExpenseMutationVariables
+  >(UpdateTravelExpenseDocument, options);
 }
-export type UpdateExpenseWithTravelMutationCompositionFunctionResult =
+export type UpdateTravelExpenseMutationCompositionFunctionResult =
   VueApolloComposable.UseMutationReturn<
-    UpdateExpenseWithTravelMutation,
-    UpdateExpenseWithTravelMutationVariables
+    UpdateTravelExpenseMutation,
+    UpdateTravelExpenseMutationVariables
   >;
 export const AddRevenueDocument = gql`
   mutation addRevenue(

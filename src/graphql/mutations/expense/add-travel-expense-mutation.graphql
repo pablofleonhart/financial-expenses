@@ -1,37 +1,32 @@
-mutation addExpenseWithTravel(
+mutation addTravelExpense(
   $amount: Float!,
-  $card: Boolean!,
-  $date: Date!,
-  $deleted: Boolean!,
-  $note: String!,
   $categoryID: ID!,
   $currency: String!,
+  $date: Date!,
+  $note: String!,
   $paymentID: ID!,
-  $variable: Boolean!,
-  $budget: Boolean!,
   $travelID: ID
 )
 {
   createExpense(
     data: {
       amount: $amount,
-      card: $card
-      date: $date,
-      deleted: $deleted,
-      note: $note,
+      budget: false
       category: {
         connect: {
           id: $categoryID
         }
       },
       currency: $currency
+      date: $date,
+      deleted: false,
+      note: $note,
       payment:  {
         connect: {
           id: $paymentID
         }
       },
-      variable: $variable
-      budget: $budget
+      variable: true
       travel: {
         connect: {
           id: $travelID

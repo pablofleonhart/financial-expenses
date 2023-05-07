@@ -7,9 +7,15 @@
       class="expense-item-container flex flex-col bg-neutral-color-300 h-92 w-[350px] p-4 rounded-lg"
     >
       <span class="flex justify-center font-bold text-lg w-full">
-        {{ `${getActionName()} orçamento` }}
+        {{ `${getActionName()} gasto` }}
       </span>
       <div class="expense-fields flex flex-col gap-3 my-5">
+        <travel-selector
+          tabindex="0"
+          :initial-value="selectedTravel"
+          empty-message="Viagem"
+          @select="selectTravel"
+        />
         <input
           tabindex="0"
           v-model="expense.amount"
@@ -20,37 +26,6 @@
           required
           placeholder="Valor pago"
         />
-        <div class="category-select" @click.stop>
-          <div
-            class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
-            :class="{ open: currencySelectorOpen }"
-            @click="currencySelectorOpen = !currencySelectorOpen"
-          >
-            <component :is="selectedCurrency?.icon" class="h-6 w-6" />
-            <span class="selected-option-name ml-2">
-              {{ selectedCurrency?.name || 'Categoria' }}
-            </span>
-          </div>
-          <ul
-            class="period-items absolute bg-neutral-color-700 border border-primary-color-300 w-52"
-            :class="{ hidden: !currencySelectorOpen }"
-          >
-            <li
-              class="item flex cursor-pointer p-2 h-10 w-full"
-              :class="{
-                'item-selected': category.type === selectedCurrency?.type,
-              }"
-              v-for="category in currencies"
-              :key="category.type"
-              @click="selectCurrency(category)"
-            >
-              <component :is="category.icon" size="24" />
-              <span class="item-name ml-2">
-                {{ category.name }}
-              </span>
-            </li>
-          </ul>
-        </div>
         <div class="category-select" @click.stop>
           <div
             class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
@@ -86,6 +61,21 @@
             </li>
           </ul>
         </div>
+        <balance-selector
+          tabindex="0"
+          :initial-value="selectedPayment"
+          empty-message="Forma de pagamento"
+          @select="selectBalance"
+        />
+        <datepicker
+          :model-value="expense.date"
+          locale="pt"
+          select-text="Selecionar"
+          text-input
+          format="dd/MM/yyyy HH:mm"
+          placeholder="Data da renda ou despesa"
+          @update:model-value="setDate"
+        />
         <textarea
           v-model="expense.note"
           class="flex col-span-2 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-24"
@@ -111,49 +101,32 @@
 </template>
 
 <script lang="ts" setup>
+import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/props/formatting/
 import { computed, PropType, ref, shallowRef, watch } from 'vue';
-import { Expense } from './Expense';
 import { Category } from '../categories/Category';
 import { getCategoryIcon } from '../../utils';
 import {
-  addExpenseBudget,
+  addTravelExpense,
   categoryItems,
-  editExpenseBudget,
+  editTravelExpense,
 } from '../../services';
+import BalanceSelector from '../common/BalanceSelector.vue';
 import { Wallet } from '../wallets/Wallet';
-
-const currencies = [
-  {
-    type: 'real',
-    name: 'Real',
-    icon: 'ph-coins',
-  },
-  {
-    type: 'dollar',
-    name: 'Dolar',
-    icon: 'ph-currency-dollar',
-  },
-  {
-    type: 'euro',
-    name: 'Euro',
-    icon: 'ph-currency-eur',
-  },
-  {
-    type: 'libra',
-    name: 'Libra',
-    icon: 'ph-currency-gbp',
-  },
-];
+import { Expense } from '../expenses/Expense';
+import TravelSelector from '../common/TravelSelector.vue';
+import { Travel } from './Travel';
 
 const expense = shallowRef(new Expense());
 const categories = computed<Array<Category>>(() => categoryItems);
+
 const selectedCategory = shallowRef(new Category());
 const selectedPayment = shallowRef(new Wallet());
+const selectedTravel = shallowRef(new Travel());
 const categorySelectorOpen = ref(false);
+
 const amountError = ref(false);
+
 const emit = defineEmits(['addExpense', 'close']);
-const selectedCurrency = ref(currencies[0]);
-const currencySelectorOpen = ref(false);
 
 const props = defineProps({
   opened: { type: Boolean, default: false },
@@ -167,9 +140,7 @@ watch(
       expense.value = props.expense;
       selectedCategory.value = props.expense.category;
       selectedPayment.value = props.expense.payment;
-      selectedCurrency.value =
-        currencies.find((item) => item.type === expense.value.currency) ||
-        currencies[0];
+      selectedTravel.value = props.expense.travel;
     }
   }
 );
@@ -178,16 +149,22 @@ const getActionName = () => {
   return expense.value.id === '' ? 'Adicionar' : 'Editar';
 };
 
-const selectCurrency = (option: any) => {
-  selectedCurrency.value = option;
-  expense.value.currency = option?.type;
-  currencySelectorOpen.value = false;
+const selectTravel = (travel: Travel) => {
+  expense.value.travel = travel;
+};
+
+const selectBalance = (balance: Wallet) => {
+  expense.value.payment = balance;
 };
 
 const selectCategory = (option: any) => {
   selectedCategory.value = option;
   expense.value.category = option;
   categorySelectorOpen.value = false;
+};
+
+const setDate = (value: Date) => {
+  expense.value.date = value;
 };
 
 const isValidForm = (): boolean => {
@@ -206,12 +183,11 @@ const onActionItem = (event: Event) => {
     event?.preventDefault();
     return;
   }
-  expense.value.budget = true;
   if (expense.value.id === '') {
-    addExpenseBudget(expense.value);
+    addTravelExpense(expense.value);
     emit('addExpense');
   } else {
-    editExpenseBudget(expense.value);
+    editTravelExpense(expense.value);
   }
   emit('close');
 };

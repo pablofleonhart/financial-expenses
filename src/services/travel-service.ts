@@ -67,45 +67,6 @@ const publishTravel = (id: string | undefined): void => {
 //   });
 // };
 
-// export const editTransaction = async (
-//   transaction: Transaction,
-//   publish = true
-// ) => {
-//   if (!transaction) {
-//     throw new Error('Transaction does not exist');
-//   }
-
-//   return new Promise((resolve) => {
-//     const { mutate: updateTransaction, onDone } = useUpdateTransactionMutation(
-//       {}
-//     );
-//     updateTransaction({
-//       id: transaction.id,
-//       amountSent: transaction.amountSent,
-//       amountReceived: transaction.amountReceived,
-//       date: transaction.date,
-//       description: transaction.description,
-//       sourceID: transaction.source.id,
-//       targetID: transaction.target.id,
-//     });
-
-//     onDone(() => {
-//       const oldTransaction = getTravelByID(transaction.id);
-//       if (oldTransaction) {
-//         const index = allTravelItems.indexOf(oldTransaction);
-//         allTravelItems.splice(index, 1);
-//         allTravelItems.push(transaction);
-//         sortTransactions();
-//       }
-//       if (publish) {
-//         publishTransaction(transaction.id);
-//       }
-//       // filterWallets();
-//       resolve(true);
-//     });
-//   });
-// };
-
 // export const sortTransactions = (column?: string) => {
 //   if (!allTravelItems.length) {
 //     return;

@@ -5,12 +5,12 @@ export type MonthPeriod = {
 };
 
 export enum EXPENSE_CATEGORY {
-  SALON = 'salon',
   CLOTHES = 'clothes',
   EDUCATION = 'education',
   ELECTRONIC = 'electronic',
   FOOD = 'food',
   GYM = 'gym',
+  HOTEL = 'hotel',
   HOUSE = 'house',
   HOUSING = 'housing',
   MARKET = 'market',
@@ -18,6 +18,7 @@ export enum EXPENSE_CATEGORY {
   PHARMACY = 'pharmacy',
   PHONE = 'phone',
   RECREATION = 'recreation',
+  SALON = 'salon',
   SUBSCRIPTION = 'subscription',
   TRANSPORT = 'transport',
   TRAVEL = 'travel',
@@ -31,6 +32,7 @@ export const categoryName = {
   [EXPENSE_CATEGORY.ELECTRONIC]: 'Eletrônicos',
   [EXPENSE_CATEGORY.FOOD]: 'Comida',
   [EXPENSE_CATEGORY.GYM]: 'Academia',
+  [EXPENSE_CATEGORY.HOTEL]: 'Hotel',
   [EXPENSE_CATEGORY.HOUSE]: 'Casa',
   [EXPENSE_CATEGORY.HOUSING]: 'Habitação',
   [EXPENSE_CATEGORY.MARKET]: 'Mercado',

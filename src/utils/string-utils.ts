@@ -26,7 +26,7 @@ export const getBalanceName = (balance: Wallet): string => {
 };
 
 export const getCitiesFromTravel = (travel: Travel): string => {
-  return travel.city.join(', ');
+  return travel.city.join('/');
 };
 
 export const getTravelPeriod = (travel: Travel): string => {

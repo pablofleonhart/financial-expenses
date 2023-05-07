@@ -9,6 +9,11 @@
       @on-delete-expense="onDeleteExpense"
     />
   </div>
+  <travel-item-modal
+    :opened="showTravelItemModal"
+    :expense="objTravel"
+    @close="showTravelItemModal = false"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -16,6 +21,7 @@ import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { Travel } from './Travel';
 import TravelsHeader from './TravelsHeader.vue';
+import TravelItemModal from './TravelItemModal.vue';
 import TravelsDetails from './TravelsDetails.vue';
 import ExpensesList from '../expenses/ExpensesList.vue';
 import {
@@ -25,7 +31,11 @@ import {
   showVariablesExpense,
   travelExpense,
 } from '../../services';
+import { Expense } from '../expenses/Expense';
+import { copyExpense } from '../../utils';
 
+const showTravelItemModal = ref(false);
+const objTravel = ref(new Expense());
 const selectedTravel = ref<Travel | null>(null);
 
 const $route = useRoute();
@@ -51,11 +61,14 @@ const onSelectTravel = (travel: Travel) => {
   applyFilterExpenses();
 };
 
-const onEditExpense = (index: number) => {
+const onEditExpense = (travel: Expense) => {
   // emit('onEditExpense', index);
+  objTravel.value = copyExpense(travel);
+  // console.log(index)
+  showTravelItemModal.value = true;
 };
 
-const onDeleteExpense = (index: number) => {
+const onDeleteExpense = (travel: Expense) => {
   // emit('onDeleteExpense', index);
 };
 </script>

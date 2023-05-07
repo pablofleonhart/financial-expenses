@@ -6,10 +6,10 @@ import { Revenue } from '../components/revenues/Revenue';
 import { Wish } from '../components/wishes/Wish';
 import { dateToString } from './date-utils';
 import { Transaction } from '../components/transactions/Transaction';
+import { Travel } from '../components/travels/Travel';
 
 const copyCategory = (source: any) => {
   if (!source) {
-    console.warn('Unable to copy null Category');
     return new Category();
   }
   return new Category({
@@ -39,7 +39,7 @@ export const copyExpense = (source: Expense) => {
     payment: copyWallet(source.payment),
     variable: source.variable,
     budget: source.budget,
-    travel: source.travel,
+    travel: copyTravel(source.travel),
   });
 };
 
@@ -54,7 +54,7 @@ export const overrideExpense = (target: Expense, source: Expense) => {
   overrideWallet(target.payment, source.payment);
   target.variable = source.variable;
   target.budget = source.budget;
-  target.travel = source.travel;
+  overrideTravel(target.travel, source.travel);
 };
 
 export const copyRevenue = (source: any) => {
@@ -86,7 +86,6 @@ export const overrideRevenue = (target: Revenue, source: Revenue) => {
 
 export const copyWallet = (source: any) => {
   if (!source) {
-    console.warn('Unable to copy null Wallet');
     return new Wallet();
   }
   return new Wallet({
@@ -155,6 +154,29 @@ export const overrideTransaction = (
   targetTransaction.description = sourceTransaction.description;
   overrideWallet(targetTransaction.source, sourceTransaction.source);
   overrideWallet(targetTransaction.target, sourceTransaction.target);
+};
+
+export const copyTravel = (travel: any) => {
+  if (!travel) {
+    return new Travel();
+  }
+  return new Travel({
+    id: travel.id,
+    startDate: travel.startDate,
+    endDate: travel.endDate,
+    city: travel.city,
+    country: travel.country,
+    place: travel.place,
+  });
+};
+
+export const overrideTravel = (targetTravel: Travel, sourceTravel: Travel) => {
+  (targetTravel.id = sourceTravel.id),
+    (targetTravel.startDate = sourceTravel.startDate),
+    (targetTravel.endDate = sourceTravel.endDate),
+    (targetTravel.city = sourceTravel.city),
+    (targetTravel.country = sourceTravel.country),
+    (targetTravel.place = sourceTravel.place);
 };
 
 const getValues = (
