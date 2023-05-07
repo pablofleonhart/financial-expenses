@@ -1,9 +1,11 @@
 import { computed, reactive, ref } from 'vue';
 import { Expense } from '../components/expenses/Expense';
 import {
+  useAddExpenseBudgetMutation,
   useAddExpenseMutation,
   useGetExpensesQuery,
   usePublishExpenseMutation,
+  useUpdateExpenseBudgetMutation,
   useUpdateExpenseMutation,
 } from '../graphql/generated';
 import {
@@ -27,23 +29,50 @@ export const expenseSettings: Record<string, any> = reactive({});
 export const expensesSum = computed(() => {
   const expensesSum: Record<string, any> = {};
   filteredExpenseItems.forEach((item) => {
-    const key = item.payment.currency;
-    if (!(key in expensesSum)) {
-      expensesSum[key] = 0;
+    if (!item.budget) {
+      const key = item.payment.currency;
+      if (!(key in expensesSum)) {
+        expensesSum[key] = 0;
+      }
+      expensesSum[key] += item.amount;
     }
-    expensesSum[key] += item.amount;
+  });
+
+  return expensesSum;
+});
+
+export const expensesBudgetSum = computed(() => {
+  const expensesSum: Record<string, any> = {};
+  filteredExpenseItems.forEach((item) => {
+    if (item.budget) {
+      const key = item.payment.currency;
+      if (!(key in expensesSum)) {
+        expensesSum[key] = 0;
+      }
+      expensesSum[key] += item.amount;
+    }
   });
 
   return expensesSum;
 });
 
 export const budgetExpenseItems = computed(() => {
-  return filteredExpenseItems.filter((item) => item.budget);
+  let result = filteredExpenseItems.filter((item) => item.budget);
+  result = allExpenseItems.filter(
+    (item) => (!item.travel || item.travel.id == '') && item.budget
+  );
+
+  result = result.filter((item) => {
+    return isDateInPeriod(item.date, selectedExpensePeriod);
+  });
+
+  return result;
 });
 
 const sortedCategories: any[] = reactive([]);
 export let expenseCategoriesLabels: string[] = [];
 export let expenseCategoriesValues: number[] = [];
+export const expenseCategoriesCurrencies: number[] = [];
 export let expenseCategoriesColorValues: string[] = [];
 
 export const reloadCharts = ref(false);
@@ -183,11 +212,34 @@ export const addExpense = (expense: Expense) => {
   });
 };
 
+export const addExpenseBudget = (expense: Expense) => {
+  return new Promise((resolve) => {
+    const { mutate: createExpense, onDone } = useAddExpenseBudgetMutation({});
+    createExpense({
+      amount: expense.amount,
+      categoryID: expense.category.id,
+      currency: expense.currency,
+      date: selectedExpensePeriod.from,
+    });
+
+    onDone(async (result) => {
+      const expenseID = result.data?.createExpense?.id;
+      expense.id = expenseID || '';
+      allExpenseItems.push(new Expense(expense));
+      filterExpenses();
+      publishExpense(expenseID);
+      resolve(true);
+    });
+  });
+};
+
 export const editExpense = async (expense: Expense) => {
   if (!expense) {
     throw new Error('Expense does not exist');
   }
-  await expenseEdited(expense);
+  if (!expense.budget) {
+    await expenseEdited(expense);
+  }
 
   return new Promise((resolve) => {
     const { mutate: updateExpense, onDone } = useUpdateExpenseMutation({});
@@ -203,6 +255,40 @@ export const editExpense = async (expense: Expense) => {
       paymentID: expense.payment.id,
       variable: expense.variable,
       budget: expense.budget,
+    });
+
+    onDone(() => {
+      // update expense on local storage
+      const oldExpense = getExpenseByID(expense.id);
+      if (oldExpense) {
+        const index = allExpenseItems.indexOf(oldExpense);
+        allExpenseItems.splice(index, 1);
+        allExpenseItems.push(expense);
+        sortExpenses();
+      }
+      filterExpenses();
+      publishExpense(expense.id);
+      resolve(true);
+    });
+  });
+};
+
+export const editExpenseBudget = async (expense: Expense) => {
+  if (!expense) {
+    throw new Error('Expense does not exist');
+  }
+
+  return new Promise((resolve) => {
+    const { mutate: updateExpense, onDone } = useUpdateExpenseBudgetMutation(
+      {}
+    );
+    updateExpense({
+      id: expense.id,
+      amount: expense.amount,
+      date: expense.date,
+      deleted: expense.deleted,
+      categoryID: expense.category.id,
+      currency: expense.currency,
     });
 
     onDone(() => {
@@ -244,12 +330,15 @@ export const deleteExpense = async (expense: Expense) => {
       budget: expense.budget,
     });
 
-    onDone(() => {
+    onDone(async () => {
       // remove from local storage
       allExpenseItems.splice(allExpenseItems.indexOf(expense), 1);
       filterExpenses();
       publishExpense(expense.id);
-      expenseDeleted(expense);
+
+      if (!expense.budget) {
+        await expenseDeleted(expense);
+      }
       resolve(true);
     });
   });
@@ -272,21 +361,40 @@ export const sortExpenses = (column?: string) => {
   localStorage.setItem(EXPENSE_LIST_KEY, JSON.stringify(expenseSettings));
 };
 
+export let expenseBudgetCategories: Record<string, any> = reactive({});
+
 const loadExpenseCategories = () => {
   const categories: Record<
     string,
     { color: string; name: string; value: number }
   > = {};
+  expenseBudgetCategories = {};
+
+  allExpenseItems.forEach((expense) => {
+    if (
+      !expense.budget &&
+      isDateInPeriod(expense.date, selectedExpensePeriod)
+    ) {
+      const budgetCategoryType = `${expense.category.type}-${expense.currency}`;
+      if (!(budgetCategoryType in expenseBudgetCategories)) {
+        expenseBudgetCategories[budgetCategoryType] = 0;
+      }
+      expenseBudgetCategories[budgetCategoryType] += expense.amount;
+    }
+  });
 
   filteredExpenseItems.forEach((expense) => {
-    if (!(expense.category.type in categories)) {
-      categories[expense.category.type] = {
-        color: getExpenseCategoryColor(expense.category.type),
-        name: expense.category.name,
-        value: 0,
-      };
+    if (!expense.budget) {
+      const categoryType = expense.category.type;
+      if (!(categoryType in categories)) {
+        categories[categoryType] = {
+          color: getExpenseCategoryColor(categoryType),
+          name: expense.category.name,
+          value: 0,
+        };
+      }
+      categories[categoryType].value += expense.amount;
     }
-    categories[expense.category.type].value += expense.amount;
   });
 
   sortedCategories.splice(0);

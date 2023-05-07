@@ -8962,6 +8962,18 @@ export type UpdateAccountMutation = {
   } | null;
 };
 
+export type AddExpenseBudgetMutationVariables = Exact<{
+  amount: Scalars['Float'];
+  categoryID: Scalars['ID'];
+  currency: Scalars['String'];
+  date: Scalars['Date'];
+}>;
+
+export type AddExpenseBudgetMutation = {
+  __typename?: 'Mutation';
+  createExpense?: { __typename?: 'Expense'; id: string } | null;
+};
+
 export type AddExpenseMutationVariables = Exact<{
   amount: Scalars['Float'];
   card: Scalars['Boolean'];
@@ -9032,6 +9044,33 @@ export type PublishExpenseMutation = {
       type: number;
     } | null;
     travel?: { __typename?: 'Travel'; id: string } | null;
+  } | null;
+};
+
+export type UpdateExpenseBudgetMutationVariables = Exact<{
+  id: Scalars['ID'];
+  amount: Scalars['Float'];
+  categoryID: Scalars['ID'];
+  currency: Scalars['String'];
+  date: Scalars['Date'];
+  deleted: Scalars['Boolean'];
+}>;
+
+export type UpdateExpenseBudgetMutation = {
+  __typename?: 'Mutation';
+  updateExpense?: {
+    __typename?: 'Expense';
+    id: string;
+    amount: number;
+    currency: string;
+    date?: any | null;
+    deleted?: boolean | null;
+    category?: {
+      __typename?: 'Category';
+      id: string;
+      name: string;
+      type: string;
+    } | null;
   } | null;
 };
 
@@ -9815,6 +9854,72 @@ export type UpdateAccountMutationCompositionFunctionResult =
     UpdateAccountMutation,
     UpdateAccountMutationVariables
   >;
+export const AddExpenseBudgetDocument = gql`
+  mutation addExpenseBudget(
+    $amount: Float!
+    $categoryID: ID!
+    $currency: String!
+    $date: Date!
+  ) {
+    createExpense(
+      data: {
+        amount: $amount
+        budget: true
+        category: { connect: { id: $categoryID } }
+        currency: $currency
+        date: $date
+        deleted: false
+        variable: false
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+/**
+ * __useAddExpenseBudgetMutation__
+ *
+ * To run a mutation, you first call `useAddExpenseBudgetMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useAddExpenseBudgetMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useAddExpenseBudgetMutation({
+ *   variables: {
+ *     amount: // value for 'amount'
+ *     categoryID: // value for 'categoryID'
+ *     currency: // value for 'currency'
+ *     date: // value for 'date'
+ *   },
+ * });
+ */
+export function useAddExpenseBudgetMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        AddExpenseBudgetMutation,
+        AddExpenseBudgetMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          AddExpenseBudgetMutation,
+          AddExpenseBudgetMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    AddExpenseBudgetMutation,
+    AddExpenseBudgetMutationVariables
+  >(AddExpenseBudgetDocument, options);
+}
+export type AddExpenseBudgetMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    AddExpenseBudgetMutation,
+    AddExpenseBudgetMutationVariables
+  >;
 export const AddExpenseDocument = gql`
   mutation addExpense(
     $amount: Float!
@@ -10051,6 +10156,84 @@ export type PublishExpenseMutationCompositionFunctionResult =
   VueApolloComposable.UseMutationReturn<
     PublishExpenseMutation,
     PublishExpenseMutationVariables
+  >;
+export const UpdateExpenseBudgetDocument = gql`
+  mutation updateExpenseBudget(
+    $id: ID!
+    $amount: Float!
+    $categoryID: ID!
+    $currency: String!
+    $date: Date!
+    $deleted: Boolean!
+  ) {
+    updateExpense(
+      data: {
+        amount: $amount
+        category: { connect: { id: $categoryID } }
+        currency: $currency
+        date: $date
+        deleted: $deleted
+      }
+      where: { id: $id }
+    ) {
+      id
+      amount
+      category {
+        id
+        name
+        type
+      }
+      currency
+      date
+      deleted
+    }
+  }
+`;
+
+/**
+ * __useUpdateExpenseBudgetMutation__
+ *
+ * To run a mutation, you first call `useUpdateExpenseBudgetMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateExpenseBudgetMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateExpenseBudgetMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *     amount: // value for 'amount'
+ *     categoryID: // value for 'categoryID'
+ *     currency: // value for 'currency'
+ *     date: // value for 'date'
+ *     deleted: // value for 'deleted'
+ *   },
+ * });
+ */
+export function useUpdateExpenseBudgetMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        UpdateExpenseBudgetMutation,
+        UpdateExpenseBudgetMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          UpdateExpenseBudgetMutation,
+          UpdateExpenseBudgetMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    UpdateExpenseBudgetMutation,
+    UpdateExpenseBudgetMutationVariables
+  >(UpdateExpenseBudgetDocument, options);
+}
+export type UpdateExpenseBudgetMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    UpdateExpenseBudgetMutation,
+    UpdateExpenseBudgetMutationVariables
   >;
 export const UpdateExpenseDocument = gql`
   mutation updateExpense(

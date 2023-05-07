@@ -6,7 +6,7 @@
           <th
             v-for="column in expenseBudgetColumns"
             :key="column.key"
-            class="flex items-center p-2 h-full w-1/4 cursor-pointer hover:bg-secondary-color-300"
+            class="flex items-center p-2 h-full w-1/5 cursor-pointer hover:bg-secondary-color-300"
             :class="column.class"
             @click="orderList(column)"
           >
@@ -29,12 +29,26 @@
             v-for="(item, index) in expenseBudgets"
             :key="item.id"
           >
-            <td class="flex items-center p-2 h-full w-1/6 min-w-24 justify-end">
-              {{
-                formatCurrency(item.amount, item.payment?.currency || 'euro')
-              }}
+            <td
+              class="flex items-center text-lg p-2 h-full w-1/5 min-w-24 justify-end"
+            >
+              <div class="w-full h-6 bg-neutral-color-300 rounded-full">
+                <div
+                  class="h-6 font-medium text-black text-center items-center p-0.5 leading-none rounded-full"
+                  :class="getProgressClass(getProgressPercentage(item)[0])"
+                  :style="`width: ${getProgressPercentage(item)[1]}`"
+                >
+                  {{ getProgressPercentage(item)[1] }}
+                </div>
+              </div>
             </td>
-            <td class="flex items-center p-2 h-full w-1/4 min-w-36">
+            <td class="flex items-center p-2 h-full w-1/5 min-w-24 justify-end">
+              {{ getSpentAmount(item) }}
+            </td>
+            <td class="flex items-center p-2 h-full w-1/5 min-w-24 justify-end">
+              {{ formatCurrency(item.amount, item.currency || 'euro') }}
+            </td>
+            <td class="flex items-center p-2 h-full w-1/5 min-w-36">
               <div class="flex w-full justify-center">
                 <component
                   :is="getCategoryIcon(item.category.type)"
@@ -45,12 +59,7 @@
                 </span>
               </div>
             </td>
-            <td class="flex items-center p-2 h-full w-1/4 min-w-44">
-              <span class="w-full truncate" :title="item.note">
-                {{ item.note }}
-              </span>
-            </td>
-            <td class="flex items-center p-2 h-full w-1/4 min-w-24">
+            <td class="flex items-center p-2 h-full w-1/5 min-w-24">
               <div class="flex w-full justify-evenly">
                 <ph-pencil
                   class="button-action hover:bg-blue-500"
@@ -77,12 +86,13 @@ import { computed } from 'vue';
 import {
   formatCurrency,
   getCategoryIcon,
-  getCurrencyIcon,
   getOrderIcon,
-  getPaymentIcon,
+  getPercentage,
+  getProgressClass,
 } from '../../utils';
 import {
   budgetExpenseItems,
+  expenseBudgetCategories,
   expenseSettings,
   sortExpenses,
 } from '../../services';
@@ -90,19 +100,24 @@ import { Expense } from './Expense';
 
 const expenseBudgetColumns = [
   {
-    key: 'amount',
-    name: 'Valor',
-    class: 'min-w-24 justify-end',
+    key: 'progress',
+    name: 'Progresso',
+    class: 'min-w-28 justify-center',
+  },
+  {
+    key: 'spent-amount',
+    name: 'Valor gasto',
+    class: 'justify-end',
+  },
+  {
+    key: 'budget-amount',
+    name: 'Valor orçado',
+    class: 'justify-end',
   },
   {
     key: 'category.name',
     name: 'Categoria',
     class: 'min-w-36 justify-center',
-  },
-  {
-    key: 'note',
-    name: 'Descrição',
-    class: 'min-w-44',
   },
   {
     key: 'actions',
@@ -115,6 +130,8 @@ const expenseBudgetColumns = [
 const emit = defineEmits(['onEditExpense', 'onDeleteExpense']);
 
 const expenseBudgets = computed<Array<Expense>>(() => budgetExpenseItems.value);
+const budgetCategories = computed(() => expenseBudgetCategories);
+
 const orderColumn = computed(() => {
   return expenseSettings.column;
 });
@@ -128,6 +145,17 @@ const orderList = (column: any) => {
     return;
   }
   sortExpenses(column.key);
+};
+
+const getProgressPercentage = (expense: Expense) => {
+  const categoryKey = `${expense.category.type}-${expense.currency}`;
+  const categoryTotal = budgetCategories.value[categoryKey];
+  return getPercentage(expense.amount, categoryTotal);
+};
+
+const getSpentAmount = (expense: Expense) => {
+  const categoryKey = `${expense.category.type}-${expense.currency}`;
+  return formatCurrency(budgetCategories.value[categoryKey], expense.currency);
 };
 
 const onEditExpense = (index: number) => {

@@ -17,6 +17,11 @@
     :expense="objExpense"
     @close="showExpenseItemModal = false"
   />
+  <expense-budget-modal
+    :opened="showExpenseBudgetModal"
+    :expense="objExpense"
+    @close="showExpenseBudgetModal = false"
+  />
   <confirmation-modal
     message="Deseja realmente excluir esse gasto?"
     :show-modal="showDeleteConfirmationModal"
@@ -42,10 +47,12 @@ import {
 } from '../../services';
 import { Expense } from './Expense';
 import ConfirmationModal from '../common/ConfirmationModal.vue';
+import ExpenseBudgetModal from './ExpenseBudgetModal.vue';
 import ExpenseItemModal from './ExpenseItemModal.vue';
 import { copyExpense } from '../../utils';
 
 const showExpenseItemModal = ref(false);
+const showExpenseBudgetModal = ref(false);
 const showDeleteConfirmationModal = ref(false);
 const objExpense = ref(new Expense());
 let expenseToDelete: Expense = new Expense();
@@ -80,12 +87,30 @@ watch($route, () => {
 
 const onAddExpense = () => {
   objExpense.value = new Expense();
-  showExpenseItemModal.value = true;
+  const tabSettings = localStorage.getItem('expense-tab');
+  let selectedTab = null;
+  if (tabSettings) {
+    selectedTab = JSON.parse(tabSettings);
+  }
+  if (selectedTab === 'budget') {
+    showExpenseBudgetModal.value = true;
+  } else {
+    showExpenseItemModal.value = true;
+  }
 };
 
 const onEditExpense = (expense: Expense) => {
   objExpense.value = copyExpense(expense);
-  showExpenseItemModal.value = true;
+  const tabSettings = localStorage.getItem('expense-tab');
+  let selectedTab = null;
+  if (tabSettings) {
+    selectedTab = JSON.parse(tabSettings);
+  }
+  if (selectedTab === 'budget') {
+    showExpenseBudgetModal.value = true;
+  } else {
+    showExpenseItemModal.value = true;
+  }
 };
 
 const onDeleteExpense = (expense: Expense) => {

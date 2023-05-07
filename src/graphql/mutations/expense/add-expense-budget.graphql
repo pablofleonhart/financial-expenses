@@ -1,0 +1,25 @@
+mutation addExpenseBudget(
+  $amount: Float!,
+  $categoryID: ID!,
+  $currency: String!
+  $date: Date!
+)
+{
+  createExpense(
+    data: {
+      amount: $amount,
+      budget: true
+      category: {
+        connect: {
+          id: $categoryID
+        }
+      },
+      currency: $currency
+      date: $date
+      deleted: false,
+      variable: false
+    }
+  ) {
+    id
+  }
+}

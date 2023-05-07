@@ -7,7 +7,7 @@
       class="expense-item-container flex flex-col bg-neutral-color-300 h-92 w-[350px] p-4 rounded-lg"
     >
       <span class="flex justify-center font-bold text-lg w-full">
-        {{ `${getActionName()} gasto` }}
+        {{ `${getActionName()} orçamento` }}
       </span>
       <div class="expense-fields flex flex-col gap-3 my-5">
         <input
@@ -20,6 +20,37 @@
           required
           placeholder="Valor pago"
         />
+        <div class="category-select" @click.stop>
+          <div
+            class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
+            :class="{ open: currencySelectorOpen }"
+            @click="currencySelectorOpen = !currencySelectorOpen"
+          >
+            <component :is="selectedCurrency?.icon" class="h-6 w-6" />
+            <span class="selected-option-name ml-2">
+              {{ selectedCurrency?.name || 'Categoria' }}
+            </span>
+          </div>
+          <ul
+            class="period-items absolute bg-neutral-color-700 border border-primary-color-300 w-52"
+            :class="{ hidden: !currencySelectorOpen }"
+          >
+            <li
+              class="item flex cursor-pointer p-2 h-10 w-full"
+              :class="{
+                'item-selected': category.type === selectedCurrency?.type,
+              }"
+              v-for="category in currencies"
+              :key="category.type"
+              @click="selectCurrency(category)"
+            >
+              <component :is="category.icon" size="24" />
+              <span class="item-name ml-2">
+                {{ category.name }}
+              </span>
+            </li>
+          </ul>
+        </div>
         <div class="category-select" @click.stop>
           <div
             class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
@@ -55,44 +86,6 @@
             </li>
           </ul>
         </div>
-        <balance-selector
-          tabindex="0"
-          :initial-value="selectedPayment"
-          empty-message="Forma de pagamento"
-          @select="selectBalance"
-        />
-        <datepicker
-          :model-value="expense.date"
-          locale="pt"
-          select-text="Selecionar"
-          text-input
-          format="dd/MM/yyyy HH:mm"
-          placeholder="Data da renda ou despesa"
-          @update:model-value="setDate"
-        />
-        <!-- <div class="flex items-center text-lg gap-2">
-          <input
-            class="h-5 w-5"
-            id="travel_check"
-            type="checkbox"
-            v-model="expense.travel"
-          />
-          <label for="travel_check" class="text-base">Viagem</label>
-        </div> -->
-        <div class="flex items-center text-lg gap-2">
-          <input
-            class="h-5 w-5"
-            id="variable_check"
-            type="checkbox"
-            v-model="expense.variable"
-          />
-          <label
-            for="variable_check"
-            class="text-base"
-            :class="{ 'text-neutral-color-off': expense.travel }"
-            >Variável</label
-          >
-        </div>
         <textarea
           v-model="expense.note"
           class="flex col-span-2 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-24"
@@ -118,48 +111,49 @@
 </template>
 
 <script lang="ts" setup>
-import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/props/formatting/
 import { computed, PropType, ref, shallowRef, watch } from 'vue';
 import { Expense } from './Expense';
 import { Category } from '../categories/Category';
 import { getCategoryIcon } from '../../utils';
-import { addExpense, categoryItems, editExpense } from '../../services';
-import BalanceSelector from '../common/BalanceSelector.vue';
+import {
+  addExpenseBudget,
+  categoryItems,
+  editExpenseBudget,
+} from '../../services';
 import { Wallet } from '../wallets/Wallet';
+
+const currencies = [
+  {
+    type: 'real',
+    name: 'Real',
+    icon: 'ph-coins',
+  },
+  {
+    type: 'dollar',
+    name: 'Dolar',
+    icon: 'ph-currency-dollar',
+  },
+  {
+    type: 'euro',
+    name: 'Euro',
+    icon: 'ph-currency-eur',
+  },
+  {
+    type: 'libra',
+    name: 'Libra',
+    icon: 'ph-currency-gbp',
+  },
+];
 
 const expense = shallowRef(new Expense());
 const categories = computed<Array<Category>>(() => categoryItems);
-
 const selectedCategory = shallowRef(new Category());
 const selectedPayment = shallowRef(new Wallet());
 const categorySelectorOpen = ref(false);
-
 const amountError = ref(false);
-// const currencies = ['USD', 'EUR', 'GBP', 'JPY']
-// const selectedCurrency = ref('USD')
-// const value = ref('')
-// const error = ref('')
-
-// const formatValue = () => {
-//   let formattedValue = '';
-//   if (selectedCurrency.value === 'JPY') {
-//     formattedValue = Math.round(value.value).toLocaleString();
-//   } else {
-//     formattedValue = parseFloat(value.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-//   }
-//   value.value = formattedValue;
-// }
-
-// const validateValue = () => {
-//       const pattern = /^\d+(\.\d{1,2})?$/;
-//       if (!pattern.test(value.value)) {
-//         error.value = 'Please enter a valid number';
-//       } else {
-//         error.value = '';
-//       }
-//     }
-
 const emit = defineEmits(['addExpense', 'close']);
+const selectedCurrency = ref(currencies[0]);
+const currencySelectorOpen = ref(false);
 
 const props = defineProps({
   opened: { type: Boolean, default: false },
@@ -173,6 +167,9 @@ watch(
       expense.value = props.expense;
       selectedCategory.value = props.expense.category;
       selectedPayment.value = props.expense.payment;
+      selectedCurrency.value =
+        currencies.find((item) => item.type === expense.value.currency) ||
+        currencies[0];
     }
   }
 );
@@ -181,18 +178,16 @@ const getActionName = () => {
   return expense.value.id === '' ? 'Adicionar' : 'Editar';
 };
 
-const selectBalance = (balance: Wallet) => {
-  expense.value.payment = balance;
+const selectCurrency = (option: any) => {
+  selectedCurrency.value = option;
+  expense.value.currency = option?.type;
+  currencySelectorOpen.value = false;
 };
 
 const selectCategory = (option: any) => {
   selectedCategory.value = option;
   expense.value.category = option;
   categorySelectorOpen.value = false;
-};
-
-const setDate = (value: Date) => {
-  expense.value.date = value;
 };
 
 const isValidForm = (): boolean => {
@@ -211,11 +206,13 @@ const onActionItem = (event: Event) => {
     event?.preventDefault();
     return;
   }
+  expense.value.budget = true;
+  // expense.value.payment.id = 'clf5ck2b25xuv0bw2ob0ce714'
   if (expense.value.id === '') {
-    addExpense(expense.value);
+    addExpenseBudget(expense.value);
     emit('addExpense');
   } else {
-    editExpense(expense.value);
+    editExpenseBudget(expense.value);
   }
   emit('close');
 };
