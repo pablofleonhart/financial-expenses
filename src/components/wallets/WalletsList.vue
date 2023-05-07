@@ -28,8 +28,15 @@
           v-for="(item, index) in walletList"
           :key="item.id"
         >
-          <td class="flex items-center p-2 h-full w-1/4 min-w-24 justify-end">
-            {{ formatCurrency(item.amount, item.currency) }}
+          <td
+            class="flex items-center p-2 h-full w-1/4 min-w-24 gap-4 justify-end"
+          >
+            <ph-credit-card
+              v-if="item.type === WALLET_TYPE.CREDIT"
+              color="#4904d2"
+              weight="duotone"
+            />
+            {{ getAmount(item) }}
           </td>
           <td
             class="flex items-center p-2 h-full w-1/4 min-w-24 justify-center"
@@ -54,9 +61,6 @@
             </div>
           </td>
         </tr>
-        <!-- <div v-else class="flex justify-center mt-4">
-          Nenhum investimento cadastrado ainda
-        </div> -->
       </tbody>
     </table>
   </div>
@@ -71,6 +75,7 @@ import {
   sortWallets,
 } from '../../services';
 import { Wallet } from './Wallet';
+import { WALLET_TYPE } from '../../types';
 
 const walletColumns = [
   {
@@ -112,6 +117,14 @@ const orderList = (column: any) => {
     return;
   }
   sortWallets(column.key);
+};
+
+const getAmount = (wallet: Wallet) => {
+  let multiplier = 1;
+  if (wallet.type === WALLET_TYPE.CREDIT) {
+    multiplier = -1;
+  }
+  return formatCurrency(multiplier * wallet.amount, wallet.currency);
 };
 
 const onEditWallet = (index: number) => {

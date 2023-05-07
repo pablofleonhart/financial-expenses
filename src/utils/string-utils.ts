@@ -20,7 +20,8 @@ export const getBalanceName = (balance: Wallet): string => {
   if (!balance) {
     return 'N/D';
   }
-  const holder = balance.holder ? `- ${balance.holder}` : '';
+  const balanceHolder = balance.holder ? balance.holder.trim() : '';
+  const holder = balanceHolder !== '' ? `- ${balance.holder}` : '';
   return `${balance.broker} ${holder}`;
 };
 

@@ -24,7 +24,7 @@ import { filterWallets, selectedWalletTab } from '../../services';
 const emit = defineEmits(['change-tab']);
 
 const tabItems = [
-  { id: 0, key: 'balance', name: 'Saldos' },
+  { id: 0, key: 'balance', name: 'Contas' },
   { id: 1, key: 'investments', name: 'Investimentos' },
   { id: 2, key: 'transactions', name: 'Transações' },
 ];

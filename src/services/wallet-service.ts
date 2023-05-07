@@ -227,8 +227,12 @@ export const sortWallets = (column?: string) => {
 };
 
 export const filterWallets = (selectedType: WalletType = selectedWalletTab) => {
+  const walletTypes = [selectedType.id];
+  if (selectedType.id === WALLET_TYPE.BALANCE) {
+    walletTypes.push(WALLET_TYPE.CREDIT);
+  }
   const result = allWalletItems.filter((item) => {
-    return item.type === selectedType.id;
+    return walletTypes.includes(item.type);
   });
   filteredWalletItems.splice(0);
   Object.assign(filteredWalletItems, result);

@@ -67,6 +67,7 @@ export type WishStatus = {
 export enum WALLET_TYPE {
   BALANCE = 0,
   INVESTMENT = 1,
+  CREDIT = 2,
 }
 
 export type WalletType = {
