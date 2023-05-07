@@ -32,7 +32,7 @@ export class Expense {
       payment: new Wallet(),
       variable: true,
       travel: new Travel(),
-      budget: true,
+      budget: false,
     }
   ) {
     this.id = objExpense.id;

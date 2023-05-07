@@ -4,7 +4,7 @@ import { getExpenseCategoryColor } from '../color-utils';
 
 describe('Colors utils tests', () => {
   it('should return a valid color for a given expense category type', () => {
-    const color = getExpenseCategoryColor(EXPENSE_CATEGORY.BARBER);
+    const color = getExpenseCategoryColor(EXPENSE_CATEGORY.SALON);
     expect(color).toBe('#2166ac');
   });
 

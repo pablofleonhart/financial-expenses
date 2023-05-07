@@ -5,7 +5,7 @@ export type MonthPeriod = {
 };
 
 export enum EXPENSE_CATEGORY {
-  BARBER = 'barber',
+  SALON = 'salon',
   CLOTHES = 'clothes',
   EDUCATION = 'education',
   ELECTRONIC = 'electronic',
@@ -25,7 +25,7 @@ export enum EXPENSE_CATEGORY {
 }
 
 export const categoryName = {
-  [EXPENSE_CATEGORY.BARBER]: 'Barbeiro',
+  [EXPENSE_CATEGORY.SALON]: 'Salão',
   [EXPENSE_CATEGORY.CLOTHES]: 'Vestuário',
   [EXPENSE_CATEGORY.EDUCATION]: 'Educação',
   [EXPENSE_CATEGORY.ELECTRONIC]: 'Eletrônicos',

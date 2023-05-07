@@ -42,14 +42,15 @@ export const expensesSum = computed(() => {
 });
 
 export const expensesBudgetSum = computed(() => {
+  filteredExpenseItems.filter((item) => item.budget);
   const expensesSum: Record<string, any> = {};
-  filteredExpenseItems.forEach((item) => {
-    if (item.budget) {
-      const key = item.payment.currency;
+  allExpenseItems.forEach((expense) => {
+    if (expense.budget && isDateInPeriod(expense.date, selectedExpensePeriod)) {
+      const key = expense.currency;
       if (!(key in expensesSum)) {
         expensesSum[key] = 0;
       }
-      expensesSum[key] += item.amount;
+      expensesSum[key] += expense.amount;
     }
   });
 
@@ -194,7 +195,7 @@ export const addExpense = (expense: Expense) => {
       deleted: expense.deleted,
       note: expense.note,
       categoryID: expense.category.id,
-      currency: expense.currency,
+      currency: expense.payment.currency,
       paymentID: expense.payment.id,
       variable: expense.variable,
       budget: expense.budget,
@@ -237,6 +238,7 @@ export const editExpense = async (expense: Expense) => {
   if (!expense) {
     throw new Error('Expense does not exist');
   }
+  expense.budget = false;
   if (!expense.budget) {
     await expenseEdited(expense);
   }
@@ -426,19 +428,24 @@ export const filterExpenses = (
 
   if (travelExpense.value) {
     result = allExpenseItems.filter(
-      (item) => item.travel && item.travel.id === travelExpense.value?.id
+      (item) =>
+        item.travel &&
+        item.travel.id === travelExpense.value?.id &&
+        !item.budget
     );
   } else if (showFixedExpense.value && showVariablesExpense.value) {
     result = allExpenseItems.filter(
-      (item) => !item.travel || item.travel.id == ''
+      (item) => (!item.travel || item.travel.id == '') && !item.budget
     );
   } else if (showFixedExpense.value) {
     result = allExpenseItems.filter(
-      (item) => (!item.travel || item.travel.id == '') && !item.variable
+      (item) =>
+        (!item.travel || item.travel.id == '') && !item.variable && !item.budget
     );
   } else if (showVariablesExpense.value) {
     result = allExpenseItems.filter(
-      (item) => (!item.travel || item.travel.id == '') && item.variable
+      (item) =>
+        (!item.travel || item.travel.id == '') && item.variable && !item.budget
     );
   }
 

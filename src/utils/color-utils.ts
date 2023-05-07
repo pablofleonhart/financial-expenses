@@ -1,7 +1,7 @@
 import { EXPENSE_CATEGORY } from '../types';
 
 const expenseCategoryColors: Record<string, any> = {
-  [EXPENSE_CATEGORY.BARBER]: '#2166ac',
+  [EXPENSE_CATEGORY.SALON]: '#2166ac',
   [EXPENSE_CATEGORY.CLOTHES]: '#3761ab',
   [EXPENSE_CATEGORY.EDUCATION]: '#62a6f2',
   [EXPENSE_CATEGORY.ELECTRONIC]: '#f4777f',
@@ -28,15 +28,28 @@ export const getExpenseCategoryColor = (categoryType: string) => {
 };
 
 export const getProgressClass = (value: number): string => {
+  if (value <= 0) {
+    return 'bg-transparent';
+  }
+  if (value <= 25) {
+    return 'bg-teal-400';
+  }
   if (value <= 50) {
     return 'bg-green-400';
   }
   if (value <= 80) {
-    return 'bg-blue-400';
-  }
-  if (value <= 100) {
     return 'bg-yellow-400';
+  }
+  if (value < 100) {
+    return 'bg-orange-400';
+  }
+  if (value === 100) {
+    return 'bg-rose-400';
   }
 
   return 'bg-red-400';
+};
+
+export const getProgressWidth = (value: number): string => {
+  return value <= 0 ? 'hidden' : `width: ${value}%`;
 };

@@ -32,11 +32,11 @@
             <td
               class="flex items-center text-lg p-2 h-full w-1/5 min-w-24 justify-end"
             >
-              <div class="w-full h-6 bg-neutral-color-300 rounded-full">
+              <div class="flex w-full h-6 bg-neutral-color-300 rounded-full">
                 <div
                   class="h-6 font-medium text-black text-center items-center p-0.5 leading-none rounded-full"
                   :class="getProgressClass(getProgressPercentage(item)[0])"
-                  :style="`width: ${getProgressPercentage(item)[1]}`"
+                  :style="getProgressWidth(getProgressPercentage(item)[0])"
                 >
                   {{ getProgressPercentage(item)[1] }}
                 </div>
@@ -89,6 +89,7 @@ import {
   getOrderIcon,
   getPercentage,
   getProgressClass,
+  getProgressWidth,
 } from '../../utils';
 import {
   budgetExpenseItems,
