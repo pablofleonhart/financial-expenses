@@ -6,12 +6,18 @@ const formatter = new Intl.NumberFormat('de', {
 export const getPercentage = (
   totalValue: number,
   partialValue: number
-): [number, string] => {
+): number => {
   if (!partialValue || !totalValue) {
-    return [0, '0%'];
+    return 0;
   }
 
-  const value = (100 * partialValue) / totalValue;
+  return (100 * partialValue) / totalValue;
   // const widthClass = `width: ${getProgressPercentage(item)[1]}`
-  return [value, formatter.format(value) + '%'];
+  // return [value, formatter.format(value) + '%'];
+};
+
+export const formatPercentage = (value?: number): string => {
+  return !value ? '0%' : formatter.format(value) + '%';
+  // const widthClass = `width: ${getProgressPercentage(item)[1]}`
+  // return [value, formatter.format(value) + '%'];
 };

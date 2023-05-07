@@ -17,6 +17,8 @@ export class Expense {
   public variable: boolean;
   public travel: Travel;
   public budget: boolean;
+  public budgetPercentage?: number;
+  public spentAmount?: number;
 
   constructor(
     objExpense: Expense = {

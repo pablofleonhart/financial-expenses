@@ -35,10 +35,10 @@
               <div class="flex w-full h-6 bg-neutral-color-300 rounded-full">
                 <div
                   class="h-6 font-medium text-black text-center items-center p-0.5 leading-none rounded-full"
-                  :class="getProgressClass(getProgressPercentage(item)[0])"
-                  :style="getProgressWidth(getProgressPercentage(item)[0])"
+                  :class="getProgressClass(item.budgetPercentage)"
+                  :style="getProgressWidth(item.budgetPercentage)"
                 >
-                  {{ getProgressPercentage(item)[1] }}
+                  {{ formatPercentage(item.budgetPercentage) }}
                 </div>
               </div>
             </td>
@@ -85,33 +85,32 @@
 import { computed } from 'vue';
 import {
   formatCurrency,
+  formatPercentage,
   getCategoryIcon,
   getOrderIcon,
-  getPercentage,
   getProgressClass,
   getProgressWidth,
 } from '../../utils';
 import {
-  budgetExpenseItems,
-  expenseBudgetCategories,
-  expenseSettings,
-  sortExpenses,
+  expenseBudgetSettings,
+  filteredExpenseBudgets,
+  sortExpenseBudgets,
 } from '../../services';
 import { Expense } from './Expense';
 
 const expenseBudgetColumns = [
   {
-    key: 'progress',
+    key: 'budgetPercentage',
     name: 'Progresso',
     class: 'min-w-28 justify-center',
   },
   {
-    key: 'spent-amount',
+    key: 'spentAmount',
     name: 'Valor gasto',
     class: 'justify-end',
   },
   {
-    key: 'budget-amount',
+    key: 'amount',
     name: 'Valor orçado',
     class: 'justify-end',
   },
@@ -130,33 +129,26 @@ const expenseBudgetColumns = [
 
 const emit = defineEmits(['onEditExpense', 'onDeleteExpense']);
 
-const expenseBudgets = computed<Array<Expense>>(() => budgetExpenseItems.value);
-const budgetCategories = computed(() => expenseBudgetCategories);
+const expenseBudgets = computed<Array<Expense>>(() => filteredExpenseBudgets);
 
 const orderColumn = computed(() => {
-  return expenseSettings.column;
+  return expenseBudgetSettings.column;
 });
 
 const orderDirection = computed(() => {
-  return expenseSettings.ascending;
+  return expenseBudgetSettings.ascending;
 });
 
 const orderList = (column: any) => {
   if (column.static) {
     return;
   }
-  sortExpenses(column.key);
-};
-
-const getProgressPercentage = (expense: Expense) => {
-  const categoryKey = `${expense.category.type}-${expense.currency}`;
-  const categoryTotal = budgetCategories.value[categoryKey];
-  return getPercentage(expense.amount, categoryTotal);
+  sortExpenseBudgets(column.key);
 };
 
 const getSpentAmount = (expense: Expense) => {
-  const categoryKey = `${expense.category.type}-${expense.currency}`;
-  return formatCurrency(budgetCategories.value[categoryKey], expense.currency);
+  // @ts-ignore
+  return formatCurrency(expense.spentAmount, expense.currency);
 };
 
 const onEditExpense = (index: number) => {

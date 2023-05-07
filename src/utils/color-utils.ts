@@ -27,8 +27,8 @@ export const getExpenseCategoryColor = (categoryType: string) => {
   return '#000';
 };
 
-export const getProgressClass = (value: number): string => {
-  if (value <= 0) {
+export const getProgressClass = (value?: number): string => {
+  if (!value || value <= 0) {
     return 'bg-transparent';
   }
   if (value <= 25) {
@@ -47,9 +47,9 @@ export const getProgressClass = (value: number): string => {
     return 'bg-rose-400';
   }
 
-  return 'bg-red-400';
+  return 'bg-red-500';
 };
 
-export const getProgressWidth = (value: number): string => {
-  return value <= 0 ? 'hidden' : `width: ${value}%`;
+export const getProgressWidth = (value?: number): string => {
+  return !value || value <= 0 ? 'hidden' : `width: ${value}%`;
 };

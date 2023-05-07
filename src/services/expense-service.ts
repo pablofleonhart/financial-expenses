@@ -17,6 +17,7 @@ import {
   isDateInPeriod,
   sortList,
   getMonths,
+  getPercentage,
 } from '../utils';
 import { MonthPeriod } from '../types';
 import { editWallet, publishManyWallets } from './wallet-service';
@@ -24,7 +25,9 @@ import { Travel } from '../components/travels/Travel';
 
 export let allExpenseItems: Array<Expense> = [];
 export const filteredExpenseItems: Array<Expense> = reactive([]);
+export const filteredExpenseBudgets: Array<Expense> = reactive([]);
 export const expenseSettings: Record<string, any> = reactive({});
+export const expenseBudgetSettings: Record<string, any> = reactive({});
 
 export const expensesSum = computed(() => {
   const expensesSum: Record<string, any> = {};
@@ -82,6 +85,7 @@ export const showVariablesExpense = ref<boolean>(false);
 export const travelExpense = ref<Travel | null>(null);
 
 const EXPENSE_LIST_KEY = 'expense-list';
+const EXPENSE_BUDGET_LIST_KEY = 'expense-budget-list';
 const EXPENSE_PERIOD = 'expense-period';
 
 export const selectedTravelExpensesSum = computed(() => {
@@ -116,12 +120,23 @@ const loadSelectedPeriod = () => {
 };
 
 const loadSortSettings = () => {
-  const localSettings = localStorage.getItem(EXPENSE_LIST_KEY);
+  let localSettings = localStorage.getItem(EXPENSE_LIST_KEY);
 
   if (localSettings) {
     Object.assign(expenseSettings, JSON.parse(localSettings));
   } else {
     Object.assign(expenseSettings, { ascending: false, column: 'date' });
+  }
+
+  localSettings = localStorage.getItem(EXPENSE_BUDGET_LIST_KEY);
+
+  if (localSettings) {
+    Object.assign(expenseBudgetSettings, JSON.parse(localSettings));
+  } else {
+    Object.assign(expenseBudgetSettings, {
+      ascending: false,
+      column: 'amount',
+    });
   }
 };
 
@@ -363,6 +378,26 @@ export const sortExpenses = (column?: string) => {
   localStorage.setItem(EXPENSE_LIST_KEY, JSON.stringify(expenseSettings));
 };
 
+export const sortExpenseBudgets = (column?: string) => {
+  if (column) {
+    if (expenseBudgetSettings.column === column) {
+      expenseBudgetSettings.ascending = !expenseBudgetSettings.ascending;
+    } else {
+      expenseBudgetSettings.column = column;
+    }
+  }
+
+  sortList(
+    filteredExpenseBudgets,
+    expenseBudgetSettings.column,
+    expenseBudgetSettings.ascending
+  );
+  localStorage.setItem(
+    EXPENSE_BUDGET_LIST_KEY,
+    JSON.stringify(expenseBudgetSettings)
+  );
+};
+
 export let expenseBudgetCategories: Record<string, any> = reactive({});
 
 const loadExpenseCategories = () => {
@@ -370,21 +405,6 @@ const loadExpenseCategories = () => {
     string,
     { color: string; name: string; value: number }
   > = {};
-  expenseBudgetCategories = {};
-
-  allExpenseItems.forEach((expense) => {
-    if (
-      !expense.budget &&
-      isDateInPeriod(expense.date, selectedExpensePeriod)
-    ) {
-      const budgetCategoryType = `${expense.category.type}-${expense.currency}`;
-      if (!(budgetCategoryType in expenseBudgetCategories)) {
-        expenseBudgetCategories[budgetCategoryType] = 0;
-      }
-      expenseBudgetCategories[budgetCategoryType] += expense.amount;
-    }
-  });
-
   filteredExpenseItems.forEach((expense) => {
     if (!expense.budget) {
       const categoryType = expense.category.type;
@@ -421,9 +441,57 @@ export const topFiveExpenseCategories = computed(() => {
   return sortedCategories.slice(0, 5);
 });
 
+const loadExpenseBudgetCategories = () => {
+  expenseBudgetCategories = {};
+
+  allExpenseItems.forEach((expense) => {
+    if (
+      !expense.budget &&
+      isDateInPeriod(expense.date, selectedExpensePeriod)
+    ) {
+      const budgetCategoryType = `${expense.category.type}-${expense.currency}`;
+      if (!(budgetCategoryType in expenseBudgetCategories)) {
+        expenseBudgetCategories[budgetCategoryType] = 0;
+      }
+      expenseBudgetCategories[budgetCategoryType] += expense.amount;
+    }
+  });
+};
+
+const getBudgetPercentage = (expense: Expense) => {
+  // @ts-ignore
+  return getPercentage(expense.amount, expense.spentAmount);
+};
+
+const getSpentAmount = (expense: Expense) => {
+  const categoryKey = `${expense.category.type}-${expense.currency}`;
+  return expenseBudgetCategories[categoryKey] || 0;
+};
+
+const filterExpenseBudgets = () => {
+  loadExpenseBudgetCategories();
+  let result = allExpenseItems.filter(
+    (item) => (!item.travel || item.travel.id == '') && item.budget
+  );
+
+  result = result.filter((item) => {
+    return isDateInPeriod(item.date, selectedExpensePeriod);
+  });
+
+  result.map((expense) => {
+    expense.spentAmount = getSpentAmount(expense);
+    expense.budgetPercentage = getBudgetPercentage(expense);
+  });
+
+  filteredExpenseBudgets.splice(0);
+  Object.assign(filteredExpenseBudgets, result);
+  sortExpenseBudgets();
+};
+
 export const filterExpenses = (
   period: MonthPeriod | null = selectedExpensePeriod
 ) => {
+  filterExpenseBudgets();
   let result: Expense[] = [];
 
   if (travelExpense.value) {
