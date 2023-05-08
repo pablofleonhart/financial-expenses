@@ -52,7 +52,7 @@ const loadSelectedType = () => {
 export const investmentsSum = computed(() => {
   const wallets: Record<string, any> = {};
   allWalletItems.forEach((item) => {
-    if (item.type === WALLET_TYPE.BALANCE) {
+    if ([WALLET_TYPE.BALANCE, WALLET_TYPE.CREDIT].includes(item.type)) {
       return;
     }
     const key = item.currency;
@@ -112,7 +112,7 @@ export const loadWallets = async () => {
         if (item.deleted) {
           return;
         }
-        if (item.type === WALLET_TYPE.BALANCE) {
+        if ([WALLET_TYPE.BALANCE, WALLET_TYPE.CREDIT].includes(item.type)) {
           availableWallets.push(copyWallet(item));
         }
         allWalletItems.push(copyWallet(item));
