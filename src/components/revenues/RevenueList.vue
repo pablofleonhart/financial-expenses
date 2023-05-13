@@ -57,20 +57,20 @@
             <div class="flex w-full justify-evenly">
               <ph-check-circle
                 v-if="showRevenueActions"
-                class="button-action hover:bg-green-500"
+                class="button-action text-neutral-color-off hover:bg-green-500 hover:text-neutral-50"
                 @click="onCompleteRevenue(index)"
               />
               <ph-arrow-counter-clockwise
                 v-else
-                class="button-action hover:bg-yellow-500"
+                class="button-action text-neutral-color-off hover:bg-yellow-500 hover:text-neutral-50"
                 @click="onReopenRevenue(index)"
               />
               <ph-pencil
-                class="button-action hover:bg-blue-500"
+                class="button-action text-neutral-color-off hover:bg-blue-500 hover:text-neutral-50"
                 @click="onEditRevenue(index)"
               />
               <ph-trash
-                class="button-action hover:bg-red-500"
+                class="button-action text-neutral-color-off hover:bg-red-500 hover:text-neutral-50"
                 @click="onDeleteRevenue(index)"
               />
             </div>

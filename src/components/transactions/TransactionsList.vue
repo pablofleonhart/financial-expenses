@@ -57,7 +57,7 @@
           <td class="flex items-center p-2 h-full w-1/6 min-w-24">
             <div class="flex w-full justify-evenly">
               <ph-pencil
-                class="button-action hover:bg-blue-500"
+                class="button-action text-neutral-color-off hover:bg-blue-500 hover:text-neutral-50"
                 @click="onEditTransaction(index)"
               />
             </div>

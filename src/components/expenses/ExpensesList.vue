@@ -30,9 +30,17 @@
             :key="item.id"
           >
             <td class="flex items-center p-2 h-full w-1/6 min-w-24 justify-end">
-              {{
-                formatCurrency(item.amount, item.payment?.currency || 'euro')
-              }}
+              <div v-if="item.variable">
+                {{
+                  formatCurrency(item.amount, item.payment?.currency || 'euro')
+                }}
+              </div>
+              <div v-else class="flex w-full justify-between items-center">
+                <ph-arrows-clockwise class="text-neutral-color-off" size="24" />
+                {{
+                  formatCurrency(item.amount, item.payment?.currency || 'euro')
+                }}
+              </div>
             </td>
             <td
               class="flex items-center p-2 h-full w-1/6 min-w-24 justify-center"
@@ -75,11 +83,11 @@
             <td class="flex items-center p-2 h-full w-1/6 min-w-24">
               <div class="flex w-full justify-evenly">
                 <ph-pencil
-                  class="button-action hover:bg-blue-500"
+                  class="button-action text-neutral-color-off hover:bg-blue-500 hover:text-neutral-50"
                   @click="onEditExpense(index)"
                 />
                 <ph-trash
-                  class="button-action hover:bg-red-500"
+                  class="button-action text-neutral-color-off hover:bg-red-500 hover:text-neutral-50"
                   @click="onDeleteExpense(index)"
                 />
               </div>
@@ -115,7 +123,7 @@ const expenseColumns = [
   {
     key: 'amount',
     name: 'Valor',
-    class: 'min-w-24 justify-end',
+    class: 'min-w-24 justify-center',
   },
   {
     key: 'date',

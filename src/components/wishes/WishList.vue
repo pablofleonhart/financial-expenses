@@ -118,20 +118,15 @@
           <td class="flex items-center p-2 h-full w-1/3">
             <div class="flex w-full justify-evenly">
               <ph-check-circle
-                class="button-action hover:bg-green-500"
+                class="button-action text-neutral-color-off hover:bg-green-500 hover:text-neutral-50"
                 @click="emit('onCompletePlan', wish)"
               />
-              <!-- <ph-arrow-counter-clockwise
-                v-else
-                class="button-action hover:bg-yellow-500"
-                @click="reopenWish(wish)"
-              /> -->
               <ph-pencil
-                class="button-action hover:bg-blue-500"
+                class="button-action text-neutral-color-off hover:bg-blue-500 hover:text-neutral-50"
                 @click="emit('onEditWish', wish)"
               />
               <ph-trash
-                class="button-action hover:bg-red-500"
+                class="button-action text-neutral-color-off hover:bg-red-500 hover:text-neutral-50"
                 @click="emit('onDeleteWish', wish)"
               />
             </div>
