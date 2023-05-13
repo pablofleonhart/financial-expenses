@@ -43,16 +43,7 @@
             @select="selectTarget"
           />
         </div>
-
-        <datepicker
-          :model-value="transaction.date"
-          locale="pt"
-          select-text="Selecionar"
-          text-input
-          format="dd/MM/yyyy HH:mm"
-          placeholder="Data da renda ou despesa"
-          @update:model-value="setDate"
-        />
+        <datepicker :selected="transaction.date" @set-date="setDate" />
         <textarea
           v-model="transaction.description"
           class="flex col-span-3 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-32"
@@ -79,7 +70,7 @@
 
 <script lang="ts" setup>
 import BalanceSelector from '../common/BalanceSelector.vue';
-import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/props/formatting/
+import Datepicker from '../common/Datepicker.vue';
 import { PropType, shallowRef, watch } from 'vue';
 import { addTransaction, editTransaction } from '../../services';
 import { Transaction } from './Transaction';

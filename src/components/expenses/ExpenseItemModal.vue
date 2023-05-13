@@ -61,15 +61,7 @@
           empty-message="Forma de pagamento"
           @select="selectBalance"
         />
-        <datepicker
-          :model-value="expense.date"
-          locale="pt"
-          select-text="Selecionar"
-          text-input
-          format="dd/MM/yyyy HH:mm"
-          placeholder="Data da renda ou despesa"
-          @update:model-value="setDate"
-        />
+        <datepicker :selected="expense.date" @set-date="setDate" />
         <!-- <div class="flex items-center text-lg gap-2">
           <input
             class="h-5 w-5"
@@ -118,7 +110,7 @@
 </template>
 
 <script lang="ts" setup>
-import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/props/formatting/
+import Datepicker from '../common/Datepicker.vue';
 import { computed, PropType, ref, shallowRef, watch } from 'vue';
 import { Expense } from './Expense';
 import { Category } from '../categories/Category';

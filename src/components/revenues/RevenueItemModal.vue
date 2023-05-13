@@ -80,15 +80,7 @@
           empty-message="Meio de pagamento ou recebimento"
           @select="selectBalance"
         />
-        <datepicker
-          :model-value="revenue.date"
-          locale="pt"
-          select-text="Selecionar"
-          text-input
-          format="dd/MM/yyyy HH:mm"
-          placeholder="Data da renda ou despesa"
-          @update:model-value="setDate"
-        />
+        <datepicker :selected="revenue.date" @set-date="setDate" />
         <textarea
           v-model="revenue.description"
           class="flex col-span-3 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-32"
@@ -115,7 +107,7 @@
 
 <script lang="ts" setup>
 import BalanceSelector from '../common/BalanceSelector.vue';
-import Datepicker from '@vuepic/vue-datepicker'; //https://vue3datepicker.com/props/formatting/
+import Datepicker from '../common/Datepicker.vue';
 import { PropType, ref, shallowRef, watch } from 'vue';
 import { addRevenue, editRevenue } from '../../services';
 import { Wallet } from '../wallets/Wallet';
