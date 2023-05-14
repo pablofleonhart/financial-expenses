@@ -1,4 +1,5 @@
 export type MonthPeriod = {
+  index: number;
   name: string;
   from: Date | string;
   to: Date | string;

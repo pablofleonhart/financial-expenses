@@ -1,12 +1,14 @@
 <template>
   <div class="expenses-container m-3 h-[90vh]">
-    <div class="flex flex-row">
-      <expenses-filter-tabs />
+    <expenses-header />
+    <div
+      class="expense-action-bar flex flex-row w-full justify-center items-center"
+    >
+      <period-selector @select-option="onChangePeriod" />
       <div class="flex justify-end">
         <add-button @click="onAddExpense"></add-button>
       </div>
     </div>
-    <expenses-header />
     <expenses-page
       @on-edit-expense="onEditExpense"
       @on-delete-expense="onDeleteExpense"
@@ -34,7 +36,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import AddButton from '../common/AddButton.vue';
-import ExpensesFilterTabs from './ExpensesFilterTabs.vue';
+import PeriodSelector from '../common/PeriodSelector.vue';
 import ExpensesHeader from './ExpensesHeader.vue';
 import ExpensesPage from './ExpensesPage.vue';
 import {
@@ -84,6 +86,10 @@ onMounted(async () => {
 watch($route, () => {
   applyFilterExpenses();
 });
+
+const onChangePeriod = (period: any) => {
+  filterExpenses(period);
+};
 
 const onAddExpense = () => {
   objExpense.value = new Expense();

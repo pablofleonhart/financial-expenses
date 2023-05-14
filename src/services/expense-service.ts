@@ -107,6 +107,7 @@ export const selectedTravelExpensesSum = computed(() => {
 export const expensePeriods: Array<MonthPeriod> = reactive([]);
 
 export const selectedExpensePeriod: MonthPeriod = reactive({
+  index: 0,
   name: getMonthYear(),
   from: getFirstDayOfMonth(),
   to: getLastDayOfMonth(),
@@ -116,7 +117,12 @@ const loadSelectedPeriod = () => {
   const localSettings = localStorage.getItem(EXPENSE_PERIOD);
 
   if (localSettings) {
-    Object.assign(selectedExpensePeriod, JSON.parse(localSettings));
+    const objPeriod = JSON.parse(localSettings);
+
+    if (!objPeriod.index) {
+      objPeriod.index = new Date(objPeriod.from).getMonth() + 1;
+    }
+    Object.assign(selectedExpensePeriod, objPeriod);
   }
 };
 

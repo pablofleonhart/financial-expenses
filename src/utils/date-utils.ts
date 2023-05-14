@@ -3,8 +3,6 @@ import dayjs from 'dayjs';
 import { MonthPeriod } from '../types';
 import { capitalizeFirstLetter } from './string-utils';
 
-const currentDate = new Date();
-
 export const formatDate = (date: Date | string | null): string => {
   if (!date) {
     return 'No date';
@@ -27,6 +25,11 @@ export const getLastDayOfMonth = (date: Date = new Date()): string => {
   return dayjs(lastDay).format('YYYY-MM-DD');
 };
 
+export const getLastDayOfYear = (date: Date = new Date()): Date => {
+  const lastDay = dayjs(date).endOf('year').toDate();
+  return dayjs(lastDay).toDate();
+};
+
 export const isDateInPeriod = (
   date: Date | string,
   period: MonthPeriod
@@ -41,16 +44,20 @@ export const dateToString = (date: Date | null): string => {
 
 export const getMonths = (): MonthPeriod[] => {
   const initialDate = dayjs('2022-12-01').toDate();
+  const finalDate = getLastDayOfYear();
   const result: MonthPeriod[] = [];
+  let index = 0;
 
-  while (initialDate < currentDate) {
+  while (initialDate < finalDate) {
     result.push({
+      index,
       name: getMonthYear(initialDate),
       from: getFirstDayOfMonth(initialDate),
       to: getLastDayOfMonth(initialDate),
     });
 
     initialDate.setMonth(initialDate.getMonth() + 1);
+    index++;
   }
 
   return result;
