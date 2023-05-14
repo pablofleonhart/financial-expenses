@@ -2,10 +2,10 @@
   <div class="expenses-container m-3 h-[90vh]">
     <expenses-header />
     <div
-      class="expense-action-bar flex flex-row w-full justify-center items-center"
+      class="expense-action-bar flex flex-row w-full justify-evenly items-center m-2"
     >
       <period-selector @select-option="onChangePeriod" />
-      <div class="flex justify-end">
+      <div class="flex">
         <add-button @click="onAddExpense"></add-button>
       </div>
     </div>

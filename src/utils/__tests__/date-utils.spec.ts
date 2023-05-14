@@ -51,6 +51,7 @@ describe('Date utils tests', () => {
 
   it('returns true if date is within the specified period', function () {
     const period = {
+      index: 0,
       name: 'Maio/17',
       from: new Date('2017-04-30T00:00:00.000Z'),
       to: new Date('2017-05-30T04:00:00.000Z'),
