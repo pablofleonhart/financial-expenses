@@ -1,14 +1,17 @@
 <template>
   <div class="expenses-container m-3 h-[90vh]">
-    <expenses-header />
     <div
       class="expense-action-bar flex flex-row w-full justify-evenly items-center m-2"
     >
-      <period-selector @select-option="onChangePeriod" />
+      <period-selector
+        :selected-period="selectedExpensePeriod"
+        @select-option="onChangePeriod"
+      />
       <div class="flex">
         <add-button @click="onAddExpense"></add-button>
       </div>
     </div>
+    <expenses-header />
     <expenses-page
       @on-edit-expense="onEditExpense"
       @on-delete-expense="onDeleteExpense"
@@ -43,6 +46,7 @@ import {
   deleteExpense,
   filterExpenses,
   loadExpenses,
+  selectedExpensePeriod,
   showFixedExpense,
   showVariablesExpense,
   travelExpense,

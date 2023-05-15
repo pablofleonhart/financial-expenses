@@ -6,7 +6,7 @@
           <th
             v-for="column in revenueColumns"
             :key="column.key"
-            class="flex items-center p-2 h-full w-1/6 cursor-pointer hover:bg-secondary-color-300"
+            class="flex items-center p-2 h-full w-1/5 cursor-pointer hover:bg-secondary-color-300"
             :class="column.class"
             @click="orderList(column)"
           >
@@ -28,34 +28,25 @@
           v-for="(item, index) in revenueList"
           :key="item.id"
         >
-          <td class="flex items-center p-2 h-full w-16">
-            <component
-              :is="getRevenueTypeIcon(item.type)"
-              size="22"
-              weight="bold"
-              :class="{
-                'text-positive-color': item.type === 'income',
-                'text-negative-color': item.type === 'outcome',
-              }"
-            />
-          </td>
-          <td class="flex items-center p-2 h-full w-1/6 justify-end">
+          <td class="flex items-center p-2 h-full w-1/5 justify-end">
             {{ formatCurrency(item.amount, item.currency) }}
           </td>
-          <td class="flex items-center p-2 h-full w-1/6">
-            {{ item.description }}
+          <td class="flex items-center p-2 h-full w-1/5 min-w-48">
+            <span class="w-full truncate" :title="item.description">
+              {{ item.description }}
+            </span>
           </td>
-          <td class="flex items-center justify-center p-2 h-full w-1/6">
+          <td class="flex items-center justify-center p-2 h-full w-1/5">
             {{ formatDate(item.date) }}
           </td>
-          <td class="flex items-center justify-center p-2 h-full w-1/6">
+          <td class="flex items-center justify-center p-2 h-full w-1/5">
             {{
               item.payment.currency ? getBalanceName(item.payment) : item.bank
             }}
           </td>
-          <td class="flex items-center p-2 h-full w-1/6">
+          <td class="flex items-center p-2 h-full w-1/5">
             <div class="flex w-full justify-evenly">
-              <ph-check-circle
+              <!-- <ph-check-circle
                 v-if="showRevenueActions"
                 class="button-action text-neutral-color-off hover:bg-green-500 hover:text-neutral-50"
                 @click="onCompleteRevenue(index)"
@@ -64,7 +55,7 @@
                 v-else
                 class="button-action text-neutral-color-off hover:bg-yellow-500 hover:text-neutral-50"
                 @click="onReopenRevenue(index)"
-              />
+              /> -->
               <ph-pencil
                 class="button-action text-neutral-color-off hover:bg-blue-500 hover:text-neutral-50"
                 @click="onEditRevenue(index)"
@@ -88,25 +79,18 @@ import {
   formatCurrency,
   formatDate,
   getOrderIcon,
-  getRevenueTypeIcon,
 } from '../../utils';
 import {
   completeRevenue,
   filteredRevenueItems,
   reopenRevenue,
   revenueSettings,
-  showRevenueActions,
   sortRevenues,
 } from '../../services';
 import { Revenue } from './Revenue';
 import { getBalanceName } from '../../utils/string-utils';
 
 const revenueColumns = [
-  {
-    key: 'type',
-    name: 'Tipo',
-    class: 'w-16',
-  },
   {
     key: 'amount',
     name: 'Valor',

@@ -51,7 +51,7 @@ const router = createRouter({
       component: Revenues,
       meta: {
         middlewares: [isAuthenticated],
-        title: 'Rendas e despesas previstas',
+        title: 'Receitas',
       },
     },
     {

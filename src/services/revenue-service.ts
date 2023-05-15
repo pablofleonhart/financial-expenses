@@ -8,11 +8,15 @@ import { computed, reactive } from 'vue';
 import { Revenue } from '../components/revenues/Revenue';
 import {
   copyRevenue,
+  getFirstDayOfMonth,
+  getLastDayOfMonth,
+  getMonthYear,
   isDateInCurrentMonth,
+  isDateInPeriod,
   overrideRevenue,
   sortList,
 } from '../utils';
-import { REVENUE_STATUS, RevenueStatus } from '../types';
+import { REVENUE_STATUS, RevenueStatus, MonthPeriod } from '../types';
 import { editWallet, publishManyWallets } from './wallet-service';
 
 export const allRevenueItems: Array<Revenue> = reactive([]);
@@ -24,18 +28,31 @@ export const selectedRevenueStatus: RevenueStatus = reactive({
   name: 'Em aberto',
 });
 
+export const selectedRevenuePeriod: MonthPeriod = reactive({
+  index: 0,
+  name: getMonthYear(),
+  from: getFirstDayOfMonth(),
+  to: getLastDayOfMonth(),
+});
+
 export const showRevenueActions = computed(
   () => selectedRevenueStatus.id === REVENUE_STATUS.OPEN
 );
 
 const REVENUE_LIST_KEY = 'revenue-list';
 const REVENUE_STATUS_KEY = 'revenue-status';
+const REVENUE_PERIOD = 'revenue-period';
 
-const loadSelectedStatus = () => {
-  const localSettings = localStorage.getItem(REVENUE_STATUS_KEY);
+const loadSelectedPeriod = () => {
+  const localSettings = localStorage.getItem(REVENUE_PERIOD);
 
   if (localSettings) {
-    Object.assign(selectedRevenueStatus, JSON.parse(localSettings));
+    const objPeriod = JSON.parse(localSettings);
+
+    if (!objPeriod.index) {
+      objPeriod.index = new Date(objPeriod.from).getMonth() + 1;
+    }
+    Object.assign(selectedRevenuePeriod, objPeriod);
   }
 };
 
@@ -50,7 +67,7 @@ const loadSortSettings = () => {
 };
 
 const initializeData = () => {
-  loadSelectedStatus();
+  loadSelectedPeriod();
   loadSortSettings();
 };
 
@@ -289,19 +306,25 @@ export const sortRevenues = (column?: string) => {
 };
 
 export const filterRevenues = (
-  status: RevenueStatus = selectedRevenueStatus
+  // status: RevenueStatus = selectedRevenueStatus
+  period: MonthPeriod = selectedRevenuePeriod
 ) => {
-  const result = allRevenueItems.filter((item) => {
-    return item.itemStatus === status.id;
-  });
+  let result: Revenue[] = [];
+  if (period) {
+    result = allRevenueItems.filter((item) => {
+      return isDateInPeriod(item.date, period);
+    });
+    Object.assign(selectedRevenuePeriod, period);
+  }
   filteredRevenueItems.splice(0);
   Object.assign(filteredRevenueItems, result);
   sortRevenues();
-  Object.assign(selectedRevenueStatus, status);
-  localStorage.setItem(
-    REVENUE_STATUS_KEY,
-    JSON.stringify(selectedRevenueStatus)
-  );
+  localStorage.setItem(REVENUE_PERIOD, JSON.stringify(selectedRevenuePeriod));
+  // Object.assign(selectedRevenueStatus, status);
+  // localStorage.setItem(
+  //   REVENUE_STATUS_KEY,
+  //   JSON.stringify(selectedRevenueStatus)
+  // );
 };
 
 export const completeRevenue = async (revenue: Revenue) => {

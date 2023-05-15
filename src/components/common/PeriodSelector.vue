@@ -46,18 +46,21 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, shallowRef } from 'vue';
-import { expensePeriods, selectedExpensePeriod } from '../../services';
+import { computed, PropType, ref } from 'vue';
+import { expensePeriods } from '../../services';
 import { MonthPeriod } from '../../types';
+
+const props = defineProps({
+  selectedPeriod: { type: Object as PropType<any>, default: null },
+});
 
 const periods = computed(() => [...expensePeriods].reverse());
 const emit = defineEmits(['selectOption']);
 
 const periodSelectorOpen = ref(false);
-const selectedPeriod = shallowRef(selectedExpensePeriod);
 
 const handlePrevious = () => {
-  const prevIndex = selectedExpensePeriod.index - 1;
+  const prevIndex = props.selectedPeriod.index - 1;
   const newPeriod = expensePeriods.at(prevIndex);
   if (newPeriod) {
     selectPeriod(newPeriod);
@@ -65,7 +68,7 @@ const handlePrevious = () => {
 };
 
 const handleNext = () => {
-  let prevIndex = selectedExpensePeriod.index + 1;
+  let prevIndex = props.selectedPeriod.index + 1;
   if (prevIndex >= expensePeriods.length) {
     prevIndex = 0;
   }

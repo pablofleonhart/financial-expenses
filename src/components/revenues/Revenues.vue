@@ -1,7 +1,10 @@
 <template>
   <div class="revenues-container m-3 h-[90vh]">
-    <div class="flex flex-row">
-      <revenues-filter-tabs />
+    <div class="flex flex-row justify-evenly">
+      <period-selector
+        :selected-period="selectedRevenuePeriod"
+        @select-option="onChangePeriod"
+      />
       <div class="flex justify-end">
         <add-button @click="onAddRevenue"></add-button>
       </div>
@@ -28,13 +31,18 @@
 <script lang="ts" setup>
 import AddButton from '../common/AddButton.vue';
 import ConfirmationModal from '../common/ConfirmationModal.vue';
-import RevenuesFilterTabs from './RevenuesFilterTabs.vue';
 import RevenueItemModal from './RevenueItemModal.vue';
 import RevenueList from './RevenueList.vue';
 import { onMounted, ref } from 'vue';
-import { deleteRevenue, loadRevenues } from '../../services';
+import {
+  deleteRevenue,
+  filterRevenues,
+  loadRevenues,
+  selectedRevenuePeriod,
+} from '../../services';
 import { Revenue } from './Revenue';
 import { copyRevenue } from '../../utils';
+import PeriodSelector from '../common/PeriodSelector.vue';
 
 const showRevenueItemModal = ref(false);
 const showConfirmationModal = ref(false);
@@ -45,6 +53,10 @@ let revenueToDelete: Revenue = new Revenue();
 onMounted(() => {
   loadRevenues();
 });
+
+const onChangePeriod = (period: any) => {
+  filterRevenues(period);
+};
 
 const onAddRevenue = () => {
   objRevenue.value = new Revenue();

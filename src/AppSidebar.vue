@@ -75,8 +75,8 @@ const sidebarItems: Array<ISidebarItem> = [
   },
   {
     id: 1,
-    name: 'Faturas',
-    icon: 'ph-receipt',
+    name: 'Receitas',
+    icon: 'ph-confetti',
     route: 'revenues',
   },
   {
