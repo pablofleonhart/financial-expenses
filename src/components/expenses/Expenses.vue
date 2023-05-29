@@ -1,17 +1,19 @@
 <template>
   <div class="expenses-container m-3 h-[90vh]">
+    <expenses-header />
     <div
-      class="expense-action-bar flex flex-row w-full justify-evenly items-center m-2"
+      class="expense-action-bar flex flex-row w-full justify-around gap-8 items-center m-2"
     >
-      <period-selector
-        :selected-period="selectedExpensePeriod"
-        @select-option="onChangePeriod"
+      <datepicker
+        v-model="expenseSelectedPeriod"
+        multi-calendars
+        range
+        @update:model-value="onChangePeriod"
       />
       <div class="flex">
         <add-button @click="onAddExpense"></add-button>
       </div>
     </div>
-    <expenses-header />
     <expenses-page
       @on-edit-expense="onEditExpense"
       @on-delete-expense="onDeleteExpense"
@@ -39,7 +41,6 @@
 import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import AddButton from '../common/AddButton.vue';
-import PeriodSelector from '../common/PeriodSelector.vue';
 import ExpensesHeader from './ExpensesHeader.vue';
 import ExpensesPage from './ExpensesPage.vue';
 import {
@@ -55,7 +56,8 @@ import { Expense } from './Expense';
 import ConfirmationModal from '../common/ConfirmationModal.vue';
 import ExpenseBudgetModal from './ExpenseBudgetModal.vue';
 import ExpenseItemModal from './ExpenseItemModal.vue';
-import { copyExpense } from '../../utils';
+import { copyExpense, getFormattedDate } from '../../utils';
+import Datepicker from '../common/Datepicker.vue';
 
 const showExpenseItemModal = ref(false);
 const showExpenseBudgetModal = ref(false);
@@ -63,6 +65,11 @@ const showDeleteConfirmationModal = ref(false);
 const objExpense = ref(new Expense());
 let expenseToDelete: Expense = new Expense();
 const $route = useRoute();
+
+const expenseSelectedPeriod = ref([
+  selectedExpensePeriod.from,
+  selectedExpensePeriod.to,
+]);
 
 const applyFilterExpenses = () => {
   let variableExpense = true;
@@ -92,7 +99,15 @@ watch($route, () => {
 });
 
 const onChangePeriod = (period: any) => {
-  filterExpenses(period);
+  const from = getFormattedDate(period[0]);
+  const to = getFormattedDate(period[1]);
+
+  filterExpenses({
+    index: 99,
+    from,
+    to,
+    name: 'custom',
+  });
 };
 
 const onAddExpense = () => {

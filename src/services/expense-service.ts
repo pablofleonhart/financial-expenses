@@ -1,12 +1,10 @@
 import { computed, reactive, ref } from 'vue';
 import { Expense } from '../components/expenses/Expense';
 import {
-  useAddExpenseBudgetMutation,
   useAddExpenseMutation,
   useAddTravelExpenseMutation,
   useGetExpensesQuery,
   usePublishExpenseMutation,
-  useUpdateExpenseBudgetMutation,
   useUpdateExpenseMutation,
   useUpdateTravelExpenseMutation,
 } from '../graphql/generated';
@@ -19,7 +17,6 @@ import {
   isDateInPeriod,
   sortList,
   getMonths,
-  getPercentage,
 } from '../utils';
 import { MonthPeriod } from '../types';
 import { editWallet, publishManyWallets } from './wallet-service';
@@ -27,9 +24,7 @@ import { Travel } from '../components/travels/Travel';
 
 export let allExpenseItems: Array<Expense> = [];
 export const filteredExpenseItems: Array<Expense> = reactive([]);
-export const filteredExpenseBudgets: Array<Expense> = reactive([]);
 export const expenseSettings: Record<string, any> = reactive({});
-export const expenseBudgetSettings: Record<string, any> = reactive({});
 
 export const expensesSum = computed(() => {
   const expensesSum: Record<string, any> = {};
@@ -47,33 +42,6 @@ export const expensesSum = computed(() => {
   return Object.fromEntries(sortedArray);
 });
 
-export const expensesBudgetSum = computed(() => {
-  filteredExpenseItems.filter((item) => item.budget);
-  const expensesSum: Record<string, any> = {};
-  allExpenseItems.forEach((expense) => {
-    if (expense.budget && isDateInPeriod(expense.date, selectedExpensePeriod)) {
-      const key = expense.currency;
-      if (!(key in expensesSum)) {
-        expensesSum[key] = 0;
-      }
-      expensesSum[key] += expense.amount;
-    }
-  });
-
-  const sortedArray = Object.entries(expensesSum).sort();
-  return Object.fromEntries(sortedArray);
-});
-
-export const budgetExpenseItems = computed(() => {
-  const result = filteredExpenseBudgets.filter(
-    (item) => (!item.travel || item.travel.id == '') && item.budget
-  );
-
-  return result.filter((item) => {
-    return isDateInPeriod(item.date, selectedExpensePeriod);
-  });
-});
-
 const sortedCategories: any[] = reactive([]);
 export let expenseCategoriesLabels: string[] = [];
 export let expenseCategoriesValues: number[] = [];
@@ -86,7 +54,6 @@ export const showVariablesExpense = ref<boolean>(false);
 export const travelExpense = ref<Travel | null>(null);
 
 const EXPENSE_LIST_KEY = 'expense-list';
-const EXPENSE_BUDGET_LIST_KEY = 'expense-budget-list';
 const EXPENSE_PERIOD = 'expense-period';
 
 export const selectedTravelExpensesSum = computed(() => {
@@ -127,23 +94,12 @@ const loadSelectedPeriod = () => {
 };
 
 const loadSortSettings = () => {
-  let localSettings = localStorage.getItem(EXPENSE_LIST_KEY);
+  const localSettings = localStorage.getItem(EXPENSE_LIST_KEY);
 
   if (localSettings) {
     Object.assign(expenseSettings, JSON.parse(localSettings));
   } else {
     Object.assign(expenseSettings, { ascending: false, column: 'date' });
-  }
-
-  localSettings = localStorage.getItem(EXPENSE_BUDGET_LIST_KEY);
-
-  if (localSettings) {
-    Object.assign(expenseBudgetSettings, JSON.parse(localSettings));
-  } else {
-    Object.assign(expenseBudgetSettings, {
-      ascending: false,
-      column: 'amount',
-    });
   }
 };
 
@@ -191,14 +147,15 @@ export const loadExpenses = async (): Promise<void> => {
   allExpenseItems = [];
   const loadExpensesPromise = new Promise((resolve) => {
     expensePeriods.forEach(async (period: MonthPeriod, index, array) => {
-      const monthsItems = await loadMonthExpenses(period);
-      monthsItems.forEach((item: Expense) => {
-        allExpenseItems.push(copyExpense(item));
-      });
-      if (index === array.length - 1) {
-        resolve(true);
-      }
-      setTimeout(() => {}, 1000);
+      setTimeout(async () => {
+        const monthsItems = await loadMonthExpenses(period);
+        monthsItems.forEach((item: Expense) => {
+          allExpenseItems.push(copyExpense(item));
+        });
+        if (index === array.length - 1) {
+          resolve(true);
+        }
+      }, 500);
     });
   });
 
@@ -230,27 +187,6 @@ export const addExpense = (expense: Expense) => {
       filterExpenses();
       publishExpense(expenseID);
       await expenseAdded(expense);
-      resolve(true);
-    });
-  });
-};
-
-export const addExpenseBudget = (expense: Expense) => {
-  return new Promise((resolve) => {
-    const { mutate: createExpense, onDone } = useAddExpenseBudgetMutation({});
-    createExpense({
-      amount: expense.amount,
-      categoryID: expense.category.id,
-      currency: expense.currency,
-      date: selectedExpensePeriod.from,
-    });
-
-    onDone(async (result) => {
-      const expenseID = result.data?.createExpense?.id;
-      expense.id = expenseID || '';
-      allExpenseItems.push(new Expense(expense));
-      filterExpenseBudgets(selectedExpensePeriod);
-      publishExpense(expenseID);
       resolve(true);
     });
   });
@@ -302,40 +238,6 @@ export const editExpense = async (expense: Expense) => {
       paymentID: expense.payment.id,
       variable: expense.variable,
       budget: expense.budget,
-    });
-
-    onDone(() => {
-      // update expense on local storage
-      const oldExpense = getExpenseByID(expense.id);
-      if (oldExpense) {
-        const index = allExpenseItems.indexOf(oldExpense);
-        allExpenseItems.splice(index, 1);
-        allExpenseItems.push(expense);
-        sortExpenses();
-      }
-      filterExpenses();
-      publishExpense(expense.id);
-      resolve(true);
-    });
-  });
-};
-
-export const editExpenseBudget = async (expense: Expense) => {
-  if (!expense) {
-    throw new Error('Expense does not exist');
-  }
-
-  return new Promise((resolve) => {
-    const { mutate: updateExpense, onDone } = useUpdateExpenseBudgetMutation(
-      {}
-    );
-    updateExpense({
-      id: expense.id,
-      amount: expense.amount,
-      date: expense.date,
-      deleted: expense.deleted,
-      categoryID: expense.category.id,
-      currency: expense.currency,
     });
 
     onDone(() => {
@@ -445,28 +347,6 @@ export const sortExpenses = (column?: string) => {
   localStorage.setItem(EXPENSE_LIST_KEY, JSON.stringify(expenseSettings));
 };
 
-export const sortExpenseBudgets = (column?: string) => {
-  if (column) {
-    if (expenseBudgetSettings.column === column) {
-      expenseBudgetSettings.ascending = !expenseBudgetSettings.ascending;
-    } else {
-      expenseBudgetSettings.column = column;
-    }
-  }
-
-  sortList(
-    filteredExpenseBudgets,
-    expenseBudgetSettings.column,
-    expenseBudgetSettings.ascending
-  );
-  localStorage.setItem(
-    EXPENSE_BUDGET_LIST_KEY,
-    JSON.stringify(expenseBudgetSettings)
-  );
-};
-
-export let expenseBudgetCategories: Record<string, any> = reactive({});
-
 const loadExpenseCategories = () => {
   const categories: Record<
     string,
@@ -508,59 +388,10 @@ export const topFiveExpenseCategories = computed(() => {
   return sortedCategories.slice(0, 5);
 });
 
-const loadExpenseBudgetCategories = (period: MonthPeriod) => {
-  expenseBudgetCategories = {};
-
-  allExpenseItems.forEach((expense) => {
-    if (
-      !expense.budget &&
-      (!expense.travel || expense.travel.id == '') &&
-      isDateInPeriod(expense.date, period)
-    ) {
-      const budgetCategoryType = `${expense.category.type}-${expense.currency}`;
-      if (!(budgetCategoryType in expenseBudgetCategories)) {
-        expenseBudgetCategories[budgetCategoryType] = 0;
-      }
-      expenseBudgetCategories[budgetCategoryType] += expense.amount;
-    }
-  });
-};
-
-const getBudgetPercentage = (expense: Expense) => {
-  // @ts-ignore
-  return getPercentage(expense.amount, expense.spentAmount);
-};
-
-const getSpentAmount = (expense: Expense) => {
-  const categoryKey = `${expense.category.type}-${expense.currency}`;
-  return expenseBudgetCategories[categoryKey] || 0;
-};
-
-const filterExpenseBudgets = (period: MonthPeriod | null) => {
-  const filterPeriod = period || selectedExpensePeriod;
-  loadExpenseBudgetCategories(filterPeriod);
-  let result = allExpenseItems.filter(
-    (item) => (!item.travel || item.travel.id == '') && item.budget
-  );
-
-  result = result.filter((item) => {
-    return isDateInPeriod(item.date, filterPeriod);
-  });
-
-  result.map((expense) => {
-    expense.spentAmount = getSpentAmount(expense);
-    expense.budgetPercentage = getBudgetPercentage(expense);
-  });
-
-  filteredExpenseBudgets.splice(0);
-  Object.assign(filteredExpenseBudgets, result);
-  sortExpenseBudgets();
-};
-
 export const filterExpenses = (
   period: MonthPeriod | null = selectedExpensePeriod
 ) => {
-  filterExpenseBudgets(period);
+  // filterExpenseBudgets(period);
   let result: Expense[] = [];
 
   if (travelExpense.value) {

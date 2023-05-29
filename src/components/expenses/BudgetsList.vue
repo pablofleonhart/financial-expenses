@@ -82,7 +82,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import {
   formatCurrency,
   formatPercentage,
@@ -94,6 +94,8 @@ import {
 import {
   budgetExpenseItems,
   expenseBudgetSettings,
+  loadBudgetItems,
+  selectedExpensePeriod,
   sortExpenseBudgets,
 } from '../../services';
 import { Expense } from './Expense';
@@ -129,7 +131,11 @@ const expenseBudgetColumns = [
 
 const emit = defineEmits(['onEditExpense', 'onDeleteExpense']);
 
-const expenseBudgets = computed<Array<Expense>>(() => budgetExpenseItems.value);
+const expenseBudgets = computed<Array<Expense>>(() => budgetExpenseItems);
+
+onMounted(async () => {
+  await loadBudgetItems(selectedExpensePeriod);
+});
 
 const orderColumn = computed(() => {
   return expenseBudgetSettings.column;

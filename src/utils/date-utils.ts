@@ -10,6 +10,10 @@ export const formatDate = (date: Date | string | null): string => {
   return new Date(date).toLocaleDateString();
 };
 
+export const getFormattedDate = (date: Date): string => {
+  return dayjs(date).format('YYYY-MM-DD');
+};
+
 export const getMonthYear = (date: Date | string = new Date()) => {
   const monthYear = dayjs(date).format('MMMM/YY');
   return capitalizeFirstLetter(monthYear);
@@ -44,11 +48,11 @@ export const dateToString = (date: Date | null): string => {
 
 export const getMonths = (): MonthPeriod[] => {
   const initialDate = dayjs('2022-12-01').toDate();
-  const finalDate = getLastDayOfYear();
+  const finalDate = dayjs(getLastDayOfMonth()).toDate();
   const result: MonthPeriod[] = [];
   let index = 0;
 
-  while (initialDate < finalDate) {
+  while (initialDate <= finalDate) {
     result.push({
       index,
       name: getMonthYear(initialDate),

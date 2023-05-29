@@ -9507,6 +9507,45 @@ export type GetAccountByEmailQuery = {
   } | null;
 };
 
+export type GetBudgetExpensesQueryVariables = Exact<{
+  startDate: Scalars['Date'];
+  endDate: Scalars['Date'];
+}>;
+
+export type GetBudgetExpensesQuery = {
+  __typename?: 'Query';
+  expenses: Array<{
+    __typename?: 'Expense';
+    id: string;
+    amount: number;
+    card?: boolean | null;
+    date?: any | null;
+    deleted?: boolean | null;
+    note?: string | null;
+    currency: string;
+    variable: boolean;
+    budget?: boolean | null;
+    category?: {
+      __typename?: 'Category';
+      id: string;
+      name: string;
+      type: string;
+    } | null;
+    account?: { __typename?: 'Account'; name: string } | null;
+    payment?: {
+      __typename?: 'Wallet';
+      id: string;
+      amount: number;
+      broker?: string | null;
+      deleted?: boolean | null;
+      currency?: string | null;
+      holder: string;
+      type: number;
+    } | null;
+    travel?: { __typename?: 'Travel'; id: string } | null;
+  }>;
+};
+
 export type GetCategoriesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCategoriesQuery = {
@@ -11652,6 +11691,128 @@ export type GetAccountByEmailQueryCompositionFunctionResult =
     GetAccountByEmailQuery,
     GetAccountByEmailQueryVariables
   >;
+export const GetBudgetExpensesDocument = gql`
+  query GetBudgetExpenses($startDate: Date!, $endDate: Date!) {
+    expenses(
+      first: 100
+      orderBy: date_DESC
+      where: {
+        date_gte: $startDate
+        date_lte: $endDate
+        budget: true
+        deleted: false
+      }
+    ) {
+      id
+      amount
+      card
+      category {
+        id
+        name
+        type
+      }
+      date
+      deleted
+      note
+      account {
+        name
+      }
+      currency
+      payment {
+        id
+        amount
+        broker
+        deleted
+        currency
+        holder
+        type
+      }
+      variable
+      budget
+      travel {
+        id
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetBudgetExpensesQuery__
+ *
+ * To run a query within a Vue component, call `useGetBudgetExpensesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBudgetExpensesQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetBudgetExpensesQuery({
+ *   startDate: // value for 'startDate'
+ *   endDate: // value for 'endDate'
+ * });
+ */
+export function useGetBudgetExpensesQuery(
+  variables:
+    | GetBudgetExpensesQueryVariables
+    | VueCompositionApi.Ref<GetBudgetExpensesQueryVariables>
+    | ReactiveFunction<GetBudgetExpensesQueryVariables>,
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        GetBudgetExpensesQuery,
+        GetBudgetExpensesQueryVariables
+      >
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<
+          GetBudgetExpensesQuery,
+          GetBudgetExpensesQueryVariables
+        >
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          GetBudgetExpensesQuery,
+          GetBudgetExpensesQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useQuery<
+    GetBudgetExpensesQuery,
+    GetBudgetExpensesQueryVariables
+  >(GetBudgetExpensesDocument, variables, options);
+}
+export function useGetBudgetExpensesLazyQuery(
+  variables:
+    | GetBudgetExpensesQueryVariables
+    | VueCompositionApi.Ref<GetBudgetExpensesQueryVariables>
+    | ReactiveFunction<GetBudgetExpensesQueryVariables>,
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        GetBudgetExpensesQuery,
+        GetBudgetExpensesQueryVariables
+      >
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<
+          GetBudgetExpensesQuery,
+          GetBudgetExpensesQueryVariables
+        >
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          GetBudgetExpensesQuery,
+          GetBudgetExpensesQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useLazyQuery<
+    GetBudgetExpensesQuery,
+    GetBudgetExpensesQueryVariables
+  >(GetBudgetExpensesDocument, variables, options);
+}
+export type GetBudgetExpensesQueryCompositionFunctionResult =
+  VueApolloComposable.UseQueryReturn<
+    GetBudgetExpensesQuery,
+    GetBudgetExpensesQueryVariables
+  >;
 export const GetCategoriesDocument = gql`
   query GetCategories {
     categories(first: 100, orderBy: name_ASC) {
@@ -11818,7 +11979,12 @@ export const GetExpensesDocument = gql`
     expenses(
       first: 100
       orderBy: date_DESC
-      where: { date_gte: $startDate, date_lte: $endDate }
+      where: {
+        date_gte: $startDate
+        date_lte: $endDate
+        budget: false
+        deleted: false
+      }
     ) {
       id
       amount

@@ -3,8 +3,7 @@
     auto-apply
     locale="pt"
     text-input
-    format="dd/MM/yyyy"
-    placeholder="Data da renda ou despesa"
+    format="dd/MM/yy"
     :dark="isDarkTheme"
     :enable-time-picker="false"
     :model-value="selected"
@@ -36,5 +35,6 @@ const handleDate = (modelData: Date) => {
 <style lang="scss" scoped>
 .dp__theme_light {
   --dp-background-color: var(--neutral-color-700);
+  --dp-text-color: var(--neutral-color);
 }
 </style>

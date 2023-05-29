@@ -1,5 +1,5 @@
-query GetExpenses($startDate: Date!, $endDate: Date!) {
-  expenses(first: 100, orderBy: date_DESC, where: { date_gte: $startDate, date_lte: $endDate, budget: false, deleted: false }) {
+query GetBudgetExpenses($startDate: Date!, $endDate: Date!) {
+  expenses(first: 100, orderBy: date_DESC, where: { date_gte: $startDate, date_lte: $endDate, budget: true, deleted: false }) {
     id
     amount
     card
