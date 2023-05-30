@@ -12,6 +12,7 @@ export class Revenue {
   public currency: string;
   public itemStatus: number;
   public payment: Wallet;
+  public fullfilled: boolean;
 
   constructor(
     objRevenue: Revenue = {
@@ -25,6 +26,7 @@ export class Revenue {
       currency: 'real',
       itemStatus: REVENUE_STATUS.OPEN,
       payment: new Wallet(),
+      fullfilled: true,
     }
   ) {
     this.id = objRevenue.id;
@@ -37,5 +39,6 @@ export class Revenue {
     this.currency = objRevenue.currency;
     this.itemStatus = objRevenue.itemStatus;
     this.payment = objRevenue.payment;
+    this.fullfilled = objRevenue.fullfilled;
   }
 }

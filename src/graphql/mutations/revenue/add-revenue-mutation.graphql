@@ -6,7 +6,8 @@ mutation addRevenue(
   $type: String!,
   $currency: String!,
   $itemStatus: Int!,
-  $paymentID: ID!
+  $paymentID: ID!,
+  $fullfilled: Boolean!
 )
 {
   createRevenue(
@@ -24,6 +25,7 @@ mutation addRevenue(
           id: $paymentID
         }
       },
+      fullfilled: $fullfilled
     }
   ) {
     id

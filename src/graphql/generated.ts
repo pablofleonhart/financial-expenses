@@ -4418,6 +4418,7 @@ export type Revenue = Node & {
   description: Scalars['String'];
   /** Get the document in other stages */
   documentInStages: Array<Revenue>;
+  fullfilled: Scalars['Boolean'];
   /** List of Revenue versions */
   history: Array<Version>;
   /** The unique identifier */
@@ -4513,6 +4514,7 @@ export type RevenueCreateInput = {
   date: Scalars['Date'];
   deleted?: InputMaybe<Scalars['Boolean']>;
   description: Scalars['String'];
+  fullfilled: Scalars['Boolean'];
   itemStatus: Scalars['Int'];
   payment?: InputMaybe<WalletCreateOneInlineInput>;
   type: Scalars['String'];
@@ -4661,6 +4663,9 @@ export type RevenueManyWhereInput = {
   documentInStages_every?: InputMaybe<RevenueWhereStageInput>;
   documentInStages_none?: InputMaybe<RevenueWhereStageInput>;
   documentInStages_some?: InputMaybe<RevenueWhereStageInput>;
+  fullfilled?: InputMaybe<Scalars['Boolean']>;
+  /** Any other value that exists and is not equal to the given value. */
+  fullfilled_not?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -4767,6 +4772,8 @@ export enum RevenueOrderByInput {
   DeletedDesc = 'deleted_DESC',
   DescriptionAsc = 'description_ASC',
   DescriptionDesc = 'description_DESC',
+  FullfilledAsc = 'fullfilled_ASC',
+  FullfilledDesc = 'fullfilled_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
   ItemStatusAsc = 'itemStatus_ASC',
@@ -4786,6 +4793,7 @@ export type RevenueUpdateInput = {
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   description?: InputMaybe<Scalars['String']>;
+  fullfilled?: InputMaybe<Scalars['Boolean']>;
   itemStatus?: InputMaybe<Scalars['Int']>;
   payment?: InputMaybe<WalletUpdateOneInlineInput>;
   type?: InputMaybe<Scalars['String']>;
@@ -4815,6 +4823,7 @@ export type RevenueUpdateManyInput = {
   date?: InputMaybe<Scalars['Date']>;
   deleted?: InputMaybe<Scalars['Boolean']>;
   description?: InputMaybe<Scalars['String']>;
+  fullfilled?: InputMaybe<Scalars['Boolean']>;
   itemStatus?: InputMaybe<Scalars['Int']>;
   type?: InputMaybe<Scalars['String']>;
 };
@@ -4987,6 +4996,9 @@ export type RevenueWhereInput = {
   documentInStages_every?: InputMaybe<RevenueWhereStageInput>;
   documentInStages_none?: InputMaybe<RevenueWhereStageInput>;
   documentInStages_some?: InputMaybe<RevenueWhereStageInput>;
+  fullfilled?: InputMaybe<Scalars['Boolean']>;
+  /** Any other value that exists and is not equal to the given value. */
+  fullfilled_not?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -9165,6 +9177,7 @@ export type AddRevenueMutationVariables = Exact<{
   currency: Scalars['String'];
   itemStatus: Scalars['Int'];
   paymentID: Scalars['ID'];
+  fullfilled: Scalars['Boolean'];
 }>;
 
 export type AddRevenueMutation = {
@@ -9188,6 +9201,7 @@ export type PublishRevenueMutation = {
     type: string;
     currency: string;
     itemStatus: number;
+    fullfilled: boolean;
     payment?: {
       __typename?: 'Wallet';
       id: string;
@@ -9212,6 +9226,7 @@ export type UpdateRevenueMutationVariables = Exact<{
   currency: Scalars['String'];
   itemStatus: Scalars['Int'];
   paymentID: Scalars['ID'];
+  fullfilled: Scalars['Boolean'];
 }>;
 
 export type UpdateRevenueMutation = {
@@ -9227,6 +9242,7 @@ export type UpdateRevenueMutation = {
     type: string;
     currency: string;
     itemStatus: number;
+    fullfilled: boolean;
     payment?: {
       __typename?: 'Wallet';
       id: string;
@@ -9624,6 +9640,7 @@ export type GetRevenuesQuery = {
     type: string;
     currency: string;
     itemStatus: number;
+    fullfilled: boolean;
     payment?: {
       __typename?: 'Wallet';
       id: string;
@@ -10465,6 +10482,7 @@ export const AddRevenueDocument = gql`
     $currency: String!
     $itemStatus: Int!
     $paymentID: ID!
+    $fullfilled: Boolean!
   ) {
     createRevenue(
       data: {
@@ -10477,6 +10495,7 @@ export const AddRevenueDocument = gql`
         currency: $currency
         itemStatus: $itemStatus
         payment: { connect: { id: $paymentID } }
+        fullfilled: $fullfilled
       }
     ) {
       id
@@ -10505,6 +10524,7 @@ export const AddRevenueDocument = gql`
  *     currency: // value for 'currency'
  *     itemStatus: // value for 'itemStatus'
  *     paymentID: // value for 'paymentID'
+ *     fullfilled: // value for 'fullfilled'
  *   },
  * });
  */
@@ -10551,6 +10571,7 @@ export const PublishRevenueDocument = gql`
         deleted
         type
       }
+      fullfilled
     }
   }
 `;
@@ -10607,6 +10628,7 @@ export const UpdateRevenueDocument = gql`
     $currency: String!
     $itemStatus: Int!
     $paymentID: ID!
+    $fullfilled: Boolean!
   ) {
     updateRevenue(
       data: {
@@ -10619,6 +10641,7 @@ export const UpdateRevenueDocument = gql`
         currency: $currency
         itemStatus: $itemStatus
         payment: { connect: { id: $paymentID } }
+        fullfilled: $fullfilled
       }
       where: { id: $id }
     ) {
@@ -10640,6 +10663,7 @@ export const UpdateRevenueDocument = gql`
         deleted
         type
       }
+      fullfilled
     }
   }
 `;
@@ -10667,6 +10691,7 @@ export const UpdateRevenueDocument = gql`
  *     currency: // value for 'currency'
  *     itemStatus: // value for 'itemStatus'
  *     paymentID: // value for 'paymentID'
+ *     fullfilled: // value for 'fullfilled'
  *   },
  * });
  */
@@ -12117,6 +12142,7 @@ export const GetRevenuesDocument = gql`
         holder
         type
       }
+      fullfilled
     }
   }
 `;

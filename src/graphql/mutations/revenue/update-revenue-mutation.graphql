@@ -8,7 +8,8 @@ mutation updateRevenue(
   $type: String!,
   $currency: String!,
   $itemStatus: Int!,
-  $paymentID: ID!)
+  $paymentID: ID!,
+  $fullfilled: Boolean!)
 {
   updateRevenue(
     data: {
@@ -25,6 +26,7 @@ mutation updateRevenue(
           id: $paymentID
         }
       },
+      fullfilled: $fullfilled
     }
     where: { id: $id }
   ){
@@ -46,5 +48,6 @@ mutation updateRevenue(
       deleted
       type
     }
+    fullfilled
   }
 }

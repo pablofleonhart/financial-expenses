@@ -69,6 +69,7 @@ export const copyRevenue = (source: any) => {
     type: source.type,
     itemStatus: source.itemStatus,
     payment: copyWallet(source.payment),
+    fullfilled: source.fullfilled,
   });
 };
 
@@ -82,6 +83,7 @@ export const overrideRevenue = (target: Revenue, source: Revenue) => {
   target.description = source.description;
   target.type = source.type;
   target.itemStatus = source.itemStatus;
+  target.fullfilled = source.fullfilled;
 };
 
 export const copyWallet = (source: any) => {

@@ -73,3 +73,7 @@ export const isDateInCurrentMonth = (date: Date): boolean => {
   const targetDay = new Date(date);
   return firstDay <= targetDay && targetDay <= lastDay;
 };
+
+export const isLate = (date: Date): boolean => {
+  return dayjs(date).isBefore(new Date());
+};

@@ -17,5 +17,6 @@ mutation publishRevenue($id: ID!) {
       deleted
       type
     }
+    fullfilled
   }
 }

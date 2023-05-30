@@ -24,9 +24,12 @@
       </thead>
       <tbody class="revenue-list-body flex flex-col w-full">
         <tr
-          class="flex w-full items-center h-10 even:bg-neutral-color-700"
           v-for="(item, index) in revenueList"
           :key="item.id"
+          class="flex w-full items-center h-10 even:bg-neutral-color-700"
+          :class="{
+            'bg-red-100 even:bg-red-200 text-black': isLateRevenue(item),
+          }"
         >
           <td class="flex items-center p-2 h-full w-1/5 justify-end">
             {{ formatCurrency(item.amount, item.currency) }}
@@ -46,23 +49,22 @@
           </td>
           <td class="flex items-center p-2 h-full w-1/5">
             <div class="flex w-full justify-evenly">
-              <!-- <ph-check-circle
-                v-if="showRevenueActions"
-                class="button-action text-neutral-color-off hover:bg-green-500 hover:text-neutral-50"
-                @click="onCompleteRevenue(index)"
-              />
-              <ph-arrow-counter-clockwise
-                v-else
-                class="button-action text-neutral-color-off hover:bg-yellow-500 hover:text-neutral-50"
-                @click="onReopenRevenue(index)"
-              /> -->
               <ph-pencil
-                class="button-action text-neutral-color-off hover:bg-blue-500 hover:text-neutral-50"
+                class="button-action hover:text-blue-500"
                 @click="onEditRevenue(index)"
               />
               <ph-trash
-                class="button-action text-neutral-color-off hover:bg-red-500 hover:text-neutral-50"
+                class="button-action hover:text-red-500"
                 @click="onDeleteRevenue(index)"
+              />
+              <ph-thumbs-up
+                class="button-action hover:text-green-500"
+                :class="{
+                  'text-green-500': item.fullfilled,
+                  'text-neutral-500': !item.fullfilled,
+                }"
+                weight="fill"
+                @click="handleRevenue(index)"
               />
             </div>
           </td>
@@ -79,9 +81,10 @@ import {
   formatCurrency,
   formatDate,
   getOrderIcon,
+  isLate,
 } from '../../utils';
 import {
-  completeRevenue,
+  fulfillRevenue,
   filteredRevenueItems,
   reopenRevenue,
   revenueSettings,
@@ -119,11 +122,7 @@ const revenueColumns = [
   },
 ];
 
-const emit = defineEmits([
-  'onCompleteRevenue',
-  'onEditRevenue',
-  'onDeleteRevenue',
-]);
+const emit = defineEmits(['onEditRevenue', 'onDeleteRevenue']);
 
 const revenueList = computed<Array<Revenue>>(() => filteredRevenueItems);
 const orderColumn = computed(() => {
@@ -141,12 +140,13 @@ const orderList = (column: any) => {
   sortRevenues(column.key);
 };
 
-const onCompleteRevenue = async (index: number) => {
-  await completeRevenue(revenueList.value[index]);
-};
-
-const onReopenRevenue = async (index: number) => {
-  await reopenRevenue(revenueList.value[index]);
+const handleRevenue = async (index: number) => {
+  const item: Revenue = revenueList.value[index];
+  if (item.fullfilled) {
+    await reopenRevenue(revenueList.value[index]);
+  } else {
+    await fulfillRevenue(revenueList.value[index]);
+  }
 };
 
 const onEditRevenue = (index: number) => {
@@ -155,5 +155,9 @@ const onEditRevenue = (index: number) => {
 
 const onDeleteRevenue = (index: number) => {
   emit('onDeleteRevenue', copyRevenue(revenueList.value[index]));
+};
+
+const isLateRevenue = (item: Revenue): boolean => {
+  return !item.fullfilled && isLate(item.date);
 };
 </script>

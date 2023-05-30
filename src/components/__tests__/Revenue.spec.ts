@@ -26,6 +26,7 @@ describe('Revenue', () => {
       currency: 'dollar',
       itemStatus: 0,
       payment: new Wallet(),
+      fullfilled: true,
     };
     const revenue2 = new Revenue(objRevenue);
     expect(revenue2.id).toEqual('123');

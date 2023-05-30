@@ -49,7 +49,7 @@
   }
 
   .button-action {
-    @apply p-1 cursor-pointer rounded-xl text-neutral-color;
+    @apply p-1 cursor-pointer rounded-xl text-neutral-color-off hover:bg-neutral-color-300;
   }
 }
 

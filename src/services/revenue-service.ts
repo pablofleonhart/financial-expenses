@@ -201,6 +201,7 @@ export const addRevenue = async (revenue: Revenue) => {
       currency: revenue.currency,
       itemStatus: revenue.itemStatus,
       paymentID: revenue.payment.id,
+      fullfilled: revenue.fullfilled,
     });
 
     onDone(async (result) => {
@@ -235,6 +236,7 @@ export const editRevenue = async (revenue: Revenue, updateBalance = true) => {
       currency: revenue.currency,
       itemStatus: revenue.itemStatus,
       paymentID: revenue.payment.id,
+      fullfilled: revenue.fullfilled,
     });
 
     onDone(async () => {
@@ -273,6 +275,7 @@ export const deleteRevenue = async (revenue: Revenue) => {
       currency: revenue.currency,
       itemStatus: revenue.itemStatus,
       paymentID: revenue.payment.id,
+      fullfilled: revenue.fullfilled,
     });
 
     onDone(async () => {
@@ -327,11 +330,12 @@ export const filterRevenues = (
   // );
 };
 
-export const completeRevenue = async (revenue: Revenue) => {
+export const fulfillRevenue = async (revenue: Revenue) => {
   if (!revenue) {
     return;
   }
   revenue.itemStatus = REVENUE_STATUS.DONE;
+  revenue.fullfilled = true;
   await editRevenue(revenue, false);
   filterRevenues();
   await revenueAdded(revenue);
@@ -342,6 +346,7 @@ export const reopenRevenue = async (revenue: Revenue) => {
     return;
   }
   revenue.itemStatus = REVENUE_STATUS.OPEN;
+  revenue.fullfilled = false;
   await editRevenue(revenue, false);
   filterRevenues();
   await revenueDeleted(revenue);
