@@ -51,6 +51,10 @@
   .button-action {
     @apply p-1 cursor-pointer rounded-xl text-neutral-color-off hover:bg-neutral-color-300;
   }
+
+  .input-field {
+    @apply outline-0 rounded p-2 h-10 bg-neutral-color-700 focus:ring focus:ring-secondary-color-300;
+  }
 }
 
 @layer utilities {

@@ -8,7 +8,16 @@
     :enable-time-picker="false"
     :model-value="selected"
     @update:model-value="handleDate"
-  />
+  >
+    <template #dp-input="{ value }">
+      <input
+        type="text"
+        :value="value"
+        placeholder="Selecione a data"
+        class="focus:ring focus:ring-secondary-color-300 outline-0 rounded w-full p-2 h-10 bg-neutral-color-700"
+      />
+    </template>
+  </datepicker>
 </template>
 
 <script lang="ts" setup>

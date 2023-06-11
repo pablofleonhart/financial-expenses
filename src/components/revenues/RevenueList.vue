@@ -43,9 +43,7 @@
             {{ formatDate(item.date) }}
           </td>
           <td class="flex items-center justify-center p-2 h-full w-1/5">
-            {{
-              item.payment.currency ? getBalanceName(item.payment) : item.bank
-            }}
+            {{ item.payment ? getBalanceName(item.payment) : item.bank }}
           </td>
           <td class="flex items-center p-2 h-full w-1/5">
             <div class="flex w-full justify-evenly">

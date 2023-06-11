@@ -2,6 +2,7 @@
   <div
     class="balance-select rounded outline-0 focus:ring focus:ring-secondary-color-300"
     @click.stop
+    tabindex="0"
   >
     <div
       class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
@@ -9,11 +10,18 @@
       @click="balanceSelectorOpen = !balanceSelectorOpen"
     >
       <component
-        :is="getCurrencyIcon(selectedBalance?.currency)"
+        v-if="selectedBalance"
+        :is="getCurrencyIcon(selectedBalance.currency)"
         class="h-6 w-6"
       />
-      <span class="selected-option-name ml-2">
-        {{ balanceName(selectedBalance) }}
+      <span
+        class="selected-option-name"
+        :class="{
+          'text-neutral-400': !selectedBalance,
+          'ml-2': selectedBalance,
+        }"
+      >
+        {{ selectedBalance ? balanceName(selectedBalance) : emptyMessage }}
       </span>
     </div>
     <ul
@@ -40,14 +48,17 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, shallowRef, watch } from 'vue';
+import { computed, onUpdated, PropType, ref, watch } from 'vue';
 import { availableWallets } from '../../services';
 import { getCurrencyIcon, sortList } from '../../utils';
 import { getBalanceName } from '../../utils/string-utils';
 import { Wallet } from '../wallets/Wallet';
 
 const props = defineProps({
-  initialValue: { type: Wallet, default: new Wallet() },
+  initialValue: {
+    type: Object as PropType<Wallet | undefined | null>,
+    default: null,
+  },
   emptyMessage: { type: String, default: 'Selecione uma opçao' },
 });
 
@@ -56,7 +67,7 @@ const emit = defineEmits(['select']);
 const balances = computed<Array<Wallet>>(() => {
   return sortList(availableWallets, 'broker');
 });
-const selectedBalance = shallowRef(props.initialValue);
+const selectedBalance = ref(props.initialValue);
 const balanceSelectorOpen = ref(false);
 
 watch(
@@ -79,13 +90,20 @@ const selectBalance = (balance: Wallet) => {
   emit('select', balance);
 };
 
-onMounted(() => {
+onUpdated(() => {
   const mySelect = document.querySelector('.balance-select');
-
   if (mySelect) {
     mySelect.addEventListener('keydown', (event: any) => {
-      if (event.keyCode === 32) {
+      event.stopPropagation();
+      if (event.key === ' ') {
         balanceSelectorOpen.value = !balanceSelectorOpen.value;
+      } else if (event.key === 'Escape') {
+        balanceSelectorOpen.value = false;
+      } else if (event.key === 'Tab') {
+        balanceSelectorOpen.value = true;
+        if (event.target === document.activeElement) {
+          balanceSelectorOpen.value = false;
+        }
       }
     });
   }

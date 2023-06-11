@@ -11,7 +11,7 @@ export class Revenue {
   public type: string;
   public currency: string;
   public itemStatus: number;
-  public payment: Wallet;
+  public payment: Wallet | undefined | null;
   public fullfilled: boolean;
 
   constructor(
@@ -23,9 +23,9 @@ export class Revenue {
       deleted: false,
       description: '',
       type: 'income',
-      currency: 'real',
+      currency: 'euro',
       itemStatus: REVENUE_STATUS.OPEN,
-      payment: new Wallet(),
+      payment: null,
       fullfilled: true,
     }
   ) {

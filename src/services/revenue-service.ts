@@ -40,7 +40,6 @@ export const showRevenueActions = computed(
 );
 
 const REVENUE_LIST_KEY = 'revenue-list';
-const REVENUE_STATUS_KEY = 'revenue-status';
 const REVENUE_PERIOD = 'revenue-period';
 
 const loadSelectedPeriod = () => {
@@ -200,7 +199,7 @@ export const addRevenue = async (revenue: Revenue) => {
       bank: revenue.bank,
       currency: revenue.currency,
       itemStatus: revenue.itemStatus,
-      paymentID: revenue.payment.id,
+      paymentID: revenue.payment?.id || '',
       fullfilled: revenue.fullfilled,
     });
 
@@ -210,6 +209,10 @@ export const addRevenue = async (revenue: Revenue) => {
       allRevenueItems.push(revenue);
       publishRevenue(revenueID);
       filterRevenues();
+
+      if (revenue.fullfilled) {
+        await revenueAdded(revenue);
+      }
       resolve(true);
     });
   });
@@ -235,7 +238,7 @@ export const editRevenue = async (revenue: Revenue, updateBalance = true) => {
       type: revenue.type,
       currency: revenue.currency,
       itemStatus: revenue.itemStatus,
-      paymentID: revenue.payment.id,
+      paymentID: revenue.payment?.id || '',
       fullfilled: revenue.fullfilled,
     });
 
@@ -274,7 +277,7 @@ export const deleteRevenue = async (revenue: Revenue) => {
       type: revenue.type,
       currency: revenue.currency,
       itemStatus: revenue.itemStatus,
-      paymentID: revenue.payment.id,
+      paymentID: revenue.payment?.id || '',
       fullfilled: revenue.fullfilled,
     });
 
@@ -308,10 +311,7 @@ export const sortRevenues = (column?: string) => {
   localStorage.setItem(REVENUE_LIST_KEY, JSON.stringify(revenueSettings));
 };
 
-export const filterRevenues = (
-  // status: RevenueStatus = selectedRevenueStatus
-  period: MonthPeriod = selectedRevenuePeriod
-) => {
+export const filterRevenues = (period: MonthPeriod = selectedRevenuePeriod) => {
   let result: Revenue[] = [];
   if (period) {
     result = allRevenueItems.filter((item) => {
@@ -323,11 +323,6 @@ export const filterRevenues = (
   Object.assign(filteredRevenueItems, result);
   sortRevenues();
   localStorage.setItem(REVENUE_PERIOD, JSON.stringify(selectedRevenuePeriod));
-  // Object.assign(selectedRevenueStatus, status);
-  // localStorage.setItem(
-  //   REVENUE_STATUS_KEY,
-  //   JSON.stringify(selectedRevenueStatus)
-  // );
 };
 
 export const fulfillRevenue = async (revenue: Revenue) => {
@@ -349,57 +344,64 @@ export const reopenRevenue = async (revenue: Revenue) => {
   revenue.fullfilled = false;
   await editRevenue(revenue, false);
   filterRevenues();
-  await revenueDeleted(revenue);
+  await revenueReopened(revenue);
 };
 
 const revenueAdded = async (revenue: Revenue) => {
-  if (!revenue || !revenue.payment) {
+  if (!revenue || !revenue.payment || !revenue.fullfilled) {
     return;
   }
-  let value = revenue.amount;
-  if (revenue.type === 'outcome') {
-    value *= -1;
-  }
-  revenue.payment.amount += value;
+
+  revenue.payment.amount += revenue.amount;
   await editWallet(revenue.payment);
 };
 
 const revenueEdited = async (revenue: Revenue) => {
-  if (!revenue || !revenue.payment) {
+  if (!revenue || !revenue.payment || !revenue.fullfilled) {
     return;
   }
-
   const oldRevenue = getRevenueByID(revenue.id);
 
-  if (!oldRevenue) {
+  if (!oldRevenue || !oldRevenue.payment) {
     return;
   }
 
+  // Case 1: same payment & same value -> nothing to change
+  // Case 2: same payment & new value -> update wallet with value difference
+  // Case 3: new payment & same value -> update both wallets with the value
+  // Case 4: new payment & new value -> update both wallets with the value
+
+  const diffValue = revenue.amount - oldRevenue.amount;
   if (oldRevenue?.payment.id === revenue.payment.id) {
-    let diffValue = oldRevenue?.amount - revenue.amount;
-    if (revenue.type === 'income') {
-      diffValue *= -1;
+    if (diffValue !== 0) {
+      revenue.payment.amount += diffValue;
+      await editWallet(revenue.payment);
     }
-    revenue.payment.amount += diffValue;
-    await editWallet(revenue.payment);
   } else {
-    oldRevenue.payment.amount += oldRevenue.amount;
-    revenue.payment.amount -= revenue.amount;
+    oldRevenue.payment.amount -= oldRevenue.amount;
+    revenue.payment.amount += revenue.amount;
+
     await editWallet(oldRevenue.payment, false);
     await editWallet(revenue.payment, false);
     publishManyWallets([oldRevenue.payment.id, revenue.payment.id]);
   }
 };
 
-const revenueDeleted = async (revenue: Revenue) => {
+const revenueReopened = async (revenue: Revenue) => {
   if (!revenue || !revenue.payment) {
     return;
   }
-  let value = revenue.amount;
-  if (revenue.type === 'income') {
-    value *= -1;
+
+  revenue.payment.amount -= revenue.amount;
+  await editWallet(revenue.payment);
+};
+
+const revenueDeleted = async (revenue: Revenue) => {
+  if (!revenue || !revenue.payment || !revenue.fullfilled) {
+    return;
   }
-  revenue.payment.amount += value;
+
+  revenue.payment.amount -= revenue.amount;
   await editWallet(revenue.payment);
 };
 
