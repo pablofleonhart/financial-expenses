@@ -9,6 +9,7 @@ const categoryTypes: Record<string, any> = {
   [EXPENSE_CATEGORY.HOTEL]: 'ph-buildings',
   [EXPENSE_CATEGORY.HOUSE]: 'ph-armchair',
   [EXPENSE_CATEGORY.HOUSING]: 'ph-house-line',
+  [EXPENSE_CATEGORY.INVESTMENT]: 'ph-currency-btc',
   [EXPENSE_CATEGORY.MARKET]: 'ph-shopping-cart',
   [EXPENSE_CATEGORY.PET]: 'ph-paw-print',
   [EXPENSE_CATEGORY.PHARMACY]: 'ph-pill',
