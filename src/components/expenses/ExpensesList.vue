@@ -90,6 +90,15 @@
                   class="button-action text-neutral-color-off hover:bg-red-500 hover:text-neutral-50"
                   @click="onDeleteExpense(index)"
                 />
+                <ph-thumbs-up
+                  class="button-action hover:text-green-500"
+                  :class="{
+                    'text-green-500': item.fullfilled,
+                    'text-neutral-500': !item.fullfilled,
+                  }"
+                  weight="fill"
+                  @click="handleRevenue(index)"
+                />
               </div>
             </td>
           </tr>
@@ -177,5 +186,14 @@ const onEditExpense = (index: number) => {
 
 const onDeleteExpense = (index: number) => {
   emit('onDeleteExpense', expensesList.value[index]);
+};
+
+const handleRevenue = async (index: number) => {
+  const item: Expense = expensesList.value[index];
+  if (item.fullfilled) {
+    // await reopenRevenue(expensesList.value[index]);
+  } else {
+    // await fulfillRevenue(expensesList.value[index]);
+  }
 };
 </script>

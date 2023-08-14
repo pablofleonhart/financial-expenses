@@ -8,6 +8,7 @@ import { compare, encrypt } from '../utils';
 import { Account } from '../components/accounts/Account';
 import router from '../router';
 import { DEFAULT_ROUTE, EXPIRATION_TIME } from '../components/common/config';
+import { api } from '../lib/axios';
 
 let sessionStart = 0;
 export const errorMessage = ref('');
@@ -46,6 +47,11 @@ const publishAccount = (id: string | undefined): void => {
 };
 
 export const authorizeUser = async (email: string, password: string) => {
+  await api.post('/sessions', {
+    email: email,
+    password: password,
+  });
+
   if (userAuthenticated()) {
     return;
   }
