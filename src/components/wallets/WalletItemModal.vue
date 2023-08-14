@@ -7,7 +7,7 @@
       class="wallet-item-container flex flex-col bg-neutral-color-300 h-92 w-80 p-4 rounded-lg"
     >
       <span class="flex justify-center font-bold text-lg w-full">
-        {{ `${getActionName()} carteira` }}
+        {{ getActionName() }}
       </span>
       <div class="wallet-fields flex flex-col gap-3 my-5">
         <div class="category-select" @click.stop>
@@ -18,7 +18,7 @@
           >
             <component :is="selectedCurrency?.icon" class="h-6 w-6" />
             <span class="selected-option-name ml-2">
-              {{ selectedCurrency?.name || 'Categoria' }}
+              {{ selectedCurrency?.name || 'Moeda' }}
             </span>
           </div>
           <ul
@@ -90,6 +90,7 @@
 <script lang="ts" setup>
 import { PropType, reactive, ref, watch } from 'vue';
 import { addWallet, editWallet } from '../../services';
+import { WALLET_TYPE } from '../../types';
 import { Wallet } from './Wallet';
 
 let wallet = reactive(new Wallet());
@@ -137,7 +138,11 @@ watch(
 );
 
 const getActionName = () => {
-  return wallet.id === '' ? 'Adicionar' : 'Editar';
+  const action = wallet.id === '' ? 'Adicionar' : 'Editar';
+  const walletType =
+    wallet.type === WALLET_TYPE.BALANCE ? 'conta' : 'investimento';
+
+  return `${action} ${walletType}`;
 };
 
 const selectCurrency = (option: any) => {

@@ -4,7 +4,7 @@
     <div class="flex flex-row">
       <wallets-filter-tabs />
       <div class="flex justify-end">
-        <add-button @click="onAddWalletOrTransaction"></add-button>
+        <add-button @click="onAddEntry"></add-button>
       </div>
     </div>
     <wallets-list
@@ -51,6 +51,7 @@ import { copyTransaction, copyWallet } from '../../utils';
 import TransactionItemModal from '../transactions/TransactionItemModal.vue';
 import TransactionsList from '../transactions/TransactionsList.vue';
 import { Transaction } from '../transactions/Transaction';
+import { WALLET_TYPE } from '../../types';
 
 const showWalletModal = ref(false);
 const showConfirmationModal = ref(false);
@@ -65,10 +66,14 @@ onMounted(() => {
   loadWallets();
 });
 
-const onAddWalletOrTransaction = () => {
+const onAddEntry = () => {
   if (selectedTab.value.key === 'transactions') {
     objTransaction.value = new Transaction();
     showTransactionModal.value = true;
+  } else if (selectedTab.value.key === 'investments') {
+    objWallet.value = new Wallet();
+    objWallet.value.type = WALLET_TYPE.INVESTMENT;
+    showWalletModal.value = true;
   } else {
     objWallet.value = new Wallet();
     showWalletModal.value = true;
@@ -81,7 +86,7 @@ const onEditWallet = (wallet: Wallet) => {
 };
 
 const onDeleteWallet = (wallet: Wallet) => {
-  modalMessage.value = 'Deseja realmente excluir essa carteira?';
+  modalMessage.value = 'Deseja realmente excluir esss item?';
   showConfirmationModal.value = true;
   walletToDelete = wallet;
 };
