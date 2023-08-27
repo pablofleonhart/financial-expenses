@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode dev",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "codegen": "graphql-codegen && node src/scripts/post-codegen.js",
@@ -19,6 +19,7 @@
     "@vue/apollo-option": "^4.0.0-alpha.20",
     "@vue/compiler-sfc": "^3.2.45",
     "@vuepic/vue-datepicker": "^3.6.3",
+    "axios": "^1.4.0",
     "chart.js": "^4.1.2",
     "dayjs": "^1.11.7",
     "graphql": "^16.6.0",

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { copyExpense, copyRevenue, sortList } from '../object-utils';
 import { Revenue } from '../../components/revenues/Revenue';
 import { Expense } from '../../components/expenses/Expense';
-import { Author } from '../../components/accounts/Author';
+import { Author } from '../../components/user/Author';
 import { Wallet } from '../../components/wallets/Wallet';
 import { Travel } from '../../components/travels/Travel';
 

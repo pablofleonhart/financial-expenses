@@ -1,4 +1,4 @@
-import { Author } from '../accounts/Author';
+import { Author } from '../user/Author';
 import { Category } from '../categories/Category';
 import { Travel } from '../travels/Travel';
 import { Wallet } from '../wallets/Wallet';

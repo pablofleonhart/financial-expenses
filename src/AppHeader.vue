@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import { account, reloadCharts } from './services';
+import { account, loadUserProfile, reloadCharts } from './services';
 import Profile from './components/profile/Profile.vue';
 import { getInitials } from './utils/string-utils';
 
@@ -56,7 +56,8 @@ const closeProfileMenu = () => {
 
 window.addEventListener('click', closeProfileMenu);
 
-onMounted(() => {
+onMounted(async () => {
+  await loadUserProfile();
   const darkThemeConfig = localStorage.getItem('dark-theme');
   if (darkThemeConfig) {
     darkTheme.value = JSON.parse(darkThemeConfig);

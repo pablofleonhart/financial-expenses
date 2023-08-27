@@ -26,26 +26,38 @@
         <input
           id="email-input"
           class="bg-neutral-color-700 border border-primary-color-700 p-2 h-10 w-full outline-0 rounded"
+          :class="{ 'border border-red-500': errors.email }"
           type="email"
-          placeholder="Enter your email"
+          placeholder="Informe seu email"
           v-model="email"
         />
+        <span
+          v-if="errors.email"
+          class="bg-red-200 text-red-600 rounded-lg pl-2 mt-2"
+          >{{ errors.email }}</span
+        >
       </div>
       <div class="flex flex-col mt-6 w-3/4">
-        <span class="mb-2 text-sm"> Password </span>
+        <span class="mb-2 text-sm"> Senha </span>
         <input
           id="password-input"
           class="bg-neutral-color-700 border border-primary-color-700 p-2 h-10 w-full outline-0 rounded"
+          :class="{ 'border border-red-500': errors.password }"
           type="password"
-          placeholder="Enter your password"
+          placeholder="Informe sua senha"
           v-model="password"
         />
+        <span
+          v-if="errors.password"
+          class="bg-red-200 text-red-600 rounded-lg pl-2 mt-2"
+          >{{ errors.password }}</span
+        >
       </div>
       <button
         class="login-button flex items-center mt-12 max-w-fit h-9 px-2 rounded bg-secondary-color-300 border-2 border-secondary-color-300 hover:bg-secondary-color-700 hover:border-secondary-color-700"
         @click="onLogin"
       >
-        <span class="mr-2"> Log me in </span>
+        <span class="mr-2"> Login </span>
         <ph-sign-in size="24" />
       </button>
     </div>
@@ -53,13 +65,31 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
-import { authorizeUser, errorMessage } from '../../services';
+import { computed, onMounted, onUpdated, ref } from 'vue';
+import router from '../../router';
+import {
+  authenticateUser,
+  errorMessage,
+  loadUserProfile,
+} from '../../services';
+import { DEFAULT_ROUTE } from '../common/config';
 
 const email = ref('');
 const password = ref('');
-
 const loginError = computed(() => errorMessage);
+const errors: Record<string, any> = ref({});
+let setInitialFocus = true;
+let emailInput: HTMLElement | null = null;
+let passwordInput: HTMLElement | null = null;
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+const validationRules = {
+  email: [
+    (value: string) => (value ? '' : 'Email precisa ser informado'),
+    (value: string) => (emailRegex.test(value) ? '' : 'Email inválido'),
+  ],
+  password: [(value: string) => (value ? '' : 'Senha precisa ser informada')],
+};
 
 const registerEnterEvent = (input: HTMLElement | null) => {
   if (!input) {
@@ -81,14 +111,41 @@ onMounted(() => {
       document.body.classList.toggle('dark-theme');
     }
   }
-  const emailInput = document.getElementById('email-input');
-  const passwordInput = document.getElementById('password-input');
+  emailInput = document.getElementById('email-input');
+  passwordInput = document.getElementById('password-input');
   registerEnterEvent(emailInput);
   registerEnterEvent(passwordInput);
+  emailInput?.focus();
 });
 
-const onLogin = () => {
-  authorizeUser(email.value, password.value);
+onUpdated(() => {
+  if (setInitialFocus && emailInput) {
+    emailInput.focus();
+    setInitialFocus = false;
+  }
+});
+
+const onLogin = async () => {
+  errors.value = {};
+
+  Object.entries(validationRules).forEach(([field, rules]) => {
+    const errorMessages = rules
+      // @ts-ignore
+      .map((rule) => rule(field === 'email' ? email.value : password.value))
+      .filter((message) => message);
+    if (errorMessages.length > 0) {
+      errors.value[field] = errorMessages[0];
+    }
+  });
+
+  if (Object.keys(errors.value).length === 0) {
+    const response = await authenticateUser(email.value, password.value);
+    if (response) {
+      errors.value.email = response;
+    } else {
+      await router.push(DEFAULT_ROUTE);
+    }
+  }
 };
 </script>
 

@@ -46,7 +46,7 @@ import { deleteWish, editWish, loadWishes } from '../../services';
 import { Wish } from './Wish';
 import { copyWish } from '../../utils';
 import { Expense } from '../expenses/Expense';
-import { Author } from '../accounts/Author';
+import { Author } from '../user/Author';
 import { Wallet } from '../wallets/Wallet';
 import { Travel } from '../travels/Travel';
 
