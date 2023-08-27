@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode dev",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "codegen": "graphql-codegen && node src/scripts/post-codegen.js",

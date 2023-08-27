@@ -1,4 +1,4 @@
-import { Author } from '../components/accounts/Author';
+import { Author } from '../components/user/Author';
 import { Category } from '../components/categories/Category';
 import { Expense } from '../components/expenses/Expense';
 import { Wallet } from '../components/wallets/Wallet';
