@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import router from '../router';
-import { addAuthorizationHeader, api } from '../lib/axios';
+import { api } from '../lib/axios';
 import { getToken, storeToken } from './token-manager';
 
 export const errorMessage = ref('');

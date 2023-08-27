@@ -13,7 +13,7 @@ export let api = axios.create({
   },
 });
 
-export function addAuthorizationHeader() {
+export function updateAuthorizationHeader() {
   api = axios.create({
     baseURL: SERVER_URL,
     headers: {
