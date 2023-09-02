@@ -10,37 +10,10 @@
         {{ getActionName() }}
       </span>
       <div class="wallet-fields flex flex-col gap-3 my-5">
-        <div class="category-select" @click.stop>
-          <div
-            class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
-            :class="{ open: currencySelectorOpen }"
-            @click="currencySelectorOpen = !currencySelectorOpen"
-          >
-            <component :is="selectedCurrency?.icon" class="h-6 w-6" />
-            <span class="selected-option-name ml-2">
-              {{ selectedCurrency?.name || 'Moeda' }}
-            </span>
-          </div>
-          <ul
-            class="period-items absolute bg-neutral-color-700 border border-primary-color-300 w-52"
-            :class="{ hidden: !currencySelectorOpen }"
-          >
-            <li
-              class="item flex cursor-pointer p-2 h-10 w-full"
-              :class="{
-                'item-selected': category.type === selectedCurrency?.type,
-              }"
-              v-for="category in currencies"
-              :key="category.type"
-              @click="selectCurrency(category)"
-            >
-              <component :is="category.icon" size="24" />
-              <span class="item-name ml-2">
-                {{ category.name }}
-              </span>
-            </li>
-          </ul>
-        </div>
+        <currency-selector
+          :initial-value="selectedCurrency"
+          @on-select-option="onSelectCurrency"
+        />
         <input
           v-model="wallet.amount"
           class="outline-0 rounded p-2 bg-neutral-color-700 h-10"
@@ -60,14 +33,6 @@
           type="text"
           placeholder="Titular da conta"
         />
-        <!-- <div class="flex items-center text-lg gap-2">
-          <input
-            id="availability_check"
-            type="checkbox"
-            v-model="wallet.available"
-          />
-          <label for="availability_check" class="text-base">Disponível</label>
-        </div> -->
       </div>
       <div class="expense-item-actions flex justify-end gap-4">
         <button
@@ -89,35 +54,14 @@
 
 <script lang="ts" setup>
 import { PropType, reactive, ref, watch } from 'vue';
-import { addWallet, editWallet } from '../../services';
+import { addWallet, editWallet, getCurrencyByType } from '../../services';
 import { WALLET_TYPE } from '../../types';
+import { Currency } from '../currencies';
 import { Wallet } from './Wallet';
+import CurrencySelector from '../common/CurrencySelector.vue';
 
 let wallet = reactive(new Wallet());
-const currencies = [
-  {
-    type: 'real',
-    name: 'Real',
-    icon: 'ph-coins',
-  },
-  {
-    type: 'dollar',
-    name: 'Dolar',
-    icon: 'ph-currency-dollar',
-  },
-  {
-    type: 'euro',
-    name: 'Euro',
-    icon: 'ph-currency-eur',
-  },
-  {
-    type: 'libra',
-    name: 'Libra',
-    icon: 'ph-currency-gbp',
-  },
-];
-const selectedCurrency = ref(currencies[0]);
-const currencySelectorOpen = ref(false);
+const selectedCurrency = ref(new Currency());
 const emit = defineEmits(['addWallet', 'close']);
 
 const props = defineProps({
@@ -130,9 +74,7 @@ watch(
   () => {
     if (props.opened) {
       wallet = props.wallet;
-      selectedCurrency.value = currencies.filter(
-        (item) => item.type === wallet.currency
-      )[0];
+      selectedCurrency.value = getCurrencyByType(props.wallet.currency);
     }
   }
 );
@@ -145,10 +87,9 @@ const getActionName = () => {
   return `${action} ${walletType}`;
 };
 
-const selectCurrency = (option: any) => {
+const onSelectCurrency = (option: any) => {
   selectedCurrency.value = option;
   wallet.currency = option?.type;
-  currencySelectorOpen.value = false;
 };
 
 const onActionItem = async () => {

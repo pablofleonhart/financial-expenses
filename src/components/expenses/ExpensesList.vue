@@ -68,7 +68,7 @@
                 />
                 <component
                   v-else
-                  :is="getCurrencyIcon(item.payment.currency)"
+                  :is="getCurrencyIconByType(item.payment.currency)"
                   size="24"
                 />
                 <span> {{ item.payment.broker }} </span>
@@ -117,7 +117,6 @@ import {
   formatCurrency,
   formatDate,
   getCategoryIcon,
-  getCurrencyIcon,
   getOrderIcon,
   getPaymentIcon,
 } from '../../utils';
@@ -125,6 +124,7 @@ import {
   filteredExpenseItems,
   expenseSettings,
   sortExpenses,
+  getCurrencyIconByType,
 } from '../../services';
 import { Expense } from './Expense';
 
