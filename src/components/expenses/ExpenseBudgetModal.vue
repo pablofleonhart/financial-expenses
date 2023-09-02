@@ -20,37 +20,10 @@
           required
           placeholder="Valor pago"
         />
-        <div class="category-select" @click.stop>
-          <div
-            class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
-            :class="{ open: currencySelectorOpen }"
-            @click="currencySelectorOpen = !currencySelectorOpen"
-          >
-            <component :is="selectedCurrency?.icon" class="h-6 w-6" />
-            <span class="selected-option-name ml-2">
-              {{ selectedCurrency?.name || 'Categoria' }}
-            </span>
-          </div>
-          <ul
-            class="period-items absolute bg-neutral-color-700 border border-primary-color-300 w-52"
-            :class="{ hidden: !currencySelectorOpen }"
-          >
-            <li
-              class="item flex cursor-pointer p-2 h-10 w-full"
-              :class="{
-                'item-selected': category.type === selectedCurrency?.type,
-              }"
-              v-for="category in currencies"
-              :key="category.type"
-              @click="selectCurrency(category)"
-            >
-              <component :is="category.icon" size="24" />
-              <span class="item-name ml-2">
-                {{ category.name }}
-              </span>
-            </li>
-          </ul>
-        </div>
+        <currency-selector
+          :initial-value="selectedCurrency"
+          @on-select-option="onSelectCurrency"
+        />
         <div class="category-select" @click.stop>
           <div
             class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
@@ -119,31 +92,11 @@ import {
   addExpenseBudget,
   categoryItems,
   editExpenseBudget,
+  getCurrencyByType,
 } from '../../services';
 import { Wallet } from '../wallets/Wallet';
-
-const currencies = [
-  {
-    type: 'real',
-    name: 'Real',
-    icon: 'ph-coins',
-  },
-  {
-    type: 'dollar',
-    name: 'Dolar',
-    icon: 'ph-currency-dollar',
-  },
-  {
-    type: 'euro',
-    name: 'Euro',
-    icon: 'ph-currency-eur',
-  },
-  {
-    type: 'libra',
-    name: 'Libra',
-    icon: 'ph-currency-gbp',
-  },
-];
+import { Currency } from '../currencies';
+import CurrencySelector from '../common/CurrencySelector.vue';
 
 const expense = shallowRef(new Expense());
 const categories = computed<Array<Category>>(() => categoryItems);
@@ -152,8 +105,7 @@ const selectedPayment = shallowRef(new Wallet());
 const categorySelectorOpen = ref(false);
 const amountError = ref(false);
 const emit = defineEmits(['addExpense', 'close']);
-const selectedCurrency = ref(currencies[0]);
-const currencySelectorOpen = ref(false);
+const selectedCurrency = shallowRef(new Currency());
 
 const props = defineProps({
   opened: { type: Boolean, default: false },
@@ -167,9 +119,7 @@ watch(
       expense.value = props.expense;
       selectedCategory.value = props.expense.category;
       selectedPayment.value = props.expense.payment;
-      selectedCurrency.value =
-        currencies.find((item) => item.type === expense.value.currency) ||
-        currencies[0];
+      selectedCurrency.value = getCurrencyByType(expense.value.currency);
     }
   }
 );
@@ -178,10 +128,9 @@ const getActionName = () => {
   return expense.value.id === '' ? 'Adicionar' : 'Editar';
 };
 
-const selectCurrency = (option: any) => {
+const onSelectCurrency = (option: any) => {
   selectedCurrency.value = option;
   expense.value.currency = option?.type;
-  currencySelectorOpen.value = false;
 };
 
 const selectCategory = (option: any) => {

@@ -2,6 +2,7 @@ export * from './auth-service';
 export * from './budget-service';
 export * from './category-service';
 export * from './common-service';
+export * from './currency-service';
 export * from './expense-service';
 export * from './revenue-service';
 export * from './transaction-service';

@@ -11,7 +11,7 @@
     >
       <component
         v-if="selectedBalance"
-        :is="getCurrencyIcon(selectedBalance.currency)"
+        :is="getCurrencyIconByType(selectedBalance.currency)"
         class="h-6 w-6"
       />
       <span
@@ -38,7 +38,10 @@
         :key="balance.id"
         @click="selectBalance(balance)"
       >
-        <component :is="getCurrencyIcon(balance.currency)" class="h-6 w-6" />
+        <component
+          :is="getCurrencyIconByType(balance.currency)"
+          class="h-6 w-6"
+        />
         <span class="item-name ml-2">
           {{ balanceName(balance) }}
         </span>
@@ -49,8 +52,8 @@
 
 <script lang="ts" setup>
 import { computed, onUpdated, PropType, ref, watch } from 'vue';
-import { availableWallets } from '../../services';
-import { getCurrencyIcon, sortList } from '../../utils';
+import { availableWallets, getCurrencyIconByType } from '../../services';
+import { sortList } from '../../utils';
 import { getBalanceName } from '../../utils/string-utils';
 import { Wallet } from '../wallets/Wallet';
 

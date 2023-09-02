@@ -10,35 +10,10 @@
         {{ `${getActionName()} planejamento` }}
       </span>
       <div class="wish-fields flex flex-col gap-3 my-5">
-        <div class="currency-select" @click.stop>
-          <div
-            class="selected-option disabled flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
-            :class="{ open: currencySelectorOpen }"
-            @click="currencySelectorOpen = !currencySelectorOpen"
-          >
-            <component :is="selectedCurrency?.icon" class="h-6 w-6" />
-            <span class="selected-option-name ml-2">
-              {{ selectedCurrency.name }}
-            </span>
-          </div>
-          <ul
-            class="period-items absolute bg-neutral-color-700 w-52"
-            :class="{ hidden: !currencySelectorOpen }"
-          >
-            <li
-              class="item flex cursor-pointer p-2 h-10 w-full"
-              :class="{ 'item-selected': currency.id === selectedCurrency?.id }"
-              v-for="currency in currencies"
-              :key="currency.id"
-              @click="selectCurrency(currency)"
-            >
-              <component :is="currency.icon" size="24" />
-              <span class="item-name ml-2">
-                {{ currency.name }}
-              </span>
-            </li>
-          </ul>
-        </div>
+        <currency-selector
+          :initial-value="selectedCurrency"
+          @on-select-option="onSelectCurrency"
+        />
         <input
           v-model="wish.amount"
           class="outline-0 rounded p-2 h-10 bg-neutral-color-700"
@@ -104,38 +79,25 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType, reactive, ref, shallowRef, watch } from 'vue';
-import { addWish, categoryItems, editWish } from '../../services';
+import { computed, PropType, ref, shallowRef, watch } from 'vue';
+import {
+  addWish,
+  categoryItems,
+  editWish,
+  getCurrencyByType,
+} from '../../services';
 import { getCategoryIcon } from '../../utils';
 import { Category } from '../categories/Category';
+import CurrencySelector from '../common/CurrencySelector.vue';
+import { Currency } from '../currencies';
 import { Wish } from './Wish';
 
-let wish = reactive(new Wish());
-const currencies = [
-  {
-    id: 1,
-    name: 'Real',
-    icon: 'ph-coins',
-    type: 'real',
-  },
-  {
-    id: 2,
-    name: 'Dolar',
-    icon: 'ph-currency-dollar',
-    type: 'dollar',
-  },
-  {
-    id: 3,
-    name: 'Euro',
-    icon: 'ph-currency-eur',
-    type: 'euro',
-  },
-];
-const selectedCurrency = ref(currencies[2]);
-const currencySelectorOpen = ref(false);
+const wish = shallowRef(new Wish());
+
 const categories = computed<Array<Category>>(() => categoryItems);
 const selectedCategory = shallowRef(new Category());
 const categorySelectorOpen = ref(false);
+const selectedCurrency = shallowRef(new Currency());
 
 const emit = defineEmits(['addWish', 'close']);
 
@@ -148,33 +110,33 @@ watch(
   () => props.opened,
   () => {
     if (props.opened) {
-      wish = props.wish;
+      wish.value = props.wish;
       selectedCategory.value = props.wish.category;
+      selectedCurrency.value = getCurrencyByType(props.wish.currency);
     }
   }
 );
 
 const getActionName = () => {
-  return wish.id === '' ? 'Adicionar' : 'Editar';
+  return wish.value.id === '' ? 'Adicionar' : 'Editar';
 };
 
 const selectCategory = (option: any) => {
   selectedCategory.value = option;
-  wish.category = option;
+  wish.value.category = option;
   categorySelectorOpen.value = false;
 };
 
-const selectCurrency = (option: any) => {
+function onSelectCurrency(option: Currency) {
   selectedCurrency.value = option;
-  wish.currency = option?.type;
-  currencySelectorOpen.value = false;
-};
+  wish.value.currency = option.type;
+}
 
 const onActionItem = async () => {
-  if (wish.id === '') {
-    await addWish(wish);
+  if (wish.value.id === '') {
+    await addWish(wish.value);
   } else {
-    await editWish(wish);
+    await editWish(wish.value);
   }
   emit('close');
 };
