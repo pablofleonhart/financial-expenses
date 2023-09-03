@@ -89,6 +89,8 @@ describe('sortList function', () => {
         id: '345',
         name: 'Groceries',
         type: 'Spending',
+        icon: 'icon',
+        color: '#FFF',
       },
       author: new Author(),
       payment: new Wallet(),

@@ -10,7 +10,7 @@ export async function loadCurrencies() {
     Object.assign(currencyItems, response.data.currencies);
     console.log(currencyItems);
   } catch (error) {
-    console.error('');
+    console.error('Not able to load currencies');
   }
 }
 

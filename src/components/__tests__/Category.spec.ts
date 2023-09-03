@@ -7,6 +7,8 @@ describe('Category', () => {
       id: 'category-1',
       name: 'Category 1',
       type: 'Foo',
+      icon: 'icon',
+      color: '#FFF',
     };
 
     const category = new Category(objCategory);

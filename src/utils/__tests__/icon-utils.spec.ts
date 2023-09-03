@@ -1,20 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
-  getCategoryIcon,
   getOrderIcon,
   getPaymentIcon,
   getRevenueTypeIcon,
 } from '../icon-utils';
 
 describe('Icon utils tests', () => {
-  it('should be food icon', () => {
-    expect(getCategoryIcon('food')).toEqual('ph-pizza');
-  });
-
-  it('should be default icon', () => {
-    expect(getCategoryIcon('xyz')).toEqual('ph-warning-octagon');
-  });
-
   it('should be credit card icon', () => {
     expect(getPaymentIcon(true)).toEqual('ph-credit-card');
   });

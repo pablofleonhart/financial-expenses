@@ -5,50 +5,6 @@ export type MonthPeriod = {
   to: Date | string;
 };
 
-export enum EXPENSE_CATEGORY {
-  CLOTHES = 'clothes',
-  EDUCATION = 'education',
-  ELECTRONIC = 'electronic',
-  FOOD = 'food',
-  GYM = 'gym',
-  HOTEL = 'hotel',
-  HOUSE = 'house',
-  HOUSING = 'housing',
-  INVESTMENT = 'investment',
-  MARKET = 'market',
-  PET = 'pet',
-  PHARMACY = 'pharmacy',
-  PHONE = 'phone',
-  RECREATION = 'recreation',
-  SALON = 'salon',
-  SUBSCRIPTION = 'subscription',
-  TRANSPORT = 'transport',
-  TRAVEL = 'travel',
-  VAPE = 'vape',
-}
-
-export const categoryName = {
-  [EXPENSE_CATEGORY.SALON]: 'Salão',
-  [EXPENSE_CATEGORY.CLOTHES]: 'Vestuário',
-  [EXPENSE_CATEGORY.EDUCATION]: 'Educação',
-  [EXPENSE_CATEGORY.ELECTRONIC]: 'Eletrônicos',
-  [EXPENSE_CATEGORY.FOOD]: 'Comida',
-  [EXPENSE_CATEGORY.GYM]: 'Academia',
-  [EXPENSE_CATEGORY.HOTEL]: 'Hotel',
-  [EXPENSE_CATEGORY.HOUSE]: 'Casa',
-  [EXPENSE_CATEGORY.HOUSING]: 'Habitação',
-  [EXPENSE_CATEGORY.INVESTMENT]: 'Investimentos',
-  [EXPENSE_CATEGORY.MARKET]: 'Mercado',
-  [EXPENSE_CATEGORY.PET]: 'Pet',
-  [EXPENSE_CATEGORY.PHARMACY]: 'Farmácia',
-  [EXPENSE_CATEGORY.PHONE]: 'Telefone',
-  [EXPENSE_CATEGORY.RECREATION]: 'Lazer',
-  [EXPENSE_CATEGORY.SUBSCRIPTION]: 'Assinaturas',
-  [EXPENSE_CATEGORY.TRANSPORT]: 'Transporte',
-  [EXPENSE_CATEGORY.TRAVEL]: 'Viagens',
-  [EXPENSE_CATEGORY.VAPE]: 'Vape',
-};
-
 export enum REVENUE_STATUS {
   OPEN = 0,
   DONE = 1,

@@ -50,7 +50,7 @@
             <td class="flex items-center p-2 h-full w-1/6 min-w-36">
               <div class="flex w-full justify-center">
                 <component
-                  :is="getCategoryIcon(item.category.type)"
+                  :is="getCategoryIconByType(item.category.type)"
                   class="h-6 w-6"
                 />
                 <span class="ml-2">
@@ -116,7 +116,6 @@ import { computed } from 'vue';
 import {
   formatCurrency,
   formatDate,
-  getCategoryIcon,
   getOrderIcon,
   getPaymentIcon,
 } from '../../utils';
@@ -125,6 +124,7 @@ import {
   expenseSettings,
   sortExpenses,
   getCurrencyIconByType,
+  getCategoryIconByType,
 } from '../../services';
 import { Expense } from './Expense';
 

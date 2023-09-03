@@ -16,6 +16,8 @@ const copyCategory = (source: any) => {
     id: source.id,
     name: source.name,
     type: source.type,
+    icon: source.icon,
+    color: source.color,
   });
 };
 

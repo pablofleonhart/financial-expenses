@@ -6,16 +6,30 @@ import router from './router';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import { apolloClient } from './lib/apollo';
-import { createApolloProvider } from '@vue/apollo-option';
+import { ApolloProvider, createApolloProvider } from '@vue/apollo-option';
+import { loadInitialData } from './services';
 
-// Create a provider
-const apolloProvider = createApolloProvider({
-  defaultClient: apolloClient,
-});
+let apolloProvider: ApolloProvider;
 
-const app = createApp(App);
-app.use(apolloProvider);
-app.use(PhosphorVue);
-app.component('Datepicker', Datepicker);
-app.use(router);
-app.mount('#app');
+async function initialize() {
+  // Create a provider
+  apolloProvider = createApolloProvider({
+    defaultClient: apolloClient,
+  });
+  await loadInitialData();
+}
+
+initialize()
+  .catch((error) => {
+    console.error(`Financial expenses init`, { error });
+  })
+  .finally(async () => {
+    const app = createApp(App);
+    if (apolloProvider) {
+      app.use(apolloProvider);
+    }
+    app.use(PhosphorVue);
+    app.component('Datepicker', Datepicker);
+    app.use(router);
+    app.mount('#app');
+  });

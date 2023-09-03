@@ -22,38 +22,10 @@
           required
           placeholder="Valor previsto"
         />
-        <div class="category-select" @click.stop>
-          <div
-            class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
-            :class="{ open: categorySelectorOpen }"
-            @click="categorySelectorOpen = !categorySelectorOpen"
-          >
-            <component
-              :is="getCategoryIcon(selectedCategory?.type)"
-              class="h-6 w-6"
-            />
-            <span class="selected-option-name ml-2">
-              {{ selectedCategory?.name || 'Categoria' }}
-            </span>
-          </div>
-          <ul
-            class="period-items absolute bg-neutral-color-700 w-52 h-80 overflow-scroll"
-            :class="{ hidden: !categorySelectorOpen }"
-          >
-            <li
-              class="item flex cursor-pointer p-2 h-10 w-full"
-              :class="{ 'item-selected': category.id === selectedCategory?.id }"
-              v-for="category in categories"
-              :key="category.id"
-              @click="selectCategory(category)"
-            >
-              <component :is="getCategoryIcon(category.type)" class="h-6 w-6" />
-              <span class="item-name ml-2">
-                {{ category.name }}
-              </span>
-            </li>
-          </ul>
-        </div>
+        <category-selector
+          :initial-value="selectedCategory"
+          @on-select-option="onSelectCategory"
+        />
         <textarea
           v-model="wish.description"
           class="flex col-span-3 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-32"
@@ -79,24 +51,17 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType, ref, shallowRef, watch } from 'vue';
-import {
-  addWish,
-  categoryItems,
-  editWish,
-  getCurrencyByType,
-} from '../../services';
-import { getCategoryIcon } from '../../utils';
+import { PropType, shallowRef, watch } from 'vue';
+import { addWish, editWish, getCurrencyByType } from '../../services';
 import { Category } from '../categories/Category';
+import CategorySelector from '../common/CategorySelector.vue';
 import CurrencySelector from '../common/CurrencySelector.vue';
 import { Currency } from '../currencies';
 import { Wish } from './Wish';
 
 const wish = shallowRef(new Wish());
 
-const categories = computed<Array<Category>>(() => categoryItems);
 const selectedCategory = shallowRef(new Category());
-const categorySelectorOpen = ref(false);
 const selectedCurrency = shallowRef(new Currency());
 
 const emit = defineEmits(['addWish', 'close']);
@@ -121,10 +86,9 @@ const getActionName = () => {
   return wish.value.id === '' ? 'Adicionar' : 'Editar';
 };
 
-const selectCategory = (option: any) => {
+const onSelectCategory = (option: any) => {
   selectedCategory.value = option;
   wish.value.category = option;
-  categorySelectorOpen.value = false;
 };
 
 function onSelectCurrency(option: Currency) {

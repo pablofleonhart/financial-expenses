@@ -70,7 +70,7 @@ import router from '../../router';
 import {
   authenticateUser,
   errorMessage,
-  loadUserProfile,
+  loadInitialData,
 } from '../../services';
 import { DEFAULT_ROUTE } from '../common/config';
 
