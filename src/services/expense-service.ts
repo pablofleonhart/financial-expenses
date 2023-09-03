@@ -11,7 +11,6 @@ import {
 import {
   copyExpense,
   getMonthYear,
-  getExpenseCategoryColor,
   getFirstDayOfMonth,
   getLastDayOfMonth,
   isDateInPeriod,
@@ -21,6 +20,7 @@ import {
 import { MonthPeriod } from '../types';
 import { editWallet, publishManyWallets } from './wallet-service';
 import { Travel } from '../components/travels/Travel';
+import { getCategoryColorByType } from './category-service';
 
 export let allExpenseItems: Array<Expense> = [];
 export const filteredExpenseItems: Array<Expense> = reactive([]);
@@ -357,7 +357,7 @@ const loadExpenseCategories = () => {
       const categoryType = expense.category.type;
       if (!(categoryType in categories)) {
         categories[categoryType] = {
-          color: getExpenseCategoryColor(categoryType),
+          color: getCategoryColorByType(categoryType),
           name: expense.category.name,
           value: 0,
         };

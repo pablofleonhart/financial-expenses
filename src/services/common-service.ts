@@ -5,15 +5,18 @@ import { loadCurrencies } from './currency-service';
 import { loadTransactions } from './transaction-service';
 import { loadWallets } from './wallet-service';
 
-const initializeServices = () => {
-  loadCurrencies();
+export async function loadInitialData() {
+  await loadCurrencies();
+  await loadCategories();
+}
 
+function initializeServices() {
   provideApolloClient(apolloClient);
   setTimeout(() => {
     loadCategories();
     loadWallets();
     loadTransactions();
   }, 2000);
-};
+}
 
 initializeServices();

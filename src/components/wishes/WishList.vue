@@ -97,8 +97,8 @@
           <td
             class="flex justify-center items-center h-full font-bold text-lg gap-4 pl-4 col-span-4"
           >
-            <component :is="getCategoryIcon(obj.category)" size="26" />
-            {{ getCategoryName(obj.category) }}
+            <component :is="getCategoryIconByType(obj.category)" size="26" />
+            {{ getCategoryNameByType(obj.category) }}
             <span>{{
               obj.wishes.reduce((partialSum, a) => partialSum + a.amount, 0)
             }}</span>
@@ -139,15 +139,15 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import { formatCurrency, getCategoryIcon, getOrderIcon } from '../../utils';
+import { formatCurrency, getOrderIcon } from '../../utils';
 import {
-  completePlan,
   wishSettings,
   sortWishes,
   wishCategoryItems,
   CategoryWish,
+  getCategoryIconByType,
+  getCategoryNameByType,
 } from '../../services';
-import { categoryName } from '../../types';
 
 const wishColumns = [
   {
@@ -167,11 +167,6 @@ const wishColumns = [
     static: true,
   },
 ];
-
-const getCategoryName = (type: string) => {
-  // @ts-ignore
-  return categoryName[type];
-};
 
 // watch(wishCategoryItems, () => {
 //   const groupToggles = document.querySelectorAll('.category-group');

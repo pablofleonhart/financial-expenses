@@ -7,7 +7,8 @@ import {
 import { computed, reactive } from 'vue';
 import { Wish } from '../components/wishes/Wish';
 import { copyWish, overrideWish, sortList } from '../utils';
-import { categoryName, WISH_STATUS, WishStatus } from '../types';
+import { WISH_STATUS, WishStatus } from '../types';
+import { getCategoryNameByType } from './category-service';
 
 export type CategoryWish = {
   category: string;
@@ -238,7 +239,7 @@ export const topFiveWishCategories = computed(() => {
   wishCategoryItems.forEach((item) => {
     wishCategories.push({
       // @ts-ignore
-      name: categoryName[item.category],
+      name: getCategoryNameByType(item.category),
       value: item.wishes.reduce((partialSum, a) => partialSum + a.amount, 0),
     });
   });

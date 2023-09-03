@@ -15,7 +15,7 @@
       </span>
     </div>
     <ul
-      class="period-items absolute bg-neutral-color-700 w-52"
+      class="period-items absolute bg-neutral-color-500 rounded w-80 h-80 z-10"
       :class="{ hidden: !currencySelectorOpen }"
     >
       <li

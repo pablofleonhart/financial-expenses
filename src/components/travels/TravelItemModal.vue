@@ -26,41 +26,10 @@
           required
           placeholder="Valor pago"
         />
-        <div class="category-select" @click.stop>
-          <div
-            class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
-            :class="{ open: categorySelectorOpen }"
-            @click="categorySelectorOpen = !categorySelectorOpen"
-          >
-            <component
-              :is="getCategoryIcon(selectedCategory?.type)"
-              class="h-6 w-6"
-            />
-            <span class="selected-option-name ml-2">
-              {{ selectedCategory?.name || 'Categoria' }}
-            </span>
-          </div>
-          <ul
-            class="period-items scrollbar overflow-y-scroll overflow-x-hidden absolute bg-neutral-color-500 rounded w-80 h-80 z-10"
-            :class="{ hidden: !categorySelectorOpen }"
-          >
-            <li
-              class="item flex cursor-pointer p-2 h-10 w-full hover:bg-neutral-color-700 hover:text-secondary-color-300"
-              :class="{
-                'bg-neutral-color-700 text-secondary-color-300':
-                  category.id === selectedCategory?.id,
-              }"
-              v-for="category in categories"
-              :key="category.id"
-              @click="selectCategory(category)"
-            >
-              <component :is="getCategoryIcon(category.type)" class="h-6 w-6" />
-              <span class="item-name ml-2">
-                {{ category.name }}
-              </span>
-            </li>
-          </ul>
-        </div>
+        <category-selector
+          :initial-value="selectedCategory"
+          @on-select-option="onSelectCategory"
+        />
         <balance-selector
           tabindex="0"
           :initial-value="selectedPayment"
@@ -94,14 +63,10 @@
 
 <script lang="ts" setup>
 import Datepicker from '../common/Datepicker.vue';
-import { computed, PropType, ref, shallowRef, watch } from 'vue';
+import { PropType, ref, shallowRef, watch } from 'vue';
 import { Category } from '../categories/Category';
-import { getCategoryIcon } from '../../utils';
-import {
-  addTravelExpense,
-  categoryItems,
-  editTravelExpense,
-} from '../../services';
+import { addTravelExpense, editTravelExpense } from '../../services';
+import CategorySelector from '../common/CategorySelector.vue';
 import BalanceSelector from '../common/BalanceSelector.vue';
 import { Wallet } from '../wallets/Wallet';
 import { Expense } from '../expenses/Expense';
@@ -109,12 +74,10 @@ import TravelSelector from '../common/TravelSelector.vue';
 import { Travel } from './Travel';
 
 const expense = shallowRef(new Expense());
-const categories = computed<Array<Category>>(() => categoryItems);
 
 const selectedCategory = shallowRef(new Category());
 const selectedPayment = shallowRef(new Wallet());
 const selectedTravel = shallowRef(new Travel());
-const categorySelectorOpen = ref(false);
 
 const amountError = ref(false);
 
@@ -149,10 +112,9 @@ const selectBalance = (balance: Wallet) => {
   expense.value.payment = balance;
 };
 
-const selectCategory = (option: any) => {
+const onSelectCategory = (option: any) => {
   selectedCategory.value = option;
   expense.value.category = option;
-  categorySelectorOpen.value = false;
 };
 
 const setDate = (value: Date) => {
@@ -183,10 +145,4 @@ const onActionItem = (event: Event) => {
   }
   emit('close');
 };
-
-const closeSelectors = () => {
-  categorySelectorOpen.value = false;
-};
-
-window.addEventListener('click', closeSelectors);
 </script>
