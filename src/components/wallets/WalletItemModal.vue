@@ -15,20 +15,20 @@
           @on-select-option="onSelectCurrency"
         />
         <input
-          v-model="wallet.amount"
+          v-model="localWallet.amount"
           class="outline-0 rounded p-2 bg-neutral-color-700 h-10"
           type="number"
           min="0"
           required
         />
         <input
-          v-model="wallet.broker"
+          v-model="localWallet.broker"
           class="outline-0 rounded p-2 bg-neutral-color-700 h-10"
           type="text"
           placeholder="Banco ou corretora"
         />
         <input
-          v-model="wallet.holder"
+          v-model="localWallet.holder"
           class="outline-0 rounded p-2 bg-neutral-color-700 h-10"
           type="text"
           placeholder="Titular da conta"
@@ -54,13 +54,13 @@
 
 <script lang="ts" setup>
 import { PropType, reactive, ref, watch } from 'vue';
-import { addWallet, editWallet, getCurrencyByType } from '../../services';
+import { addWallet, editWallet, getCurrencyById } from '../../services';
 import { WALLET_TYPE } from '../../types';
 import { Currency } from '../currencies';
 import { Wallet } from './Wallet';
 import CurrencySelector from '../common/CurrencySelector.vue';
 
-let wallet = reactive(new Wallet());
+let localWallet = reactive(new Wallet());
 const selectedCurrency = ref(new Currency());
 const emit = defineEmits(['addWallet', 'close']);
 
@@ -73,30 +73,30 @@ watch(
   () => props.opened,
   () => {
     if (props.opened) {
-      wallet = props.wallet;
-      selectedCurrency.value = getCurrencyByType(props.wallet.currency);
+      localWallet = props.wallet;
+      selectedCurrency.value = getCurrencyById(props.wallet.currency);
     }
-  }
+  },
 );
 
 const getActionName = () => {
-  const action = wallet.id === '' ? 'Adicionar' : 'Editar';
+  const action = localWallet.id === '' ? 'Adicionar' : 'Editar';
   const walletType =
-    wallet.type === WALLET_TYPE.BALANCE ? 'conta' : 'investimento';
+    localWallet.type === WALLET_TYPE.BALANCE ? 'conta' : 'investimento';
 
   return `${action} ${walletType}`;
 };
 
 const onSelectCurrency = (option: any) => {
   selectedCurrency.value = option;
-  wallet.currency = option?.type;
+  localWallet.currency = option?.type;
 };
 
 const onActionItem = async () => {
-  if (wallet.id === '') {
-    await addWallet(wallet);
+  if (localWallet.id === '') {
+    await addWallet(localWallet);
   } else {
-    await editWallet(wallet);
+    await editWallet(localWallet);
   }
   emit('close');
 };

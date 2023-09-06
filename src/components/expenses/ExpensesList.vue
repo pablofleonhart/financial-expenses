@@ -50,7 +50,7 @@
             <td class="flex items-center p-2 h-full w-1/6 min-w-36">
               <div class="flex w-full justify-center">
                 <component
-                  :is="getCategoryIconByType(item.category.type)"
+                  :is="getCategoryIconById(item.category.type)"
                   class="h-6 w-6"
                 />
                 <span class="ml-2">
@@ -68,7 +68,7 @@
                 />
                 <component
                   v-else
-                  :is="getCurrencyIconByType(item.payment.currency)"
+                  :is="getCurrencyIconById(item.payment.currency)"
                   size="24"
                 />
                 <span> {{ item.payment.broker }} </span>
@@ -123,8 +123,8 @@ import {
   filteredExpenseItems,
   expenseSettings,
   sortExpenses,
-  getCurrencyIconByType,
-  getCategoryIconByType,
+  getCurrencyIconById,
+  getCategoryIconById,
 } from '../../services';
 import { Expense } from './Expense';
 

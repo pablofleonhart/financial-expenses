@@ -11,7 +11,7 @@
     >
       <component
         v-if="selectedBalance"
-        :is="getCurrencyIconByType(selectedBalance.currency)"
+        :is="getCurrencyIconById(selectedBalance.currency)"
         class="h-6 w-6"
       />
       <span
@@ -39,7 +39,7 @@
         @click="selectBalance(balance)"
       >
         <component
-          :is="getCurrencyIconByType(balance.currency)"
+          :is="getCurrencyIconById(balance.currency)"
           class="h-6 w-6"
         />
         <span class="item-name ml-2">
@@ -52,7 +52,7 @@
 
 <script lang="ts" setup>
 import { computed, onUpdated, PropType, ref, watch } from 'vue';
-import { availableWallets, getCurrencyIconByType } from '../../services';
+import { availableWallets, getCurrencyIconById } from '../../services';
 import { sortList } from '../../utils';
 import { getBalanceName } from '../../utils/string-utils';
 import { Wallet } from '../wallets/Wallet';
@@ -77,7 +77,7 @@ watch(
   () => props.initialValue,
   () => {
     selectedBalance.value = props.initialValue;
-  }
+  },
 );
 
 const balanceName = (balance: Wallet): string => {

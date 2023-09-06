@@ -62,11 +62,11 @@ const loadExpenseBudgetCategories = async (period: MonthPeriod) => {
 
   const filteredExpenseItems: Expense[] = await loadExpenseItems(period);
   filteredExpenseItems.forEach((expense) => {
-    const budgetCategoryType = `${expense.category.type}-${expense.currency}`;
-    if (!(budgetCategoryType in expenseBudgetCategories)) {
-      expenseBudgetCategories[budgetCategoryType] = 0;
+    const budgetcategoryID = `${expense.category.type}-${expense.currency}`;
+    if (!(budgetcategoryID in expenseBudgetCategories)) {
+      expenseBudgetCategories[budgetcategoryID] = 0;
     }
-    expenseBudgetCategories[budgetCategoryType] += expense.amount;
+    expenseBudgetCategories[budgetcategoryID] += expense.amount;
   });
 };
 

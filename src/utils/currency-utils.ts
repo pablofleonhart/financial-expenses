@@ -35,7 +35,7 @@ const converters: Record<string, any> = {
 
 export const formatCurrency = (
   value: number | null,
-  currency = 'euro'
+  currency = 'euro',
 ): string => {
   if (currency == '') {
     currency = 'euro';

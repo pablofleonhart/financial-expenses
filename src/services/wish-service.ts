@@ -1,24 +1,19 @@
-import {
-  useAddWishMutation,
-  useGetWishesQuery,
-  usePublishWishMutation,
-  useUpdateWishMutation,
-} from '../graphql/generated';
 import { computed, reactive } from 'vue';
 import { Wish } from '../components/wishes/Wish';
-import { copyWish, overrideWish, sortList } from '../utils';
+import { sortList } from '../utils';
 import { WISH_STATUS, WishStatus } from '../types';
-import { getCategoryNameByType } from './category-service';
+import { getCategoryNameById } from './category-service';
+import { api } from '../lib/axios';
 
 export type CategoryWish = {
   category: string;
-  wishes: Array<any>;
+  wishes: Array<Wish>;
 };
 
 export const allWishItems: Array<Wish> = reactive([]);
 let wishCategories: Set<string> = new Set();
 export const wishCategoryItems: Array<CategoryWish> = reactive([]);
-export const filteredWishItems: Array<Wish> = reactive([]);
+export const filteredWishItems: Wish[] = reactive([]);
 export const wishSettings: Record<string, any> = reactive({});
 
 export const selectedWishStatus: WishStatus = reactive({
@@ -27,7 +22,7 @@ export const selectedWishStatus: WishStatus = reactive({
 });
 
 export const showWishActions = computed(
-  () => selectedWishStatus.id === WISH_STATUS.OPEN
+  () => selectedWishStatus.id === WISH_STATUS.OPEN,
 );
 
 const WISH_LIST_KEY = 'wish-list';
@@ -64,41 +59,20 @@ export const wishesSum = computed<number>(() => {
   return result;
 });
 
-const updateLocalStorage = () => {
-  localStorage.setItem('wishItems', JSON.stringify(allWishItems));
-};
-
-const getWishID = (id: string): Wish | null => {
-  if (!id) {
-    return null;
-  }
-  return allWishItems.filter((item) => item.id === id)[0];
-};
-
-const publishWish = (id: string | undefined): void => {
-  if (!id) {
-    throw new Error('Wish ID invalid');
-  }
-  const { mutate: publishWishMutate } = usePublishWishMutation({});
-  publishWishMutate({ id });
-};
-
 const loadWishCategories = () => {
   const localItems: Array<CategoryWish> = [];
   wishCategories = new Set();
 
   filteredWishItems.forEach((item) => {
-    if (item.category) {
-      wishCategories.add(item.category.type);
+    if (item.categoryID) {
+      wishCategories.add(item.categoryID);
     }
   });
 
   wishCategories.forEach((category: string) => {
     localItems.push({
       category,
-      wishes: filteredWishItems.filter(
-        (item) => item.category.type === category
-      ),
+      wishes: filteredWishItems.filter((item) => item.categoryID === category),
     });
   });
   wishCategoryItems.splice(0);
@@ -106,102 +80,44 @@ const loadWishCategories = () => {
 };
 
 export const loadWishes = async () => {
-  const wishesPromise = new Promise((resolve) => {
-    const { onResult } = useGetWishesQuery();
-    onResult((result) => {
-      const items = result.data.wishes;
-      allWishItems.splice(0);
-      items.forEach((item) => {
-        if (item.deleted) {
-          return;
-        }
-        allWishItems.push(copyWish(item));
-      });
-      resolve(true);
-    });
-  });
-
-  return wishesPromise.then(() => {
-    keepListUpdated();
-  });
-};
-
-export const addWish = async (wish: Wish) => {
-  const { mutate: createWish, onDone } = useAddWishMutation({});
-  createWish({
-    amount: wish.amount,
-    description: wish.description,
-    currency: wish.currency,
-    itemStatus: wish.itemStatus,
-    categoryID: wish.category.id,
-  });
-
-  return onDone((result) => {
-    const wishID = result.data?.createWish?.id;
-    wish.id = wishID || '';
-    allWishItems.push(wish);
-    updateLocalStorage();
-    publishWish(wishID);
-    keepListUpdated();
-  });
-};
-
-export const editWish = async (wish: Wish) => {
-  if (!wish) {
-    throw new Error('Wish does not exist');
+  try {
+    const response = await api.get('/wishes');
+    allWishItems.splice(0);
+    Object.assign(allWishItems, response.data.wishes);
+  } catch (error) {
+    console.error('Not able to load wishes');
   }
-
-  // update on graph cms
-  const { mutate: updateWish, onDone } = useUpdateWishMutation({});
-  updateWish({
-    id: wish.id,
-    amount: wish.amount,
-    deleted: wish.deleted,
-    description: wish.description,
-    currency: wish.currency,
-    itemStatus: wish.itemStatus,
-    categoryID: wish.category.id,
-  });
-
-  return onDone(() => {
-    // update wish on local storage
-    const oldWish = getWishID(wish.id);
-    if (oldWish) {
-      overrideWish(allWishItems[allWishItems.indexOf(oldWish)], wish);
-      updateLocalStorage();
-    }
-    publishWish(wish.id);
-    keepListUpdated();
-  });
 };
 
-export const deleteWish = (wish: Wish) => {
-  if (!wish) {
-    throw new Error('Wish does not exist');
+export async function addWish(wish: Wish) {
+  try {
+    await api.post('/wishes', wish);
+    await loadWishes();
+    keepListUpdated();
+  } catch (error) {
+    console.error('Not able to add wish:', wish);
   }
+}
 
-  const wishToDelete = { ...wish };
-  wishToDelete.deleted = true;
-
-  const { mutate: updateWish, onDone } = useUpdateWishMutation({});
-  updateWish({
-    id: wishToDelete.id,
-    amount: wishToDelete.amount,
-    deleted: wishToDelete.deleted,
-    description: wishToDelete.description,
-    currency: wishToDelete.currency,
-    itemStatus: wishToDelete.itemStatus,
-    categoryID: wishToDelete.category.id,
-  });
-
-  onDone(() => {
-    // remove from local storage
-    allWishItems.splice(allWishItems.indexOf(wish), 1);
-    updateLocalStorage();
-    publishWish(wish.id);
+export async function editWish(wish: Wish) {
+  try {
+    await api.post(`/wishes/${wish.id}`, wish);
+    await loadWishes();
     keepListUpdated();
-  });
-};
+  } catch (error) {
+    console.error('Not able to edit wish:', wish);
+  }
+}
+
+export async function deleteWish(wish: Wish) {
+  try {
+    await api.post(`/wishes/delete/${wish.id}`, wish);
+    await loadWishes();
+    keepListUpdated();
+  } catch (error) {
+    console.error('Not able to delete wish:', wish);
+  }
+}
 
 export const sortWishes = (column?: string) => {
   if (!filteredWishItems.length) {
@@ -222,16 +138,22 @@ export const sortWishes = (column?: string) => {
   localStorage.setItem(WISH_LIST_KEY, JSON.stringify(wishSettings));
 };
 
-export const filterWishes = (status: WishStatus = selectedWishStatus) => {
-  const result = allWishItems.filter((item) => {
-    return item.itemStatus === status.id;
-  });
+export async function filterWishes(status: WishStatus = selectedWishStatus) {
+  await loadWishes();
+  let result;
+
+  if (status.id === WISH_STATUS.OPEN) {
+    result = allWishItems.filter((item) => !item.fullfiledAt);
+  } else {
+    result = allWishItems.filter((item) => item.fullfiledAt);
+  }
   filteredWishItems.splice(0);
   Object.assign(filteredWishItems, result);
-  // sortWishes();
+  loadWishCategories();
+  sortWishes();
   Object.assign(selectedWishStatus, status);
   localStorage.setItem(WISH_STATUS_KEY, JSON.stringify(selectedWishStatus));
-};
+}
 
 export const topFiveWishCategories = computed(() => {
   const wishCategories: any = [];
@@ -239,7 +161,7 @@ export const topFiveWishCategories = computed(() => {
   wishCategoryItems.forEach((item) => {
     wishCategories.push({
       // @ts-ignore
-      name: getCategoryNameByType(item.category),
+      name: getCategoryNameById(item.category),
       value: item.wishes.reduce((partialSum, a) => partialSum + a.amount, 0),
     });
   });
@@ -250,7 +172,6 @@ export const completePlan = (wish: Wish) => {
   if (!wish) {
     return;
   }
-  wish.itemStatus = WISH_STATUS.DONE;
   editWish(wish);
   keepListUpdated();
 };
@@ -259,7 +180,6 @@ export const reopenWish = (wish: Wish) => {
   if (!wish) {
     return;
   }
-  wish.itemStatus = WISH_STATUS.OPEN;
   editWish(wish);
   keepListUpdated();
 };

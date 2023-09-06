@@ -2,16 +2,17 @@
   <div class="wishes-container m-3 h-[90vh]">
     <wishes-header />
     <div class="flex flex-row">
-      <wishes-filter-tabs />
+      <wishes-filter-tabs @on-change-tab="onChangeTab" />
       <div class="flex justify-end">
         <add-button @click="onAddWish"></add-button>
       </div>
     </div>
     <wish-list
       class="flex mt-8"
+      :selected-tab="selectedTab"
       @on-edit-wish="onEditWish"
       @on-delete-wish="onDeleteWish"
-      @on-complete-plan="onCompletePlan"
+      @on-complete-plan="onCompleteWish"
     />
   </div>
   <wish-item-modal
@@ -56,11 +57,17 @@ const showExpenseModal = ref(false);
 const modalMessage = ref('');
 const objWish = ref(new Wish());
 const objExpense = ref(new Expense());
+const selectedTab = ref(0);
 let wishToDelete: Wish = new Wish();
 
-onMounted(() => {
-  loadWishes();
+onMounted(async () => {
+  await loadWishes();
 });
+
+function onChangeTab(tab: any) {
+  // console.log(tab);
+  selectedTab.value = tab.id;
+}
 
 const onAddWish = () => {
   objWish.value = new Wish();
@@ -80,33 +87,31 @@ const onDeleteWish = (wish: Wish) => {
 
 const onAcceptDelete = async () => {
   showConfirmationModal.value = false;
-  deleteWish(wishToDelete);
+  await deleteWish(wishToDelete);
 };
 
 const expenseAdded = async () => {
-  wishToDelete.deleted = true;
+  // wishToDelete.deleted = true;
   await editWish(wishToDelete);
 };
 
-const onCompletePlan = (wish: Wish) => {
+const onCompleteWish = (wish: Wish) => {
   wishToDelete = wish;
   showExpenseModal.value = true;
-  objExpense.value = new Expense({
-    id: '',
-    amount: wish.amount,
-    card: true,
-    category: wish.category,
-    date: new Date(),
-    deleted: false,
-    note: wish.description,
-    author: new Author(),
-    currency: wish.currency,
-    payment: new Wallet(),
-    variable: true,
-    travel: new Travel(),
-    budget: true,
-  });
+  // objExpense.value = new Expense({
+  //   id: '',
+  //   amount: wish.amount,
+  //   card: true,
+  //   category: wish.category,
+  //   date: new Date(),
+  //   deleted: false,
+  //   note: wish.description,
+  //   author: new Author(),
+  //   currency: wish.currency,
+  //   payment: new Wallet(),
+  //   variable: true,
+  //   travel: new Travel(),
+  //   budget: true,
+  // });
 };
 </script>
-
-<style lang="scss" scoped></style>

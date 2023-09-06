@@ -11,30 +11,25 @@ export async function loadCategories() {
     Object.assign(categoryItems, response.data.categories);
 
     categoryItems.forEach((category) => {
-      objCategories[category.type] = category;
+      objCategories[category.id] = category;
     });
   } catch (error) {
     console.error('Not able to load categories');
   }
 }
 
-export function getCategoryNameByType(type: string) {
-  if (type && objCategories[type]) {
-    return objCategories[type].name;
-  }
-  return 'Categoria indefinida';
+export function getCategoryById(id: string): Category {
+  return objCategories[id];
 }
 
-export function getCategoryIconByType(type: string) {
-  if (type && objCategories[type]) {
-    return objCategories[type].icon;
-  }
-  return 'ph-warning-octagon';
+export function getCategoryNameById(id: string): string {
+  return getCategoryById(id)?.name || 'Categoria indefinida';
 }
 
-export function getCategoryColorByType(type: string) {
-  if (type && objCategories[type]) {
-    return objCategories[type].color;
-  }
-  return '#de77ae';
+export function getCategoryIconById(id: string): string {
+  return getCategoryById(id)?.icon || 'ph-warning-octagon';
+}
+
+export function getCategoryColorById(id: string): string {
+  return getCategoryById(id)?.color || '#de77ae';
 }

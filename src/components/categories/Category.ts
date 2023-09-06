@@ -12,7 +12,7 @@ export class Category {
       type: '',
       icon: 'ph-warning-octagon',
       color: '#de77ae',
-    }
+    },
   ) {
     this.id = objCategory.id;
     this.name = objCategory.name;

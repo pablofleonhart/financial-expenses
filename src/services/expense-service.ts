@@ -20,7 +20,7 @@ import {
 import { MonthPeriod } from '../types';
 import { editWallet, publishManyWallets } from './wallet-service';
 import { Travel } from '../components/travels/Travel';
-import { getCategoryColorByType } from './category-service';
+import { getCategoryColorById } from './category-service';
 
 export let allExpenseItems: Array<Expense> = [];
 export const filteredExpenseItems: Array<Expense> = reactive([]);
@@ -342,7 +342,7 @@ export const sortExpenses = (column?: string) => {
   sortList(
     filteredExpenseItems,
     expenseSettings.column,
-    expenseSettings.ascending
+    expenseSettings.ascending,
   );
   localStorage.setItem(EXPENSE_LIST_KEY, JSON.stringify(expenseSettings));
 };
@@ -354,32 +354,32 @@ const loadExpenseCategories = () => {
   > = {};
   filteredExpenseItems.forEach((expense) => {
     if (!expense.budget && (!expense.travel || expense.travel.id == '')) {
-      const categoryType = expense.category.type;
-      if (!(categoryType in categories)) {
-        categories[categoryType] = {
-          color: getCategoryColorByType(categoryType),
+      const categoryID = expense.category.type;
+      if (!(categoryID in categories)) {
+        categories[categoryID] = {
+          color: getCategoryColorById(categoryID),
           name: expense.category.name,
           value: 0,
         };
       }
-      categories[categoryType].value += expense.amount;
+      categories[categoryID].value += expense.amount;
     }
   });
 
   sortedCategories.splice(0);
   Object.assign(
     sortedCategories,
-    sortList(Object.values(categories), 'value', false)
+    sortList(Object.values(categories), 'value', false),
   );
 
   expenseCategoriesLabels = Object.values(sortedCategories).map(
-    (item) => item.name
+    (item) => item.name,
   );
   expenseCategoriesValues = Object.values(sortedCategories).map(
-    (item) => item.value
+    (item) => item.value,
   );
   expenseCategoriesColorValues = Object.values(sortedCategories).map(
-    (item) => item.color
+    (item) => item.color,
   );
   reloadCharts.value = !reloadCharts.value;
 };
@@ -389,7 +389,7 @@ export const topFiveExpenseCategories = computed(() => {
 });
 
 export const filterExpenses = (
-  period: MonthPeriod | null = selectedExpensePeriod
+  period: MonthPeriod | null = selectedExpensePeriod,
 ) => {
   // filterExpenseBudgets(period);
   let result: Expense[] = [];
@@ -399,21 +399,23 @@ export const filterExpenses = (
       (item) =>
         item.travel &&
         item.travel.id === travelExpense.value?.id &&
-        !item.budget
+        !item.budget,
     );
   } else if (showFixedExpense.value && showVariablesExpense.value) {
     result = allExpenseItems.filter(
-      (item) => (!item.travel || item.travel.id == '') && !item.budget
+      (item) => (!item.travel || item.travel.id == '') && !item.budget,
     );
   } else if (showFixedExpense.value) {
     result = allExpenseItems.filter(
       (item) =>
-        (!item.travel || item.travel.id == '') && !item.variable && !item.budget
+        (!item.travel || item.travel.id == '') &&
+        !item.variable &&
+        !item.budget,
     );
   } else if (showVariablesExpense.value) {
     result = allExpenseItems.filter(
       (item) =>
-        (!item.travel || item.travel.id == '') && item.variable && !item.budget
+        (!item.travel || item.travel.id == '') && item.variable && !item.budget,
     );
   }
 

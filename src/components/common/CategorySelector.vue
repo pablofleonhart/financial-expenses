@@ -9,9 +9,12 @@
       :class="{ open: categorySelectorOpen }"
       @click="categorySelectorOpen = !categorySelectorOpen"
     >
-      <component :is="selectedCategory.icon" class="h-6 w-6" />
+      <component
+        :is="selectedCategory?.icon || 'ph-warning-octagon'"
+        class="h-6 w-6"
+      />
       <span class="selected-option-name ml-2">
-        {{ selectedCategory?.name || 'Categoria' }}
+        {{ selectedCategory?.name || 'Selecione uma categoria' }}
       </span>
     </div>
     <ul
@@ -55,7 +58,7 @@ watch(
   () => props.initialValue,
   () => {
     selectedCategory.value = props.initialValue;
-  }
+  },
 );
 
 function selectCategory(option: any) {

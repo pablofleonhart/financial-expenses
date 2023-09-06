@@ -1,32 +1,32 @@
-import { WISH_STATUS } from '../../types';
-import { Category } from '../categories/Category';
-
 export class Wish {
   public id: string;
   public amount: number;
-  public deleted: boolean;
+  public categoryID: string;
+  public currencyID: string;
+  public deletedAt: Date | null;
   public description: string;
-  public currency: string;
-  public itemStatus: number;
-  public category: Category;
+  public fullfiledAt: Date | null;
+  public authorID: string;
 
   constructor(
     objWish: Wish = {
       id: '',
       amount: 0,
-      deleted: false,
+      categoryID: '',
+      currencyID: '',
+      deletedAt: null,
       description: '',
-      currency: 'euro',
-      itemStatus: WISH_STATUS.OPEN,
-      category: new Category(),
-    }
+      fullfiledAt: null,
+      authorID: '',
+    },
   ) {
     this.id = objWish.id;
     this.amount = objWish.amount;
-    this.deleted = objWish.deleted;
+    this.categoryID = objWish.categoryID;
+    this.currencyID = objWish.currencyID;
+    this.deletedAt = objWish.deletedAt;
     this.description = objWish.description;
-    this.currency = objWish.currency;
-    this.itemStatus = objWish.itemStatus;
-    this.category = objWish.category;
+    this.fullfiledAt = objWish.fullfiledAt;
+    this.authorID = objWish.authorID;
   }
 }

@@ -15,7 +15,7 @@
           @on-select-option="onSelectCurrency"
         />
         <input
-          v-model="wish.amount"
+          v-model="localWish.amount"
           class="outline-0 rounded p-2 h-10 bg-neutral-color-700"
           type="number"
           min="0"
@@ -27,7 +27,7 @@
           @on-select-option="onSelectCategory"
         />
         <textarea
-          v-model="wish.description"
+          v-model="localWish.description"
           class="flex col-span-3 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-32"
           placeholder="Descreva a renda ou despesa"
         />
@@ -52,14 +52,20 @@
 
 <script lang="ts" setup>
 import { PropType, shallowRef, watch } from 'vue';
-import { addWish, editWish, getCurrencyByType } from '../../services';
+import {
+  account,
+  addWish,
+  editWish,
+  getCategoryById,
+  getCurrencyById,
+} from '../../services';
 import { Category } from '../categories/Category';
 import CategorySelector from '../common/CategorySelector.vue';
 import CurrencySelector from '../common/CurrencySelector.vue';
 import { Currency } from '../currencies';
 import { Wish } from './Wish';
 
-const wish = shallowRef(new Wish());
+const localWish = shallowRef(new Wish());
 
 const selectedCategory = shallowRef(new Category());
 const selectedCurrency = shallowRef(new Currency());
@@ -75,32 +81,33 @@ watch(
   () => props.opened,
   () => {
     if (props.opened) {
-      wish.value = props.wish;
-      selectedCategory.value = props.wish.category;
-      selectedCurrency.value = getCurrencyByType(props.wish.currency);
+      localWish.value = props.wish;
+      selectedCategory.value = getCategoryById(props.wish.categoryID);
+      selectedCurrency.value = getCurrencyById(props.wish.currencyID);
     }
-  }
+  },
 );
 
 const getActionName = () => {
-  return wish.value.id === '' ? 'Adicionar' : 'Editar';
+  return localWish.value.id === '' ? 'Adicionar' : 'Editar';
 };
 
 const onSelectCategory = (option: any) => {
   selectedCategory.value = option;
-  wish.value.category = option;
+  localWish.value.categoryID = option.id;
 };
 
 function onSelectCurrency(option: Currency) {
   selectedCurrency.value = option;
-  wish.value.currency = option.type;
+  localWish.value.currencyID = option.id;
 }
 
 const onActionItem = async () => {
-  if (wish.value.id === '') {
-    await addWish(wish.value);
+  if (localWish.value.id === '') {
+    localWish.value.authorID = account.id;
+    await addWish(localWish.value);
   } else {
-    await editWish(wish.value);
+    await editWish(localWish.value);
   }
   emit('close');
 };

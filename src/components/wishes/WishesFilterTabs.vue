@@ -18,13 +18,24 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { filterWishes, selectedWishStatus } from '../../services';
+import { WISH_STATUS } from '../../types';
 
-const tabItems = [{ id: 0, name: 'Abertos' }];
+const emit = defineEmits(['onChangeTab']);
+
+const tabItems = [
+  { id: WISH_STATUS.OPEN, name: 'Abertos' },
+  { id: WISH_STATUS.DONE, name: 'Concluídos' },
+];
 const selectedTab = computed(() => selectedWishStatus.id);
 
-const filterItems = (tab: any) => {
-  filterWishes(tab);
-};
+onMounted(async () => {
+  await filterWishes();
+});
+
+async function filterItems(tab: any) {
+  emit('onChangeTab', tab);
+  await filterWishes(tab);
+}
 </script>

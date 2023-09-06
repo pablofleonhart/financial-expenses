@@ -12,7 +12,7 @@
       <div class="expense-fields flex flex-col gap-3 my-5">
         <input
           tabindex="0"
-          v-model="expense.amount"
+          v-model="localExpense.amount"
           class="outline-0 rounded p-2 h-10 bg-neutral-color-700 focus:ring focus:ring-secondary-color-300"
           :class="{ 'border border-red-500': amountError }"
           type="number"
@@ -29,7 +29,7 @@
           @on-select-option="onSelectCategory"
         />
         <textarea
-          v-model="expense.note"
+          v-model="localExpense.note"
           class="flex col-span-2 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-24"
           placeholder="Descreva a renda ou despesa"
         />
@@ -59,14 +59,14 @@ import { Category } from '../categories/Category';
 import {
   addExpenseBudget,
   editExpenseBudget,
-  getCurrencyByType,
+  getCurrencyById,
 } from '../../services';
 import { Wallet } from '../wallets/Wallet';
 import { Currency } from '../currencies';
 import CategorySelector from '../common/CategorySelector.vue';
 import CurrencySelector from '../common/CurrencySelector.vue';
 
-const expense = shallowRef(new Expense());
+const localExpense = shallowRef(new Expense());
 const selectedCategory = shallowRef(new Category());
 const selectedPayment = shallowRef(new Wallet());
 const selectedCurrency = shallowRef(new Currency());
@@ -83,32 +83,32 @@ watch(
   () => props.opened,
   () => {
     if (props.opened) {
-      expense.value = props.expense;
+      localExpense.value = props.expense;
       selectedCategory.value = props.expense.category;
       selectedPayment.value = props.expense.payment;
-      selectedCurrency.value = getCurrencyByType(expense.value.currency);
+      selectedCurrency.value = getCurrencyById(localExpense.value.currency);
     }
-  }
+  },
 );
 
 const getActionName = () => {
-  return expense.value.id === '' ? 'Adicionar' : 'Editar';
+  return localExpense.value.id === '' ? 'Adicionar' : 'Editar';
 };
 
 const onSelectCurrency = (option: any) => {
   selectedCurrency.value = option;
-  expense.value.currency = option?.type;
+  localExpense.value.currency = option?.type;
 };
 
 const onSelectCategory = (option: any) => {
   selectedCategory.value = option;
-  expense.value.category = option;
+  localExpense.value.category = option;
 };
 
 const isValidForm = (): boolean => {
   let validForm = true;
   amountError.value = false;
-  if (expense.value.amount <= 0) {
+  if (localExpense.value.amount <= 0) {
     amountError.value = true;
     validForm = false;
   }
@@ -121,12 +121,12 @@ const onActionItem = (event: Event) => {
     event?.preventDefault();
     return;
   }
-  expense.value.budget = true;
-  if (expense.value.id === '') {
-    addExpenseBudget(expense.value);
+  localExpense.value.budget = true;
+  if (localExpense.value.id === '') {
+    addExpenseBudget(localExpense.value);
     emit('addExpense');
   } else {
-    editExpenseBudget(expense.value);
+    editExpenseBudget(localExpense.value);
   }
   emit('close');
 };

@@ -113,26 +113,28 @@ export const overrideWallet = (source: Wallet, target: Wallet) => {
   target.type = source.type;
 };
 
-export const copyWish = (source: any) => {
+export const copyWish = (source: Wish) => {
   return new Wish({
     id: source.id,
     amount: source.amount,
-    currency: source.currency,
-    deleted: source.deleted,
+    authorID: source.authorID,
+    categoryID: source.categoryID,
+    currencyID: source.currencyID,
+    deletedAt: source.deletedAt,
     description: source.description,
-    itemStatus: source.itemStatus,
-    category: copyCategory(source.category),
+    fullfiledAt: source.fullfiledAt,
   });
 };
 
 export const overrideWish = (target: Wish, source: Wish) => {
   target.id = source.id;
   target.amount = source.amount;
-  target.currency = source.currency;
-  target.deleted = source.deleted;
+  target.authorID = source.authorID;
+  target.categoryID = source.categoryID;
+  target.currencyID = source.currencyID;
+  target.deletedAt = source.deletedAt;
   target.description = source.description;
-  target.itemStatus = source.itemStatus;
-  overrideCategory(target.category, source.category);
+  target.fullfiledAt = source.fullfiledAt;
 };
 
 export const copyTransaction = (transaction: any) => {
@@ -149,7 +151,7 @@ export const copyTransaction = (transaction: any) => {
 
 export const overrideTransaction = (
   targetTransaction: Transaction,
-  sourceTransaction: Transaction
+  sourceTransaction: Transaction,
 ) => {
   targetTransaction.id = sourceTransaction.id;
   targetTransaction.amountSent = sourceTransaction.amountSent;
@@ -187,7 +189,7 @@ const getValues = (
   valueA: any,
   valueB: any,
   columns: Array<string>,
-  index = 0
+  index = 0,
 ): any => {
   if (valueA instanceof Date) {
     valueA = dateToString(valueA);
@@ -201,7 +203,7 @@ const getValues = (
       valueA[columns[index]],
       valueB[columns[index]],
       columns,
-      index + 1
+      index + 1,
     );
   }
 
@@ -211,7 +213,7 @@ const getValues = (
 export const sortList = (
   source: Array<any>,
   column: string,
-  ascOrder = true
+  ascOrder = true,
 ) => {
   const columns = column.split('.');
   return source.sort((itemA, itemB) => {

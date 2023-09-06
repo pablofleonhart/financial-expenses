@@ -9,7 +9,10 @@
       :class="{ open: currencySelectorOpen }"
       @click="currencySelectorOpen = !currencySelectorOpen"
     >
-      <component :is="selectedCurrency?.icon" class="h-6 w-6" />
+      <component
+        :is="selectedCurrency?.icon || 'ph-currency-circle-dollar'"
+        class="h-6 w-6"
+      />
       <span class="selected-option-name ml-2">
         {{ selectedCurrency?.name || 'Selecione uma moeda' }}
       </span>
@@ -50,7 +53,7 @@ watch(
   () => props.initialValue,
   () => {
     selectedCurrency.value = props.initialValue;
-  }
+  },
 );
 
 function selectCurrency(option: any) {
