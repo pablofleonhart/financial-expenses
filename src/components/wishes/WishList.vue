@@ -29,13 +29,11 @@
       >
         <tr class="flex w-full items-center h-10 bg-primary-color-300">
           <td
-            class="flex justify-center items-center h-full font-bold text-lg gap-4 pl-4 col-span-4"
+            class="flex justify-center items-center h-full font-bold gap-4 pl-4 col-span-4"
           >
             <component :is="getCategoryIconById(obj.category)" size="26" />
             {{ getCategoryNameById(obj.category) }}
-            <span>{{
-              obj.wishes.reduce((partialSum, a) => partialSum + a.amount, 0)
-            }}</span>
+            <span>{{ getAmounts(obj.wishes) }}</span>
           </td>
         </tr>
         <tr
@@ -49,7 +47,7 @@
             }}
           </td>
           <td class="flex justify-center items-center p-2 h-full w-1/3">
-            {{ wish.description }}
+            {{ wish.description || 'N/D' }}
           </td>
           <td class="flex justify-center items-center p-2 h-full w-1/3">
             {{ getUsernameByID(wish.authorID) }}
@@ -99,6 +97,7 @@ import {
   getUsernameByID,
 } from '../../services';
 import { WISH_STATUS } from '../../types';
+import { Wish } from './Wish';
 
 defineProps({
   selectedTab: { type: Number, required: true },
@@ -140,6 +139,26 @@ const orderColumn = computed(() => {
 const orderDirection = computed(() => {
   return wishSettings.ascending;
 });
+
+function getAmounts(wishes: Wish[]) {
+  const wishesSum: Record<string, any> = {};
+  wishes.forEach((wish) => {
+    const key = wish.currencyID;
+    if (!(key in wishesSum)) {
+      wishesSum[key] = 0;
+    }
+    wishesSum[key] += wish.amount;
+  });
+
+  const sortedArray = Object.entries(wishesSum).sort();
+
+  const amountEntries: string[] = [];
+  sortedArray.forEach((item) => {
+    const currency = getCurrencyTypeById(item[0]);
+    amountEntries.push(formatCurrency(item[1], currency));
+  });
+  return amountEntries.join(' / ');
+}
 
 const orderList = (column: any) => {
   if (column.static) {

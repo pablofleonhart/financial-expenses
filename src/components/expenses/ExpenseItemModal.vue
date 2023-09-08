@@ -12,7 +12,7 @@
       <div class="expense-fields flex flex-col gap-3 my-5">
         <input
           tabindex="0"
-          v-model="expense.amount"
+          v-model="localExpense.amount"
           class="outline-0 rounded p-2 h-10 bg-neutral-color-700 focus:ring focus:ring-secondary-color-300"
           :class="{ 'border border-red-500': amountError }"
           type="number"
@@ -36,17 +36,17 @@
             class="h-5 w-5"
             id="variable_check"
             type="checkbox"
-            v-model="expense.variable"
+            v-model="localExpense.variable"
           />
           <label
             for="variable_check"
             class="text-base"
-            :class="{ 'text-neutral-color-off': expense.travel }"
+            :class="{ 'text-neutral-color-off': localExpense.travel }"
             >Variável</label
           >
         </div>
         <textarea
-          v-model="expense.note"
+          v-model="localExpense.note"
           class="flex col-span-2 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-24"
           placeholder="Descreva a renda ou despesa"
         />
@@ -79,7 +79,7 @@ import CategorySelector from '../common/CategorySelector.vue';
 import BalanceSelector from '../common/BalanceSelector.vue';
 import { Wallet } from '../wallets/Wallet';
 
-const expense = shallowRef(new Expense());
+const localExpense = shallowRef(new Expense());
 
 const selectedCategory = shallowRef(new Category());
 const selectedPayment = shallowRef(new Wallet());
@@ -96,34 +96,34 @@ watch(
   () => props.opened,
   () => {
     if (props.opened) {
-      expense.value = props.expense;
+      localExpense.value = props.expense;
       selectedCategory.value = props.expense.category;
       selectedPayment.value = props.expense.payment;
     }
-  }
+  },
 );
 
 const getActionName = () => {
-  return expense.value.id === '' ? 'Adicionar' : 'Editar';
+  return localExpense.value.id === '' ? 'Adicionar' : 'Editar';
 };
 
 const selectBalance = (balance: Wallet) => {
-  expense.value.payment = balance;
+  localExpense.value.payment = balance;
 };
 
 const onSelectCategory = (option: any) => {
   selectedCategory.value = option;
-  expense.value.category = option;
+  localExpense.value.category = option;
 };
 
 const setDate = (value: Date) => {
-  expense.value.date = value;
+  localExpense.value.date = value;
 };
 
 const isValidForm = (): boolean => {
   let validForm = true;
   amountError.value = false;
-  if (expense.value.amount <= 0) {
+  if (localExpense.value.amount <= 0) {
     amountError.value = true;
     validForm = false;
   }
@@ -136,11 +136,11 @@ const onActionItem = (event: Event) => {
     event?.preventDefault();
     return;
   }
-  if (expense.value.id === '') {
-    addExpense(expense.value);
+  if (localExpense.value.id === '') {
+    addExpense(localExpense.value);
     emit('addExpense');
   } else {
-    editExpense(expense.value);
+    editExpense(localExpense.value);
   }
   emit('close');
 };

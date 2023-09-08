@@ -12,7 +12,7 @@
       :selected-tab="selectedTab"
       @on-edit-wish="onEditWish"
       @on-delete-wish="onDeleteWish"
-      @on-complete-plan="onCompleteWish"
+      @on-complete-wish="onCompleteWish"
     />
   </div>
   <wish-item-modal
