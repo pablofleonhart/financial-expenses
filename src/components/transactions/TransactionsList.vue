@@ -84,7 +84,7 @@ import { getBalanceName } from '../../utils/string-utils';
 const transactionCollumns = [
   {
     key: 'amountSent',
-    name: 'Valor Enviado',
+    name: '$ Enviado',
     class: 'min-w-24 justify-end',
   },
   {
@@ -94,7 +94,7 @@ const transactionCollumns = [
   },
   {
     key: 'amountReceived',
-    name: 'Valor Recebido',
+    name: '$ Recebido',
     class: 'min-w-24 justify-end',
   },
   {
@@ -123,7 +123,7 @@ const transactionCollumns = [
 const emit = defineEmits(['onEditTransaction', 'onDeleteWallet']);
 
 const transactionList = computed<Array<Transaction>>(
-  () => allTransactionsItems
+  () => allTransactionsItems,
 );
 const orderColumn = computed(() => {
   return transactionSettings.column;

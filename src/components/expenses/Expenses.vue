@@ -1,22 +1,19 @@
 <template>
-  <div class="expenses-container m-3 h-[90vh]">
-    <expenses-header />
+  <div class="expenses-container m-2 h-[90vh]">
     <div
-      class="expense-action-bar flex flex-row w-full justify-around gap-8 items-center m-2"
+      class="expense-action-bar flex flex-row justify-between items-center mx-4"
     >
-      <datepicker
-        v-model="expenseSelectedPeriod"
-        multi-calendars
-        range
-        @update:model-value="onChangePeriod"
-      />
+      <business-month-selector @select-month="onChangeBusinessMonth" />
       <div class="flex">
         <add-button @click="onAddExpense"></add-button>
       </div>
     </div>
+    <expenses-header />
     <expenses-page
       @on-edit-expense="onEditExpense"
       @on-delete-expense="onDeleteExpense"
+      @on-edit-budget="onEditBudget"
+      @on-delete-budget="onDeleteBudget"
     />
   </div>
   <expense-item-modal
@@ -26,13 +23,13 @@
   />
   <expense-budget-modal
     :opened="showExpenseBudgetModal"
-    :expense="objExpense"
+    :budget="objBudget"
     @close="showExpenseBudgetModal = false"
   />
   <confirmation-modal
-    message="Deseja realmente excluir esse gasto?"
+    :message="messageDeleteConfirmationModal"
     :show-modal="showDeleteConfirmationModal"
-    @accept="onAcceptDelete"
+    @accept="onDeleteCallback"
     @cancel="showDeleteConfirmationModal = false"
   />
 </template>
@@ -43,75 +40,52 @@ import { useRoute } from 'vue-router';
 import AddButton from '../common/AddButton.vue';
 import ExpensesHeader from './ExpensesHeader.vue';
 import ExpensesPage from './ExpensesPage.vue';
-import {
-  deleteExpense,
-  filterExpenses,
-  loadExpenses,
-  selectedExpensePeriod,
-  showFixedExpense,
-  showVariablesExpense,
-  travelExpense,
-} from '../../services';
+import { deleteBudget, deleteExpense, getBudgets } from '../../services';
 import { Expense } from './Expense';
 import ConfirmationModal from '../common/ConfirmationModal.vue';
 import ExpenseBudgetModal from './ExpenseBudgetModal.vue';
 import ExpenseItemModal from './ExpenseItemModal.vue';
-import { copyExpense, getFormattedDate } from '../../utils';
-import Datepicker from '../common/Datepicker.vue';
+import { BusinessMonth, LAST_DAY_OF_MONTH } from '../../utils';
+import { Budget } from '../budgets/Budget';
+import { EVENT_BUS_EVENTS, emitEventBus } from '../../event-bus';
+import BusinessMonthSelector from '../common/BusinessMonthSelector.vue';
+import {
+  getExpenseBusinessMonth,
+  setExpenseBusinessMonth,
+} from '../../store/expenses';
 
 const showExpenseItemModal = ref(false);
 const showExpenseBudgetModal = ref(false);
 const showDeleteConfirmationModal = ref(false);
+const messageDeleteConfirmationModal = ref('');
+const onDeleteCallback = ref(() => {});
 const objExpense = ref(new Expense());
+const objBudget = ref(new Budget());
 let expenseToDelete: Expense = new Expense();
+let budgetToDelete: Budget = new Budget();
 const $route = useRoute();
 
-const expenseSelectedPeriod = ref([
-  selectedExpensePeriod.from,
-  selectedExpensePeriod.to,
-]);
+watch($route, () => {
+  emitEventBus(EVENT_BUS_EVENTS.UPDATE_EXPENSES);
+  emitEventBus(EVENT_BUS_EVENTS.UPDATE_BUDGETS);
+  emitEventBus(EVENT_BUS_EVENTS.UPDATE_ANALYTICS);
+});
 
-const applyFilterExpenses = () => {
-  let variableExpense = true;
-  let fixedExpense = true;
-
-  if ($route.fullPath === '/fixed-expenses') {
-    fixedExpense = true;
-    variableExpense = false;
-  } else if ($route.fullPath === '/variable-expenses') {
-    fixedExpense = false;
-    variableExpense = true;
-  }
-
-  showFixedExpense.value = fixedExpense;
-  showVariablesExpense.value = variableExpense;
-  travelExpense.value = null;
-  filterExpenses();
-};
+function onChangeBusinessMonth(businessMonth: BusinessMonth) {
+  setExpenseBusinessMonth(businessMonth);
+  emitEventBus(EVENT_BUS_EVENTS.UPDATE_EXPENSES);
+  emitEventBus(EVENT_BUS_EVENTS.UPDATE_BUDGETS);
+  emitEventBus(EVENT_BUS_EVENTS.UPDATE_ANALYTICS);
+}
 
 onMounted(async () => {
-  await loadExpenses();
-  applyFilterExpenses();
+  emitEventBus(EVENT_BUS_EVENTS.UPDATE_EXPENSES);
+  emitEventBus(EVENT_BUS_EVENTS.UPDATE_BUDGETS);
 });
 
-watch($route, () => {
-  applyFilterExpenses();
-});
-
-const onChangePeriod = (period: any) => {
-  const from = getFormattedDate(period[0]);
-  const to = getFormattedDate(period[1]);
-
-  filterExpenses({
-    index: 99,
-    from,
-    to,
-    name: 'custom',
-  });
-};
-
-const onAddExpense = () => {
+function onAddExpense() {
   objExpense.value = new Expense();
+  objBudget.value = new Budget();
   const tabSettings = localStorage.getItem('expense-tab');
   let selectedTab = null;
   if (tabSettings) {
@@ -122,29 +96,44 @@ const onAddExpense = () => {
   } else {
     showExpenseItemModal.value = true;
   }
-};
+}
 
-const onEditExpense = (expense: Expense) => {
-  objExpense.value = copyExpense(expense);
-  const tabSettings = localStorage.getItem('expense-tab');
-  let selectedTab = null;
-  if (tabSettings) {
-    selectedTab = JSON.parse(tabSettings);
-  }
-  if (selectedTab === 'budget') {
-    showExpenseBudgetModal.value = true;
-  } else {
-    showExpenseItemModal.value = true;
-  }
-};
+function onEditExpense(expense: Expense) {
+  objExpense.value = {
+    ...expense,
+    // installments: Number(expense.installments.toString().split('/')[0]),
+  };
+  showExpenseItemModal.value = true;
+}
 
-const onDeleteExpense = (expense: Expense) => {
+function onDeleteExpense(expense: Expense) {
   showDeleteConfirmationModal.value = true;
+  messageDeleteConfirmationModal.value = 'Deseja realmente excluir esse gasto?';
+  onDeleteCallback.value = onAcceptDeleteExpense;
   expenseToDelete = expense;
-};
+}
 
-const onAcceptDelete = async () => {
+function onEditBudget(budget: Budget) {
+  objBudget.value = { ...budget };
+  showExpenseBudgetModal.value = true;
+}
+
+function onDeleteBudget(budget: Budget) {
+  showDeleteConfirmationModal.value = true;
+  messageDeleteConfirmationModal.value =
+    'Deseja realmente excluir esse orçamento?';
+  onDeleteCallback.value = onAcceptDeleteBudget;
+  budgetToDelete = budget;
+}
+
+async function onAcceptDeleteExpense() {
   showDeleteConfirmationModal.value = false;
   await deleteExpense(expenseToDelete);
-};
+}
+
+async function onAcceptDeleteBudget() {
+  showDeleteConfirmationModal.value = false;
+  await deleteBudget(budgetToDelete);
+  emitEventBus(EVENT_BUS_EVENTS.UPDATE_BUDGETS);
+}
 </script>

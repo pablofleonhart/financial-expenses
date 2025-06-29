@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-1">
-    <span class="font-bold">Descriçao</span>
+    <span class="font-bold">Descrição</span>
     <textarea
       tabindex="0"
       class="flex col-span-3 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-20 focus:ring focus:ring-secondary-color-300"

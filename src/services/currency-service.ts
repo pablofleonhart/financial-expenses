@@ -1,13 +1,13 @@
 import { reactive } from 'vue';
 import { Currency } from '../components/currencies';
-import { api } from '../lib/axios';
+import { getAuthApi } from '../lib/axios';
 
 const objCurrencies: Record<string, Currency> = {};
 export const currencyItems: Currency[] = reactive([]);
 
 export async function loadCurrencies() {
   try {
-    const response = await api.get('/currencies');
+    const response = await getAuthApi().get('/currencies');
     Object.assign(currencyItems, response.data.currencies);
 
     currencyItems.forEach((currency) => {
@@ -20,6 +20,12 @@ export async function loadCurrencies() {
 
 export function getCurrencyById(id: string): Currency {
   return objCurrencies[id];
+}
+
+export function getCurrencyByType(type: string): Currency {
+  return (
+    currencyItems.find((currency) => currency.type === type) || new Currency()
+  );
 }
 
 export function getCurrencyIconById(id: string): string {

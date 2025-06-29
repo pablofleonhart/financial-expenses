@@ -1,54 +1,53 @@
-import { Author } from '../user/Author';
-import { Category } from '../categories/Category';
-import { Travel } from '../travels/Travel';
-import { Wallet } from '../wallets/Wallet';
-
 export class Expense {
   public id: string;
+  public paymentID: string | null;
+  public accountName: string | null;
   public amount: number;
-  public card: boolean;
-  public category: Category;
+  public authorID: string;
+  public categoryID: string;
+  public categoryName: string;
+  public currencyType: string;
   public date: Date | string;
-  public deleted: boolean;
-  public note: string;
-  public author: Author;
-  public currency: string;
-  public payment: Wallet;
-  public variable: boolean;
-  public travel: Travel;
-  public budget: boolean;
-  public budgetPercentage?: number;
-  public spentAmount?: number;
+  public deletedAt: Date | null;
+  public description: string;
+  public fullfiledAt: Date | null;
+  public isVariable: boolean;
+  public travelID: string | null;
+  public installments: string;
 
   constructor(
     objExpense: Expense = {
       id: '',
+      paymentID: '',
+      accountName: '',
       amount: 0,
-      card: true,
-      category: new Category(),
+      authorID: '',
+      categoryID: '',
+      categoryName: '',
+      currencyType: '',
       date: new Date(),
-      deleted: false,
-      note: '',
-      author: new Author(),
-      currency: 'euro',
-      payment: new Wallet(),
-      variable: true,
-      travel: new Travel(),
-      budget: false,
-    }
+      deletedAt: null,
+      description: '',
+      fullfiledAt: null,
+      isVariable: true,
+      travelID: null,
+      installments: '1',
+    },
   ) {
     this.id = objExpense.id;
+    this.paymentID = objExpense.paymentID;
+    this.accountName = objExpense.accountName;
     this.amount = objExpense.amount;
-    this.card = objExpense.card;
-    this.category = objExpense.category;
+    this.authorID = objExpense.authorID;
+    this.categoryID = objExpense.categoryID;
+    this.categoryName = objExpense.categoryName;
+    this.currencyType = objExpense.currencyType;
     this.date = objExpense.date;
-    this.deleted = objExpense.deleted;
-    this.note = objExpense.note;
-    this.author = objExpense.author;
-    this.currency = objExpense.currency;
-    this.payment = objExpense.payment;
-    this.variable = objExpense.variable;
-    this.travel = objExpense.travel;
-    this.budget = objExpense.budget;
+    this.deletedAt = objExpense.deletedAt;
+    this.description = objExpense.description;
+    this.fullfiledAt = objExpense.fullfiledAt;
+    this.isVariable = objExpense.isVariable;
+    this.travelID = objExpense.travelID;
+    this.installments = objExpense.installments;
   }
 }

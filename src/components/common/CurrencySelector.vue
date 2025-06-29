@@ -1,9 +1,12 @@
 <template>
   <div class="flex flex-col gap-1">
     <span class="font-bold"> {{ label }}</span>
-
     <div
       class="currency-select rounded outline-0 focus:ring focus:ring-secondary-color-300"
+      :class="{
+        'border border-red-500': error,
+        'text-neutral-400': !selectedCurrency,
+      }"
       @click.stop
       tabindex="0"
     >

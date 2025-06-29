@@ -3,11 +3,15 @@
     <span class="font-bold"> {{ label }} </span>
     <div
       class="category-select rounded outline-0 focus:ring focus:ring-secondary-color-300"
+      :class="{
+        'border border-red-500': error,
+        'text-neutral-400': !selectedCategory,
+      }"
       @click.stop
       tabindex="0"
     >
       <div
-        class="selected-option flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer"
+        class="selected-option disabled flex outline-0 rounded p-2 bg-neutral-color-700 h-10 cursor-pointer text-neutral-color-off"
         :class="{ open: categorySelectorOpen }"
         @click="categorySelectorOpen = !categorySelectorOpen"
       >
@@ -20,7 +24,7 @@
         </span>
       </div>
       <ul
-        class="period-items scrollbar overflow-y-scroll overflow-x-hidden absolute bg-neutral-color-500 rounded w-80 h-80 z-10"
+        class="period-items scrollbar overflow-y-scroll overflow-x-hidden absolute bg-neutral-color-500 rounded w-80 max-h-80 z-10"
         :class="{ hidden: !categorySelectorOpen }"
       >
         <li
@@ -52,7 +56,7 @@ import ErrorBadge from './ErrorBadge.vue';
 
 const props = defineProps({
   label: { type: String, default: 'Categoria' },
-  initialValue: { type: Object as PropType<any>, default: null },
+  initialValue: { type: Object as PropType<Category>, default: null },
   error: { type: String, default: '' },
 });
 

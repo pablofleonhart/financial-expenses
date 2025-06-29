@@ -50,9 +50,7 @@
       @click="$router.push('/variable-expenses')"
     >
       <span class="font-bold text-xl">Despesas variáveis do mês</span>
-      <div class="text-2xl">
-        Total: {{ formatCurrency(expensesSum['euro']) }}
-      </div>
+      <div class="text-2xl">Total: {{ formatCurrency(9999) }}</div>
       <div class="flex gap-4 w-full justify-center">
         <span class="flex h-full items-center text-lg">Top</span>
         <ph-number-circle-five
@@ -114,7 +112,6 @@ import {
   balanceSum,
   expensesSum,
   investmentsSum,
-  loadExpenses,
   loadWallets,
   loadRevenues,
   loadWishes,
@@ -152,8 +149,8 @@ const wishCategories = computed(() => {
 
 onMounted(async () => {
   await loadRevenues();
-  await loadExpenses();
-  await loadWallets();
+  // await loadExpenses();
+  // await loadWallets();
   await loadWishes();
 });
 </script>

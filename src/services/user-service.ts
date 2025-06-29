@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { reactive } from 'vue';
 import { User } from '../components/user/User';
-import { api } from '../lib/axios';
+import api, { getAuthApi } from '../lib/axios';
 import { refreshToken } from './token-manager';
 
 export let account: User = reactive(new User());
@@ -20,18 +20,17 @@ export async function loadUsers() {
 
 export async function loadUserProfile() {
   // load profile
-  await api
+  await getAuthApi()
     .get('/me')
     .then((response) => {
       const { user } = response.data;
       account = user;
-    })
-    .catch((error: AxiosError) => {
-      if (error.response?.status === 401) {
-        refreshToken();
-        refreshToken();
-      }
     });
+  // .catch((error: AxiosError) => {
+  //   if (error.response?.status === 401) {
+  //     refreshToken();
+  //   }
+  // });
 }
 
 export function getUsernameByID(userID: string) {

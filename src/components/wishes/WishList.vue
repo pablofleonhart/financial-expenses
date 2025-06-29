@@ -59,7 +59,7 @@
             >
               <ph-check-circle
                 class="button-action text-neutral-color-off hover:bg-green-500 hover:text-neutral-50"
-                @click="emit('onCompleteWish', wish)"
+                @click="emit('onFullfilWish', wish)"
               />
               <ph-pencil
                 class="button-action text-neutral-color-off hover:bg-blue-500 hover:text-neutral-50"
@@ -72,8 +72,8 @@
             </div>
             <div v-else class="flex w-full justify-evenly">
               <ph-link
-                class="button-action text-neutral-color-off hover:bg-cyan-500 hover:text-neutral-50 pointer-events-none"
-                @click="openRelatedExpense"
+                class="button-action text-neutral-color-off hover:bg-cyan-500 hover:text-neutral-50"
+                @click="emit('onOpenExpenses', wish)"
               />
             </div>
           </td>
@@ -102,7 +102,12 @@ import { Wish } from './Wish';
 defineProps({
   selectedTab: { type: Number, required: true },
 });
-const emit = defineEmits(['onCompleteWish', 'onEditWish', 'onDeleteWish']);
+const emit = defineEmits([
+  'onFullfilWish',
+  'onEditWish',
+  'onDeleteWish',
+  'onOpenExpenses',
+]);
 
 const wishColumns = [
   {
@@ -166,8 +171,4 @@ const orderList = (column: any) => {
   }
   sortWishes(column.key);
 };
-
-function openRelatedExpense() {
-  console.log('show related expense');
-}
 </script>

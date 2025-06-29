@@ -45,3 +45,36 @@ export type PlaceType = {
 export interface IExpenseFilter {
   period?: MonthPeriod;
 }
+
+export interface IBudgetFilter {
+  targetDate: string;
+  categoryID?: string;
+}
+
+export interface IBudgetSort {
+  column: string;
+  order: string;
+}
+
+export interface IExpenseFilter {
+  startDate?: string;
+  endDate?: string;
+  categoryID?: string;
+  travelID?: string;
+  wishID?: string;
+  paymentID?: string;
+  userID?: string;
+  isVariable?: boolean;
+  isFullfiled?: boolean;
+}
+
+export interface IExpenseSort {
+  column: string;
+  order: string;
+}
+
+export type ExpenseAnalytics = {
+  expenseCategoriesLabels: string[];
+  expenseCategoriesValues: number[];
+  expenseCategoriesColorValues: string[];
+};

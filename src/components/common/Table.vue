@@ -38,7 +38,7 @@
             <ph-check-circle
               v-if="showWishActions"
               class="button-action hover:bg-green-500"
-              @click="onCompleteWish(index)"
+              @click="onFullfilWish(index)"
             />
             <ph-arrow-counter-clockwise
               v-else

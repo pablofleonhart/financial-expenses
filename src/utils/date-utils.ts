@@ -3,9 +3,11 @@ import dayjs from 'dayjs';
 import { MonthPeriod } from '../types';
 import { capitalizeFirstLetter } from './string-utils';
 
+export const LAST_DAY_OF_MONTH = 25;
+
 export const formatDate = (date: Date | string | null): string => {
   if (!date) {
-    return 'No date';
+    return 'N/D';
   }
   return new Date(date).toLocaleDateString();
 };
@@ -36,7 +38,7 @@ export const getLastDayOfYear = (date: Date = new Date()): Date => {
 
 export const isDateInPeriod = (
   date: Date | string,
-  period: MonthPeriod
+  period: MonthPeriod,
 ): boolean => {
   const value = new Date(date);
   return new Date(period.from) <= value && value <= new Date(period.to);
@@ -77,3 +79,67 @@ export const isDateInCurrentMonth = (date: Date): boolean => {
 export const isLate = (date: Date): boolean => {
   return dayjs(date).isBefore(new Date());
 };
+
+export function getBusinessMonthInitialDate(date = new Date()): Date {
+  if (date.getDate() <= LAST_DAY_OF_MONTH) {
+    date.setMonth(date.getMonth() - 1);
+  }
+  date.setDate(LAST_DAY_OF_MONTH + 1);
+
+  return dayjs.tz(date, 'Europe/London').startOf('day').toDate();
+}
+
+export function getBusinessMonthFinalDate(date = new Date()): Date {
+  let month = date.getMonth();
+  if (date.getDate() > LAST_DAY_OF_MONTH) {
+    month++;
+  }
+  date.setDate(LAST_DAY_OF_MONTH);
+  date.setMonth(month);
+
+  return dayjs.tz(date, 'Europe/London').endOf('day').toDate();
+}
+
+export type BusinessMonth = {
+  startDate: Date;
+  endDate: Date;
+  name: string;
+};
+
+const businessMonths: BusinessMonth[] = [];
+
+export function getBusinnesMonths(): BusinessMonth[] {
+  if (businessMonths.length !== 0) {
+    return businessMonths;
+  }
+  const initialDate = dayjs().startOf('year').toDate();
+  initialDate.setFullYear(new Date().getFullYear() - 1);
+  const finalDate = dayjs().endOf('year').toDate();
+
+  while (initialDate <= finalDate) {
+    const startDate = getBusinessMonthInitialDate(initialDate);
+    const endDate = getBusinessMonthFinalDate(initialDate);
+    businessMonths.push({
+      startDate,
+      endDate,
+      name: `${getMonthYear(startDate)} - ${getMonthYear(endDate)}`,
+    });
+    initialDate.setMonth(initialDate.getMonth() + 1);
+  }
+
+  return businessMonths;
+}
+
+export function getCurrentBusinessMonth(): BusinessMonth {
+  const startDate = getBusinessMonthInitialDate();
+  const endDate = getBusinessMonthFinalDate();
+  return {
+    startDate,
+    endDate,
+    name: `${getMonthYear(startDate)} - ${getMonthYear(endDate)}`,
+  };
+}
+
+export function formatDateToISO(date: Date): string {
+  return dayjs(date).format('YYYY-MM-DDTHH:mm:ssZ[Z]');
+}

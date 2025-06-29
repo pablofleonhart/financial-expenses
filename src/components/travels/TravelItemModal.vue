@@ -30,13 +30,13 @@
           :initial-value="selectedCategory"
           @on-select-option="onSelectCategory"
         />
-        <balance-selector
+        <account-selector
           tabindex="0"
           :initial-value="selectedPayment"
           empty-message="Forma de pagamento"
           @select="selectBalance"
         />
-        <datepicker :selected="expense.date" @set-date="setDate" />
+        <date-input :selected="expense.date" @set-date="setDate" />
         <textarea
           v-model="expense.note"
           class="flex col-span-2 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-24"
@@ -62,12 +62,12 @@
 </template>
 
 <script lang="ts" setup>
-import Datepicker from '../common/Datepicker.vue';
+import DateInput from '../common/DateInput.vue';
 import { PropType, ref, shallowRef, watch } from 'vue';
 import { Category } from '../categories/Category';
 import { addTravelExpense, editTravelExpense } from '../../services';
 import CategorySelector from '../common/CategorySelector.vue';
-import BalanceSelector from '../common/BalanceSelector.vue';
+import AccountSelector from '../common/AccountSelector.vue';
 import { Wallet } from '../wallets/Wallet';
 import { Expense } from '../expenses/Expense';
 import TravelSelector from '../common/TravelSelector.vue';
@@ -97,7 +97,7 @@ watch(
       selectedPayment.value = props.expense.payment;
       selectedTravel.value = props.expense.travel;
     }
-  }
+  },
 );
 
 const getActionName = () => {

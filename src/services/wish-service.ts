@@ -3,7 +3,8 @@ import { Wish } from '../components/wishes/Wish';
 import { sortList } from '../utils';
 import { WISH_STATUS, WishStatus } from '../types';
 import { getCategoryNameById } from './category-service';
-import { api } from '../lib/axios';
+import { getAuthApi } from '../lib/axios';
+import { Expense } from '../components/expenses/Expense';
 
 export type CategoryWish = {
   category: string;
@@ -81,7 +82,7 @@ const loadWishCategories = () => {
 
 export const loadWishes = async () => {
   try {
-    const response = await api.get('/wishes');
+    const response = await getAuthApi().get('/wishes');
     allWishItems.splice(0);
     Object.assign(allWishItems, response.data.wishes);
   } catch (error) {
@@ -91,7 +92,7 @@ export const loadWishes = async () => {
 
 export async function addWish(wish: Wish) {
   try {
-    await api.post('/wishes', wish);
+    await getAuthApi().post('/wishes', wish);
     await loadWishes();
     keepListUpdated();
   } catch (error) {
@@ -101,7 +102,7 @@ export async function addWish(wish: Wish) {
 
 export async function editWish(wish: Wish) {
   try {
-    await api.post(`/wishes/${wish.id}`, wish);
+    await getAuthApi().post(`/wishes/${wish.id}`, wish);
     await loadWishes();
     keepListUpdated();
   } catch (error) {
@@ -111,7 +112,7 @@ export async function editWish(wish: Wish) {
 
 export async function deleteWish(wish: Wish) {
   try {
-    await api.post(`/wishes/delete/${wish.id}`, wish);
+    await getAuthApi().post(`/wishes/delete/${wish.id}`, wish);
     await loadWishes();
     keepListUpdated();
   } catch (error) {
@@ -168,21 +169,15 @@ export const topFiveWishCategories = computed(() => {
   return wishCategories.slice(0, 5);
 });
 
-export const completePlan = (wish: Wish) => {
-  if (!wish) {
-    return;
+export async function fullFilWish(wish: Wish, expense: Expense) {
+  try {
+    await getAuthApi().post(`/wishes/fullfil/${wish.id}`, expense);
+    await loadWishes();
+    keepListUpdated();
+  } catch (error) {
+    console.error('Not able to fullfil wish:', wish);
   }
-  editWish(wish);
-  keepListUpdated();
-};
-
-export const reopenWish = (wish: Wish) => {
-  if (!wish) {
-    return;
-  }
-  editWish(wish);
-  keepListUpdated();
-};
+}
 
 const keepListUpdated = () => {
   filterWishes();

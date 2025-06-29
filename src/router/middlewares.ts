@@ -3,12 +3,13 @@ import { userAuthenticated } from '../services';
 import { DEFAULT_ROUTE } from '../components/common/config';
 
 export const isAuthenticated = async ({ to }: any) => {
-  const isAuthenticated = userAuthenticated();
-  if (isAuthenticated) {
-    return true;
-  } else {
-    return { path: '/login', query: { redirectTo: to.path } };
-  }
+  // const isAuthenticated = userAuthenticated();
+  // if (isAuthenticated) {
+  //   return true;
+  // } else {
+  //   return { path: '/login', query: { redirectTo: to.path } };
+  // }
+  return true;
 };
 
 export const isRootAuthenticated = async () => {

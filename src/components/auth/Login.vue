@@ -67,11 +67,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, onUpdated, ref } from 'vue';
 import router from '../../router';
-import {
-  authenticateUser,
-  errorMessage,
-  loadInitialData,
-} from '../../services';
+import { authenticateUser, errorMessage } from '../../services';
 import { DEFAULT_ROUTE } from '../common/config';
 
 const email = ref('');

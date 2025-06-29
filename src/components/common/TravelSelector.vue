@@ -66,7 +66,7 @@ watch(
   () => props.initialValue,
   () => {
     selectedTravel.value = getTravelByID(props.initialValue.id);
-  }
+  },
 );
 
 const getTravelByID = (id: string) => {

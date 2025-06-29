@@ -19,6 +19,6 @@ watch(
     } else {
       layout.value = AppLayoutMain;
     }
-  }
+  },
 );
 </script>

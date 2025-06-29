@@ -221,7 +221,7 @@ export const sortWallets = (column?: string) => {
   sortList(
     filteredWalletItems,
     walletSettings.column,
-    walletSettings.ascending
+    walletSettings.ascending,
   );
   localStorage.setItem(WALLET_LIST_KEY, JSON.stringify(walletSettings));
 };

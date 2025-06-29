@@ -1,3 +1,4 @@
+export * from './account-service';
 export * from './auth-service';
 export * from './budget-service';
 export * from './category-service';

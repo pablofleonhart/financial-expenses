@@ -3,9 +3,9 @@
     <span class="font-bold"> {{ label }} </span>
     <input
       type="number"
-      min="0"
+      :min="minValue"
       required
-      placeholder="Valor"
+      :placeholder="placeholder"
       tabindex="0"
       @input="inputValue"
       :value="props.value"
@@ -21,8 +21,10 @@ import ErrorBadge from './ErrorBadge.vue';
 
 const props = defineProps({
   label: { type: String, default: 'Valor' },
+  placeholder: { type: String, default: 'Valor' },
   value: { type: Number, default: 0 },
   error: { type: String, default: '' },
+  minValue: { type: Number, default: 0 },
 });
 const emit = defineEmits(['onInput']);
 
