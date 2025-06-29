@@ -73,7 +73,7 @@ export const addTransaction = async (transaction: Transaction) => {
 
 export const editTransaction = async (
   transaction: Transaction,
-  publish = true
+  publish = true,
 ) => {
   if (!transaction) {
     throw new Error('Transaction does not exist');
@@ -81,7 +81,7 @@ export const editTransaction = async (
 
   return new Promise((resolve) => {
     const { mutate: updateTransaction, onDone } = useUpdateTransactionMutation(
-      {}
+      {},
     );
     updateTransaction({
       id: transaction.id,
@@ -125,11 +125,11 @@ export const sortTransactions = (column?: string) => {
   sortList(
     allTransactionsItems,
     transactionSettings.column,
-    transactionSettings.ascending
+    transactionSettings.ascending,
   );
   localStorage.setItem(
     TRANSACTION_LIST_KEY,
-    JSON.stringify(transactionSettings)
+    JSON.stringify(transactionSettings),
   );
 };
 

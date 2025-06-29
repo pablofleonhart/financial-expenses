@@ -1,13 +1,16 @@
 <template>
   <div class="flex h-5/6 w-11/12">
     <doughnut
+      v-if="
+        expenseAnalytics && expenseAnalytics.expenseCategoriesLabels.length > 0
+      "
       :data="chartData"
       :options="chartOptions"
       aria-label="Expense categories by month"
       role="img"
     >
-      <p>Nao foi possivel carregar este grafico</p>
     </doughnut>
+    <p v-else>Nenhum item encontrado para gerar o grafico</p>
   </div>
 </template>
 
@@ -23,18 +26,23 @@ import {
   ChartData,
   Colors,
 } from 'chart.js';
-import { onMounted, reactive, ref, watch } from 'vue';
+import { Ref, onMounted, onUnmounted, reactive, ref } from 'vue';
 import { Doughnut } from 'vue-chartjs';
-import {
-  expenseCategoriesLabels,
-  expenseCategoriesValues,
-  expenseCategoriesColorValues,
-  reloadCharts,
-} from '../../services';
+import { loadExpenseCategories } from '../../services';
 import { formatCurrency } from '../../utils';
+import {
+  EVENT_BUS_EVENTS,
+  registerEventBusListener,
+  unregisterEventBusListener,
+} from '../../event-bus';
+import { ExpenseAnalytics, IExpenseFilter } from '../../types';
+import { getExpenseBusinessMonth } from '../../store/expenses';
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title, ...registerables);
 ChartJS.register(Colors);
+
+const expenseAnalytics: Ref<ExpenseAnalytics | undefined> =
+  ref<ExpenseAnalytics>();
 
 const chartData = ref<ChartData<'doughnut'>>({
   labels: [],
@@ -47,11 +55,17 @@ const chartData = ref<ChartData<'doughnut'>>({
 });
 
 const getExpenseChartData = (): ChartData<'doughnut'> => ({
-  labels: expenseCategoriesLabels,
+  labels: expenseAnalytics.value
+    ? expenseAnalytics.value.expenseCategoriesLabels
+    : [],
   datasets: [
     {
-      backgroundColor: expenseCategoriesColorValues,
-      data: expenseCategoriesValues,
+      backgroundColor: expenseAnalytics.value
+        ? expenseAnalytics.value.expenseCategoriesColorValues
+        : [],
+      data: expenseAnalytics.value
+        ? expenseAnalytics.value.expenseCategoriesValues
+        : [],
     },
   ],
 });
@@ -69,12 +83,39 @@ const getTitleSettings = reactive({
   text: 'Categorias',
 });
 
-watch(reloadCharts, () => {
+async function reloadChart() {
+  const filterData: IExpenseFilter = {
+    startDate: new Date(getExpenseBusinessMonth().startDate).toISOString(),
+    endDate: new Date(getExpenseBusinessMonth().endDate).toISOString(),
+  };
+
+  const pathName = window.location.pathname;
+  if (pathName !== '/expenses') {
+    filterData.isVariable =
+      window.location.pathname.includes('variable-expenses');
+  }
+
+  expenseAnalytics.value = await loadExpenseCategories(filterData);
   chartData.value = getExpenseChartData();
+}
+
+async function updateSelectedPeriod() {
+  await reloadChart();
+}
+
+onMounted(async () => {
+  registerEventBusListener(
+    EVENT_BUS_EVENTS.UPDATE_ANALYTICS,
+    updateSelectedPeriod,
+  );
+  await reloadChart();
 });
 
-onMounted(() => {
-  chartData.value = getExpenseChartData();
+onUnmounted(() => {
+  unregisterEventBusListener(
+    EVENT_BUS_EVENTS.UPDATE_ANALYTICS,
+    updateSelectedPeriod,
+  );
 });
 
 const chartOptions = ref<ChartOptions<'doughnut'>>({

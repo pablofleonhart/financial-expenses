@@ -1,3 +1,5 @@
+import { Expense } from '../expenses/Expense';
+
 export class Wish {
   public id: string;
   public amount: number;
@@ -7,6 +9,7 @@ export class Wish {
   public description: string;
   public fullfiledAt: Date | null;
   public authorID: string;
+  public expenses: Expense[] | null;
 
   constructor(
     objWish: Wish = {
@@ -18,6 +21,7 @@ export class Wish {
       description: '',
       fullfiledAt: null,
       authorID: '',
+      expenses: null,
     },
   ) {
     this.id = objWish.id;
@@ -28,5 +32,6 @@ export class Wish {
     this.description = objWish.description;
     this.fullfiledAt = objWish.fullfiledAt;
     this.authorID = objWish.authorID;
+    this.expenses = objWish.expenses;
   }
 }

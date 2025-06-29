@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import router from '../router';
-import { api } from '../lib/axios';
+import api from '../lib/axios';
 import { getToken, storeToken } from './token-manager';
 
 export const errorMessage = ref('');
@@ -11,7 +11,7 @@ export const userAuthenticated = (): boolean => {
 
 export const authenticateUser = async (
   email: string,
-  password: string
+  password: string,
 ): Promise<string | null> => {
   let result = null;
   await api
@@ -32,5 +32,6 @@ export const authenticateUser = async (
 };
 
 export const logout = async () => {
+  localStorage.removeItem('atk');
   await router.push('/login');
 };

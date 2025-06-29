@@ -10,7 +10,7 @@ export class Currency {
       name: '',
       type: '',
       icon: '',
-    }
+    },
   ) {
     this.id = objCurrency.id;
     this.name = objCurrency.name;

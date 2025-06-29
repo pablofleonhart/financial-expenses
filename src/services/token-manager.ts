@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { updateAuthorizationHeader, api } from '../lib/axios';
+import { updateAuthorizationHeader, getResetApi } from '../lib/axios';
 import router from '../router';
 
 let _accessToken: string | null = null;
@@ -20,6 +20,7 @@ export function storeToken(token: string) {
 }
 
 export function getToken(): string | null {
+  // return _accessToken;
   return _accessToken ? `Bearer ${_accessToken}` : null;
 }
 
@@ -29,7 +30,7 @@ export async function refreshToken(): Promise<void> {
     await router.push('/login');
   }
   refreshTries++;
-  await api
+  await getResetApi(_accessToken)
     .patch('token/refresh')
     .then((response) => {
       storeToken(response.data.token);

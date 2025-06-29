@@ -34,24 +34,29 @@
     @on-edit-expense="onEditExpense"
     @on-delete-expense="onDeleteExpense"
   />
-  <budgets-list
+  <expense-budgets
     v-if="selectedTab === 'budget'"
     class="flex my-4"
-    @on-edit-expense="onEditExpense"
-    @on-delete-expense="onDeleteExpense"
+    @on-edit-expense="onEditBudget"
+    @on-delete-expense="onDeleteBudget"
   />
-  <expenses-analyzes v-else :on-reload="reloadChart" />
+  <expenses-analyzes v-if="selectedTab === 'chart'" :on-reload="reloadChart" />
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import BudgetsList from './BudgetsList.vue';
 import ExpensesList from './ExpensesList.vue';
 import ExpensesAnalyzes from './ExpensesAnalyzes.vue';
+import ExpenseBudgets from './ExpenseBudgets.vue';
 
 const selectedTab = ref('list');
 
-const emit = defineEmits(['onEditExpense', 'onDeleteExpense']);
+const emit = defineEmits([
+  'onEditExpense',
+  'onDeleteExpense',
+  'onEditBudget',
+  'onDeleteBudget',
+]);
 const reloadChart = ref(false);
 
 onMounted(() => {
@@ -67,6 +72,14 @@ const onEditExpense = (index: number) => {
 
 const onDeleteExpense = (index: number) => {
   emit('onDeleteExpense', index);
+};
+
+const onEditBudget = (index: number) => {
+  emit('onEditBudget', index);
+};
+
+const onDeleteBudget = (index: number) => {
+  emit('onDeleteBudget', index);
 };
 
 const onClickTab = (tab: string) => {

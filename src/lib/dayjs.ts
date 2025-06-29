@@ -7,4 +7,4 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.locale('pt-br');
 // Setting the default timezone
-dayjs.tz.setDefault('Europe/Berlin');
+dayjs.tz.setDefault('Europe/London');

@@ -1,13 +1,13 @@
 import { reactive } from 'vue';
 import { Category } from '../components/categories/Category';
-import { api } from '../lib/axios';
+import { getAuthApi } from '../lib/axios';
 
 const objCategories: Record<string, Category> = {};
 export const categoryItems: Category[] = reactive([]);
 
 export async function loadCategories() {
   try {
-    const response = await api.get('/categories');
+    const response = await getAuthApi().get('/categories');
     Object.assign(categoryItems, response.data.categories);
 
     categoryItems.forEach((category) => {

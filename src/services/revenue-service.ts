@@ -36,7 +36,7 @@ export const selectedRevenuePeriod: MonthPeriod = reactive({
 });
 
 export const showRevenueActions = computed(
-  () => selectedRevenueStatus.id === REVENUE_STATUS.OPEN
+  () => selectedRevenueStatus.id === REVENUE_STATUS.OPEN,
 );
 
 const REVENUE_LIST_KEY = 'revenue-list';
@@ -183,7 +183,7 @@ export const loadRevenues = async () => {
     sortList(
       allRevenueItems,
       revenueSettings.column,
-      revenueSettings.ascending
+      revenueSettings.ascending,
     );
   });
 };
@@ -248,7 +248,7 @@ export const editRevenue = async (revenue: Revenue, updateBalance = true) => {
       if (oldRevenue) {
         overrideRevenue(
           allRevenueItems[allRevenueItems.indexOf(oldRevenue)],
-          revenue
+          revenue,
         );
       }
       publishRevenue(revenue.id);
@@ -306,7 +306,7 @@ export const sortRevenues = (column?: string) => {
   sortList(
     filteredRevenueItems,
     revenueSettings.column,
-    revenueSettings.ascending
+    revenueSettings.ascending,
   );
   localStorage.setItem(REVENUE_LIST_KEY, JSON.stringify(revenueSettings));
 };

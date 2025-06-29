@@ -6,13 +6,13 @@
           <th
             v-for="column in expenseBudgetColumns"
             :key="column.key"
-            class="flex items-center p-2 h-full w-1/5 cursor-pointer hover:bg-secondary-color-300"
+            class="flex items-center p-2 h-full w-1/6 cursor-pointer hover:bg-secondary-color-300"
             :class="column.class"
             @click="orderList(column)"
           >
             <component
               v-if="!column.static && orderColumn === column.key"
-              :is="getOrderIcon(orderDirection)"
+              :is="getOrderIcon(ascOrder)"
               size="20"
               class="mr-1"
             />
@@ -30,36 +30,43 @@
             :key="item.id"
           >
             <td
-              class="flex items-center text-lg p-2 h-full w-1/5 min-w-24 justify-end"
+              class="flex items-center text-lg p-2 h-full w-1/6 min-w-24 justify-end"
             >
               <div class="flex w-full h-6 bg-neutral-color-300 rounded-full">
                 <div
                   class="h-6 font-medium text-black text-center items-center p-0.5 leading-none rounded-full"
-                  :class="getProgressClass(item.budgetPercentage)"
-                  :style="getProgressWidth(item.budgetPercentage)"
+                  :class="getProgressClass(item.percentageCompleted)"
+                  :style="getProgressWidth(item.percentageCompleted)"
                 >
-                  {{ formatPercentage(item.budgetPercentage) }}
+                  {{ formatPercentage(item.percentageCompleted) }}
                 </div>
               </div>
             </td>
-            <td class="flex items-center p-2 h-full w-1/5 min-w-24 justify-end">
-              {{ getSpentAmount(item) }}
+            <td class="flex items-center p-2 h-full w-1/6 min-w-24 justify-end">
+              {{
+                formatCurrency(item.spentAmount, item.currencyType || 'euro')
+              }}
             </td>
-            <td class="flex items-center p-2 h-full w-1/5 min-w-24 justify-end">
-              {{ formatCurrency(item.amount, item.currency || 'euro') }}
+            <td class="flex items-center p-2 h-full w-1/6 min-w-24 justify-end">
+              {{ formatCurrency(item.amount, item.currencyType || 'euro') }}
             </td>
-            <td class="flex items-center p-2 h-full w-1/5 min-w-36">
+            <td class="flex items-center p-2 h-full w-1/6 min-w-36">
               <div class="flex w-full justify-center">
                 <component
-                  :is="getCategoryIconById(item.category.type)"
+                  :is="getCategoryIconById(item.categoryID)"
                   class="h-6 w-6"
                 />
                 <span class="ml-2">
-                  {{ item.category.name }}
+                  {{ item.categoryName }}
                 </span>
               </div>
             </td>
-            <td class="flex items-center p-2 h-full w-1/5 min-w-24">
+            <td class="flex items-center p-2 h-full w-1/6 min-w-44">
+              <span class="w-full truncate" :title="item.description">
+                {{ item.description }}
+              </span>
+            </td>
+            <td class="flex items-center p-2 h-full w-1/6 min-w-24">
               <div class="flex w-full justify-evenly">
                 <ph-pencil
                   class="button-action text-neutral-color-off hover:bg-blue-500 hover:text-neutral-50"
@@ -82,8 +89,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue';
+import { Ref, onMounted, onUnmounted, ref } from 'vue';
 import {
+  LAST_DAY_OF_MONTH,
   formatCurrency,
   formatPercentage,
   getOrderIcon,
@@ -91,19 +99,30 @@ import {
   getProgressWidth,
 } from '../../utils';
 import {
-  budgetExpenseItems,
-  expenseBudgetSettings,
+  getBudgets,
   getCategoryIconById,
-  loadBudgetItems,
-  selectedExpensePeriod,
   sortExpenseBudgets,
 } from '../../services';
-import { Expense } from './Expense';
+import { Budget } from '../budgets/Budget';
+import {
+  EVENT_BUS_EVENTS,
+  registerEventBusListener,
+  unregisterEventBusListener,
+} from '../../event-bus';
+import { IBudgetFilter } from '../../types';
+import { getExpenseBusinessMonth } from '../../store/expenses';
 
-const expenseBudgetColumns = [
+type BudgetColumn = {
+  key: string;
+  name: string;
+  class: string;
+  static?: boolean;
+};
+
+const expenseBudgetColumns: BudgetColumn[] = [
   {
-    key: 'budgetPercentage',
-    name: 'Progresso',
+    key: 'percentageCompleted',
+    name: '% atingido',
     class: 'min-w-28 justify-center',
   },
   {
@@ -117,9 +136,14 @@ const expenseBudgetColumns = [
     class: 'justify-end',
   },
   {
-    key: 'category.name',
+    key: 'categoryName',
     name: 'Categoria',
     class: 'min-w-36 justify-center',
+  },
+  {
+    key: 'description',
+    name: 'Descrição',
+    class: 'min-w-36',
   },
   {
     key: 'actions',
@@ -130,32 +154,57 @@ const expenseBudgetColumns = [
 ];
 
 const emit = defineEmits(['onEditExpense', 'onDeleteExpense']);
+const expenseBudgets: Ref<Budget[]> = ref([]);
 
-const expenseBudgets = computed<Array<Expense>>(() => budgetExpenseItems);
+function updateBudgetsList(filterData: IBudgetFilter) {
+  const date = new Date(getExpenseBusinessMonth().startDate);
+  date.setDate(LAST_DAY_OF_MONTH + 2);
+  filterData.targetDate = date.toISOString();
+
+  getBudgets(filterData).then((budgets: Budget[]) => {
+    expenseBudgets.value = budgets;
+    if (!budgets) {
+      return;
+    }
+    const currentColumn = expenseBudgetColumns.find(
+      (column) => column.key === orderColumn.value,
+    );
+    if (currentColumn) {
+      orderList(currentColumn, true);
+    }
+  });
+}
 
 onMounted(async () => {
-  await loadBudgetItems(selectedExpensePeriod);
+  registerEventBusListener(EVENT_BUS_EVENTS.UPDATE_BUDGETS, updateBudgetsList);
+  updateBudgetsList({
+    targetDate: getExpenseBusinessMonth().startDate.toISOString(),
+  });
 });
 
-const orderColumn = computed(() => {
-  return expenseBudgetSettings.column;
+onUnmounted(() => {
+  unregisterEventBusListener(
+    EVENT_BUS_EVENTS.UPDATE_BUDGETS,
+    updateBudgetsList,
+  );
 });
 
-const orderDirection = computed(() => {
-  return expenseBudgetSettings.ascending;
-});
+const orderColumn = ref('percentageCompleted');
+let ascOrder = true;
 
-const orderList = (column: any) => {
+function orderList(column: BudgetColumn, keepOrder = false) {
   if (column.static) {
     return;
   }
-  sortExpenseBudgets(column.key);
-};
-
-const getSpentAmount = (expense: Expense) => {
-  // @ts-ignore
-  return formatCurrency(expense.spentAmount, expense.currency);
-};
+  if (orderColumn.value === column.key && !keepOrder) {
+    ascOrder = !ascOrder;
+  }
+  orderColumn.value = column.key;
+  sortExpenseBudgets(expenseBudgets.value, {
+    column: orderColumn.value,
+    order: ascOrder ? 'asc' : 'desc',
+  });
+}
 
 const onEditExpense = (index: number) => {
   emit('onEditExpense', expenseBudgets.value[index]);

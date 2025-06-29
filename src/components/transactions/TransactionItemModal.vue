@@ -36,14 +36,14 @@
             required
             placeholder="Valor a receber"
           />
-          <balance-selector
+          <account-selector
             class="w-full"
             :initial-value="targetWallet"
             empty-message="Destino"
             @select="selectTarget"
           />
         </div>
-        <datepicker :selected="transaction.date" @set-date="setDate" />
+        <date-input :selected="transaction.date" @set-date="setDate" />
         <textarea
           v-model="transaction.description"
           class="flex col-span-3 resize-none outline-0 rounded p-2 bg-neutral-color-700 h-32"
@@ -69,8 +69,8 @@
 </template>
 
 <script lang="ts" setup>
-import BalanceSelector from '../common/BalanceSelector.vue';
-import Datepicker from '../common/Datepicker.vue';
+import AccountSelector from '../common/AccountSelector.vue';
+import DateInput from '../common/DateInput.vue';
 import { PropType, shallowRef, watch } from 'vue';
 import { addTransaction, editTransaction } from '../../services';
 import { Transaction } from './Transaction';
@@ -95,7 +95,7 @@ watch(
       sourceWallet.value = props.transaction.source;
       targetWallet.value = props.transaction.target;
     }
-  }
+  },
 );
 
 const getActionName = () => {

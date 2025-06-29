@@ -67,44 +67,44 @@ interface ISidebarItem {
 }
 
 const sidebarItems: Array<ISidebarItem> = [
-  {
-    id: 0,
-    name: 'Dashboard',
-    icon: 'ph-presentation-chart',
-    route: '/',
-  },
-  {
-    id: 1,
-    name: 'Receitas',
-    icon: 'ph-confetti',
-    route: 'revenues',
-  },
+  // {
+  //   id: 0,
+  //   name: 'Dashboard',
+  //   icon: 'ph-presentation-chart',
+  //   route: '/',
+  // },
+  // {
+  //   id: 1,
+  //   name: 'Receitas',
+  //   icon: 'ph-hand-coins',
+  //   route: 'revenues',
+  // },
   {
     id: 2,
     name: 'Gastos',
-    icon: 'ph-coins',
+    icon: 'ph-chart-donut',
     route: 'expenses',
   },
   {
     id: 3,
-    name: 'Previstos',
-    icon: 'ph-anchor',
+    name: 'Fixos',
+    icon: 'ph-list-checks',
     route: 'fixed-expenses',
     subItem: true,
   },
   {
     id: 4,
     name: 'Variáveis',
-    icon: 'ph-wave-triangle',
+    icon: 'ph-wave-sine',
     route: 'variable-expenses',
     subItem: true,
   },
-  {
-    id: 5,
-    name: 'Viagens',
-    icon: 'ph-airplane-tilt',
-    route: 'travels',
-  },
+  // {
+  //   id: 5,
+  //   name: 'Viagens',
+  //   icon: 'ph-airplane-tilt',
+  //   route: 'travels',
+  // },
   {
     id: 6,
     name: 'Carteiras',
@@ -114,7 +114,7 @@ const sidebarItems: Array<ISidebarItem> = [
   {
     id: 7,
     name: 'Planos',
-    icon: 'ph-lightbulb',
+    icon: 'ph-shooting-star',
     route: 'wishes',
   },
 ];

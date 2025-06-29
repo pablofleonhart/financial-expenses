@@ -36,7 +36,7 @@
             class="bg-red-200 text-red-600 rounded-xl pl-2"
             >{{ errors.payment }}</span
           >
-          <balance-selector
+          <account-selector
             :initial-value="revenue.payment"
             empty-message="Selecione como receber"
             @select="selectBalance"
@@ -49,7 +49,7 @@
             class="bg-red-200 text-red-600 rounded-xl pl-2"
             >{{ errors.date }}</span
           >
-          <datepicker
+          <date-input
             :selected="revenue.date"
             @set-date="selectDate"
             class="rounded"
@@ -99,8 +99,8 @@
 </template>
 
 <script lang="ts" setup>
-import BalanceSelector from '../common/BalanceSelector.vue';
-import Datepicker from '../common/Datepicker.vue';
+import AccountSelector from '../common/AccountSelector.vue';
+import DateInput from '../common/DateInput.vue';
 import { onUpdated, PropType, ref, shallowRef, watch } from 'vue';
 import { addRevenue, editRevenue } from '../../services';
 import { Wallet } from '../wallets/Wallet';
@@ -172,7 +172,7 @@ watch(
       errors.value = {};
       setInitialFocus = true;
     }
-  }
+  },
 );
 
 onUpdated(() => {

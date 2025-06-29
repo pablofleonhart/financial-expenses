@@ -12,7 +12,8 @@
       :selected-tab="selectedTab"
       @on-edit-wish="onEditWish"
       @on-delete-wish="onDeleteWish"
-      @on-complete-plan="onCompleteWish"
+      @on-complete-wish="onFullfilWish"
+      @on-open-expenses="onOpenExpenses"
     />
   </div>
   <wish-item-modal
@@ -29,8 +30,13 @@
   <expense-item-modal
     :opened="showExpenseModal"
     :expense="objExpense"
-    @add-expense="expenseAdded"
+    :wish-source="objWish"
     @close="showExpenseModal = false"
+  />
+  <wish-expenses-details
+    :opened="showExpenseDetails"
+    :wish="objWish"
+    @close="showExpenseDetails = false"
   />
 </template>
 
@@ -38,26 +44,30 @@
 import AddButton from '../common/AddButton.vue';
 import ConfirmationModal from '../common/ConfirmationModal.vue';
 import ExpenseItemModal from '../expenses/ExpenseItemModal.vue';
-import WishesHeader from './WishesHeader.vue';
-import WishesFilterTabs from './WishesFilterTabs.vue';
+import WishExpensesDetails from './WishExpensesDetails.vue';
 import WishItemModal from './WishItemModal.vue';
 import WishList from './WishList.vue';
+import WishesHeader from './WishesHeader.vue';
+import WishesFilterTabs from './WishesFilterTabs.vue';
 import { onMounted, ref } from 'vue';
-import { deleteWish, editWish, loadWishes } from '../../services';
+import {
+  account,
+  deleteWish,
+  loadWishes,
+  selectedWishStatus,
+} from '../../services';
 import { Wish } from './Wish';
 import { copyWish } from '../../utils';
 import { Expense } from '../expenses/Expense';
-import { Author } from '../user/Author';
-import { Wallet } from '../wallets/Wallet';
-import { Travel } from '../travels/Travel';
 
 const showWishItemModal = ref(false);
 const showConfirmationModal = ref(false);
 const showExpenseModal = ref(false);
+const showExpenseDetails = ref(false);
 const modalMessage = ref('');
 const objWish = ref(new Wish());
 const objExpense = ref(new Expense());
-const selectedTab = ref(0);
+const selectedTab = ref(selectedWishStatus.id);
 let wishToDelete: Wish = new Wish();
 
 onMounted(async () => {
@@ -65,7 +75,6 @@ onMounted(async () => {
 });
 
 function onChangeTab(tab: any) {
-  // console.log(tab);
   selectedTab.value = tab.id;
 }
 
@@ -90,28 +99,26 @@ const onAcceptDelete = async () => {
   await deleteWish(wishToDelete);
 };
 
-const expenseAdded = async () => {
-  // wishToDelete.deleted = true;
-  await editWish(wishToDelete);
-};
-
-const onCompleteWish = (wish: Wish) => {
-  wishToDelete = wish;
+function onFullfilWish(wish: Wish) {
   showExpenseModal.value = true;
-  // objExpense.value = new Expense({
-  //   id: '',
-  //   amount: wish.amount,
-  //   card: true,
-  //   category: wish.category,
-  //   date: new Date(),
-  //   deleted: false,
-  //   note: wish.description,
-  //   author: new Author(),
-  //   currency: wish.currency,
-  //   payment: new Wallet(),
-  //   variable: true,
-  //   travel: new Travel(),
-  //   budget: true,
-  // });
-};
+  objWish.value = wish;
+  objExpense.value = new Expense({
+    id: '',
+    amount: wish.amount,
+    categoryID: wish.categoryID,
+    date: new Date(),
+    description: wish.description,
+    authorID: account.id,
+    accountID: '',
+    isVariable: true,
+    deletedAt: null,
+    fullfiledAt: null,
+    installments: 1,
+  });
+}
+
+function onOpenExpenses(wish: Wish) {
+  objWish.value = wish;
+  showExpenseDetails.value = true;
+}
 </script>

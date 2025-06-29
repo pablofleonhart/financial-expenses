@@ -6,7 +6,7 @@ type MiddlewareOptions = {
 };
 
 type Middleware = (
-  options: MiddlewareOptions
+  options: MiddlewareOptions,
 ) =>
   | RouteLocationRaw
   | boolean

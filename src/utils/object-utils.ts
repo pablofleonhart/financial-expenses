@@ -27,37 +27,37 @@ const overrideCategory = (target: Category, source: Category) => {
   target.type = source.type;
 };
 
-export const copyExpense = (source: Expense) => {
-  return new Expense({
-    id: source.id,
-    amount: source.amount,
-    card: source.card,
-    currency: source.currency,
-    date: source.date,
-    deleted: source.deleted,
-    note: source.note,
-    category: copyCategory(source.category),
-    author: new Author(),
-    payment: copyWallet(source.payment),
-    variable: source.variable,
-    budget: source.budget,
-    travel: copyTravel(source.travel),
-  });
-};
+// export const copyExpense = (source: Expense) => {
+//   return new Expense({
+//     id: source.id,
+//     amount: source.amount,
+//     card: source.card,
+//     currency: source.currency,
+//     date: source.date,
+//     deleted: source.deleted,
+//     note: source.note,
+//     category: copyCategory(source.category),
+//     author: new Author(),
+//     payment: copyWallet(source.payment),
+//     variable: source.variable,
+//     budget: source.budget,
+//     travel: copyTravel(source.travel),
+//   });
+// };
 
-export const overrideExpense = (target: Expense, source: Expense) => {
-  target.id = source.id;
-  target.amount = source.amount;
-  target.card = source.card;
-  target.date = source.date;
-  target.deleted = source.deleted;
-  target.note = source.note;
-  overrideCategory(target.category, source.category);
-  overrideWallet(target.payment, source.payment);
-  target.variable = source.variable;
-  target.budget = source.budget;
-  overrideTravel(target.travel, source.travel);
-};
+// export const overrideExpense = (target: Expense, source: Expense) => {
+//   target.id = source.id;
+//   target.amount = source.amount;
+//   target.card = source.card;
+//   target.date = source.date;
+//   target.deleted = source.deleted;
+//   target.note = source.note;
+//   overrideCategory(target.category, source.category);
+//   overrideWallet(target.payment, source.payment);
+//   target.variable = source.variable;
+//   target.budget = source.budget;
+//   overrideTravel(target.travel, source.travel);
+// };
 
 export const copyRevenue = (source: any) => {
   return new Revenue({
@@ -123,6 +123,7 @@ export const copyWish = (source: Wish) => {
     deletedAt: source.deletedAt,
     description: source.description,
     fullfiledAt: source.fullfiledAt,
+    expenses: source.expenses,
   });
 };
 
